@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Refresh
@@ -34,11 +33,12 @@ import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.viewmodel.ThemeStoreViewModel
 import java.io.File
 
 @Destination<RootGraph>
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyThemesScreen(
     navigator: DestinationsNavigator
@@ -163,64 +163,58 @@ fun MyThemesScreen(
         )
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    if (isSearchActive) {
-                        TextField(
-                            value = viewModel.localSearchQuery,
-                            onValueChange = { viewModel.onLocalSearchQueryChange(it) },
-                            placeholder = { Text(stringResource(R.string.theme_store_search_hint)) },
-                            singleLine = true,
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                disabledContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent,
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    } else {
-                        Text(stringResource(R.string.my_themes_title))
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        if (isSearchActive) {
-                            isSearchActive = false
-                            viewModel.onLocalSearchQueryChange("")
-                        } else {
-                            navigator.popBackStack()
-                        }
-                    }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    if (isSearchActive) {
-                        if (viewModel.localSearchQuery.isNotEmpty()) {
-                            IconButton(onClick = { viewModel.onLocalSearchQueryChange("") }) {
-                                Icon(Icons.Filled.Close, contentDescription = "Clear")
-                            }
-                        }
-                    } else {
-                        IconButton(onClick = { isSearchActive = true }) {
-                            Icon(Icons.Filled.Search, contentDescription = "Search")
-                        }
-                        IconButton(onClick = {
-                            refreshing = true
-                            viewModel.loadLocalThemes()
-                            refreshing = false
-                        }) {
-                            Icon(Icons.Filled.Refresh, contentDescription = "Refresh")
-                        }
+    FolkScaffold(
+        title = stringResource(R.string.my_themes_title),
+        titleStyle = FolkTitleStyle.Inline,
+        onBack = {
+            if (isSearchActive) {
+                isSearchActive = false
+                viewModel.onLocalSearchQueryChange("")
+            } else {
+                navigator.popBackStack()
+            }
+        },
+        titleContent = if (isSearchActive) {
+            {
+                TextField(
+                    value = viewModel.localSearchQuery,
+                    onValueChange = { viewModel.onLocalSearchQueryChange(it) },
+                    placeholder = { Text(stringResource(R.string.theme_store_search_hint)) },
+                    singleLine = true,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        } else {
+            null
+        },
+        actions = {
+            if (isSearchActive) {
+                if (viewModel.localSearchQuery.isNotEmpty()) {
+                    IconButton(onClick = { viewModel.onLocalSearchQueryChange("") }) {
+                        Icon(Icons.Filled.Close, contentDescription = "Clear")
                     }
                 }
-            )
+            } else {
+                IconButton(onClick = { isSearchActive = true }) {
+                    Icon(Icons.Filled.Search, contentDescription = "Search")
+                }
+                IconButton(onClick = {
+                    refreshing = true
+                    viewModel.loadLocalThemes()
+                    refreshing = false
+                }) {
+                    Icon(Icons.Filled.Refresh, contentDescription = "Refresh")
+                }
+            }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHostState = snackbarHostState,
     ) { paddingValues ->
         if (viewModel.localThemes.isEmpty()) {
             // 空状态

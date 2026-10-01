@@ -58,6 +58,7 @@ fun FolkScaffold(
     onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     snackbarHostState: SnackbarHostState? = null,
+    titleContent: (@Composable () -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
@@ -72,7 +73,15 @@ fun FolkScaffold(
         topBar = {
             when (titleStyle) {
                 FolkTitleStyle.Large -> LargeTopAppBar(
-                    title = { Text(text = title, fontWeight = FontWeight.Bold) },
+                    title = {
+                        // A caller-supplied title (e.g. a search field) replaces
+                        // the plain label entirely.
+                        if (titleContent != null) {
+                            titleContent()
+                        } else {
+                            Text(text = title, fontWeight = FontWeight.Bold)
+                        }
+                    },
                     colors = folkTopAppBarColors(),
                     navigationIcon = { FolkBackButton(onBack) },
                     actions = actions,
@@ -81,11 +90,15 @@ fun FolkScaffold(
 
                 FolkTitleStyle.Inline -> TopAppBar(
                     title = {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.SemiBold,
-                        )
+                        if (titleContent != null) {
+                            titleContent()
+                        } else {
+                            Text(
+                                text = title,
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.SemiBold,
+                            )
+                        }
                     },
                     colors = folkTopAppBarColors(),
                     navigationIcon = { FolkBackButton(onBack) },
