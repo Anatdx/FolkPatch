@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import me.bmax.apatch.ui.component.ColorGenerationModeSelector
-import me.bmax.apatch.ui.component.SliderSettingCard
 import me.bmax.apatch.ui.component.SliderStyleConfig
 import me.bmax.apatch.ui.component.ColorStandardSelector
 import me.bmax.apatch.ui.component.ColorStylePicker
@@ -65,8 +64,6 @@ import me.bmax.apatch.ui.component.SwitchIconState
 import me.bmax.apatch.ui.component.FilePickerDialog
 import me.bmax.apatch.ui.component.DualBackgroundSettings
 
-import me.bmax.apatch.ui.component.SplicedColumnGroup
-import me.bmax.apatch.ui.component.ToggleSettingCard
 import me.bmax.apatch.ui.component.ThemeColorPicker
 import me.bmax.apatch.ui.component.ThemeMode
 import me.bmax.apatch.ui.component.ThemeModeSelector
@@ -100,6 +97,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
+import me.bmax.apatch.ui.component.folk.FolkSettingsSectionGroup
+import me.bmax.apatch.ui.component.folk.FolkSliderPreference
+import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
+import me.bmax.apatch.ui.component.folk.FolkValuePreference
+import androidx.compose.material.icons.outlined.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -524,7 +526,7 @@ fun AppearanceSettingsContent(
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
-        SplicedColumnGroup(title = stringResource(R.string.settings_appearance_night_mode), flat = flat, highlightKey = highlightKey) {
+        FolkSettingsSectionGroup(title = stringResource(R.string.settings_appearance_night_mode), flat = flat, highlightKey = highlightKey) {
             if (isNightModeSupported) {
                 item(key = "appearance_theme_mode") {
                     ThemeModeSelector(
@@ -670,11 +672,10 @@ fun AppearanceSettingsContent(
 
             item(key = "appearance_switch_icon") {
                 var showSwitchIcon by remember { mutableStateOf(SwitchIconState.showIcon) }
-                ToggleSettingCard(
-                    icon = Icons.Filled.ToggleOn,
-                    flat = flat,
+                FolkSwitchPreference(
+                    icon = Icons.Outlined.ToggleOn,
                     title = stringResource(R.string.settings_switch_icon),
-                    description = stringResource(R.string.settings_switch_icon_desc),
+                    summary = stringResource(R.string.settings_switch_icon_desc),
                     checked = showSwitchIcon,
                     onCheckedChange = {
                         showSwitchIcon = it
@@ -686,11 +687,10 @@ fun AppearanceSettingsContent(
 
             item(key = "appearance_discrete_slider") {
                 var isDiscreteSlider by remember { mutableStateOf(SliderStyleConfig.isDiscrete) }
-                ToggleSettingCard(
-                    icon = Icons.Filled.Segment,
-                    flat = flat,
+                FolkSwitchPreference(
+                    icon = Icons.Outlined.Segment,
                     title = stringResource(R.string.settings_discrete_slider),
-                    description = stringResource(R.string.settings_discrete_slider_desc),
+                    summary = stringResource(R.string.settings_discrete_slider_desc),
                     checked = isDiscreteSlider,
                     onCheckedChange = {
                         isDiscreteSlider = it
@@ -701,55 +701,23 @@ fun AppearanceSettingsContent(
             }
         }
 
-        SplicedColumnGroup(title = stringResource(R.string.settings_appearance_layout), flat = flat, highlightKey = highlightKey) {
+        FolkSettingsSectionGroup(title = stringResource(R.string.settings_appearance_layout), flat = flat, highlightKey = highlightKey) {
             item(key = "appearance_home_layout") {
-                ExpressiveCard(flat = flat, onClick = { showHomeLayoutChooseDialog.value = true }) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(imageVector = Icons.Filled.Dashboard, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                        Spacer(Modifier.width(16.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(id = R.string.settings_home_layout_style),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = stringResource(homeLayoutStyleToString(currentStyle.toString())),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.outline,
-                            )
-                        }
-                    }
-                }
+                FolkValuePreference(
+                icon = Icons.Outlined.Dashboard,
+                title = stringResource(id = R.string.settings_home_layout_style),
+                summary = stringResource(homeLayoutStyleToString(currentStyle.toString())),
+                onClick = { showHomeLayoutChooseDialog.value = true },
+            )
             }
 
             item(key = "appearance_stats_top_layout", visible = isStatsLayout) {
-                ExpressiveCard(flat = flat, onClick = { showStatsTopLayoutDialog = true }) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(imageVector = Icons.Filled.GridView, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                        Spacer(Modifier.width(16.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(id = R.string.settings_stats_top_layout),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = statsTopLayoutValue,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.outline,
-                            )
-                        }
-                    }
-                }
+                FolkValuePreference(
+                icon = Icons.Outlined.GridView,
+                title = stringResource(id = R.string.settings_stats_top_layout),
+                summary = statsTopLayoutValue,
+                onClick = { showStatsTopLayoutDialog = true },
+            )
             }
 
             if (kPatchReady) {
@@ -825,37 +793,20 @@ fun AppearanceSettingsContent(
             }
 
             item(key = "appearance_nav_scheme") {
-                ExpressiveCard(flat = flat, onClick = { showNavSchemeDialog = true }) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(imageVector = Icons.Filled.Menu, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                        Spacer(Modifier.width(16.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(id = R.string.settings_nav_scheme),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = navSchemeLabel,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.outline,
-                            )
-                        }
-                    }
-                }
+                FolkValuePreference(
+                icon = Icons.Outlined.Menu,
+                title = stringResource(id = R.string.settings_nav_scheme),
+                summary = navSchemeLabel,
+                onClick = { showNavSchemeDialog = true },
+            )
             }
 
             if (isFloatingNav) {
                 item(key = "appearance_navbar_glass") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.AutoAwesome,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.AutoAwesome,
                         title = stringResource(id = R.string.settings_navbar_glass_effect),
-                        description = stringResource(id = R.string.settings_navbar_glass_effect_summary),
+                        summary = stringResource(id = R.string.settings_navbar_glass_effect_summary),
                         checked = BackgroundConfig.isNavBarGlassEnabled,
                         onCheckedChange = {
                             BackgroundConfig.setNavBarGlassEnabledState(it)
@@ -866,8 +817,7 @@ fun AppearanceSettingsContent(
 
                 if (BackgroundConfig.isNavBarGlassEnabled) {
                     item(key = "appearance_navbar_glass_blur") {
-                        SliderSettingCard(
-                            flat = flat,
+                        FolkSliderPreference(
                             title = stringResource(id = R.string.settings_navbar_glass_blur_strength),
                             value = BackgroundConfig.navBarGlassBlurStrength,
                             onValueChange = { BackgroundConfig.setNavBarGlassBlurStrengthValue(it) },
@@ -876,8 +826,7 @@ fun AppearanceSettingsContent(
                     }
 
                     item(key = "appearance_navbar_glass_transparency") {
-                        SliderSettingCard(
-                            flat = flat,
+                        FolkSliderPreference(
                             title = stringResource(id = R.string.settings_navbar_glass_transparency),
                             value = BackgroundConfig.navBarGlassTransparency,
                             onValueChange = { BackgroundConfig.setNavBarGlassTransparencyValue(it) },
@@ -886,8 +835,7 @@ fun AppearanceSettingsContent(
                     }
 
                     item(key = "appearance_navbar_glass_highlight") {
-                        SliderSettingCard(
-                            flat = flat,
+                        FolkSliderPreference(
                             title = stringResource(id = R.string.settings_navbar_glass_highlight_strength),
                             value = BackgroundConfig.navBarGlassHighlightStrength,
                             onValueChange = { BackgroundConfig.setNavBarGlassHighlightStrengthValue(it) },
@@ -896,11 +844,10 @@ fun AppearanceSettingsContent(
                     }
 
                     item(key = "appearance_navbar_glass_specular") {
-                        ToggleSettingCard(
-                            flat = flat,
-                            icon = Icons.Filled.LensBlur,
+                        FolkSwitchPreference(
+                            icon = Icons.Outlined.LensBlur,
                             title = stringResource(id = R.string.settings_navbar_glass_specular),
-                            description = stringResource(id = R.string.settings_navbar_glass_specular_summary),
+                            summary = stringResource(id = R.string.settings_navbar_glass_specular_summary),
                             checked = BackgroundConfig.isNavBarGlassSpecularEnabled,
                             onCheckedChange = {
                                 BackgroundConfig.setNavBarGlassSpecularEnabledState(it)
@@ -910,11 +857,10 @@ fun AppearanceSettingsContent(
                     }
 
                     item(key = "appearance_navbar_glass_glow") {
-                        ToggleSettingCard(
-                            flat = flat,
-                            icon = Icons.Filled.Grain,
+                        FolkSwitchPreference(
+                            icon = Icons.Outlined.Grain,
                             title = stringResource(id = R.string.settings_navbar_glass_inner_glow),
-                            description = stringResource(id = R.string.settings_navbar_glass_inner_glow_summary),
+                            summary = stringResource(id = R.string.settings_navbar_glass_inner_glow_summary),
                             checked = BackgroundConfig.isNavBarGlassInnerGlowEnabled,
                             onCheckedChange = {
                                 BackgroundConfig.setNavBarGlassInnerGlowEnabledState(it)
@@ -924,11 +870,10 @@ fun AppearanceSettingsContent(
                     }
 
                     item(key = "appearance_navbar_glass_border") {
-                        ToggleSettingCard(
-                            flat = flat,
-                            icon = Icons.Filled.BorderStyle,
+                        FolkSwitchPreference(
+                            icon = Icons.Outlined.BorderStyle,
                             title = stringResource(id = R.string.settings_navbar_glass_border),
-                            description = stringResource(id = R.string.settings_navbar_glass_border_summary),
+                            summary = stringResource(id = R.string.settings_navbar_glass_border_summary),
                             checked = BackgroundConfig.isNavBarGlassBorderEnabled,
                             onCheckedChange = {
                                 BackgroundConfig.setNavBarGlassBorderEnabledState(it)
@@ -942,11 +887,10 @@ fun AppearanceSettingsContent(
                 // 仅非毛玻璃模式显示（毛玻璃已有独立的外观控制）
                 if (!BackgroundConfig.isNavBarGlassEnabled) {
                     item(key = "appearance_compact_rounded_bar") {
-                        ToggleSettingCard(
-                            flat = flat,
-                            icon = Icons.Filled.RoundedCorner,
+                        FolkSwitchPreference(
+                            icon = Icons.Outlined.RoundedCorner,
                             title = stringResource(id = R.string.settings_compact_rounded_bar),
-                            description = stringResource(id = R.string.settings_compact_rounded_bar_summary),
+                            summary = stringResource(id = R.string.settings_compact_rounded_bar_summary),
                             checked = FloatingBarConfig.isCompactRoundedStyle,
                             onCheckedChange = { enabled ->
                                 FloatingBarConfig.isCompactRoundedStyle = enabled
@@ -957,11 +901,10 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_floating_auto_hide") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.VisibilityOff,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.VisibilityOff,
                         title = stringResource(id = R.string.settings_floating_auto_hide),
-                        description = stringResource(id = R.string.settings_floating_auto_hide_summary),
+                        summary = stringResource(id = R.string.settings_floating_auto_hide_summary),
                         checked = floatingAutoHide,
                         onCheckedChange = {
                             floatingAutoHide = it
@@ -971,11 +914,10 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_floating_swipe_hide") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.Swipe,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.Swipe,
                         title = stringResource(id = R.string.settings_floating_swipe_hide),
-                        description = stringResource(id = R.string.settings_floating_swipe_hide_summary),
+                        summary = stringResource(id = R.string.settings_floating_swipe_hide_summary),
                         checked = floatingSwipeHide,
                         onCheckedChange = {
                             floatingSwipeHide = it
@@ -1012,11 +954,10 @@ fun AppearanceSettingsContent(
                     editingDestName = null
                 }
 
-                ToggleSettingCard(
-                    flat = flat,
-                    icon = Icons.Filled.Image,
+                FolkSwitchPreference(
+                    icon = Icons.Outlined.Image,
                     title = stringResource(R.string.settings_nav_custom_icons),
-                    description = stringResource(R.string.settings_nav_custom_icons_summary),
+                    summary = stringResource(R.string.settings_nav_custom_icons_summary),
                     checked = customNavIconsEnabled.value,
                     onCheckedChange = {
                         customNavIconsEnabled.value = it
@@ -1098,11 +1039,10 @@ fun AppearanceSettingsContent(
             }
 
             item(key = "appearance_list_card_badge", visible = isListStyle) {
-                ToggleSettingCard(
-                    flat = flat,
-                    icon = Icons.Filled.LabelOff,
+                FolkSwitchPreference(
+                    icon = Icons.Outlined.LabelOff,
                     title = stringResource(id = R.string.settings_list_card_hide_status_badge),
-                    description = stringResource(id = R.string.settings_list_card_hide_status_badge_summary),
+                    summary = stringResource(id = R.string.settings_list_card_hide_status_badge_summary),
                     checked = BackgroundConfig.isListWorkingCardModeHidden,
                     onCheckedChange = {
                         BackgroundConfig.setListWorkingCardModeHiddenState(it)
@@ -1112,37 +1052,20 @@ fun AppearanceSettingsContent(
             }
 
             item(key = "appearance_custom_badge_text_list", visible = isListStyle && !BackgroundConfig.isListWorkingCardModeHidden) {
-                ExpressiveCard(flat = flat, onClick = { showCustomBadgeTextDialog.value = true }) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(imageVector = Icons.Filled.Badge, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                        Spacer(Modifier.width(16.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(id = R.string.settings_custom_badge_text),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = currentBadgeTextMode,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.outline,
-                            )
-                        }
-                    }
-                }
+                FolkValuePreference(
+                icon = Icons.Outlined.Badge,
+                title = stringResource(id = R.string.settings_custom_badge_text),
+                summary = currentBadgeTextMode,
+                onClick = { showCustomBadgeTextDialog.value = true },
+            )
             }
 
             item(key = "appearance_list_info_icons", visible = isDefaultStyle) {
                 var showListInfoIcons by remember { mutableStateOf(prefs.getBoolean("list_info_show_icons", false)) }
-                ToggleSettingCard(
-                    flat = flat,
-                    icon = Icons.Filled.ViewList,
+                FolkSwitchPreference(
+                    icon = Icons.Outlined.ViewList,
                     title = stringResource(id = R.string.settings_list_info_show_icons),
-                    description = stringResource(id = R.string.settings_list_info_show_icons_summary),
+                    summary = stringResource(id = R.string.settings_list_info_show_icons_summary),
                     checked = showListInfoIcons,
                     onCheckedChange = {
                         showListInfoIcons = it
@@ -1153,11 +1076,10 @@ fun AppearanceSettingsContent(
             }
 
             item(key = "appearance_advanced_title") {
-                ToggleSettingCard(
-                    flat = flat,
-                    icon = Icons.Filled.Title,
+                FolkSwitchPreference(
+                    icon = Icons.Outlined.Title,
                     title = stringResource(id = R.string.settings_advanced_title_style),
-                    description = if (BackgroundConfig.isAdvancedTitleStyleEnabled) stringResource(id = R.string.settings_advanced_title_style_enabled) else stringResource(id = R.string.settings_advanced_title_style_summary),
+                    summary = if (BackgroundConfig.isAdvancedTitleStyleEnabled) stringResource(id = R.string.settings_advanced_title_style_enabled) else stringResource(id = R.string.settings_advanced_title_style_summary),
                     checked = BackgroundConfig.isAdvancedTitleStyleEnabled,
                     onCheckedChange = {
                         BackgroundConfig.setAdvancedTitleStyleEnabledState(it)
@@ -1169,8 +1091,7 @@ fun AppearanceSettingsContent(
 
             if (BackgroundConfig.isAdvancedTitleStyleEnabled) {
                 item(key = "appearance_title_day_opacity") {
-                    SliderSettingCard(
-                        flat = flat,
+                    FolkSliderPreference(
                         title = stringResource(id = R.string.settings_title_image_day_opacity),
                         value = BackgroundConfig.titleImageDayOpacity,
                         onValueChange = { BackgroundConfig.setTitleImageDayOpacityValue(it) },
@@ -1179,8 +1100,7 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_title_night_opacity") {
-                    SliderSettingCard(
-                        flat = flat,
+                    FolkSliderPreference(
                         title = stringResource(id = R.string.settings_title_image_night_opacity),
                         value = BackgroundConfig.titleImageNightOpacity,
                         onValueChange = { BackgroundConfig.setTitleImageNightOpacityValue(it) },
@@ -1189,8 +1109,7 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_title_image_dim") {
-                    SliderSettingCard(
-                        flat = flat,
+                    FolkSliderPreference(
                         title = stringResource(id = R.string.settings_title_image_dim),
                         value = BackgroundConfig.titleImageDim,
                         onValueChange = { BackgroundConfig.setTitleImageDimValue(it) },
@@ -1199,8 +1118,7 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_title_image_offset_x") {
-                    SliderSettingCard(
-                        flat = flat,
+                    FolkSliderPreference(
                         title = stringResource(id = R.string.settings_title_image_offset_x),
                         value = BackgroundConfig.titleImageOffsetX,
                         valueRange = -1f..1f,
@@ -1210,10 +1128,11 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_select_title_image") {
-                    ExpressiveCard(
-                        flat = flat,
-                        onClick = {
-                            if (PermissionUtils.hasExternalStoragePermission(context)) {
+                    FolkValuePreference(
+                icon = Icons.Outlined.Image,
+                title = stringResource(id = R.string.settings_select_title_image),
+                summary = if (!BackgroundConfig.titleImageUri.isNullOrEmpty()) stringResource(id = R.string.settings_title_image_selected) else null,
+                onClick = {                            if (PermissionUtils.hasExternalStoragePermission(context)) {
                                 try {
                                     pickTitleImageLauncher.launch("image/*")
                                 } catch (e: ActivityNotFoundException) {
@@ -1222,23 +1141,8 @@ fun AppearanceSettingsContent(
                             } else {
                                 showToast(context, context.getString(R.string.settings_title_image_permission_required))
                             }
-                        }
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(imageVector = Icons.Filled.Image, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                            Spacer(Modifier.width(16.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(text = stringResource(id = R.string.settings_select_title_image), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                                if (!BackgroundConfig.titleImageUri.isNullOrEmpty()) {
-                                    Text(text = stringResource(id = R.string.settings_title_image_selected), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
-                                }
-                            }
-                        }
-                    }
+                        },
+            )
                 }
 
                 if (!BackgroundConfig.titleImageUri.isNullOrEmpty()) {
@@ -1254,37 +1158,27 @@ fun AppearanceSettingsContent(
                                 }
                             }
                         )
-                        ExpressiveCard(
-                            flat = flat,
-                            onClick = {
-                                clearTitleImageDialog.showConfirm(
+                        FolkValuePreference(
+                icon = Icons.Outlined.Delete,
+                title = stringResource(id = R.string.settings_clear_title_image),
+                onClick = {                                clearTitleImageDialog.showConfirm(
                                     title = context.getString(R.string.settings_clear_title_image),
                                     content = context.getString(R.string.settings_clear_title_image_confirm),
                                     markdown = false,
                                 )
-                            }
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Icon(imageVector = Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                                Spacer(Modifier.width(16.dp))
-                                Text(text = stringResource(id = R.string.settings_clear_title_image), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                            }
-                        }
+                            },
+            )
                     }
                 }
             }
         }
 
-        SplicedColumnGroup(title = stringResource(R.string.settings_appearance_background), flat = flat, highlightKey = highlightKey) {
+        FolkSettingsSectionGroup(title = stringResource(R.string.settings_appearance_background), flat = flat, highlightKey = highlightKey) {
             item(key = "appearance_custom_background") {
-                ToggleSettingCard(
-                    flat = flat,
-                    icon = Icons.Filled.Wallpaper,
+                FolkSwitchPreference(
+                    icon = Icons.Outlined.Wallpaper,
                     title = stringResource(id = R.string.settings_custom_background),
-                    description = if (BackgroundConfig.isCustomBackgroundEnabled) stringResource(id = R.string.settings_custom_background_enabled) else stringResource(id = R.string.settings_custom_background_summary),
+                    summary = if (BackgroundConfig.isCustomBackgroundEnabled) stringResource(id = R.string.settings_custom_background_enabled) else stringResource(id = R.string.settings_custom_background_summary),
                     checked = BackgroundConfig.isCustomBackgroundEnabled,
                     onCheckedChange = {
                         BackgroundConfig.setCustomBackgroundEnabledState(it)
@@ -1297,11 +1191,10 @@ fun AppearanceSettingsContent(
             if (BackgroundConfig.isCustomBackgroundEnabled) {
                 if (!BackgroundConfig.isVideoBackgroundEnabled) {
                     item(key = "appearance_bg_dual_dim") {
-                        ToggleSettingCard(
-                            flat = flat,
-                            icon = Icons.Filled.Contrast,
+                        FolkSwitchPreference(
+                            icon = Icons.Outlined.Contrast,
                             title = stringResource(id = R.string.settings_custom_background_dual_dim),
-                            description = stringResource(id = R.string.settings_custom_background_dual_dim_desc),
+                            summary = stringResource(id = R.string.settings_custom_background_dual_dim_desc),
                             checked = BackgroundConfig.isDualBackgroundDimEnabled,
                             onCheckedChange = {
                                 BackgroundConfig.setDualBackgroundDimEnabledState(it)
@@ -1312,8 +1205,7 @@ fun AppearanceSettingsContent(
                     }
 
                     item(key = "appearance_bg_opacity") {
-                        SliderSettingCard(
-                            flat = flat,
+                        FolkSliderPreference(
                             title = stringResource(id = R.string.settings_custom_background_opacity),
                             value = BackgroundConfig.customBackgroundOpacity,
                             onValueChange = { BackgroundConfig.setCustomBackgroundOpacityValue(it) },
@@ -1322,8 +1214,7 @@ fun AppearanceSettingsContent(
                     }
 
                     item(key = "appearance_bg_blur") {
-                        SliderSettingCard(
-                            flat = flat,
+                        FolkSliderPreference(
                             title = stringResource(id = R.string.settings_custom_background_blur),
                             value = BackgroundConfig.customBackgroundBlur,
                             valueRange = 0f..50f,
@@ -1335,8 +1226,7 @@ fun AppearanceSettingsContent(
 
                     if (!BackgroundConfig.isDualBackgroundDimEnabled) {
                         item(key = "appearance_bg_dim") {
-                            SliderSettingCard(
-                                flat = flat,
+                            FolkSliderPreference(
                                 title = stringResource(id = R.string.settings_custom_background_dim),
                                 value = BackgroundConfig.customBackgroundDim,
                                 onValueChange = { BackgroundConfig.setCustomBackgroundDimValue(it) },
@@ -1345,8 +1235,7 @@ fun AppearanceSettingsContent(
                         }
                     } else {
                         item(key = "appearance_bg_day_dim") {
-                            SliderSettingCard(
-                                flat = flat,
+                            FolkSliderPreference(
                                 title = stringResource(id = R.string.settings_custom_background_day_dim),
                                 value = BackgroundConfig.customBackgroundDayDim,
                                 onValueChange = { BackgroundConfig.setCustomBackgroundDayDimValue(it) },
@@ -1355,8 +1244,7 @@ fun AppearanceSettingsContent(
                         }
 
                         item(key = "appearance_bg_night_dim") {
-                            SliderSettingCard(
-                                flat = flat,
+                            FolkSliderPreference(
                                 title = stringResource(id = R.string.settings_custom_background_night_dim),
                                 value = BackgroundConfig.customBackgroundNightDim,
                                 onValueChange = { BackgroundConfig.setCustomBackgroundNightDimValue(it) },
@@ -1367,11 +1255,10 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_video_background") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.VideoFile,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.VideoFile,
                         title = stringResource(id = R.string.settings_video_background),
-                        description = stringResource(id = R.string.settings_video_background_summary),
+                        summary = stringResource(id = R.string.settings_video_background_summary),
                         checked = BackgroundConfig.isVideoBackgroundEnabled,
                         onCheckedChange = {
                             BackgroundConfig.setVideoBackgroundEnabledState(it)
@@ -1383,31 +1270,17 @@ fun AppearanceSettingsContent(
 
                 if (BackgroundConfig.isVideoBackgroundEnabled) {
                     item(key = "appearance_select_video") {
-                        ExpressiveCard(
-                            flat = flat,
-                            onClick = {
-                                try {
+                        FolkValuePreference(
+                icon = Icons.Outlined.VideoFile,
+                title = stringResource(id = R.string.settings_select_video),
+                summary = if (!BackgroundConfig.videoBackgroundUri.isNullOrEmpty()) stringResource(id = R.string.settings_video_selected) else null,
+                onClick = {                                try {
                                     pickVideoLauncher.launch("video/*")
                                 } catch (e: ActivityNotFoundException) {
                                     showToast(context, e.message ?: "")
                                 }
-                            }
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Icon(imageVector = Icons.Filled.VideoFile, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                                Spacer(Modifier.width(16.dp))
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(text = stringResource(id = R.string.settings_select_video), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                                    if (!BackgroundConfig.videoBackgroundUri.isNullOrEmpty()) {
-                                        Text(text = stringResource(id = R.string.settings_video_selected), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
-                                    }
-                                }
-                            }
-                        }
+                            },
+            )
                     }
 
                     if (!BackgroundConfig.videoBackgroundUri.isNullOrEmpty()) {
@@ -1425,31 +1298,21 @@ fun AppearanceSettingsContent(
                             )
                             val clearVideoTitle = stringResource(id = R.string.settings_clear_video_background)
                             val clearVideoConfirm = context.getString(R.string.settings_clear_video_background_confirm)
-                            ExpressiveCard(
-                                flat = flat,
-                                onClick = {
-                                    clearVideoDialog.showConfirm(
+                            FolkValuePreference(
+                icon = Icons.Outlined.Delete,
+                title = clearVideoTitle,
+                onClick = {                                    clearVideoDialog.showConfirm(
                                         title = clearVideoTitle,
                                         content = clearVideoConfirm,
                                         markdown = false,
                                     )
-                                }
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Icon(imageVector = Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                                    Spacer(Modifier.width(16.dp))
-                                    Text(text = clearVideoTitle, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                                }
-                            }
+                                },
+            )
                         }
                     }
 
                     item(key = "appearance_video_volume") {
-                        SliderSettingCard(
-                            flat = flat,
+                        FolkSliderPreference(
                             title = stringResource(id = R.string.settings_video_volume),
                             value = BackgroundConfig.videoVolume,
                             onValueChange = { BackgroundConfig.setVideoVolumeValue(it) },
@@ -1458,11 +1321,10 @@ fun AppearanceSettingsContent(
                     }
                 } else {
                     item(key = "appearance_multi_background") {
-                        ToggleSettingCard(
-                            flat = flat,
-                            icon = Icons.Filled.GridView,
+                        FolkSwitchPreference(
+                            icon = Icons.Outlined.GridView,
                             title = stringResource(id = R.string.settings_multi_background_mode),
-                            description = stringResource(id = R.string.settings_multi_background_mode_summary),
+                            summary = stringResource(id = R.string.settings_multi_background_mode_summary),
                             checked = BackgroundConfig.isMultiBackgroundEnabled,
                             onCheckedChange = {
                                 BackgroundConfig.setMultiBackgroundEnabledState(it)
@@ -1483,10 +1345,11 @@ fun AppearanceSettingsContent(
                             )
                             Column {
                                 multiItems.forEach { (titleRes, type, uri) ->
-                                    ExpressiveCard(
-                                        flat = flat,
-                                        onClick = {
-                                            if (PermissionUtils.hasExternalStoragePermission(context) &&
+                                    FolkValuePreference(
+                icon = Icons.Outlined.Image,
+                title = stringResource(id = titleRes),
+                summary = if (!uri.isNullOrEmpty()) stringResource(id = R.string.settings_background_selected) else null,
+                onClick = {                                            if (PermissionUtils.hasExternalStoragePermission(context) &&
                                                 PermissionUtils.hasWriteExternalStoragePermission(context)) {
                                                 pickingType = type
                                                 try {
@@ -1497,32 +1360,18 @@ fun AppearanceSettingsContent(
                                             } else {
                                                 showToast(context, context.getString(R.string.settings_background_permission_required))
                                             }
-                                        }
-                                    ) {
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically,
-                                        ) {
-                                            Icon(imageVector = Icons.Filled.Image, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                                            Spacer(Modifier.width(16.dp))
-                                            Column(modifier = Modifier.weight(1f)) {
-                                                Text(text = stringResource(id = titleRes), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                                                if (!uri.isNullOrEmpty()) {
-                                                    Text(text = stringResource(id = R.string.settings_background_selected), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
-                                                }
-                                            }
-                                        }
-                                    }
+                                        },
+            )
                                 }
                             }
                         }
                     } else {
                         item(key = "appearance_select_background") {
-                            ExpressiveCard(
-                                flat = flat,
-                                onClick = {
-                                    if (PermissionUtils.hasExternalStoragePermission(context) &&
+                            FolkValuePreference(
+                icon = Icons.Outlined.Image,
+                title = stringResource(id = R.string.settings_select_background_image),
+                summary = if (!BackgroundConfig.customBackgroundUri.isNullOrEmpty()) stringResource(id = R.string.settings_background_selected) else null,
+                onClick = {                                    if (PermissionUtils.hasExternalStoragePermission(context) &&
                                         PermissionUtils.hasWriteExternalStoragePermission(context)) {
                                         pickingType = "default"
                                         try {
@@ -1533,23 +1382,8 @@ fun AppearanceSettingsContent(
                                     } else {
                                         showToast(context, context.getString(R.string.settings_background_permission_required))
                                     }
-                                }
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Icon(imageVector = Icons.Filled.Image, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                                    Spacer(Modifier.width(16.dp))
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Text(text = stringResource(id = R.string.settings_select_background_image), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                                        if (!BackgroundConfig.customBackgroundUri.isNullOrEmpty()) {
-                                            Text(text = stringResource(id = R.string.settings_background_selected), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
-                                        }
-                                    }
-                                }
-                            }
+                                },
+            )
                         }
 
                         if (!BackgroundConfig.customBackgroundUri.isNullOrEmpty()) {
@@ -1567,25 +1401,16 @@ fun AppearanceSettingsContent(
                                 )
                                 val clearBgTitle = stringResource(id = R.string.settings_clear_background)
                                 val clearBgConfirm = context.getString(R.string.settings_clear_background_confirm)
-                                ExpressiveCard(
-                                    flat = flat,
-                                    onClick = {
-                                        clearBackgroundDialog.showConfirm(
+                                FolkValuePreference(
+                icon = Icons.Outlined.Delete,
+                title = clearBgTitle,
+                onClick = {                                        clearBackgroundDialog.showConfirm(
                                             title = clearBgTitle,
                                             content = clearBgConfirm,
                                             markdown = false,
                                         )
-                                    }
-                                ) {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                    ) {
-                                        Icon(imageVector = Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                                        Spacer(Modifier.width(16.dp))
-                                        Text(text = clearBgTitle, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                                    }
-                                }
+                                    },
+            )
                             }
                         }
                     }
@@ -1594,11 +1419,10 @@ fun AppearanceSettingsContent(
 
             if (showGridCardSettings) {
                 item(key = "appearance_grid_card_bg") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.GridView,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.GridView,
                         title = stringResource(id = R.string.settings_grid_working_card_background),
-                        description = if (BackgroundConfig.isGridWorkingCardBackgroundEnabled) stringResource(id = R.string.settings_grid_working_card_background_enabled) else stringResource(id = R.string.settings_grid_working_card_background_summary),
+                        summary = if (BackgroundConfig.isGridWorkingCardBackgroundEnabled) stringResource(id = R.string.settings_grid_working_card_background_enabled) else stringResource(id = R.string.settings_grid_working_card_background_summary),
                         checked = BackgroundConfig.isGridWorkingCardBackgroundEnabled,
                         onCheckedChange = {
                             BackgroundConfig.setGridWorkingCardBackgroundEnabledState(it)
@@ -1634,10 +1458,11 @@ fun AppearanceSettingsContent(
                     }
 
                     item(key = "appearance_grid_select_image") {
-                        ExpressiveCard(
-                            flat = flat,
-                            onClick = {
-                                if (PermissionUtils.hasExternalStoragePermission(context)) {
+                        FolkValuePreference(
+                icon = Icons.Outlined.Image,
+                title = stringResource(id = R.string.settings_select_background_image),
+                summary = if (!BackgroundConfig.gridWorkingCardBackgroundUri.isNullOrEmpty()) stringResource(id = R.string.settings_grid_working_card_background_selected) else null,
+                onClick = {                                if (PermissionUtils.hasExternalStoragePermission(context)) {
                                     try {
                                         pickGridImageLauncher.launch("image/*")
                                     } catch (e: ActivityNotFoundException) {
@@ -1646,23 +1471,8 @@ fun AppearanceSettingsContent(
                                 } else {
                                     showToast(context, context.getString(R.string.settings_background_permission_required))
                                 }
-                            }
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Icon(imageVector = Icons.Filled.Image, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                                Spacer(Modifier.width(16.dp))
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(text = stringResource(id = R.string.settings_select_background_image), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                                    if (!BackgroundConfig.gridWorkingCardBackgroundUri.isNullOrEmpty()) {
-                                        Text(text = stringResource(id = R.string.settings_grid_working_card_background_selected), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
-                                    }
-                                }
-                            }
-                        }
+                            },
+            )
                     }
 
                     item(key = "appearance_grid_clear_image") {
@@ -1676,34 +1486,24 @@ fun AppearanceSettingsContent(
                                 }
                             }
                         )
-                        ExpressiveCard(
-                            flat = flat,
-                            onClick = {
-                                clearGridBackgroundDialog.showConfirm(
+                        FolkValuePreference(
+                icon = Icons.Outlined.Delete,
+                title = stringResource(id = R.string.settings_clear_grid_working_card_background),
+                onClick = {                                clearGridBackgroundDialog.showConfirm(
                                     title = context.getString(R.string.settings_clear_grid_working_card_background),
                                     content = context.getString(R.string.settings_clear_grid_working_card_background_confirm),
                                     markdown = false,
                                 )
-                            }
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Icon(imageVector = Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                                Spacer(Modifier.width(16.dp))
-                                Text(text = stringResource(id = R.string.settings_clear_grid_working_card_background), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                            }
-                        }
+                            },
+            )
                     }
                 }
 
                 item(key = "appearance_grid_card_check") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.CheckCircle,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.CheckCircle,
                         title = stringResource(id = R.string.settings_grid_working_card_hide_check),
-                        description = stringResource(id = R.string.settings_grid_working_card_hide_check_summary),
+                        summary = stringResource(id = R.string.settings_grid_working_card_hide_check_summary),
                         checked = BackgroundConfig.isGridWorkingCardCheckHidden,
                         onCheckedChange = {
                             BackgroundConfig.setGridWorkingCardCheckHiddenState(it)
@@ -1713,11 +1513,10 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_grid_card_text") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.TextFields,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.TextFields,
                         title = stringResource(id = R.string.settings_grid_working_card_hide_text),
-                        description = stringResource(id = R.string.settings_grid_working_card_hide_text_summary),
+                        summary = stringResource(id = R.string.settings_grid_working_card_hide_text_summary),
                         checked = BackgroundConfig.isGridWorkingCardTextHidden,
                         onCheckedChange = {
                             BackgroundConfig.setGridWorkingCardTextHiddenState(it)
@@ -1727,11 +1526,10 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_grid_card_mode") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.Label,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.Label,
                         title = stringResource(id = R.string.settings_grid_working_card_hide_mode),
-                        description = stringResource(id = R.string.settings_grid_working_card_hide_mode_summary),
+                        summary = stringResource(id = R.string.settings_grid_working_card_hide_mode_summary),
                         checked = BackgroundConfig.isGridWorkingCardModeHidden,
                         onCheckedChange = {
                             BackgroundConfig.setGridWorkingCardModeHiddenState(it)
@@ -1741,28 +1539,12 @@ fun AppearanceSettingsContent(
                 }
 
                 item(key = "appearance_grid_badge_text", visible = !BackgroundConfig.isGridWorkingCardModeHidden) {
-                    ExpressiveCard(flat = flat, onClick = { showCustomBadgeTextDialog.value = true }) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(imageVector = Icons.Filled.Badge, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                            Spacer(Modifier.width(16.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = stringResource(id = R.string.settings_custom_badge_text),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                )
-                                Text(
-                                    text = currentBadgeTextMode,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.outline,
-                                )
-                            }
-                        }
-                    }
+                    FolkValuePreference(
+                icon = Icons.Outlined.Badge,
+                title = stringResource(id = R.string.settings_custom_badge_text),
+                summary = currentBadgeTextMode,
+                onClick = { showCustomBadgeTextDialog.value = true },
+            )
                 }
             }
 
@@ -1770,17 +1552,16 @@ fun AppearanceSettingsContent(
 
         // FocusUI card wallpapers are separate from page-level and multi-background settings.
         if (isFocusStyle) {
-            SplicedColumnGroup(
+            FolkSettingsSectionGroup(
                 title = stringResource(R.string.focus_card_background_title),
                 flat = flat,
                 highlightKey = highlightKey,
             ) {
                 item(key = "appearance_focus_card_background_enabled") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.Wallpaper,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.Wallpaper,
                         title = stringResource(R.string.settings_focus_card_background),
-                        description = if (BackgroundConfig.isFocusCardBackgroundEnabled) {
+                        summary = if (BackgroundConfig.isFocusCardBackgroundEnabled) {
                             stringResource(R.string.settings_focus_card_background_enabled)
                         } else {
                             stringResource(R.string.settings_focus_card_background_summary)
@@ -1910,17 +1691,16 @@ fun AppearanceSettingsContent(
         }
 
         if (isDashboardStyle) {
-            SplicedColumnGroup(
+            FolkSettingsSectionGroup(
                 title = stringResource(R.string.dashboard_card_background_title),
                 flat = flat,
                 highlightKey = highlightKey,
             ) {
                 item(key = "appearance_dashboard_card_background_enabled") {
-                    ToggleSettingCard(
-                        flat = flat,
-                        icon = Icons.Filled.Wallpaper,
+                    FolkSwitchPreference(
+                        icon = Icons.Outlined.Wallpaper,
                         title = stringResource(R.string.settings_dashboard_card_background),
-                        description = if (BackgroundConfig.isDashboardCardBackgroundEnabled) {
+                        summary = if (BackgroundConfig.isDashboardCardBackgroundEnabled) {
                             stringResource(R.string.settings_dashboard_card_background_enabled)
                         } else {
                             stringResource(R.string.settings_dashboard_card_background_summary)

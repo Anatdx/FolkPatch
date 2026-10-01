@@ -17,12 +17,15 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ExpressiveCard
-import me.bmax.apatch.ui.component.SplicedColumnGroup
-import me.bmax.apatch.ui.component.ToggleSettingCard
 import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.ui.theme.FontConfig
 import me.bmax.apatch.ui.theme.refreshTheme
 import me.bmax.apatch.util.ui.showToast
+import me.bmax.apatch.ui.component.folk.FolkSettingsSectionGroup
+import me.bmax.apatch.ui.component.folk.FolkSliderPreference
+import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
+import me.bmax.apatch.ui.component.folk.FolkValuePreference
+import androidx.compose.material.icons.outlined.*
 
 @Composable
 fun AppearanceFontSection(
@@ -36,13 +39,12 @@ fun AppearanceFontSection(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    SplicedColumnGroup(title = stringResource(R.string.settings_appearance_font), flat = flat, highlightKey = highlightKey) {
+    FolkSettingsSectionGroup(title = stringResource(R.string.settings_appearance_font), flat = flat, highlightKey = highlightKey) {
         item(key = "appearance_custom_font") {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.FormatSize,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.FormatSize,
                 title = stringResource(id = R.string.settings_custom_font),
-                description = if (customFontEnabled) {
+                summary = if (customFontEnabled) {
                     if (FontConfig.customFontFilename != null) stringResource(id = R.string.settings_font_selected) else stringResource(id = R.string.settings_custom_font_enabled)
                 } else {
                     stringResource(id = R.string.settings_custom_font_summary)
@@ -59,25 +61,16 @@ fun AppearanceFontSection(
 
         if (FontConfig.isCustomFontEnabled) {
             item(key = "appearance_select_font") {
-                ExpressiveCard(
-                    flat = flat,
-                    onClick = {
-                        try {
+                FolkValuePreference(
+                icon = Icons.Outlined.FontDownload,
+                title = stringResource(id = R.string.settings_select_font_file),
+                onClick = {                        try {
                             pickFontLauncher.launch("*/*")
                         } catch (e: ActivityNotFoundException) {
                             showToast(context, e.message ?: "")
                         }
-                    }
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(imageVector = Icons.Filled.FontDownload, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                        Spacer(Modifier.width(16.dp))
-                        Text(text = stringResource(id = R.string.settings_select_font_file), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                    }
-                }
+                    },
+            )
             }
 
             if (FontConfig.customFontFilename != null) {
@@ -93,24 +86,15 @@ fun AppearanceFontSection(
                     )
                     val clearFontTitle = stringResource(id = R.string.settings_clear_font)
                     val clearFontConfirm = context.getString(R.string.settings_clear_font_confirm)
-                    ExpressiveCard(
-                        flat = flat,
-                        onClick = {
-                            clearFontDialog.showConfirm(
+                    FolkValuePreference(
+                icon = Icons.Outlined.Delete,
+                title = clearFontTitle,
+                onClick = {                            clearFontDialog.showConfirm(
                                 title = clearFontTitle,
                                 content = clearFontConfirm,
                             )
-                        }
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(imageVector = Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                            Spacer(Modifier.width(16.dp))
-                            Text(text = clearFontTitle, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                        }
-                    }
+                        },
+            )
                 }
             }
         }

@@ -70,12 +70,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.SplicedColumnGroup
+import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
 import me.bmax.apatch.util.ShizukuServiceManager
 import me.bmax.apatch.util.ui.showToast
 import java.io.File
+import androidx.compose.material.icons.outlined.*
 
 /** Log source: server persistent log / system logcat. */
 private enum class LogSource { SERVER, LOGCAT }
@@ -257,7 +258,7 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
             // 1) Source switch + level filters, grouped into one spliced card.
-            SplicedColumnGroup(flat = true) {
+            FolkSettingsGroup(flat = true) {
                     item(key = "source") {
                         Column(
                             modifier = Modifier

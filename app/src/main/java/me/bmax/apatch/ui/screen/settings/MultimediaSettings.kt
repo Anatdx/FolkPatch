@@ -28,17 +28,22 @@ import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ExpressiveCard
 import me.bmax.apatch.ui.screen.settings.multimedia.MultimediaDialogs
-import me.bmax.apatch.ui.component.SliderSettingCard
-import me.bmax.apatch.ui.component.SplicedColumnGroup
-import me.bmax.apatch.ui.component.ToggleSettingCard
 import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.ui.component.rememberLoadingDialog
+import me.bmax.apatch.ui.component.folk.FolkNavigationPreference
+import me.bmax.apatch.ui.component.folk.FolkSettingsDimens
+import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
+import me.bmax.apatch.ui.component.folk.FolkSettingsSection
+import me.bmax.apatch.ui.component.folk.FolkSliderPreference
+import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
+import me.bmax.apatch.ui.component.folk.FolkValuePreference
 import me.bmax.apatch.ui.theme.MusicConfig
 import me.bmax.apatch.ui.theme.SoundEffectConfig
 import me.bmax.apatch.ui.theme.VibrationConfig
 import me.bmax.apatch.util.MusicManager
 import me.bmax.apatch.util.SoundEffectManager
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
+import androidx.compose.material.icons.outlined.*
 
 @Composable
 fun formatTime(millis: Int): String {
@@ -221,15 +226,15 @@ fun MultimediaSettingsContent(
     // Vibration scope dialog
     val showVibrationScopeDialogState = remember { mutableStateOf(false) }
 
-    SplicedColumnGroup(flat = flat, highlightKey = highlightKey) {
+    FolkSettingsSection(title = stringResource(R.string.settings_section_multimedia_music)) {
+        FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
 
         // --- Background Music Toggle ---
         item(key = "multimedia_bg_music") {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.MusicNote,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.MusicNote,
                 title = musicTitle,
-                description = if (MusicConfig.isMusicEnabled) {
+                summary = if (MusicConfig.isMusicEnabled) {
                     if (MusicConfig.musicFilename != null) {
                         musicPlayingText
                     } else {
@@ -249,50 +254,26 @@ fun MultimediaSettingsContent(
 
         // --- Music: Select Music File ---
         item(key = "multimedia_select_music", visible = MusicConfig.isMusicEnabled) {
-            ExpressiveCard(
-                flat = flat,
+            FolkValuePreference(
+                icon = Icons.Outlined.AudioFile,
+                title = selectMusicTitle,
+                summary = if (MusicConfig.musicFilename != null) musicSelectedText else null,
                 onClick = {
                     try {
                         pickMusicLauncher.launch("audio/*")
                     } catch (e: ActivityNotFoundException) {
                         showToast(context, e.message ?: "")
                     }
-                }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.AudioFile, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = selectMusicTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        if (MusicConfig.musicFilename != null) {
-                            Spacer(Modifier.height(4.dp))
-                            Text(
-                                text = musicSelectedText,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
-            }
+                },
+            )
         }
 
         // --- Music: Auto Play Toggle ---
         item(key = "multimedia_music_auto_play", visible = MusicConfig.isMusicEnabled) {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.PlayArrow,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.PlayArrow,
                 title = autoPlayTitle,
-                description = autoPlaySummary,
+                summary = autoPlaySummary,
                 checked = MusicConfig.isAutoPlayEnabled,
                 onCheckedChange = {
                     MusicConfig.setAutoPlayEnabledState(it)
@@ -303,11 +284,10 @@ fun MultimediaSettingsContent(
 
         // --- Music: Looping Toggle ---
         item(key = "multimedia_music_looping", visible = MusicConfig.isMusicEnabled) {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.Repeat,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Repeat,
                 title = loopingTitle,
-                description = loopingSummary,
+                summary = loopingSummary,
                 checked = MusicConfig.isLoopingEnabled,
                 onCheckedChange = {
                     MusicConfig.setLoopingEnabledState(it)
@@ -319,8 +299,7 @@ fun MultimediaSettingsContent(
 
         // --- Music: Volume Slider ---
         item(key = "multimedia_music_volume", visible = MusicConfig.isMusicEnabled) {
-            SliderSettingCard(
-                flat = flat,
+            FolkSliderPreference(
                 title = musicVolumeTitle,
                 value = MusicConfig.volume,
                 onValueChange = {
@@ -333,11 +312,13 @@ fun MultimediaSettingsContent(
 
         // --- Music: Playback Control ---
         item(key = "multimedia_playback_control", visible = MusicConfig.isMusicEnabled && MusicConfig.musicFilename != null) {
-            ExpressiveCard(flat = flat) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(
+                            horizontal = FolkSettingsDimens.ItemHorizontalPadding,
+                            vertical = FolkSettingsDimens.ItemVerticalPadding,
+                        )
                 ) {
                     Text(
                         text = playbackControlTitle,
@@ -379,44 +360,35 @@ fun MultimediaSettingsContent(
                         )
                     }
                 }
-            }
         }
 
         // --- Music: Clear Music ---
         item(key = "multimedia_clear_music", visible = MusicConfig.isMusicEnabled && MusicConfig.musicFilename != null) {
-            ExpressiveCard(
-                flat = flat,
+            FolkNavigationPreference(
+                icon = Icons.Outlined.Delete,
+                title = clearMusicTitle,
                 onClick = {
                     clearMusicDialog.showConfirm(
                         title = context.getString(R.string.settings_clear_music),
                         content = context.getString(R.string.settings_clear_music_confirm)
                     )
-                }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Text(
-                        text = clearMusicTitle,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-            }
+                },
+            )
         }
+
+        }
+    }
+
+    // --- Sound Effect & Vibration ---
+    FolkSettingsSection(title = stringResource(R.string.settings_section_multimedia_sound)) {
+        FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
 
         // --- Sound Effect Toggle ---
         item(key = "multimedia_sound_effect") {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.SurroundSound,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.SurroundSound,
                 title = soundEffectTitle,
-                description = if (SoundEffectConfig.isSoundEffectEnabled) {
+                summary = if (SoundEffectConfig.isSoundEffectEnabled) {
                     if (SoundEffectConfig.soundEffectFilename != null) {
                         soundEffectPlayingText
                     } else {
@@ -435,176 +407,73 @@ fun MultimediaSettingsContent(
 
         // --- Sound Effect: Source Selector ---
         item(key = "multimedia_sound_effect_source", visible = SoundEffectConfig.isSoundEffectEnabled) {
-            ExpressiveCard(
-                flat = flat,
-                onClick = { showSoundEffectSourceDialogState.value = true }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.Input, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = soundEffectSourceTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = if (SoundEffectConfig.sourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL) soundEffectSourceLocal else soundEffectSourcePreset,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Input,
+                title = soundEffectSourceTitle,
+                summary = if (SoundEffectConfig.sourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL) soundEffectSourceLocal else soundEffectSourcePreset,
+                onClick = { showSoundEffectSourceDialogState.value = true },
+            )
         }
 
         // --- Sound Effect: Select Local File (local source) ---
         item(key = "multimedia_select_sound_effect", visible = SoundEffectConfig.isSoundEffectEnabled && SoundEffectConfig.sourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL) {
-            ExpressiveCard(
-                flat = flat,
+            FolkValuePreference(
+                icon = Icons.Outlined.AudioFile,
+                title = selectSoundEffectTitle,
+                summary = if (SoundEffectConfig.soundEffectFilename != null) soundEffectSelectedText else null,
                 onClick = {
                     try {
                         pickSoundEffectLauncher.launch("audio/*")
                     } catch (e: ActivityNotFoundException) {
                         showToast(context, e.message ?: "")
                     }
-                }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.AudioFile, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = selectSoundEffectTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        if (SoundEffectConfig.soundEffectFilename != null) {
-                            Spacer(Modifier.height(4.dp))
-                            Text(
-                                text = soundEffectSelectedText,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
-            }
+                },
+            )
         }
 
         // --- Sound Effect: Clear Sound Effect (local source with file) ---
         item(key = "multimedia_clear_sound_effect", visible = SoundEffectConfig.isSoundEffectEnabled && SoundEffectConfig.sourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL && SoundEffectConfig.soundEffectFilename != null) {
-            ExpressiveCard(
-                flat = flat,
+            FolkNavigationPreference(
+                icon = Icons.Outlined.Delete,
+                title = clearSoundEffectTitle,
                 onClick = {
                     clearSoundEffectDialog.showConfirm(
                         title = context.getString(R.string.settings_clear_sound_effect),
                         content = context.getString(R.string.settings_clear_sound_effect_confirm)
                     )
-                }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Text(
-                        text = clearSoundEffectTitle,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-            }
+                },
+            )
         }
 
         // --- Sound Effect: Preset Selector (preset source) ---
         item(key = "multimedia_sound_effect_preset", visible = SoundEffectConfig.isSoundEffectEnabled && SoundEffectConfig.sourceType == SoundEffectConfig.SOURCE_TYPE_PRESET) {
-            ExpressiveCard(
-                flat = flat,
-                onClick = { showSoundEffectPresetDialogState.value = true }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.MusicNote, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = soundEffectPresetTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = SoundEffectConfig.presetName,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.MusicNote,
+                title = soundEffectPresetTitle,
+                summary = SoundEffectConfig.presetName,
+                onClick = { showSoundEffectPresetDialogState.value = true },
+            )
         }
 
         // --- Sound Effect: Scope Selector ---
         item(key = "multimedia_sound_effect_scope", visible = SoundEffectConfig.isSoundEffectEnabled) {
-            ExpressiveCard(
-                flat = flat,
-                onClick = {
-                    showSoundEffectScopeDialogState.value = true
-                }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.Tune, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = soundEffectScopeTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = if (SoundEffectConfig.scope == SoundEffectConfig.SCOPE_GLOBAL)
-                                stringResource(R.string.settings_sound_effect_scope_global)
-                            else
-                                stringResource(R.string.settings_sound_effect_scope_bottom_bar),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Tune,
+                title = soundEffectScopeTitle,
+                summary = if (SoundEffectConfig.scope == SoundEffectConfig.SCOPE_GLOBAL)
+                    stringResource(R.string.settings_sound_effect_scope_global)
+                else
+                    stringResource(R.string.settings_sound_effect_scope_bottom_bar),
+                onClick = { showSoundEffectScopeDialogState.value = true },
+            )
         }
 
         // --- Startup Sound Toggle ---
         item(key = "multimedia_startup_sound") {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.Alarm,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Alarm,
                 title = startupSoundTitle,
-                description = if (SoundEffectConfig.isStartupSoundEnabled) {
+                summary = if (SoundEffectConfig.isStartupSoundEnabled) {
                     if (SoundEffectConfig.startupSoundFilename != null) {
                         startupSoundPlayingText
                     } else {
@@ -623,140 +492,60 @@ fun MultimediaSettingsContent(
 
         // --- Startup Sound: Source Selector ---
         item(key = "multimedia_startup_sound_source", visible = SoundEffectConfig.isStartupSoundEnabled) {
-            ExpressiveCard(
-                flat = flat,
-                onClick = { showStartupSourceDialogState.value = true }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.Input, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = startupSourceTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = if (SoundEffectConfig.startupSourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL) startupSourceLocal else startupSourcePreset,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Input,
+                title = startupSourceTitle,
+                summary = if (SoundEffectConfig.startupSourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL) startupSourceLocal else startupSourcePreset,
+                onClick = { showStartupSourceDialogState.value = true },
+            )
         }
 
         // --- Startup Sound: Select Local File (local source) ---
         item(key = "multimedia_select_startup_sound", visible = SoundEffectConfig.isStartupSoundEnabled && SoundEffectConfig.startupSourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL) {
-            ExpressiveCard(
-                flat = flat,
+            FolkValuePreference(
+                icon = Icons.Outlined.AudioFile,
+                title = selectStartupSoundTitle,
+                summary = if (SoundEffectConfig.startupSoundFilename != null) startupSoundSelectedText else null,
                 onClick = {
                     try {
                         pickStartupSoundLauncher.launch("audio/*")
                     } catch (e: ActivityNotFoundException) {
                         showToast(context, e.message ?: "")
                     }
-                }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.AudioFile, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = selectStartupSoundTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        if (SoundEffectConfig.startupSoundFilename != null) {
-                            Spacer(Modifier.height(4.dp))
-                            Text(
-                                text = startupSoundSelectedText,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                }
-            }
+                },
+            )
         }
 
         // --- Startup Sound: Clear Startup Sound (local source with file) ---
         item(key = "multimedia_clear_startup_sound", visible = SoundEffectConfig.isStartupSoundEnabled && SoundEffectConfig.startupSourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL && SoundEffectConfig.startupSoundFilename != null) {
-            ExpressiveCard(
-                flat = flat,
+            FolkNavigationPreference(
+                icon = Icons.Outlined.Delete,
+                title = clearStartupSoundTitle,
                 onClick = {
                     clearStartupSoundDialog.showConfirm(
                         title = context.getString(R.string.settings_clear_startup_sound),
                         content = context.getString(R.string.settings_clear_startup_sound_confirm)
                     )
-                }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Text(
-                        text = clearStartupSoundTitle,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-            }
+                },
+            )
         }
 
         // --- Startup Sound: Preset Selector (preset source) ---
         item(key = "multimedia_startup_sound_preset", visible = SoundEffectConfig.isStartupSoundEnabled && SoundEffectConfig.startupSourceType == SoundEffectConfig.SOURCE_TYPE_PRESET) {
-            ExpressiveCard(
-                flat = flat,
-                onClick = { showStartupPresetDialogState.value = true }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.MusicNote, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = startupPresetTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = SoundEffectConfig.startupPresetName,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.MusicNote,
+                title = startupPresetTitle,
+                summary = SoundEffectConfig.startupPresetName,
+                onClick = { showStartupPresetDialogState.value = true },
+            )
         }
 
         // --- Vibration Toggle ---
         item(key = "multimedia_vibration") {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.Vibration,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Vibration,
                 title = vibrationTitle,
-                description = if (VibrationConfig.isVibrationEnabled) vibrationEnabledText else vibrationSummary,
+                summary = if (VibrationConfig.isVibrationEnabled) vibrationEnabledText else vibrationSummary,
                 checked = VibrationConfig.isVibrationEnabled,
                 onCheckedChange = {
                     VibrationConfig.setEnabledState(it)
@@ -767,44 +556,20 @@ fun MultimediaSettingsContent(
 
         // --- Vibration: Scope Selector ---
         item(key = "multimedia_vibration_scope", visible = VibrationConfig.isVibrationEnabled) {
-            ExpressiveCard(
-                flat = flat,
-                onClick = {
-                    showVibrationScopeDialogState.value = true
-                }
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.Tune, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = vibrationScopeTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = if (VibrationConfig.scope == VibrationConfig.SCOPE_GLOBAL)
-                                stringResource(R.string.settings_vibration_scope_global)
-                            else
-                                stringResource(R.string.settings_vibration_scope_bottom_bar),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Tune,
+                title = vibrationScopeTitle,
+                summary = if (VibrationConfig.scope == VibrationConfig.SCOPE_GLOBAL)
+                    stringResource(R.string.settings_vibration_scope_global)
+                else
+                    stringResource(R.string.settings_vibration_scope_bottom_bar),
+                onClick = { showVibrationScopeDialogState.value = true },
+            )
         }
 
         // --- Vibration: Intensity Slider ---
         item(key = "multimedia_vibration_intensity", visible = VibrationConfig.isVibrationEnabled) {
-            SliderSettingCard(
-                flat = flat,
+            FolkSliderPreference(
                 title = vibrationIntensityTitle,
                 value = VibrationConfig.vibrationIntensity,
                 onValueChange = {
@@ -812,6 +577,7 @@ fun MultimediaSettingsContent(
                 },
                 onValueChangeFinished = { VibrationConfig.save(context) },
             )
+        }
         }
     }
 

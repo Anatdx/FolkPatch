@@ -71,6 +71,7 @@ import me.bmax.apatch.util.setPathHideUidMode
 import me.bmax.apatch.util.setPathHideFilterSystem
 import me.bmax.apatch.util.ui.LocalSnackbarHost
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
+import me.bmax.apatch.ui.component.folk.FolkSettingsScaffold
 import androidx.compose.ui.platform.LocalContext
 import me.bmax.apatch.util.ui.showToast
 import me.bmax.apatch.util.ShizukuServiceManager
@@ -265,24 +266,11 @@ fun FunctionSettingsScreen(navigator: DestinationsNavigator, highlightKey: Strin
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.settings_category_function), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold) },
-                navigationIcon = {
-                    IconButton(onClick = { navigator.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        },
-        containerColor = Color.Transparent,
-        snackbarHost = { SnackbarHost(snackBarHost) },
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier.padding(paddingValues),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
+    FolkSettingsScaffold(
+        title = stringResource(R.string.settings_category_function),
+        onBack = { navigator.popBackStack() },
+        snackbarHostState = snackBarHost,
+    ) {
             item {
                 FunctionSettingsContent(
                     kPatchReady = kPatchReady,
@@ -607,9 +595,6 @@ fun FunctionSettingsScreen(navigator: DestinationsNavigator, highlightKey: Strin
                     },
                 )
             }
-            item { Spacer(Modifier.height(8.dp)) }
-            item { NavigationBarsSpacer() }
-        }
     }
 
     if (showFilterSystemWarningDialog.value) {

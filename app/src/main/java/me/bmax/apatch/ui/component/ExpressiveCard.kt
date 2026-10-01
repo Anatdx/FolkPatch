@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import me.bmax.apatch.ui.component.folk.LocalInsideFolkGroup
 
 @Composable
 fun ExpressiveCard(
@@ -22,8 +23,9 @@ fun ExpressiveCard(
     flat: Boolean = false,
     content: @Composable () -> Unit,
 ) {
-    if (LocalInsideSplicedGroup.current) {
-        // Inside SplicedColumnGroup: skip card wrapper, parent provides container
+    if (LocalInsideSplicedGroup.current || LocalInsideFolkGroup.current) {
+        // Inside a settings group (SplicedColumnGroup or FolkSettingsGroup): skip
+        // the card wrapper, the parent already provides the container surface.
         if (onClick != null) {
             Box(
                 modifier = modifier

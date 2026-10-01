@@ -1030,6 +1030,26 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="module">Modules</string>
     <string name="settings_category_appearance">Appearance</string>
     <string name="settings_category_behavior">Behavior</string>
+    <string name="settings_section_general_basics">Language &amp; Updates</string>
+    <string name="settings_section_general_interface">Interface &amp; Motion</string>
+    <string name="settings_section_general_root">Root Behavior</string>
+    <string name="settings_section_general_mount">System &amp; Mount</string>
+    <string name="settings_section_general_identity">App Identity</string>
+    <string name="settings_section_general_maintenance">Maintenance</string>
+    <string name="settings_section_behavior_display">Home Display</string>
+    <string name="settings_section_behavior_actions">Actions &amp; Install</string>
+    <string name="settings_section_function_hide">Hide &amp; Isolate</string>
+    <string name="settings_section_function_root">Root Features</string>
+    <string name="settings_section_function_mount">Mount &amp; Umount</string>
+    <string name="settings_section_function_shizuku">Shizuku</string>
+    <string name="settings_section_security_auth">Authentication</string>
+    <string name="settings_section_security_key">SuperKey</string>
+    <string name="settings_section_backup_local">Local Backup</string>
+    <string name="settings_section_backup_cloud">Cloud Backup</string>
+    <string name="settings_section_module_display">Module Display</string>
+    <string name="settings_section_module_update">Updates &amp; Install</string>
+    <string name="settings_section_multimedia_music">Background Music</string>
+    <string name="settings_section_multimedia_sound">Sound &amp; Vibration</string>
     
     <!-- Appearance Sub-Categories -->
     <string name="settings_appearance_font">Font Settings</string>

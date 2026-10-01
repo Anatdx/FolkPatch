@@ -46,15 +46,19 @@ import me.bmax.apatch.BuildConfig
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ExpressiveCard
-import me.bmax.apatch.ui.component.SplicedColumnGroup
-import me.bmax.apatch.ui.component.ToggleSettingCard
 import me.bmax.apatch.ui.component.UpdateDialog
 import me.bmax.apatch.ui.component.rememberLoadingDialog
+import me.bmax.apatch.ui.component.folk.FolkNavigationPreference
+import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
+import me.bmax.apatch.ui.component.folk.FolkSettingsSection
+import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
+import me.bmax.apatch.ui.component.folk.FolkValuePreference
 import me.bmax.apatch.util.*
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.ui.screen.settings.general.*
 import java.io.File
 import java.util.Locale
+import androidx.compose.material.icons.outlined.*
 
 @Composable
 fun GeneralSettingsContent(
@@ -210,115 +214,93 @@ fun GeneralSettingsContent(
         else -> stringResource(R.string.settings_new_app_profile_normal)
     }
 
-    SplicedColumnGroup(flat = flat, highlightKey = highlightKey) {
+    FolkSettingsSection(title = stringResource(R.string.settings_section_general_basics)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
 
         item(key = "general_language") {
-            ExpressiveCard(flat = flat, onClick = { navigator.navigate(LanguagePickerScreenDestination) }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.Translate, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = languageTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = languageValue,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Translate,
+                title = languageTitle,
+                summary = languageValue,
+                onClick = { navigator.navigate(LanguagePickerScreenDestination) },
+            )
         }
 
         item(key = "general_check_update") {
-            ExpressiveCard(flat = flat, onClick = {
-                scope.launch {
-                    loadingDialog.show()
-                    val hasUpdate = UpdateChecker.checkUpdate()
-                    loadingDialog.hide()
-                    if (hasUpdate) {
-                        showUpdateDialog.value = true
-                    } else {
-                        showToast(context, R.string.update_latest)
+            FolkNavigationPreference(
+                icon = Icons.Outlined.Update,
+                title = updateTitle,
+                onClick = {
+                    scope.launch {
+                        loadingDialog.show()
+                        val hasUpdate = UpdateChecker.checkUpdate()
+                        loadingDialog.hide()
+                        if (hasUpdate) {
+                            showUpdateDialog.value = true
+                        } else {
+                            showToast(context, R.string.update_latest)
+                        }
                     }
-                }
-            }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.Update, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Text(
-                        text = updateTitle,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
+                },
+            )
         }
 
         item(key = "general_auto_update") {
-            ToggleSettingCard(
-            flat = flat,
-            icon = Icons.Filled.Autorenew,
-            title = autoUpdateTitle,
-            description = autoUpdateSummary,
-            checked = autoUpdateCheck,
-            onCheckedChange = {
-                autoUpdateCheck = it
-                prefs.edit { putBoolean("auto_update_check", it) }
-            }
-        )
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Autorenew,
+                title = autoUpdateTitle,
+                summary = autoUpdateSummary,
+                checked = autoUpdateCheck,
+                onCheckedChange = {
+                    autoUpdateCheck = it
+                    prefs.edit { putBoolean("auto_update_check", it) }
+                },
+            )
         }
 
         item(key = "general_block_kp_update") {
-            ToggleSettingCard(
-            flat = flat,
-            icon = Icons.Filled.Block,
-            title = blockUpdateTitle,
-            description = blockUpdateSummary,
-            checked = blockUpdateChecked,
-            onCheckedChange = {
-                blockUpdateChecked = it
-                prefs.edit { putBoolean(APApplication.PREF_BLOCK_KERNELPATCH_UPDATE, it) }
-            }
-        )
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Block,
+                title = blockUpdateTitle,
+                summary = blockUpdateSummary,
+                checked = blockUpdateChecked,
+                onCheckedChange = {
+                    blockUpdateChecked = it
+                    prefs.edit { putBoolean(APApplication.PREF_BLOCK_KERNELPATCH_UPDATE, it) }
+                },
+            )
         }
 
         item(key = "general_block_ap_update") {
-            ToggleSettingCard(
-            flat = flat,
-            icon = Icons.Filled.Block,
-            title = blockApUpdateTitle,
-            description = blockApUpdateSummary,
-            checked = blockApUpdateChecked,
-            onCheckedChange = {
-                blockApUpdateChecked = it
-                prefs.edit { putBoolean(APApplication.PREF_BLOCK_ANDROIDPATCH_UPDATE, it) }
-            }
-        )
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Block,
+                title = blockApUpdateTitle,
+                summary = blockApUpdateSummary,
+                checked = blockApUpdateChecked,
+                onCheckedChange = {
+                    blockApUpdateChecked = it
+                    prefs.edit { putBoolean(APApplication.PREF_BLOCK_ANDROIDPATCH_UPDATE, it) }
+                },
+            )
         }
 
+     }
+    }
+
+    FolkSettingsSection(title = stringResource(R.string.settings_section_general_interface)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
+
         item(key = "general_folkx_engine") {
-            ToggleSettingCard(
-            flat = flat,
-            icon = Icons.Filled.AutoAwesome,
-            title = folkXEngineTitle,
-            description = folkXEngineSummary,
-            checked = folkXEngineEnabled,
-            onCheckedChange = {
-                folkXEngineEnabled = it
-                prefs.edit().putBoolean("folkx_engine_enabled", it).apply()
-            }
-        )
+            FolkSwitchPreference(
+                icon = Icons.Outlined.AutoAwesome,
+                title = folkXEngineTitle,
+                summary = folkXEngineSummary,
+                checked = folkXEngineEnabled,
+                onCheckedChange = {
+                    folkXEngineEnabled = it
+                    prefs.edit().putBoolean("folkx_engine_enabled", it).apply()
+                },
+            )
         }
 
         item(key = "general_folkx_animation_type", visible = folkXEngineEnabled) {
@@ -331,76 +313,49 @@ fun GeneralSettingsContent(
                 else -> R.string.settings_folkx_animation_linear
             }
 
-            ExpressiveCard(flat = flat, onClick = { showFolkXAnimationTypeDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.Animation, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = stringResource(R.string.settings_folkx_animation_type),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = stringResource(animationTypeLabel),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Animation,
+                title = stringResource(R.string.settings_folkx_animation_type),
+                summary = stringResource(animationTypeLabel),
+                onClick = { showFolkXAnimationTypeDialog.value = true },
+            )
         }
 
         item(key = "general_folkx_animation_speed", visible = folkXEngineEnabled) {
-            ExpressiveCard(flat = flat, onClick = { showFolkXAnimationSpeedDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.Speed, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = stringResource(R.string.settings_folkx_animation_speed),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = "${currentSpeed}x",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Speed,
+                title = stringResource(R.string.settings_folkx_animation_speed),
+                summary = "${currentSpeed}x",
+                onClick = { showFolkXAnimationSpeedDialog.value = true },
+            )
         }
 
         item(key = "general_predictive_back", visible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            ToggleSettingCard(
-            flat = flat,
-            icon = Icons.Filled.ArrowBack,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.ArrowBack,
                 title = predictiveBackTitle,
-                description = predictiveBackSummary,
+                summary = predictiveBackSummary,
                 checked = predictiveBackEnabled,
                 onCheckedChange = {
                     predictiveBackEnabled = it
                     prefs.edit { putBoolean("predictive_back_enabled", it) }
                     (context as? Activity)?.recreate()
-                }
+                },
             )
         }
 
+     }
+    }
+
+    if (kPatchReady) {
+    FolkSettingsSection(title = stringResource(R.string.settings_section_general_root)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
+
         item(key = "general_new_app_profile_enabled", visible = kPatchReady) {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.AppRegistration,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.AppRegistration,
                 title = newAppProfileEnabledTitle,
-                description = newAppProfileEnabledSummary,
+                summary = newAppProfileEnabledSummary,
                 checked = newAppProfileEnabled,
                 onCheckedChange = {
                     if (it) {
@@ -425,136 +380,77 @@ fun GeneralSettingsContent(
                             putInt(APApplication.PREF_AUTO_EXCLUDE_NEW_APPS, 0)
                         }
                     }
-                }
+                },
             )
         }
 
         item(key = "general_new_app_profile", visible = kPatchReady && newAppProfileEnabled) {
-            ExpressiveCard(flat = flat, onClick = { showNewAppProfileModeDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.SettingsApplications, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = newAppProfileTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = currentNewAppProfileLabel,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.SettingsApplications,
+                title = newAppProfileTitle,
+                summary = currentNewAppProfileLabel,
+                onClick = { showNewAppProfileModeDialog.value = true },
+            )
         }
 
         item(key = "general_app_list_scheme", visible = kPatchReady) {
-            ExpressiveCard(flat = flat, onClick = { showAppListLoadingSchemeDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.List, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = appListLoadingSchemeTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = currentSchemeLabel,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.List,
+                title = appListLoadingSchemeTitle,
+                summary = currentSchemeLabel,
+                onClick = { showAppListLoadingSchemeDialog.value = true },
+            )
         }
 
         item(key = "general_selinux_mode", visible = kPatchReady && aPatchReady) {
-            ExpressiveCard(flat = flat, onClick = { showSELinuxModeDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.Security, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = selinuxModeTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = stringResource(R.string.settings_selinux_current_mode, selinuxModeValue),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Security,
+                title = selinuxModeTitle,
+                summary = stringResource(R.string.settings_selinux_current_mode, selinuxModeValue),
+                onClick = { showSELinuxModeDialog.value = true },
+            )
         }
 
         item(key = "general_global_namespace", visible = kPatchReady && aPatchReady) {
-            ToggleSettingCard(
-            flat = flat,
-            icon = Icons.Filled.Public,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Public,
                 title = globalNamespaceTitle,
-                description = globalNamespaceSummary,
+                summary = globalNamespaceSummary,
                 checked = isGlobalNamespaceEnabled,
                 enabled = namespaceLoaded,
                 onCheckedChange = {
                     setGlobalNamespaceEnabled(if (isGlobalNamespaceEnabled) "0" else "1")
                     onGlobalNamespaceChange(it)
-                }
+                },
             )
         }
 
+     }
+    }
+
+    if (kPatchReady && aPatchReady) {
+    FolkSettingsSection(title = stringResource(R.string.settings_section_general_mount)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
+
         item(key = "general_magic_mount", visible = kPatchReady && aPatchReady) {
-            ToggleSettingCard(
-            flat = flat,
-            icon = Icons.Filled.FolderSpecial,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.FolderSpecial,
                 title = magicMountTitle,
-                description = magicMountSummary,
+                summary = magicMountSummary,
                 checked = isMagicMountEnabled,
                 onCheckedChange = {
                     setMagicMountEnabled(it)
                     onMagicMountChange(it)
-                }
+                },
             )
-        }
-
-        item(key = "general_alt_icon") {
-            ToggleSettingCard(
-            flat = flat,
-            icon = Icons.Filled.Android,
-            title = launcherIconTitle,
-            description = launcherIconSummary,
-            checked = useAltIcon.value,
-            onCheckedChange = {
-                prefs.edit { putBoolean("use_alt_icon", it) }
-                LauncherIconUtils.updateLauncherState(context)
-                useAltIcon.value = it
-            }
-        )
         }
 
         item(key = "general_sucompat", visible = kPatchReady && aPatchReady) {
             var sucompatEnabled by remember { mutableStateOf(prefs.getBoolean("sucompat_enabled", false)) }
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.FeaturedPlayList,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.FeaturedPlayList,
                 title = stringResource(id = R.string.settings_sucompat),
-                description = stringResource(id = R.string.settings_sucompat_summary),
+                summary = stringResource(id = R.string.settings_sucompat_summary),
                 checked = sucompatEnabled,
                 onCheckedChange = { enabled ->
                     scope.launch {
@@ -599,11 +495,10 @@ fun GeneralSettingsContent(
                 }
             }
 
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.Security,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Security,
                 title = stringResource(id = R.string.settings_selinux_hide),
-                description = stringResource(id = R.string.settings_selinux_hide_summary),
+                summary = stringResource(id = R.string.settings_selinux_hide_summary),
                 checked = selinuxHideEnabled,
                 onCheckedChange = { enabled ->
                     if (enabled) {
@@ -631,191 +526,123 @@ fun GeneralSettingsContent(
             }
         }
         item(key = "general_reset_su_path", visible = kPatchReady) {
-            ExpressiveCard(flat = flat, onClick = { showResetSuPathDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.LinkOff, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Text(
-                        text = resetSuPathTitle,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
+            FolkNavigationPreference(
+                icon = Icons.Outlined.LinkOff,
+                title = resetSuPathTitle,
+                onClick = { showResetSuPathDialog.value = true },
+            )
+        }
+
+     }
+    }
+
+    }
+    }
+    FolkSettingsSection(title = stringResource(R.string.settings_section_general_identity)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
+
+        item(key = "general_alt_icon") {
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Android,
+                title = launcherIconTitle,
+                summary = launcherIconSummary,
+                checked = useAltIcon.value,
+                onCheckedChange = {
+                    prefs.edit { putBoolean("use_alt_icon", it) }
+                    LauncherIconUtils.updateLauncherState(context)
+                    useAltIcon.value = it
+                },
+            )
         }
 
         item(key = "general_app_title") {
-            ExpressiveCard(flat = flat, onClick = { showAppTitleDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.Label, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = appTitleTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = appTitleLabel,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Label,
+                title = appTitleTitle,
+                summary = appTitleLabel,
+                onClick = { showAppTitleDialog.value = true },
+            )
         }
 
         item(key = "general_custom_app_title", visible = currentAppTitle == "custom") {
-            ExpressiveCard(flat = flat, onClick = { showCustomAppTitleDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.Edit, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = customAppTitleTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = currentCustomAppTitle,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Edit,
+                title = customAppTitleTitle,
+                summary = currentCustomAppTitle,
+                onClick = { showCustomAppTitleDialog.value = true },
+            )
         }
 
         item(key = "general_desktop_app_name") {
-            ExpressiveCard(flat = flat, onClick = { showDesktopAppNameDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.PhoneAndroid, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = desktopAppNameTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = currentDesktopAppName,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.PhoneAndroid,
+                title = desktopAppNameTitle,
+                summary = currentDesktopAppName,
+                onClick = { showDesktopAppNameDialog.value = true },
+            )
         }
 
         item(key = "general_dpi") {
-            ExpressiveCard(flat = flat, onClick = { showDpiDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.FormatSize, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = dpiTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = dpiValue,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.FormatSize,
+                title = dpiTitle,
+                summary = dpiValue,
+                onClick = { showDpiDialog.value = true },
+            )
         }
 
+     }
+    }
+
+    FolkSettingsSection(title = stringResource(R.string.settings_section_general_maintenance)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
+
         item(key = "general_send_log") {
-            ExpressiveCard(flat = flat, onClick = {
-                scope.launch {
-                    val bugreport = loadingDialog.withLoading {
-                        withContext(Dispatchers.IO) {
-                            getBugreportFile(context)
+            FolkNavigationPreference(
+                icon = Icons.Outlined.BugReport,
+                title = logTitle,
+                onClick = {
+                    scope.launch {
+                        val bugreport = loadingDialog.withLoading {
+                            withContext(Dispatchers.IO) {
+                                getBugreportFile(context)
+                            }
                         }
-                    }
 
-                    val uri: Uri = FileProvider.getUriForFile(
-                        context,
-                        "${BuildConfig.APPLICATION_ID}.fileprovider",
-                        bugreport
-                    )
-
-                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                        putExtra(Intent.EXTRA_STREAM, uri)
-                        type = "application/gzip"
-                        clipData = android.content.ClipData.newRawUri(null, uri)
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    }
-
-                    context.startActivity(
-                        Intent.createChooser(
-                            shareIntent,
-                            context.getString(R.string.send_log)
+                        val uri: Uri = FileProvider.getUriForFile(
+                            context,
+                            "${BuildConfig.APPLICATION_ID}.fileprovider",
+                            bugreport
                         )
-                    )
-                }
-            }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.BugReport, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Text(
-                        text = logTitle,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
+
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            putExtra(Intent.EXTRA_STREAM, uri)
+                            type = "application/gzip"
+                            clipData = android.content.ClipData.newRawUri(null, uri)
+                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        }
+
+                        context.startActivity(
+                            Intent.createChooser(
+                                shareIntent,
+                                context.getString(R.string.send_log)
+                            )
+                        )
+                    }
+                },
+            )
         }
 
         item(key = "general_clean_storage") {
-            ExpressiveCard(flat = flat, onClick = { showCleanStorageDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(imageVector = Icons.Filled.CleaningServices, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column {
-                        Text(
-                            text = cleanStorageTitle,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = cleanStorageSummary,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.CleaningServices,
+                title = cleanStorageTitle,
+                summary = cleanStorageSummary,
+                onClick = { showCleanStorageDialog.value = true },
+            )
         }
+
+     }
     }
 
     if (showUpdateDialog.value) {

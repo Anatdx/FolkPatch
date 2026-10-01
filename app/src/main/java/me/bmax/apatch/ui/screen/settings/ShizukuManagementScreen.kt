@@ -61,10 +61,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.SplicedColumnGroup
-import me.bmax.apatch.ui.component.ToggleSettingCard
 import me.bmax.apatch.ui.screen.LabelText
 import me.bmax.apatch.util.ShizukuServiceManager
+import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
+import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
+import androidx.compose.material.icons.outlined.*
 
 private data class ShizukuApp(
     val packageInfo: PackageInfo,
@@ -231,7 +232,12 @@ fun ShizukuManagementScreen(navigator: DestinationsNavigator) {
                         runCatching { info.loadLabel(context.packageManager).toString() }
                             .getOrDefault(app.packageInfo.packageName)
                     }
-                    SplicedColumnGroup(flat = true) {
+                    // One group per app: keep a gap between the cards (the
+                    // settings sub-pages get this from FolkSettingsSection).
+                    FolkSettingsGroup(
+                        flat = true,
+                        modifier = Modifier.padding(bottom = 10.dp),
+                    ) {
                         item(key = "header") {
                             ShizukuAppHeader(
                                 packageInfo = app.packageInfo,
@@ -249,11 +255,10 @@ fun ShizukuManagementScreen(navigator: DestinationsNavigator) {
                             )
                         }
                         item(key = "allow") {
-                            ToggleSettingCard(
-                                flat = true,
+                            FolkSwitchPreference(
                                 icon = Icons.Outlined.Shield,
                                 title = stringResource(R.string.shizuku_management_allowed_title),
-                                description = if (app.allowed) {
+                                summary = if (app.allowed) {
                                     stringResource(R.string.shizuku_management_granted)
                                 } else {
                                     stringResource(R.string.shizuku_management_denied)
@@ -272,11 +277,10 @@ fun ShizukuManagementScreen(navigator: DestinationsNavigator) {
                         }
                         if (serverIsRoot) {
                             item(key = "root") {
-                                ToggleSettingCard(
-                                    flat = true,
-                                    icon = Icons.Filled.Lock,
+                                FolkSwitchPreference(
+                                    icon = Icons.Outlined.Lock,
                                     title = stringResource(R.string.shizuku_management_root_access),
-                                    description = stringResource(R.string.shizuku_management_root_access_desc),
+                                    summary = stringResource(R.string.shizuku_management_root_access_desc),
                                     checked = !app.shellOnly,
                                     onCheckedChange = { root ->
                                         try {

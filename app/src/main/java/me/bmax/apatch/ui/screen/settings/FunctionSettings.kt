@@ -80,9 +80,11 @@ import coil.request.ImageRequest
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ExpressiveCard
 import me.bmax.apatch.ui.component.ExpressiveSwitch
-import me.bmax.apatch.ui.component.SplicedColumnGroup
-import me.bmax.apatch.ui.component.ToggleSettingCard
+import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
+import me.bmax.apatch.ui.component.folk.FolkSettingsSection
+import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import me.bmax.apatch.util.setHideServiceEnabled
+import androidx.compose.material.icons.outlined.*
 
 @Composable
 fun FunctionSettingsContent(
@@ -136,24 +138,24 @@ fun FunctionSettingsContent(
     val umountServiceTitle = stringResource(id = R.string.settings_umount_service)
     val umountServiceSummary = stringResource(id = R.string.settings_umount_service_summary)
 
-    SplicedColumnGroup(flat = flat, highlightKey = highlightKey) {
+    if (kPatchReady && aPatchReady) {
+    FolkSettingsSection(title = stringResource(R.string.settings_section_function_root)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
         item(key = "function_jailbreak", visible = kPatchReady && aPatchReady && jailbreakAvailable) {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.LockOpen,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.LockOpen,
                 title = stringResource(R.string.settings_jailbreak_mode),
-                description = stringResource(R.string.settings_jailbreak_mode_summary),
+                summary = stringResource(R.string.settings_jailbreak_mode_summary),
                 checked = jailbreakEnabled,
                 onCheckedChange = onJailbreakChange,
             )
         }
 
         item(key = "function_hide_service", visible = kPatchReady && aPatchReady) {
-            ToggleSettingCard(
-                flat = flat,
-                icon = Icons.Filled.VisibilityOff,
+            FolkSwitchPreference(
+                icon = Icons.Outlined.VisibilityOff,
                 title = hideServiceTitle,
-                description = hideServiceSummary,
+                summary = hideServiceSummary,
                 checked = isHideServiceEnabled,
                 onCheckedChange = {
                     setHideServiceEnabled(it)
@@ -162,6 +164,13 @@ fun FunctionSettingsContent(
             )
         }
 
+     }
+    }
+    }
+
+    if (kPatchReady && aPatchReady) {
+    FolkSettingsSection(title = stringResource(R.string.settings_section_function_shizuku)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
         item(key = "function_shizuku", visible = kPatchReady && aPatchReady) {
             val shizukuSummary = if (isShizukuRunning) {
                 stringResource(id = R.string.settings_shizuku_service_running)
@@ -169,11 +178,10 @@ fun FunctionSettingsContent(
                 stringResource(id = R.string.settings_shizuku_service_summary)
             }
             Column {
-                ToggleSettingCard(
-                    flat = flat,
+                FolkSwitchPreference(
                     icon = Icons.Outlined.WaterDrop,
                     title = stringResource(id = R.string.settings_shizuku_service),
-                    description = shizukuSummary,
+                    summary = shizukuSummary,
                     checked = isShizukuEnabled,
                     onCheckedChange = onShizukuToggle,
                 )
@@ -188,6 +196,13 @@ fun FunctionSettingsContent(
             }
         }
 
+     }
+    }
+    }
+
+    if (kPatchReady && aPatchReady) {
+    FolkSettingsSection(title = stringResource(R.string.settings_section_function_mount)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
         item(key = "function_umount", visible = kPatchReady && aPatchReady) {
             val umountPathsLabel = stringResource(id = R.string.umount_config_paths_label)
             val umountPathsPlaceholder = stringResource(id = R.string.umount_config_paths_placeholder)
@@ -263,6 +278,13 @@ fun FunctionSettingsContent(
             }
         }
 
+     }
+    }
+    }
+
+    if (kPatchReady && aPatchReady) {
+    FolkSettingsSection(title = stringResource(R.string.settings_section_function_hide)) {
+     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
         item(key = "function_kernel_spoof", visible = kPatchReady && aPatchReady) {
             val kernelSpoofTitle = stringResource(id = R.string.settings_kernel_spoof)
             val kernelSpoofSummary = stringResource(id = R.string.settings_kernel_spoof_summary)
@@ -723,6 +745,8 @@ fun FunctionSettingsContent(
                 }
             }
         }
+     }
+    }
     }
 }
 

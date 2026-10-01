@@ -947,6 +947,26 @@ KernelPatch 需要修补 boot 镜像。
     <string name="module">系统模块</string>
     <string name="settings_category_appearance">外观</string>
     <string name="settings_category_behavior">行为</string>
+    <string name="settings_section_general_basics">语言与更新</string>
+    <string name="settings_section_general_interface">界面与动效</string>
+    <string name="settings_section_general_root">Root 行为</string>
+    <string name="settings_section_general_mount">系统与挂载</string>
+    <string name="settings_section_general_identity">应用标识</string>
+    <string name="settings_section_general_maintenance">维护</string>
+    <string name="settings_section_behavior_display">首页显示</string>
+    <string name="settings_section_behavior_actions">操作与安装</string>
+    <string name="settings_section_function_hide">隐藏与隔离</string>
+    <string name="settings_section_function_root">Root 功能</string>
+    <string name="settings_section_function_mount">挂载与卸载</string>
+    <string name="settings_section_function_shizuku">Shizuku</string>
+    <string name="settings_section_security_auth">身份验证</string>
+    <string name="settings_section_security_key">SuperKey</string>
+    <string name="settings_section_backup_local">本地备份</string>
+    <string name="settings_section_backup_cloud">云端备份</string>
+    <string name="settings_section_module_display">模块显示</string>
+    <string name="settings_section_module_update">更新与安装</string>
+    <string name="settings_section_multimedia_music">背景音乐</string>
+    <string name="settings_section_multimedia_sound">音效与震动</string>
     
     <!-- Appearance Sub-Categories -->
     <string name="settings_appearance_font">字体设置</string>

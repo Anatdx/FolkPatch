@@ -19,9 +19,13 @@ import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ExpressiveCard
 import me.bmax.apatch.ui.component.LoadingDialogHandle
-import me.bmax.apatch.ui.component.SplicedColumnGroup
 import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.ui.theme.ThemeManager
+import me.bmax.apatch.ui.component.folk.FolkSettingsSectionGroup
+import me.bmax.apatch.ui.component.folk.FolkSliderPreference
+import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
+import me.bmax.apatch.ui.component.folk.FolkValuePreference
+import androidx.compose.material.icons.outlined.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,27 +44,14 @@ fun AppearanceThemeSection(
     val scope = rememberCoroutineScope()
     val prefs = APApplication.sharedPreferences
 
-    SplicedColumnGroup(title = stringResource(R.string.settings_appearance_theme), flat = flat, highlightKey = highlightKey) {
+    FolkSettingsSectionGroup(title = stringResource(R.string.settings_appearance_theme), flat = flat, highlightKey = highlightKey) {
         item(key = "appearance_theme_store") {
-            ExpressiveCard(flat = flat, onClick = { onNavigateToThemeStore() }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.Store, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(text = stringResource(id = R.string.theme_store_title), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                        if (themeStoreMode == "compat") {
-                            Text(
-                                text = stringResource(R.string.theme_mode_compat_desc),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Store,
+                title = stringResource(id = R.string.theme_store_title),
+                summary = if (themeStoreMode == "compat") stringResource(R.string.theme_mode_compat_desc) else null,
+                onClick = { onNavigateToThemeStore() },
+            )
         }
 
         item(key = "appearance_theme_store_mode") {
@@ -69,27 +60,12 @@ fun AppearanceThemeSection(
                 else -> stringResource(R.string.theme_mode_builtin)
             }
             val showModeSwitchDialog = remember { mutableStateOf(false) }
-            ExpressiveCard(flat = flat, onClick = { showModeSwitchDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.Tune, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = stringResource(R.string.settings_theme_mode),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Text(
-                            text = stringResource(R.string.theme_mode_current, modeName),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.Tune,
+                title = stringResource(R.string.settings_theme_mode),
+                summary = stringResource(R.string.theme_mode_current, modeName),
+                onClick = { showModeSwitchDialog.value = true },
+            )
 
             if (showModeSwitchDialog.value) {
                 BasicAlertDialog(
@@ -172,29 +148,19 @@ fun AppearanceThemeSection(
         }
 
         item(key = "appearance_save_theme") {
-            ExpressiveCard(flat = flat, onClick = { showExportDialog.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.FileDownload, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Text(text = stringResource(id = R.string.settings_save_theme), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.FileDownload,
+                title = stringResource(id = R.string.settings_save_theme),
+                onClick = { showExportDialog.value = true },
+            )
         }
 
         item(key = "appearance_import_theme") {
-            ExpressiveCard(flat = flat, onClick = { showFilePicker.value = true }) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.FileUpload, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Text(text = stringResource(id = R.string.settings_import_theme), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                }
-            }
+            FolkValuePreference(
+                icon = Icons.Outlined.FileUpload,
+                title = stringResource(id = R.string.settings_import_theme),
+                onClick = { showFilePicker.value = true },
+            )
         }
 
         item(key = "appearance_reset_theme") {
@@ -212,24 +178,15 @@ fun AppearanceThemeSection(
             )
             val resetThemeTitle = stringResource(id = R.string.settings_reset_theme)
             val resetThemeConfirm = context.getString(R.string.settings_reset_theme_confirm)
-            ExpressiveCard(
-                flat = flat,
-                onClick = {
-                    resetThemeDialog.showConfirm(
+            FolkValuePreference(
+                icon = Icons.Outlined.RestartAlt,
+                title = resetThemeTitle,
+                onClick = {                    resetThemeDialog.showConfirm(
                         title = resetThemeTitle,
                         content = resetThemeConfirm,
                     )
-                }
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(imageVector = Icons.Filled.RestartAlt, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                    Spacer(Modifier.width(16.dp))
-                    Text(text = resetThemeTitle, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurface)
-                }
-            }
+                },
+            )
         }
     }
 }
