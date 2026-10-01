@@ -32,9 +32,6 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -283,27 +280,27 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
         },
     ) { padding ->
         Column(modifier = Modifier.fillMaxSize().padding(padding)) {
-            // Compact toolbar on the page itself, not in a card, so the log keeps
-            // the height. Source switch on top, level filters beneath it.
+            // Compact toolbar on the page itself, not in a card: source on one
+            // line, level filters on the next. Two lines keep every chip visible
+            // instead of hiding the last one past the screen edge, and still cost
+            // far less height than the old filter card.
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                SingleChoiceSegmentedButtonRow(
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    SegmentedButton(
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    FilterChip(
                         selected = source == LogSource.SERVER,
                         onClick = { source = LogSource.SERVER },
-                        shape = SegmentedButtonDefaults.itemShape(index = 0, count = 2),
-                    ) { Text(stringResource(R.string.shizuku_log_source_server)) }
-                    SegmentedButton(
+                        label = { Text(stringResource(R.string.shizuku_log_source_server)) },
+                    )
+                    FilterChip(
                         selected = source == LogSource.LOGCAT,
                         onClick = { source = LogSource.LOGCAT },
-                        shape = SegmentedButtonDefaults.itemShape(index = 1, count = 2),
-                    ) { Text(stringResource(R.string.shizuku_log_source_logcat)) }
+                        label = { Text(stringResource(R.string.shizuku_log_source_logcat)) },
+                    )
                 }
                 Row(
                     modifier = Modifier
