@@ -128,6 +128,7 @@ import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
 import me.bmax.apatch.ui.component.WelcomeGuideDialog
 import me.bmax.apatch.ui.component.copyableInfo
+import me.bmax.apatch.ui.component.folk.FolkWrapSafeText
 import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.Version
@@ -1154,7 +1155,7 @@ fun InfoCard(kpState: APApplication.State, apState: APApplication.State) {
                         .copyableInfo(label, content)
                 ) {
                     Text(text = label, style = MaterialTheme.typography.bodyLarge)
-                    Text(text = content, style = MaterialTheme.typography.bodySmall)
+                    FolkWrapSafeText(text = content, style = MaterialTheme.typography.bodySmall)
                 }
             }
 
@@ -1269,7 +1270,7 @@ fun ListInfoCard(kpState: APApplication.State, apState: APApplication.State, sho
                         Spacer(Modifier.width(12.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(text = label, style = MaterialTheme.typography.bodyLarge)
-                            Text(text = content, style = MaterialTheme.typography.bodyMedium)
+                            FolkWrapSafeText(text = content, style = MaterialTheme.typography.bodyMedium)
                         }
                     }
                 } else {
@@ -1279,7 +1280,7 @@ fun ListInfoCard(kpState: APApplication.State, apState: APApplication.State, sho
                             .copyableInfo(label, content)
                     ) {
                         Text(text = label, style = MaterialTheme.typography.bodyLarge)
-                        Text(text = content, style = MaterialTheme.typography.bodyMedium)
+                        FolkWrapSafeText(text = content, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }
