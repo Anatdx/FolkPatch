@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.PlayArrow
@@ -62,6 +61,8 @@ import me.bmax.apatch.data.ScriptInfo
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import me.bmax.apatch.ui.component.FilePickerDialog
+import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.component.TwoColumnGrid
 import me.bmax.apatch.ui.component.splicedLazyColumnGroup
 import me.bmax.apatch.ui.component.LocalInsideSplicedGroup
@@ -130,25 +131,18 @@ fun ScriptLibraryScreen(navigator: DestinationsNavigator) {
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.script_library_title)) },
-                navigationIcon = {
-                    IconButton(onClick = { navigator.navigateUp() }) {
-                        Icon(Icons.AutoMirrored.Default.ArrowBack, contentDescription = null)
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { showAddDialog = true }) {
-                        Icon(Icons.Default.Add, contentDescription = stringResource(R.string.script_library_add))
-                    }
-                    IconButton(onClick = { navigator.navigate(OnlineScriptScreenDestination) }) {
-                        Icon(Icons.Outlined.Storefront, contentDescription = stringResource(R.string.online_script_title))
-                    }
-                }
-            )
-        }
+    FolkScaffold(
+        title = stringResource(R.string.script_library_title),
+        titleStyle = FolkTitleStyle.Inline,
+        onBack = { navigator.navigateUp() },
+        actions = {
+            IconButton(onClick = { showAddDialog = true }) {
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.script_library_add))
+            }
+            IconButton(onClick = { navigator.navigate(OnlineScriptScreenDestination) }) {
+                Icon(Icons.Outlined.Storefront, contentDescription = stringResource(R.string.online_script_title))
+            }
+        },
     ) { innerPadding ->
         val pullToRefreshState = rememberPullToRefreshState()
         PullToRefreshBox(
