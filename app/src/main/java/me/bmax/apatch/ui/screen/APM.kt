@@ -84,9 +84,7 @@ import androidx.compose.material3.FloatingActionButtonMenu
 import androidx.compose.material3.FloatingActionButtonMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
@@ -146,6 +144,7 @@ import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.apApp
 import me.bmax.apatch.ui.WebUIActivity
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
@@ -329,7 +328,7 @@ fun APModuleScreen(navigator: DestinationsNavigator) {
         }
     }
 
-    Scaffold(
+    FolkScaffold(
         topBar = {
         TopBar(
             navigator,
@@ -462,7 +461,12 @@ fun APModuleScreen(navigator: DestinationsNavigator) {
                 fabContent()
             }
         }
-    }, snackbarHost = { SnackbarHost(snackBarHost) }) { innerPadding ->
+    },
+        snackbarHostState = snackBarHost,
+        // The module lists already reserve room for the FAB and the floating
+        // bar via fabNavBottomClearance.
+        addBottomClearance = false,
+    ) { innerPadding ->
         when {
             hasMagisk -> {
                 Box(
