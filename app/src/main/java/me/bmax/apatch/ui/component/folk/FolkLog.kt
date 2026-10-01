@@ -71,15 +71,14 @@ fun parseFolkLogLevel(line: String): Pair<FolkLogLevel, Int> {
 }
 
 /**
- * Warning sits between the scheme's error and neutral roles; there is no scheme
- * slot for "caution", so the amber is fixed on purpose.
+ * M3 has no "caution" role, so warning takes the scheme's tertiary accent. It is
+ * derived rather than a fixed hue so AMOLED, dynamic colour and every classic
+ * theme keep working.
  */
-private val FolkLogWarn = Color(0xFFE29A2E)
-
 @Composable
 fun folkLogLevelColor(level: FolkLogLevel): Color = when (level) {
     FolkLogLevel.Error -> MaterialTheme.colorScheme.error
-    FolkLogLevel.Warn -> FolkLogWarn
+    FolkLogLevel.Warn -> MaterialTheme.colorScheme.tertiary
     FolkLogLevel.Info -> MaterialTheme.colorScheme.onSurface
     FolkLogLevel.Debug -> MaterialTheme.colorScheme.onSurfaceVariant
     FolkLogLevel.Verbose -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
