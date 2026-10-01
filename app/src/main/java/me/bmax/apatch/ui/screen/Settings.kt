@@ -691,7 +691,7 @@ private fun ProfileHeader(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(Modifier.height(5.dp))
-                // Where the reference shows an email, FolkPatch shows the device.
+                // The device stands in for the email other apps put here.
                 Text(
                     text = deviceName,
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, lineHeight = 20.sp),
@@ -702,7 +702,7 @@ private fun ProfileHeader(
             }
         }
 
-        // The signature sits below the whole block, like the reference page.
+        // The signature sits below the whole block.
         // Nothing is rendered when the user has not written one.
         if (signature.isNotBlank()) {
             Spacer(Modifier.height(18.dp))
@@ -718,7 +718,7 @@ private fun ProfileHeader(
 }
 
 /**
- * Four-column icon grid, mirroring the reference's shortcut block. Cells are
+ * Four-column icon grid, the shortcut block of the settings hub. Cells are
  * sized so an icon + label pair sits comfortably with generous vertical air.
  */
 @Composable

@@ -1,9 +1,7 @@
 package me.bmax.apatch.ui.component.folk
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -32,6 +30,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import me.bmax.apatch.ui.theme.tokens.FolkMotion
 
 /**
  * Whether the current composable is rendered inside a [FolkSettingsGroup].
@@ -61,7 +60,7 @@ class FolkSettingsGroupScope {
  * the screen reads as a small number of soft "shelves" instead of a long list
  * of individual cards. The group deliberately has no outline and no shadow -
  * it separates itself from the page background with a slightly lighter
- * surface tone, matching the reference layout.
+ * surface tone.
  *
  * The group carries no vertical margin of its own: inside a settings screen the
  * spacing between groups comes from [FolkSettingsSection]. When stacking groups
@@ -119,13 +118,13 @@ internal fun FolkSettingsGroupItems(
                         AnimatedVisibility(
                             visible = item.visible,
                             enter = expandVertically(
-                                animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                                animationSpec = FolkMotion.smoothSpring(),
                                 expandFrom = Alignment.Top,
-                            ) + fadeIn(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)),
+                            ) + fadeIn(animationSpec = FolkMotion.smoothSpring()),
                             exit = shrinkVertically(
-                                animationSpec = spring(stiffness = Spring.StiffnessMediumLow),
+                                animationSpec = FolkMotion.smoothSpring(),
                                 shrinkTowards = Alignment.Top,
-                            ) + fadeOut(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)),
+                            ) + fadeOut(animationSpec = FolkMotion.smoothSpring()),
                         ) {
                             val isHighlighted =
                                 highlightKey != null && item.key?.toString() == highlightKey

@@ -51,6 +51,7 @@ import com.ramcosta.composedestinations.generated.destinations.KPModuleScreenDes
 import com.ramcosta.composedestinations.generated.destinations.SuperUserScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.APModuleScreenDestination
 import me.bmax.apatch.ui.component.themeColorOptions
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Composable
 private fun SystemBarStyle(
@@ -326,6 +327,7 @@ fun APatchTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = typography,
+        shapes = FolkShape.materialShapes,
         content = {
             val rippleConfiguration = if (darkTheme) {
                 RippleConfiguration(rippleAlpha = DarkRippleAlpha)

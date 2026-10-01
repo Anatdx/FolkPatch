@@ -49,7 +49,7 @@ fun folkTopAppBarColors(): TopAppBarColors {
  *
  * Uses a [LargeTopAppBar] with an exit-until-collapsed scroll behaviour: the
  * page title starts large under the back button and, as the content scrolls,
- * docks into the bar next to the back arrow - matching the reference layout.
+ * docks into the bar next to the back arrow.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

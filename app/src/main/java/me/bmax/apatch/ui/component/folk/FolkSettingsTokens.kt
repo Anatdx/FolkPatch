@@ -1,15 +1,14 @@
 package me.bmax.apatch.ui.component.folk
 
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.bmax.apatch.ui.theme.tokens.FolkShape
+import me.bmax.apatch.ui.theme.tokens.FolkTheme
 
 /**
  * Measurements that give the FolkPatch settings its own rhythm.
@@ -22,13 +21,13 @@ import androidx.compose.ui.unit.sp
 object FolkSettingsDimens {
     /**
      * Horizontal inset of a settings group from the screen edge.
-     * Measured on the reference: panel edge sits ~16.2dp from the screen edge.
+     * Measured: panel edge sits ~16.2dp from the screen edge.
      */
     val ScreenPadding = 16.dp
 
     /**
      * Vertical gap after a section (before the next section title).
-     * Reference: panel bottom -> next panel top is ~51.5dp in total, which is
+     * Measured: panel bottom -> next panel top is ~51.5dp in total, which is
      * sectionSpacing + one title line box (~18dp) + SectionTitleSpacing.
      */
     val SectionSpacing = 22.dp
@@ -40,15 +39,14 @@ object FolkSettingsDimens {
     val SectionTitleIndent = 8.dp
 
     /**
-     * Outer corner radius of a group surface.
+     * Corner radius of a group surface.
      *
-     * Measured on the reference settings sub-page by fitting a circle to the
-     * corner arc: 60-62px @ density 2.975 = 20.2dp. The same fit reproduces our
-     * own known radii within 0.5dp, so this is trustworthy. (The reference home
-     * page's media cards use a different, smaller radius - the settings
-     * sub-pages are what we match here.)
+     * Measured by fitting a circle to the corner arc of a settings panel:
+     * 60-62px @ density 2.975 = 20.2dp; the same fit reproduces our own radii
+     * within 0.5dp. The shape is the token layer's continuous corner at the
+     * same radius.
      */
-    val GroupCornerRadius = 20.dp
+    val GroupShape = FolkShape.Corner20
 
     /**
      * Vertical padding inside a group surface.
@@ -62,17 +60,17 @@ object FolkSettingsDimens {
 
     /**
      * Trailing inset - wider than the leading one.
-     * Measured on the reference: the switch's right edge sits ~28dp from the
-     * panel edge, noticeably further in than the leading icon.
+     * Measured: the switch's right edge sits ~28dp from the panel edge,
+     * noticeably further in than the leading icon.
      */
     val ItemEndPadding = 28.dp
 
     /**
      * Vertical padding of a row.
      *
-     * Constant, not content-dependent: the reference's single-line rows are
-     * ~55dp (2x16 + one 20dp line, floored by the row's 56dp minimum) and its
-     * two-line rows ~74dp (2x16 + 20 + 18),
+     * Constant, not content-dependent: a single-line row is ~56dp
+     * (2x16 + one 20dp line, floored by the row's 56dp minimum) and a two-line
+     * row ~74dp (2x16 + 20 + 18),
      * i.e. the height difference comes purely from the extra text line. Our
      * previous 13/17 split made single-line rows too tight and two-line rows
      * too tall, which is what read as "uneven / oddly large".
@@ -98,33 +96,18 @@ object FolkSettingsDimens {
 
     /** Trailing chevron size. */
     val ChevronSize = 18.dp
-
-    val GroupShape = RoundedCornerShape(GroupCornerRadius)
 }
 
 /**
- * Group surface colour.
+ * Group surface colour, taken from the token layer.
  *
  * The reference never turns a setting group into a strong coloured card - the
- * panel is only a touch lighter than the page. We therefore blend the page
- * background towards a container role instead of using the container directly,
- * which keeps the surface subtle in every theme (including saturated ones).
+ * panel is only a touch lighter than the page. That blend now lives once in
+ * [FolkTheme.palette] instead of here, so every screen can share it rather than
+ * each one deciding how far to lift a container off the page.
  */
 @Composable
-fun folkGroupColor(): Color {
-    val scheme = MaterialTheme.colorScheme
-    val background = scheme.background
-
-    // With a custom background image the page is transparent and container
-    // roles already carry the user's opacity, so use them as-is.
-    if (background.alpha < 0.99f) return scheme.surfaceContainer
-
-    return if (background.luminance() < 0.5f) {
-        lerp(background, scheme.surfaceContainerHigh, 0.45f)
-    } else {
-        lerp(background, scheme.surfaceContainer, 0.9f)
-    }
-}
+fun folkGroupColor(): Color = FolkTheme.palette.groupedSurface
 
 @Composable
 fun folkSectionTitleColor(): Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
@@ -153,7 +136,7 @@ fun folkSectionTitleStyle(): TextStyle = MaterialTheme.typography.labelLarge.cop
 fun folkPreferenceTitleStyle(): TextStyle = MaterialTheme.typography.bodyLarge.copy(
     fontSize = 15.sp,
     // 20dp line box: a single-line row lands on ~56dp (via the row's minimum
-    // height) and a two-line row on ~72dp, close to the reference's 55/74dp.
+    // height) and a two-line row on ~72dp, the same 55/74dp the rows use.
     lineHeight = 20.sp,
     fontWeight = FontWeight.Medium,
     letterSpacing = 0.sp,

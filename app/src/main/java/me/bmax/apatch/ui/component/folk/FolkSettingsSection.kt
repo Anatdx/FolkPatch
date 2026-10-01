@@ -17,9 +17,8 @@ import androidx.compose.ui.unit.dp
  * A titled block of settings.
  *
  * The title sits *outside* the group surface (never inside the rounded card),
- * which is the single most important structural cue taken from the reference
- * layout. A section is followed by [FolkSettingsDimens.SectionSpacing] so the
- * next section starts on a clear new "shelf".
+ * which is what makes a section read as one shelf rather than a card with its
+ * own caption. A section is followed by [FolkSettingsDimens.SectionSpacing].
  */
 @Composable
 fun FolkSettingsSection(
