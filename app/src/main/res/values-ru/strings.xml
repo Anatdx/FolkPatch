@@ -951,6 +951,11 @@ KernelPatch требует образ boot для патча.
     <string name="settings_discrete_slider">Дискретный ползунок</string>
     <string name="settings_discrete_slider_desc">Показать отметки на дорожке ползунка</string>
     <string name="settings_category_behavior">Поведение</string>
+    <string name="profile_edit_title">Изменить профиль</string>
+    <string name="profile_nickname_label">Никнейм</string>
+    <string name="profile_signature_label">Подпись</string>
+    <string name="profile_choose_avatar">Выбрать аватар</string>
+    <string name="profile_restore_default">Сбросить настройки</string>
     <string name="settings_section_general_basics">Язык и обновления</string>
     <string name="settings_section_general_interface">Интерфейс и анимация</string>
     <string name="settings_section_general_root">Поведение Root</string>

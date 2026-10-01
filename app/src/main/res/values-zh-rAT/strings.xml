@@ -951,6 +951,11 @@
     <string name="settings_discrete_slider">神谕滑块</string>
     <string name="settings_discrete_slider_desc">在圣光轨道上显示刻度标记</string>
     <string name="settings_category_behavior">神谕指令</string>
+    <string name="profile_edit_title">圣契资料</string>
+    <string name="profile_nickname_label">圣名</string>
+    <string name="profile_signature_label">圣言</string>
+    <string name="profile_choose_avatar">更换圣像</string>
+    <string name="profile_restore_default">归于初始</string>
     <string name="settings_section_general_basics">圣言与更新</string>
     <string name="settings_section_general_interface">圣光与动效</string>
     <string name="settings_section_general_root">根源神谕</string>

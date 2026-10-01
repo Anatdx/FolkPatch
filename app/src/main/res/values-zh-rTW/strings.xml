@@ -995,6 +995,11 @@ KernelPatch 需要修補 boot 映像檔。
     <string name="settings_discrete_slider">離散滑塊</string>
     <string name="settings_discrete_slider_desc">在滑塊軌道上顯示刻度標記</string>
     <string name="settings_category_behavior">行為</string>
+    <string name="profile_edit_title">編輯資料</string>
+    <string name="profile_nickname_label">暱稱</string>
+    <string name="profile_signature_label">簽名</string>
+    <string name="profile_choose_avatar">選擇頭像</string>
+    <string name="profile_restore_default">恢復預設</string>
     <string name="settings_section_general_basics">語言與更新</string>
     <string name="settings_section_general_interface">介面與動效</string>
     <string name="settings_section_general_root">Root 行為</string>

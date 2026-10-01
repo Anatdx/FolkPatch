@@ -941,6 +941,11 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="settings_discrete_slider">Control deslizante discreto</string>
     <string name="settings_discrete_slider_desc">Mostrar marcas en las pistas del control deslizante</string>
     <string name="settings_category_behavior">Comportamiento</string>
+    <string name="profile_edit_title">Editar perfil</string>
+    <string name="profile_nickname_label">Apodo</string>
+    <string name="profile_signature_label">Firma</string>
+    <string name="profile_choose_avatar">Elegir avatar</string>
+    <string name="profile_restore_default">Restaurar valores</string>
     <string name="settings_section_general_basics">Idioma y actualizaciones</string>
     <string name="settings_section_general_interface">Interfaz y animación</string>
     <string name="settings_section_general_root">Comportamiento de Root</string>

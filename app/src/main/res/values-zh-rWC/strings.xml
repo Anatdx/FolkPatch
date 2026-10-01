@@ -951,6 +951,11 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="settings_discrete_slider">道阶滑块</string>
     <string name="settings_discrete_slider_desc">显示修炼进度刻度</string>
     <string name="settings_category_behavior">功法运转</string>
+    <string name="profile_edit_title">仙籍资料</string>
+    <string name="profile_nickname_label">道号</string>
+    <string name="profile_signature_label">道心寄语</string>
+    <string name="profile_choose_avatar">更换仙容</string>
+    <string name="profile_restore_default">归于初始</string>
     <string name="settings_section_general_basics">道文与更新</string>
     <string name="settings_section_general_interface">仙容与道韵</string>
     <string name="settings_section_general_root">根基道行</string>

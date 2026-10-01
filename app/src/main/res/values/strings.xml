@@ -1031,6 +1031,11 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="settings_category_appearance">Appearance</string>
     <string name="settings_category_behavior">Behavior</string>
     <string name="settings_section_general_basics">Language &amp; Updates</string>
+    <string name="profile_edit_title">Edit profile</string>
+    <string name="profile_nickname_label">Nickname</string>
+    <string name="profile_signature_label">Signature</string>
+    <string name="profile_choose_avatar">Choose avatar</string>
+    <string name="profile_restore_default">Restore defaults</string>
     <string name="settings_section_general_interface">Interface &amp; Motion</string>
     <string name="settings_section_general_root">Root Behavior</string>
     <string name="settings_section_general_mount">System &amp; Mount</string>

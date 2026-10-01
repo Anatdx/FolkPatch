@@ -946,6 +946,11 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="settings_discrete_slider">Controle deslizante discreto</string>
     <string name="settings_discrete_slider_desc">Mostrar marcas na trilha do controle deslizante</string>
     <string name="settings_category_behavior">Comportamento</string>
+    <string name="profile_edit_title">Editar perfil</string>
+    <string name="profile_nickname_label">Apelido</string>
+    <string name="profile_signature_label">Assinatura</string>
+    <string name="profile_choose_avatar">Escolher avatar</string>
+    <string name="profile_restore_default">Restaurar padrão</string>
     <string name="settings_section_general_basics">Idioma e atualizações</string>
     <string name="settings_section_general_interface">Interface e animação</string>
     <string name="settings_section_general_root">Comportamento do Root</string>

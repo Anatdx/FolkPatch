@@ -948,6 +948,11 @@
     <string name="settings_discrete_slider">شريط تمرير متقطع</string>
     <string name="settings_discrete_slider_desc">إظهار علامات التدرج على مسار شريط التمرير</string>
     <string name="settings_category_behavior">السلوك</string>
+    <string name="profile_edit_title">تعديل الملف الشخصي</string>
+    <string name="profile_nickname_label">الاسم المستعار</string>
+    <string name="profile_signature_label">التوقيع</string>
+    <string name="profile_choose_avatar">اختيار صورة</string>
+    <string name="profile_restore_default">استعادة الافتراضي</string>
     <string name="settings_section_general_basics">اللغة والتحديثات</string>
     <string name="settings_section_general_interface">الواجهة والحركة</string>
     <string name="settings_section_general_root">سلوك Root</string>

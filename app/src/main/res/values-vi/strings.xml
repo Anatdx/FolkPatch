@@ -950,6 +950,11 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="settings_discrete_slider">Thanh trượt có nấc</string>
     <string name="settings_discrete_slider_desc">Hiển thị vạch đánh dấu trên đường trượt</string>
     <string name="settings_category_behavior">Hành vi</string>
+    <string name="profile_edit_title">Chỉnh sửa hồ sơ</string>
+    <string name="profile_nickname_label">Biệt danh</string>
+    <string name="profile_signature_label">Chữ ký</string>
+    <string name="profile_choose_avatar">Chọn ảnh đại diện</string>
+    <string name="profile_restore_default">Khôi phục mặc định</string>
     <string name="settings_section_general_basics">Ngôn ngữ &amp; Cập nhật</string>
     <string name="settings_section_general_interface">Giao diện &amp; Hiệu ứng</string>
     <string name="settings_section_general_root">Hành vi Root</string>

@@ -948,6 +948,11 @@ KernelPatch 需要修补 boot 镜像。
     <string name="settings_category_appearance">外观</string>
     <string name="settings_category_behavior">行为</string>
     <string name="settings_section_general_basics">语言与更新</string>
+    <string name="profile_edit_title">编辑资料</string>
+    <string name="profile_nickname_label">昵称</string>
+    <string name="profile_signature_label">签名</string>
+    <string name="profile_choose_avatar">选择头像</string>
+    <string name="profile_restore_default">恢复默认</string>
     <string name="settings_section_general_interface">界面与动效</string>
     <string name="settings_section_general_root">Root 行为</string>
     <string name="settings_section_general_mount">系统与挂载</string>

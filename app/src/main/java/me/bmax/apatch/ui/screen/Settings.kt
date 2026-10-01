@@ -1,7 +1,10 @@
 package me.bmax.apatch.ui.screen
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +27,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Coffee
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,6 +37,9 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -58,6 +68,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.edit
 import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.dropUnlessResumed
 import coil.compose.AsyncImage
@@ -77,6 +88,8 @@ import com.ramcosta.composedestinations.generated.destinations.SecuritySettingsS
 import com.ramcosta.composedestinations.generated.destinations.SettingsSearchScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.BuildConfig
 import me.bmax.apatch.R
@@ -86,10 +99,30 @@ import me.bmax.apatch.ui.component.folk.folkGroupColor
 import me.bmax.apatch.ui.component.rememberLoadingDialog
 import me.bmax.apatch.ui.screen.settings.general.CleanStorageDialog
 import me.bmax.apatch.util.BiometricUtils
+import me.bmax.apatch.util.SafeUriResolver
 import me.bmax.apatch.util.getBugreportFile
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
+import java.io.File
+import java.io.FileOutputStream
 
 private const val FEEDBACK_URL = "https://github.com/LyraVoid/FolkPatch/issues/new/choose"
+
+private const val PROFILE_AVATAR_FILE = "profile_avatar"
+
+/** Copies the picked image into app storage and returns a cache-busted URI. */
+private suspend fun persistProfileAvatar(context: android.content.Context, uri: Uri): String? =
+    withContext(Dispatchers.IO) {
+        runCatching {
+            val target = File(context.filesDir, PROFILE_AVATAR_FILE)
+            SafeUriResolver.openInputStream(context, uri).use { input ->
+                FileOutputStream(target).use { output -> input.copyTo(output) }
+            }
+            Uri.fromFile(target).buildUpon()
+                .appendQueryParameter("t", System.currentTimeMillis().toString())
+                .build()
+                .toString()
+        }.getOrNull()
+    }
 
 private data class SecondaryEntry(
     val icon: ImageVector,
@@ -112,14 +145,26 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     val loadingDialog = rememberLoadingDialog()
     val canAuthenticate = remember { BiometricUtils.isBiometricAvailable(context) }
 
-    // Local-only personalisation. Nothing here needs an account; the profile
-    // editor (next step) will write these same keys.
+    // Local-only personalisation. Nothing here needs an account: the avatar,
+    // nickname and signature are stored in shared preferences and the picked
+    // image is copied into app storage.
     val prefs = APApplication.sharedPreferences
-    val profileNickname = remember {
-        prefs.getString("profile_nickname", null)?.takeIf { it.isNotBlank() } ?: "FolkPatch"
-    }
-    val profileSignature = remember {
-        prefs.getString("profile_signature", "").orEmpty()
+    var profileNickname by remember { mutableStateOf(prefs.getString("profile_nickname", "").orEmpty()) }
+    var profileSignature by remember { mutableStateOf(prefs.getString("profile_signature", "").orEmpty()) }
+    var profileAvatar by remember { mutableStateOf(prefs.getString("profile_avatar", "").orEmpty()) }
+    var showProfileEditor by rememberSaveable { mutableStateOf(false) }
+
+    val pickAvatarLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            scope.launch {
+                persistProfileAvatar(context, uri)?.let { stored ->
+                    profileAvatar = stored
+                    prefs.edit { putString("profile_avatar", stored) }
+                }
+            }
+        }
     }
 
     var showDevDialog by rememberSaveable { mutableStateOf(false) }
@@ -236,9 +281,11 @@ fun SettingScreen(navigator: DestinationsNavigator) {
         ) {
             item(key = "identity_header") {
                 ProfileHeader(
-                    nickname = profileNickname,
+                    nickname = profileNickname.ifBlank { "FolkPatch" },
                     signature = profileSignature,
                     deviceName = getDeviceInfo().trim(),
+                    avatarUri = profileAvatar,
+                    onAvatarClick = { showProfileEditor = true },
                 )
             }
 
@@ -309,8 +356,189 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     if (cleanStorageDialogState.value) {
         CleanStorageDialog(cleanStorageDialogState)
     }
+
+    if (showProfileEditor) {
+        ProfileEditSheet(
+            nickname = profileNickname.ifBlank { "FolkPatch" },
+            signature = profileSignature,
+            avatarUri = profileAvatar,
+            onPickAvatar = { pickAvatarLauncher.launch("image/*") },
+            onRestoreDefault = {
+                profileNickname = ""
+                profileSignature = ""
+                profileAvatar = ""
+                runCatching { File(context.filesDir, PROFILE_AVATAR_FILE).delete() }
+                prefs.edit {
+                    remove("profile_nickname")
+                    remove("profile_signature")
+                    remove("profile_avatar")
+                }
+            },
+            onDismiss = { showProfileEditor = false },
+            onSave = { name, sign ->
+                profileNickname = name
+                profileSignature = sign
+                prefs.edit {
+                    if (name.isBlank()) remove("profile_nickname") else putString("profile_nickname", name)
+                    if (sign.isBlank()) remove("profile_signature") else putString("profile_signature", sign)
+                }
+                showProfileEditor = false
+            },
+        )
+    }
 }
 
+/**
+ * Local profile editor: pick an avatar, set a nickname and a short signature,
+ * or fall back to the defaults. No account, no network.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ProfileEditSheet(
+    nickname: String,
+    signature: String,
+    avatarUri: String,
+    onPickAvatar: () -> Unit,
+    onRestoreDefault: () -> Unit,
+    onDismiss: () -> Unit,
+    onSave: (String, String) -> Unit,
+) {
+    var name by remember { mutableStateOf(nickname) }
+    var sign by remember { mutableStateOf(signature) }
+
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        dragHandle = { BottomSheetDefaults.DragHandle() },
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 20.dp)
+                .padding(bottom = 28.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.profile_edit_title),
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp, lineHeight = 24.sp),
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+
+            Spacer(Modifier.height(18.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surfaceContainerHighest),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    if (avatarUri.isNotBlank()) {
+                        AsyncImage(
+                            model = avatarUri,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape),
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(82.dp),
+                        )
+                    }
+                }
+                Spacer(Modifier.width(14.dp))
+                FilledTonalButton(
+                    onClick = onPickAvatar,
+                    shape = RoundedCornerShape(14.dp),
+                ) {
+                    Text(stringResource(R.string.profile_choose_avatar))
+                }
+            }
+
+            Spacer(Modifier.height(18.dp))
+
+            ProfileTextField(
+                value = name,
+                onValueChange = { if (it.length <= 24) name = it },
+                label = stringResource(R.string.profile_nickname_label),
+                singleLine = true,
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            ProfileTextField(
+                value = sign,
+                onValueChange = { if (it.length <= 60) sign = it },
+                label = stringResource(R.string.profile_signature_label),
+                singleLine = false,
+                minLines = 2,
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                TextButton(onClick = onRestoreDefault) {
+                    Text(stringResource(R.string.profile_restore_default))
+                }
+                Spacer(Modifier.weight(1f))
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+                Spacer(Modifier.width(8.dp))
+                Button(
+                    onClick = { onSave(name.trim(), sign.trim()) },
+                    shape = RoundedCornerShape(14.dp),
+                ) {
+                    Text(stringResource(R.string.save))
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Rounded, filled text field without the Material underline, so the editor
+ * reads as part of FolkPatch rather than a stock Material form.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ProfileTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    singleLine: Boolean,
+    minLines: Int = 1,
+) {
+    TextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        singleLine = singleLine,
+        minLines = minLines,
+        shape = RoundedCornerShape(16.dp),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+        ),
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
 /**
  * Personal space header.
  *
@@ -327,6 +555,8 @@ private fun ProfileHeader(
     nickname: String,
     signature: String,
     deviceName: String,
+    avatarUri: String,
+    onAvatarClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -340,18 +570,30 @@ private fun ProfileHeader(
                     .size(68.dp)
                     // Plain circle, no shadow and no coloured ring.
                     .clip(CircleShape)
-                    .background(folkGroupColor().copy(alpha = 1f)),
+                    .background(folkGroupColor().copy(alpha = 1f))
+                    .clickable(onClick = onAvatarClick),
                 contentAlignment = Alignment.Center,
             ) {
-                // The launcher vector carries a lot of transparent margin, so it
-                // is drawn oversized and clipped by the circle: the visible mark
-                // ends up ~29dp inside the 68dp avatar.
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(86.dp),
-                )
+                if (avatarUri.isNotBlank()) {
+                    AsyncImage(
+                        model = avatarUri,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape),
+                    )
+                } else {
+                    // The launcher vector carries a lot of transparent margin, so
+                    // it is drawn oversized and clipped by the circle: the visible
+                    // mark ends up ~29dp inside the 68dp avatar.
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(86.dp),
+                    )
+                }
             }
 
             Spacer(Modifier.width(14.dp))

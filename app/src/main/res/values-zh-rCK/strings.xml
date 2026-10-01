@@ -937,6 +937,11 @@ KernelPatch 这道菜需要用 boot 主料来烹饪。
     <string name="settings_discrete_slider">档位滑杆</string>
     <string name="settings_discrete_slider_desc">在菜单轨道上显示份量标记</string>
     <string name="settings_category_behavior">吃饭行为</string>
+    <string name="profile_edit_title">招牌资料</string>
+    <string name="profile_nickname_label">店名</string>
+    <string name="profile_signature_label">招牌标语</string>
+    <string name="profile_choose_avatar">更换招牌头像</string>
+    <string name="profile_restore_default">恢复原味</string>
     <string name="settings_section_general_basics">方言与菜谱</string>
     <string name="settings_section_general_interface">装潢与动效</string>
     <string name="settings_section_general_root">后厨规矩</string>
