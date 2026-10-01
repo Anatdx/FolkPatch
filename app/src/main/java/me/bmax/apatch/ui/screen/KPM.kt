@@ -111,6 +111,7 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.apApp
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -295,17 +296,19 @@ fun KPModuleScreen(navigator: DestinationsNavigator) {
     var showOrderDialog by remember { mutableStateOf(false) }
     var orderedModules by remember { mutableStateOf(viewModel.moduleList) }
 
-    Scaffold(topBar = {
-        TopBar(
-            navigator,
-            searchQuery,
-            showCustomOrder = viewModel.moduleList.isNotEmpty(),
-            onCustomOrderClick = {
-                orderedModules = viewModel.moduleList
-                showOrderDialog = true
-            }
-        ) { searchQuery = it }
-    }, floatingActionButton = run {
+    FolkScaffold(
+        topBar = {
+            TopBar(
+                navigator,
+                searchQuery,
+                showCustomOrder = viewModel.moduleList.isNotEmpty(),
+                onCustomOrderClick = {
+                    orderedModules = viewModel.moduleList
+                    showOrderDialog = true
+                }
+            ) { searchQuery = it }
+        },
+        floatingActionButton = run {
         {
             val scope = rememberCoroutineScope()
             val context = LocalContext.current
@@ -459,7 +462,11 @@ fun KPModuleScreen(navigator: DestinationsNavigator) {
                 fabContent()
             }
         }
-    }) { innerPadding ->
+        },
+        // The list already reserves room for the FAB and the floating bar via
+        // fabNavBottomClearance, so the scaffold must not add more.
+        addBottomClearance = false,
+    ) { innerPadding ->
 
         KPModuleList(
             viewModel = viewModel,

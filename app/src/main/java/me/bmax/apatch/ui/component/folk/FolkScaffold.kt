@@ -53,60 +53,77 @@ enum class FolkTitleStyle { Large, Inline, None }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FolkScaffold(
-    title: String,
+    title: String = "",
     titleStyle: FolkTitleStyle = FolkTitleStyle.Inline,
     onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
     snackbarHostState: SnackbarHostState? = null,
     titleContent: (@Composable () -> Unit)? = null,
     floatingActionButton: @Composable () -> Unit = {},
+    /**
+     * A fully custom bar. Screens whose bar is not a plain title (an animated
+     * search field, a selection bar) supply it here so they still get the shared
+     * insets and bottom clearance without reshaping their bar.
+     */
+    topBar: (@Composable () -> Unit)? = null,
+    /**
+     * Set false when the content already keeps its own bottom clearance (e.g. a
+     * list using `fabNavBottomClearance`), so the space is not reserved twice.
+     */
+    addBottomClearance: Boolean = true,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
-        // Only the collapsible bar consumes scroll; the others need no connection.
-        modifier = if (titleStyle == FolkTitleStyle.Large) {
+        // Only the collapsible built-in bar consumes scroll; the others need no
+        // connection.
+        modifier = if (topBar == null && titleStyle == FolkTitleStyle.Large) {
             Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         } else {
             Modifier
         },
         topBar = {
-            when (titleStyle) {
-                FolkTitleStyle.Large -> LargeTopAppBar(
-                    title = {
-                        // A caller-supplied title (e.g. a search field) replaces
-                        // the plain label entirely.
-                        if (titleContent != null) {
-                            titleContent()
-                        } else {
-                            Text(text = title, fontWeight = FontWeight.Bold)
-                        }
-                    },
-                    colors = folkTopAppBarColors(),
-                    navigationIcon = { FolkBackButton(onBack) },
-                    actions = actions,
-                    scrollBehavior = scrollBehavior,
-                )
+            val custom = topBar
+            if (custom != null) {
+                custom()
+            } else {
+                when (titleStyle) {
+                    FolkTitleStyle.Large -> LargeTopAppBar(
+                        title = {
+                            // A caller-supplied title (e.g. a search field)
+                            // replaces the plain label entirely.
+                            if (titleContent != null) {
+                                titleContent()
+                            } else {
+                                Text(text = title, fontWeight = FontWeight.Bold)
+                            }
+                        },
+                        colors = folkTopAppBarColors(),
+                        navigationIcon = { FolkBackButton(onBack) },
+                        actions = actions,
+                        scrollBehavior = scrollBehavior,
+                    )
 
-                FolkTitleStyle.Inline -> TopAppBar(
-                    title = {
-                        if (titleContent != null) {
-                            titleContent()
-                        } else {
-                            Text(
-                                text = title,
-                                style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.SemiBold,
-                            )
-                        }
-                    },
-                    colors = folkTopAppBarColors(),
-                    navigationIcon = { FolkBackButton(onBack) },
-                    actions = actions,
-                )
+                    FolkTitleStyle.Inline -> TopAppBar(
+                        title = {
+                            if (titleContent != null) {
+                                titleContent()
+                            } else {
+                                Text(
+                                    text = title,
+                                    style = MaterialTheme.typography.titleLarge,
+                                    fontWeight = FontWeight.SemiBold,
+                                )
+                            }
+                        },
+                        colors = folkTopAppBarColors(),
+                        navigationIcon = { FolkBackButton(onBack) },
+                        actions = actions,
+                    )
 
-                FolkTitleStyle.None -> Unit
+                    FolkTitleStyle.None -> Unit
+                }
             }
         },
         containerColor = Color.Transparent,
@@ -118,7 +135,7 @@ fun FolkScaffold(
         floatingActionButton = floatingActionButton,
     ) { inner ->
         val layoutDirection = LocalLayoutDirection.current
-        val clearance = folkBottomClearance()
+        val clearance = if (addBottomClearance) folkBottomClearance() else 0.dp
         content(
             PaddingValues(
                 start = inner.calculateStartPadding(layoutDirection),
