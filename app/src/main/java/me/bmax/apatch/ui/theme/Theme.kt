@@ -52,6 +52,7 @@ import com.ramcosta.composedestinations.generated.destinations.SuperUserScreenDe
 import com.ramcosta.composedestinations.generated.destinations.APModuleScreenDestination
 import me.bmax.apatch.ui.component.themeColorOptions
 import me.bmax.apatch.ui.theme.tokens.FolkShape
+import me.bmax.apatch.ui.theme.tokens.FolkThemeCatalog
 
 @Composable
 private fun SystemBarStyle(
@@ -228,62 +229,11 @@ fun APatchTheme(
                 Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
                     if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
                 }
-                darkTheme -> DarkBlueTheme
-                else -> LightBlueTheme
+                else -> FolkThemeCatalog.scheme("blue", darkTheme)
             }
         }
-        // Classic hardcoded themes
-        else -> {
-            if (darkTheme) {
-                when (customColorScheme) {
-                    "amber" -> DarkAmberTheme
-                    "blue_grey" -> DarkBlueGreyTheme
-                    "blue" -> DarkBlueTheme
-                    "brown" -> DarkBrownTheme
-                    "cyan" -> DarkCyanTheme
-                    "deep_orange" -> DarkDeepOrangeTheme
-                    "deep_purple" -> DarkDeepPurpleTheme
-                    "green" -> DarkGreenTheme
-                    "indigo" -> DarkIndigoTheme
-                    "light_blue" -> DarkLightBlueTheme
-                    "light_green" -> DarkLightGreenTheme
-                    "lime" -> DarkLimeTheme
-                    "orange" -> DarkOrangeTheme
-                    "pink" -> DarkPinkTheme
-                    "purple" -> DarkPurpleTheme
-                    "red" -> DarkRedTheme
-                    "sakura" -> DarkSakuraTheme
-                    "teal" -> DarkTealTheme
-                    "yellow" -> DarkYellowTheme
-                    "ink_wash" -> DarkInkWashTheme
-                    else -> DarkBlueTheme
-                }
-            } else {
-                when (customColorScheme) {
-                    "amber" -> LightAmberTheme
-                    "blue_grey" -> LightBlueGreyTheme
-                    "blue" -> LightBlueTheme
-                    "brown" -> LightBrownTheme
-                    "cyan" -> LightCyanTheme
-                    "deep_orange" -> LightDeepOrangeTheme
-                    "deep_purple" -> LightDeepPurpleTheme
-                    "green" -> LightGreenTheme
-                    "indigo" -> LightIndigoTheme
-                    "light_blue" -> LightLightBlueTheme
-                    "light_green" -> LightLightGreenTheme
-                    "lime" -> LightLimeTheme
-                    "orange" -> LightOrangeTheme
-                    "pink" -> LightPinkTheme
-                    "purple" -> LightPurpleTheme
-                    "red" -> LightRedTheme
-                    "sakura" -> LightSakuraTheme
-                    "teal" -> LightTealTheme
-                    "yellow" -> LightYellowTheme
-                    "ink_wash" -> LightInkWashTheme
-                    else -> LightBlueTheme
-                }
-            }
-        }
+        // Classic themes, from the catalog.
+        else -> FolkThemeCatalog.scheme(customColorScheme, darkTheme)
     }
     
     val useCustomBackground = allowCustomBackground && BackgroundConfig.isCustomBackgroundEnabled
