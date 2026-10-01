@@ -922,6 +922,26 @@ KernelPatch는 boot 이미지를 패치해야 합니다.
     <string name="module">모듈</string>
     <string name="settings_category_appearance">디스플레이</string>
     <string name="settings_category_behavior">작동</string>
+    <string name="settings_section_general_basics">언어 및 업데이트</string>
+    <string name="settings_section_general_interface">인터페이스 및 모션</string>
+    <string name="settings_section_general_root">Root 동작</string>
+    <string name="settings_section_general_mount">시스템 및 마운트</string>
+    <string name="settings_section_general_identity">앱 아이덴티티</string>
+    <string name="settings_section_general_maintenance">유지 관리</string>
+    <string name="settings_section_behavior_display">홈 화면 표시</string>
+    <string name="settings_section_behavior_actions">동작 및 설치</string>
+    <string name="settings_section_function_hide">숨기기 및 격리</string>
+    <string name="settings_section_function_root">Root 기능</string>
+    <string name="settings_section_function_mount">마운트 및 언마운트</string>
+    <string name="settings_section_function_shizuku">Shizuku</string>
+    <string name="settings_section_security_auth">인증</string>
+    <string name="settings_section_security_key">SuperKey</string>
+    <string name="settings_section_backup_local">로컬 백업</string>
+    <string name="settings_section_backup_cloud">클라우드 백업</string>
+    <string name="settings_section_module_display">모듈 표시</string>
+    <string name="settings_section_module_update">업데이트 및 설치</string>
+    <string name="settings_section_multimedia_music">배경 음악</string>
+    <string name="settings_section_multimedia_sound">사운드 및 진동</string>
     
     <!-- Appearance Sub-Categories -->
     <string name="settings_appearance_font">글꼴 설정</string>
