@@ -102,6 +102,7 @@ import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import me.bmax.apatch.APApplication
+import me.bmax.apatch.BuildConfig
 import me.bmax.apatch.ui.screen.BottomBarDestination
 import me.bmax.apatch.ui.screen.MODULE_TYPE
 import me.bmax.apatch.ui.theme.APatchTheme
@@ -190,6 +191,13 @@ class MainActivity : AppCompatActivity() {
     private var pendingActionModuleId by mutableStateOf<String?>(null)
     private var pendingScriptId by mutableStateOf<String?>(null)
 
+    /**
+     * Debug builds only: a route handed in through `--es debug_route <route>`, so a page can be
+     * opened by script. The bottom bar is drawn by the FolkX engine, so screens cannot be reached
+     * by tapping coordinates while it animates.
+     */
+    private var pendingDebugRoute by mutableStateOf<String?>(null)
+
     private fun getFileName(context: android.content.Context, uri: Uri): String {
         var result: String? = null
         if (uri.scheme == "content") {
@@ -250,6 +258,12 @@ class MainActivity : AppCompatActivity() {
             val id = intent.getStringExtra("script_id")
             if (!id.isNullOrEmpty()) {
                 pendingScriptId = id
+            }
+        }
+        if (BuildConfig.DEBUG) {
+            intent?.getStringExtra("debug_route")?.takeIf { it.isNotEmpty() }?.let {
+                android.util.Log.d("FolkDebugRoute", "opening $it")
+                pendingDebugRoute = it
             }
         }
     }
@@ -485,6 +499,20 @@ class MainActivity : AppCompatActivity() {
                         navigator.navigate(com.ramcosta.composedestinations.generated.destinations.ScriptExecutionLogScreenDestination(scriptInfo))
                     }
                     pendingScriptId = null
+                }
+            }
+
+            if (BuildConfig.DEBUG) {
+                LaunchedEffect(pendingDebugRoute) {
+                    val route = pendingDebugRoute
+                    if (!route.isNullOrEmpty()) {
+                        // A route that takes an argument, such as `patches/{mode}`, cannot be given
+                        // as a bare base route. Report that instead of taking the app down.
+                        runCatching { navController.navigate(route) }.onFailure {
+                            android.util.Log.w("FolkDebugRoute", "cannot open $route", it)
+                        }
+                        pendingDebugRoute = null
+                    }
                 }
             }
 
