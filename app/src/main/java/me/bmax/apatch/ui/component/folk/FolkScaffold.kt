@@ -127,6 +127,12 @@ fun FolkScaffold(
             }
         },
         containerColor = Color.Transparent,
+        // The container is transparent so the themed background shows through.
+        // Material would then derive the content colour from a transparent
+        // container and get Unspecified, which drops any text that does not set
+        // its own colour to black - unreadable in dark mode. Pin it to the
+        // background's content colour, which is what an opaque page would use.
+        contentColor = MaterialTheme.colorScheme.onBackground,
         snackbarHost = {
             if (snackbarHostState != null) {
                 SnackbarHost(snackbarHostState)
