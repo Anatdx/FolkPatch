@@ -18,20 +18,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,7 +39,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -61,6 +56,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.screen.LabelText
 import me.bmax.apatch.util.ShizukuServiceManager
 import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
@@ -80,7 +77,6 @@ private data class ShizukuLoadResult(
 )
 
 @Destination<RootGraph>
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShizukuManagementScreen(navigator: DestinationsNavigator) {
     val context = LocalContext.current
@@ -152,28 +148,20 @@ fun ShizukuManagementScreen(navigator: DestinationsNavigator) {
 
     val scope = rememberCoroutineScope()
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.shizuku_management_title)) },
-                navigationIcon = {
-                    IconButton(onClick = navigator::popBackStack) {
-                        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = null)
-                    }
-                },
-                actions = {
-                    IconButton(onClick = {
-                        navigator.navigate(ShizukuLogScreenDestination)
-                    }) {
-                        Icon(
-                            Icons.AutoMirrored.Outlined.Article,
-                            contentDescription = stringResource(R.string.shizuku_log_title),
-                        )
-                    }
-                },
-            )
+    FolkScaffold(
+        title = stringResource(R.string.shizuku_management_title),
+        titleStyle = FolkTitleStyle.Inline,
+        onBack = navigator::popBackStack,
+        actions = {
+            IconButton(onClick = {
+                navigator.navigate(ShizukuLogScreenDestination)
+            }) {
+                Icon(
+                    Icons.AutoMirrored.Outlined.Article,
+                    contentDescription = stringResource(R.string.shizuku_log_title),
+                )
+            }
         },
-        containerColor = Color.Transparent,
     ) { padding ->
         when {
             loading -> Column(
