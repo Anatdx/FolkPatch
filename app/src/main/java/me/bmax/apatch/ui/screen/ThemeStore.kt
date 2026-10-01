@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.DialogProperties
@@ -41,6 +40,8 @@ import kotlinx.coroutines.launch
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.AppLoadingIndicator
+import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.viewmodel.ThemeStoreViewModel
 import java.io.File
 import me.bmax.apatch.util.DownloadProgress
@@ -373,66 +374,60 @@ fun ThemeStoreScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    if (isSearchActive) {
-                        TextField(
-                            value = viewModel.searchQuery,
-                            onValueChange = { viewModel.onSearchQueryChange(it) },
-                            placeholder = { Text(stringResource(R.string.theme_store_search_hint)) },
-                            singleLine = true,
-                            colors = TextFieldDefaults.colors(
-                                focusedContainerColor =  Color.Transparent,
-                                unfocusedContainerColor = Color.Transparent,
-                                disabledContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent,
-                            ),
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    } else {
-                        Text(stringResource(R.string.theme_store_title))
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        if (isSearchActive) {
-                            isSearchActive = false
-                            viewModel.onSearchQueryChange("")
-                        } else {
-                            navigator.popBackStack()
-                        }
-                    }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    // "我的主题"按钮 — hidden in compat mode
-                    if (!isCompatMode) {
-                        IconButton(onClick = { navigator.navigate(MyThemesScreenDestination) }) {
-                            Icon(Icons.Filled.ColorLens, contentDescription = "My Themes")
-                        }
-                    }
-                    if (isSearchActive) {
-                        if (viewModel.searchQuery.isNotEmpty()) {
-                            IconButton(onClick = { viewModel.onSearchQueryChange("") }) {
-                                Icon(Icons.Filled.Close, contentDescription = "Clear")
-                            }
-                        }
-                    } else {
-                        IconButton(onClick = { isSearchActive = true }) {
-                            Icon(Icons.Filled.Search, contentDescription = "Search")
-                        }
-                    }
-                    IconButton(onClick = { showFilterSheet = true }) {
-                        Icon(Icons.Filled.FilterList, contentDescription = "Filter")
+    FolkScaffold(
+        title = stringResource(R.string.theme_store_title),
+        titleStyle = FolkTitleStyle.Inline,
+        onBack = {
+            if (isSearchActive) {
+                isSearchActive = false
+                viewModel.onSearchQueryChange("")
+            } else {
+                navigator.popBackStack()
+            }
+        },
+        titleContent = if (isSearchActive) {
+            {
+                TextField(
+                    value = viewModel.searchQuery,
+                    onValueChange = { viewModel.onSearchQueryChange(it) },
+                    placeholder = { Text(stringResource(R.string.theme_store_search_hint)) },
+                    singleLine = true,
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        } else {
+            null
+        },
+        actions = {
+            // "我的主题"按钮 — hidden in compat mode
+            if (!isCompatMode) {
+                IconButton(onClick = { navigator.navigate(MyThemesScreenDestination) }) {
+                    Icon(Icons.Filled.ColorLens, contentDescription = "My Themes")
+                }
+            }
+            if (isSearchActive) {
+                if (viewModel.searchQuery.isNotEmpty()) {
+                    IconButton(onClick = { viewModel.onSearchQueryChange("") }) {
+                        Icon(Icons.Filled.Close, contentDescription = "Clear")
                     }
                 }
-            )
+            } else {
+                IconButton(onClick = { isSearchActive = true }) {
+                    Icon(Icons.Filled.Search, contentDescription = "Search")
+                }
+            }
+            IconButton(onClick = { showFilterSheet = true }) {
+                Icon(Icons.Filled.FilterList, contentDescription = "Filter")
+            }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHostState = snackbarHostState,
     ) { paddingValues ->
         if (viewModel.isRefreshing) {
             Box(
