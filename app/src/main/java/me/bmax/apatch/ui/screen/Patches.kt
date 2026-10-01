@@ -57,11 +57,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -93,6 +91,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.component.ExpressiveCard
 import me.bmax.apatch.ui.component.SwitchItem
 import me.bmax.apatch.ui.component.WarningCard
@@ -114,7 +114,10 @@ fun Patches(mode: PatchesViewModel.PatchMode) {
     }
 
     if (jailbreakBlocked) {
-        Scaffold(topBar = { TopBar() }) { innerPadding ->
+        FolkScaffold(
+            title = stringResource(R.string.patch_config_title),
+            titleStyle = FolkTitleStyle.Inline,
+        ) { innerPadding ->
             Box(
                 modifier = Modifier
                     .padding(innerPadding)
@@ -142,9 +145,10 @@ fun Patches(mode: PatchesViewModel.PatchMode) {
         viewModel.prepare(mode)
     }
 
-    Scaffold(topBar = {
-        TopBar()
-    }, floatingActionButton = {
+    FolkScaffold(
+        title = stringResource(R.string.patch_config_title),
+        titleStyle = FolkTitleStyle.Inline,
+        floatingActionButton = {
         if (viewModel.needReboot) {
             val reboot = stringResource(id = R.string.reboot)
             ExtendedFloatingActionButton(
@@ -846,8 +850,3 @@ private fun PatchMode(mode: PatchesViewModel.PatchMode) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar() {
-    TopAppBar(title = { Text(stringResource(R.string.patch_config_title)) })
-}
