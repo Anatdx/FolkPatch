@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
@@ -72,6 +73,7 @@ fun FolkSettingsGroup(
     modifier: Modifier = Modifier,
     flat: Boolean = false,
     highlightKey: String? = null,
+    shape: Shape = FolkSettingsDimens.GroupShape,
     content: FolkSettingsGroupScope.() -> Unit,
 ) {
     val scope = FolkSettingsGroupScope().apply(content)
@@ -80,6 +82,7 @@ fun FolkSettingsGroup(
         modifier = modifier,
         flat = flat,
         highlightKey = highlightKey,
+        shape = shape,
     )
 }
 
@@ -94,6 +97,7 @@ internal fun FolkSettingsGroupItems(
     modifier: Modifier = Modifier,
     flat: Boolean = false,
     highlightKey: String? = null,
+    shape: Shape = FolkSettingsDimens.GroupShape,
 ) {
     if (items.none { it.visible }) return
 
@@ -105,7 +109,7 @@ internal fun FolkSettingsGroupItems(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = FolkSettingsDimens.ScreenPadding),
-            shape = FolkSettingsDimens.GroupShape,
+            shape = shape,
             color = containerColor,
             tonalElevation = 0.dp,
         ) {

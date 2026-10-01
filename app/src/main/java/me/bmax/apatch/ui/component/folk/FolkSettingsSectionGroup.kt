@@ -2,6 +2,7 @@ package me.bmax.apatch.ui.component.folk
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 
 /**
  * Convenience that composes a titled [FolkSettingsSection] with a single
@@ -17,6 +18,7 @@ fun FolkSettingsSectionGroup(
     modifier: Modifier = Modifier,
     flat: Boolean = false,
     highlightKey: String? = null,
+    shape: Shape = FolkSettingsDimens.GroupShape,
     content: FolkSettingsGroupScope.() -> Unit,
 ) {
     val scope = FolkSettingsGroupScope().apply(content)
@@ -28,6 +30,7 @@ fun FolkSettingsSectionGroup(
             items = scope.items,
             flat = flat,
             highlightKey = highlightKey,
+            shape = shape,
         )
     }
 }
