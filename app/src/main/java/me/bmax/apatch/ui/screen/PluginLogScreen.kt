@@ -14,18 +14,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.outlined.DeleteSweep
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,7 +30,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -55,6 +49,8 @@ import me.bmax.apatch.util.getPluginLog
 import me.bmax.apatch.util.listPlugins
 import me.bmax.apatch.util.rootShellForResult
 import me.bmax.apatch.util.ui.showToast
+import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.component.splicedLazyColumnGroup
 import org.json.JSONArray
 import java.io.File
@@ -66,7 +62,6 @@ data class PluginLogEntry(
 )
 
 @Destination<RootGraph>
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PluginLogScreen(navigator: DestinationsNavigator) {
     val context = LocalContext.current
@@ -84,58 +79,43 @@ fun PluginLogScreen(navigator: DestinationsNavigator) {
 
     LaunchedEffect(Unit) { refreshLogs() }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.plugin_log_page_title),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = { navigator.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back")
+    FolkScaffold(
+        title = stringResource(R.string.plugin_log_page_title),
+        titleStyle = FolkTitleStyle.Inline,
+        onBack = { navigator.popBackStack() },
+        actions = {
+            // Export button
+            IconButton(onClick = {
+                scope.launch {
+                    val content = withContext(Dispatchers.IO) { buildExportText(logs) }
+                    if (content.isBlank()) {
+                        showToast(context, context.getString(R.string.plugin_log_all_empty))
+                        return@launch
                     }
-                },
-                actions = {
-                    // Export button
-                    IconButton(onClick = {
-                        scope.launch {
-                            val content = withContext(Dispatchers.IO) { buildExportText(logs) }
-                            if (content.isBlank()) {
-                                showToast(context, context.getString(R.string.plugin_log_all_empty))
-                                return@launch
-                            }
-                            val file = File(context.cacheDir, "plugin_logs.txt")
-                            file.writeText(content)
-                            val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
-                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                                type = "text/plain"
-                                putExtra(Intent.EXTRA_STREAM, uri)
-                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            }
-                            context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.plugin_log_export)))
-                        }
-                    }) {
-                        Icon(Icons.Outlined.Share, contentDescription = stringResource(R.string.plugin_log_export))
+                    val file = File(context.cacheDir, "plugin_logs.txt")
+                    file.writeText(content)
+                    val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_STREAM, uri)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     }
-                    // Clear button
-                    IconButton(onClick = {
-                        scope.launch {
-                            withContext(Dispatchers.IO) { clearAllPluginLogs() }
-                            showToast(context, context.getString(R.string.plugin_log_cleared))
-                            refreshLogs()
-                        }
-                    }) {
-                        Icon(Icons.Outlined.DeleteSweep, contentDescription = stringResource(R.string.plugin_log_clear))
-                    }
-                },
-                scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
-            )
+                    context.startActivity(Intent.createChooser(shareIntent, context.getString(R.string.plugin_log_export)))
+                }
+            }) {
+                Icon(Icons.Outlined.Share, contentDescription = stringResource(R.string.plugin_log_export))
+            }
+            // Clear button
+            IconButton(onClick = {
+                scope.launch {
+                    withContext(Dispatchers.IO) { clearAllPluginLogs() }
+                    showToast(context, context.getString(R.string.plugin_log_cleared))
+                    refreshLogs()
+                }
+            }) {
+                Icon(Icons.Outlined.DeleteSweep, contentDescription = stringResource(R.string.plugin_log_clear))
+            }
         },
-        containerColor = Color.Transparent,
     ) { paddingValues ->
         if (isLoading) {
             Column(
@@ -174,7 +154,7 @@ fun PluginLogScreen(navigator: DestinationsNavigator) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues),
-                contentPadding = PaddingValues(top = 8.dp, bottom = 16.dp),
+                contentPadding = PaddingValues(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 splicedLazyColumnGroup(
