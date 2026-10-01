@@ -2,7 +2,6 @@ package me.bmax.apatch.ui.screen
 
 import android.content.Intent
 import android.os.Build
-import android.system.Os
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -87,7 +86,6 @@ import me.bmax.apatch.ui.component.folk.folkGroupColor
 import me.bmax.apatch.ui.component.rememberLoadingDialog
 import me.bmax.apatch.ui.screen.settings.general.CleanStorageDialog
 import me.bmax.apatch.util.BiometricUtils
-import me.bmax.apatch.util.Version
 import me.bmax.apatch.util.getBugreportFile
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
 
@@ -105,7 +103,6 @@ private data class SecondaryEntry(
 @OptIn(ExperimentalMaterial3Api::class)
 fun SettingScreen(navigator: DestinationsNavigator) {
     val state by APApplication.apStateLiveData.observeAsState(APApplication.State.UNKNOWN_STATE)
-    val kPatchReady = state != APApplication.State.UNKNOWN_STATE
     val aPatchReady =
         (state == APApplication.State.ANDROIDPATCH_INSTALLING || state == APApplication.State.ANDROIDPATCH_INSTALLED || state == APApplication.State.ANDROIDPATCH_NEED_UPDATE)
 
@@ -115,6 +112,16 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     val loadingDialog = rememberLoadingDialog()
     val canAuthenticate = remember { BiometricUtils.isBiometricAvailable(context) }
 
+    // Local-only personalisation. Nothing here needs an account; the profile
+    // editor (next step) will write these same keys.
+    val prefs = APApplication.sharedPreferences
+    val profileNickname = remember {
+        prefs.getString("profile_nickname", null)?.takeIf { it.isNotBlank() } ?: "FolkPatch"
+    }
+    val profileSignature = remember {
+        prefs.getString("profile_signature", "").orEmpty()
+    }
+
     var showDevDialog by rememberSaveable { mutableStateOf(false) }
     DeveloperInfo(
         showDialog = showDevDialog
@@ -123,25 +130,6 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     }
 
     val cleanStorageDialogState = remember { mutableStateOf(false) }
-
-    // Device / patch identity shown in the header.
-    val uname = remember { Os.uname() }
-    val kernelShort = remember(uname.release) {
-        Regex("^[0-9]+(\\.[0-9]+)*").find(uname.release)?.value ?: uname.release
-    }
-    val kpVersion = remember(state) {
-        if (kPatchReady) runCatching { Version.installedKPVString() }.getOrDefault("") else ""
-    }
-    val kernelChip = if (kPatchReady && kpVersion.isNotBlank()) {
-        "${stringResource(R.string.kernel_patch)} $kpVersion"
-    } else {
-        stringResource(R.string.home_install_unknown)
-    }
-    val systemChip = stringResource(R.string.android_patch) + " " + if (aPatchReady) {
-        stringResource(R.string.kpm_installed)
-    } else {
-        stringResource(R.string.home_not_installed)
-    }
 
     // The icon grid holds our secondary entries - the settings categories. The
     // bottom bar already covers Home / KPModule / SuperUser / APModule / Settings,
@@ -247,12 +235,10 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                 .padding(paddingValues)
         ) {
             item(key = "identity_header") {
-                SettingsIdentityHeader(
+                ProfileHeader(
+                    nickname = profileNickname,
+                    signature = profileSignature,
                     deviceName = getDeviceInfo().trim(),
-                    kernelChip = kernelChip,
-                    systemChip = systemChip,
-                    systemActive = aPatchReady,
-                    summary = "${stringResource(R.string.home_kernel)} $kernelShort",
                 )
             }
 
@@ -326,97 +312,83 @@ fun SettingScreen(navigator: DestinationsNavigator) {
 }
 
 /**
- * Device / patch identity header - the FolkPatch equivalent of the reference
- * app's profile row. There is no account, so the "identity" is the device and
- * its patch state.
+ * Personal space header.
+ *
+ * The top of the page leads with a person-like block (avatar + nickname +
+ * optional signature) and only then shows the device facts, so the technical
+ * text no longer occupies the most expressive spot on the page.
+ *
+ * The nickname and signature read from local preferences; with no signature
+ * set the second line simply does not exist. The avatar falls back to the app
+ * mark until the user picks an image.
  */
 @Composable
-private fun SettingsIdentityHeader(
+private fun ProfileHeader(
+    nickname: String,
+    signature: String,
     deviceName: String,
-    kernelChip: String,
-    systemChip: String,
-    systemActive: Boolean,
-    summary: String,
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            .padding(horizontal = 16.dp)
+            .padding(top = 16.dp),
     ) {
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(64.dp),
-            )
-        }
-
-        Spacer(Modifier.width(16.dp))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = deviceName,
-                style = MaterialTheme.typography.titleLarge.copy(fontSize = 19.sp, lineHeight = 24.sp),
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(Modifier.height(6.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(68.dp)
+                    // Plain circle, no shadow and no coloured ring.
+                    .clip(CircleShape)
+                    .background(folkGroupColor().copy(alpha = 1f)),
+                contentAlignment = Alignment.Center,
             ) {
-                StateChip(text = kernelChip, accent = false)
-                StateChip(text = systemChip, accent = systemActive)
+                // The launcher vector carries a lot of transparent margin, so it
+                // is drawn oversized and clipped by the circle: the visible mark
+                // ends up ~29dp inside the 68dp avatar.
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(86.dp),
+                )
             }
-            Spacer(Modifier.height(4.dp))
+
+            Spacer(Modifier.width(14.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = nickname,
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 19.sp, lineHeight = 26.sp),
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Spacer(Modifier.height(5.dp))
+                // Where the reference shows an email, FolkPatch shows the device.
+                Text(
+                    text = deviceName,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, lineHeight = 20.sp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+
+        // The signature sits below the whole block, like the reference page.
+        // Nothing is rendered when the user has not written one.
+        if (signature.isNotBlank()) {
+            Spacer(Modifier.height(18.dp))
             Text(
-                text = summary,
-                style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp, lineHeight = 16.sp),
+                text = signature,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, lineHeight = 20.sp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
         }
-    }
-}
-
-@Composable
-private fun StateChip(text: String, accent: Boolean) {
-    val style = MaterialTheme.typography.labelMedium.copy(fontSize = 11.sp, lineHeight = 16.sp)
-    // Only the active state keeps a container colour; the version chip stays a
-    // plain secondary label so the header does not read as a row of buttons.
-    if (!accent) {
-        Text(
-            text = text,
-            style = style,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-        )
-        return
-    }
-    Surface(
-        shape = RoundedCornerShape(6.dp),
-        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.14f),
-        contentColor = MaterialTheme.colorScheme.primary,
-    ) {
-        Text(
-            text = text,
-            style = style,
-            fontWeight = FontWeight.Medium,
-            maxLines = 1,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-        )
     }
 }
 
