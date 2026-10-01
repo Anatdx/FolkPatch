@@ -24,7 +24,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Extension
@@ -46,12 +45,9 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -66,7 +62,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
@@ -87,6 +82,8 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ConfirmResult
+import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.component.ExpressiveSwitch
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
@@ -145,30 +142,21 @@ fun PluginScreen(navigator: DestinationsNavigator) {
         if (viewModel.plugins.isEmpty()) viewModel.fetchPlugins()
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.plugin_title), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold) },
-                navigationIcon = {
-                    IconButton(onClick = { navigator.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    IconButton(onClick = dropUnlessResumed { navigator.navigate(com.ramcosta.composedestinations.generated.destinations.OnlinePluginScreenDestination) }) {
-                        Icon(Icons.Outlined.Storefront, contentDescription = stringResource(R.string.online_plugin_title))
-                    }
-                    IconButton(onClick = dropUnlessResumed { navigator.navigate(com.ramcosta.composedestinations.generated.destinations.PluginLogScreenDestination) }) {
-                        Icon(Icons.AutoMirrored.Outlined.Article, contentDescription = stringResource(R.string.plugin_log_title))
-                    }
-                    IconButton(onClick = { viewModel.fetchPlugins() }) {
-                        Icon(Icons.Outlined.Refresh, contentDescription = stringResource(R.string.plugin_refresh))
-                    }
-                },
-                scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
-            )
+    FolkScaffold(
+        title = stringResource(R.string.plugin_title),
+        titleStyle = FolkTitleStyle.Inline,
+        onBack = { navigator.popBackStack() },
+        actions = {
+            IconButton(onClick = dropUnlessResumed { navigator.navigate(com.ramcosta.composedestinations.generated.destinations.OnlinePluginScreenDestination) }) {
+                Icon(Icons.Outlined.Storefront, contentDescription = stringResource(R.string.online_plugin_title))
+            }
+            IconButton(onClick = dropUnlessResumed { navigator.navigate(com.ramcosta.composedestinations.generated.destinations.PluginLogScreenDestination) }) {
+                Icon(Icons.AutoMirrored.Outlined.Article, contentDescription = stringResource(R.string.plugin_log_title))
+            }
+            IconButton(onClick = { viewModel.fetchPlugins() }) {
+                Icon(Icons.Outlined.Refresh, contentDescription = stringResource(R.string.plugin_refresh))
+            }
         },
-        containerColor = Color.Transparent,
         floatingActionButton = {
             if (apdReady) {
                 ExtendedFloatingActionButton(

@@ -59,6 +59,7 @@ fun FolkScaffold(
     actions: @Composable RowScope.() -> Unit = {},
     snackbarHostState: SnackbarHostState? = null,
     titleContent: (@Composable () -> Unit)? = null,
+    floatingActionButton: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
@@ -114,6 +115,7 @@ fun FolkScaffold(
                 SnackbarHost(snackbarHostState)
             }
         },
+        floatingActionButton = floatingActionButton,
     ) { inner ->
         val layoutDirection = LocalLayoutDirection.current
         val clearance = folkBottomClearance()
