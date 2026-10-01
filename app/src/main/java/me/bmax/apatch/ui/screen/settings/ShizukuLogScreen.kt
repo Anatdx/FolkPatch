@@ -7,17 +7,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.outlined.ContentCopy
@@ -26,13 +22,10 @@ import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -43,7 +36,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
@@ -53,10 +45,8 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
@@ -66,7 +56,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.FolkLogCard
+import me.bmax.apatch.ui.component.folk.FolkLogEmptyState
+import me.bmax.apatch.ui.component.folk.FolkLogLevel
+import me.bmax.apatch.ui.component.folk.FolkLogLine
+import me.bmax.apatch.ui.component.folk.FolkLogLoading
 import me.bmax.apatch.ui.component.folk.FolkTitleStyle
+import me.bmax.apatch.ui.component.folk.folkLogLevelColor
+import me.bmax.apatch.ui.component.folk.parseFolkLogLevel
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
 import me.bmax.apatch.util.ShizukuServiceManager
@@ -78,33 +75,22 @@ import androidx.compose.material.icons.outlined.*
 private enum class LogSource { SERVER, LOGCAT }
 
 /** One log line, its parsed level and where that level letter sits in the text. */
-private data class LogLine(val level: Char, val text: String, val levelIndex: Int)
+private data class LogLine(val level: FolkLogLevel, val text: String, val levelIndex: Int)
 
-private val LEVELS = listOf('V', 'D', 'I', 'W', 'E')
-
-/** Parse the log level from a line, e.g. "... I/tag: msg" or logcat's "... I/tag(pid): msg". */
-private fun parseLevel(line: String): Pair<Char, Int> {
-    // Find the first " X/" occurrence (X is the level letter)
-    var i = 0
-    while (i < line.length - 1) {
-        val c = line[i]
-        if ((c == 'V' || c == 'D' || c == 'I' || c == 'W' || c == 'E' || c == 'A')
-            && line[i + 1] == '/'
-            && (i == 0 || line[i - 1] == ' ')
-        ) {
-            return c to i
-        }
-        i++
-    }
-    return '?' to -1
-}
+private val LEVELS = listOf(
+    FolkLogLevel.Verbose,
+    FolkLogLevel.Debug,
+    FolkLogLevel.Info,
+    FolkLogLevel.Warn,
+    FolkLogLevel.Error,
+)
 
 private fun parseLines(raw: String): List<LogLine> {
     if (raw.isBlank()) return emptyList()
     return raw.split('\n')
         .filter { it.isNotBlank() }
         .map { line ->
-            val (level, index) = parseLevel(line)
+            val (level, index) = parseFolkLogLevel(line)
             LogLine(level, line, index)
         }
 }
@@ -122,7 +108,7 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
     var isLoading by remember { mutableStateOf(true) }
     var query by remember { mutableStateOf("") }
     // Active level filter; an empty set means show all.
-    var activeLevels by remember { mutableStateOf<Set<Char>>(emptySet()) }
+    var activeLevels by remember { mutableStateOf<Set<FolkLogLevel>>(emptySet()) }
     var showMenu by remember { mutableStateOf(false) }
     var isSearchActive by remember { mutableStateOf(false) }
 
@@ -318,7 +304,7 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
                                     activeLevels + level
                                 }
                             },
-                            label = { Text(level.toString(), color = levelColor(level)) },
+                            label = { Text(level.letter.toString(), color = folkLogLevelColor(level)) },
                         )
                     }
                 }
@@ -327,37 +313,16 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
             // 2) Log body: a single rounded container in the app's card style,
             // filling the remaining height like a standard manager log page.
             when {
-                isLoading -> Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator()
-                }
-                visibleLines.isEmpty() -> Column(
-                    modifier = Modifier.fillMaxSize().padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.Article,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(56.dp),
-                    )
-                    Spacer(Modifier.height(16.dp))
-                    Text(
-                        text = stringResource(R.string.shizuku_log_empty),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                isLoading -> FolkLogLoading()
+                visibleLines.isEmpty() -> FolkLogEmptyState(
+                    icon = Icons.AutoMirrored.Outlined.Article,
+                    title = stringResource(R.string.shizuku_log_empty),
+                )
                 else -> Box(modifier = Modifier.fillMaxSize().padding(bottom = 8.dp)) {
-                    Surface(
+                    FolkLogCard(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(horizontal = 16.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        color = MaterialTheme.colorScheme.surfaceContainer,
                     ) {
                         LazyColumn(
                             state = listState,
@@ -365,38 +330,10 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
                             contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
                         ) {
                             items(visibleLines) { line ->
-                                // Only the level letter carries the level colour;
-                                // the message stays neutral so a wall of lines does
-                                // not turn into a rainbow.
-                                val levelTint = levelColor(line.level)
-                                val styled = remember(line.text, levelTint) {
-                                    buildAnnotatedString {
-                                        val idx = line.levelIndex
-                                        if (idx in line.text.indices && line.level != '?') {
-                                            append(line.text.substring(0, idx))
-                                            withStyle(
-                                                SpanStyle(
-                                                    color = levelTint,
-                                                    fontWeight = FontWeight.Bold,
-                                                )
-                                            ) { append(line.level) }
-                                            append(line.text.substring(idx + 1))
-                                        } else {
-                                            append(line.text)
-                                        }
-                                    }
-                                }
-                                Text(
-                                    text = styled,
-                                    style = MaterialTheme.typography.bodySmall,
-                                    fontFamily = FontFamily.Monospace,
-                                    fontSize = 12.sp,
-                                    lineHeight = 17.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .horizontalScroll(rememberScrollState())
-                                        .padding(vertical = 1.dp),
+                                FolkLogLine(
+                                    level = line.level,
+                                    text = line.text,
+                                    levelIndex = line.levelIndex,
                                 )
                             }
                         }
@@ -405,14 +342,4 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
             }
         }
     }
-}
-
-@Composable
-private fun levelColor(level: Char): Color = when (level) {
-    'E' -> MaterialTheme.colorScheme.error
-    'W' -> Color(0xFFE29A2E)
-    'I' -> MaterialTheme.colorScheme.onSurface
-    'D' -> MaterialTheme.colorScheme.onSurfaceVariant
-    'V' -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
-    else -> MaterialTheme.colorScheme.onSurfaceVariant
 }
