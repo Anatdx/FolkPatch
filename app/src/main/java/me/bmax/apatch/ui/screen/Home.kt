@@ -72,7 +72,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -123,6 +122,7 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.apApp
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
@@ -211,11 +211,16 @@ fun HomeScreen(navigator: DestinationsNavigator) {
         )
     }
 
-    Scaffold(topBar = {
-        TopBar(onInstallClick = dropUnlessResumed {
-            navigator.navigate(InstallModeSelectScreenDestination)
-        }, navigator, kpState)
-    }) { innerPadding ->
+    FolkScaffold(
+        // Every home layout already ends with HomeBottomSpacer, so it keeps its
+        // own bottom clearance.
+        addBottomClearance = false,
+        topBar = {
+            TopBar(onInstallClick = dropUnlessResumed {
+                navigator.navigate(InstallModeSelectScreenDestination)
+            }, navigator, kpState)
+        },
+    ) { innerPadding ->
         ProvideHomeJailbreakState {
             when (homeLayout) {
                 "kernelsu" -> HomeScreenV2(innerPadding, navigator, kpState, apState)
