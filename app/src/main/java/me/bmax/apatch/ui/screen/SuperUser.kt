@@ -55,7 +55,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -102,6 +101,7 @@ import kotlinx.coroutines.launch
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.navigation.LocalBottomBarVisible
 import me.bmax.apatch.ui.navigation.LocalIsFloatingNavMode
 import me.bmax.apatch.ui.navigation.fabNavBottomClearance
@@ -233,7 +233,7 @@ private fun SuperUserScreenModern(navigator: DestinationsNavigator, useLegacySuP
 
     val filteredApps = viewModel.appList
 
-    Scaffold(
+    FolkScaffold(
         topBar = {
             if (viewModel.isSelectionMode) {
                 SelectionTopBar(
@@ -387,7 +387,10 @@ private fun SuperUserScreenModern(navigator: DestinationsNavigator, useLegacySuP
                     fabContent()
                 }
             }
-        }
+        },
+        // The list already reserves room for the FAB and the floating bar via
+        // fabNavBottomClearance, so the scaffold must not add more.
+        addBottomClearance = false,
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
             val pullToRefreshState = rememberPullToRefreshState()
