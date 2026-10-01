@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -32,11 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
@@ -51,6 +48,9 @@ import me.bmax.apatch.util.listPlugins
 import me.bmax.apatch.util.rootShellForResult
 import me.bmax.apatch.util.ui.showToast
 import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.FolkLogEmptyState
+import me.bmax.apatch.ui.component.folk.FolkLogLoading
+import me.bmax.apatch.ui.component.folk.FolkLogText
 import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.component.splicedLazyColumnGroup
 import org.json.JSONArray
@@ -119,37 +119,13 @@ fun PluginLogScreen(navigator: DestinationsNavigator) {
         },
     ) { paddingValues ->
         if (isLoading) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                androidx.compose.material3.CircularProgressIndicator()
-            }
+            FolkLogLoading(modifier = Modifier.padding(paddingValues))
         } else if (logs.isEmpty()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Outlined.Article,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(56.dp),
-                )
-                Spacer(Modifier.height(16.dp))
-                Text(
-                    text = stringResource(R.string.plugin_log_all_empty),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+            FolkLogEmptyState(
+                icon = Icons.AutoMirrored.Outlined.Article,
+                title = stringResource(R.string.plugin_log_all_empty),
+                modifier = Modifier.padding(paddingValues),
+            )
         } else {
             LazyColumn(
                 modifier = Modifier
@@ -193,15 +169,7 @@ private fun PluginLogCard(entry: PluginLogEntry) {
             )
         }
         Spacer(Modifier.height(12.dp))
-        Text(
-            text = entry.log,
-            // Same monospace metrics as the Shizuku log so the log pages read
-            // as one family.
-            fontFamily = FontFamily.Monospace,
-            fontSize = 12.sp,
-            lineHeight = 17.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        FolkLogText(text = entry.log)
     }
 }
 
