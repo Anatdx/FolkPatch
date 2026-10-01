@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
@@ -194,8 +195,11 @@ private fun PluginLogCard(entry: PluginLogEntry) {
         Spacer(Modifier.height(12.dp))
         Text(
             text = entry.log,
-            style = MaterialTheme.typography.bodySmall,
+            // Same monospace metrics as the Shizuku log so the log pages read
+            // as one family.
             fontFamily = FontFamily.Monospace,
+            fontSize = 12.sp,
+            lineHeight = 17.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
