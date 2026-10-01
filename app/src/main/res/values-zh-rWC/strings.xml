@@ -955,6 +955,7 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="profile_nickname_label">道号</string>
     <string name="profile_signature_label">道心寄语</string>
     <string name="profile_choose_avatar">更换仙容</string>
+    <string name="profile_crop_avatar">裁切仙容</string>
     <string name="profile_restore_default">归于初始</string>
     <string name="settings_section_general_basics">道文与更新</string>
     <string name="settings_section_general_interface">仙容与道韵</string>

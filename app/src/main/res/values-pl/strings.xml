@@ -878,6 +878,7 @@ Kontynuować mimo to?</string>
     <string name="profile_nickname_label">Nazwa</string>
     <string name="profile_signature_label">Podpis</string>
     <string name="profile_choose_avatar">Wybierz awatar</string>
+    <string name="profile_crop_avatar">Przytnij awatar</string>
     <string name="profile_restore_default">Przywróć domyślne</string>
     <string name="settings_section_general_basics">Język i aktualizacje</string>
     <string name="settings_section_general_interface">Interfejs i animacje</string>

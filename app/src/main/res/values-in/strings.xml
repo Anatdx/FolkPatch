@@ -936,6 +936,7 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="profile_nickname_label">Nama panggilan</string>
     <string name="profile_signature_label">Tanda tangan</string>
     <string name="profile_choose_avatar">Pilih avatar</string>
+    <string name="profile_crop_avatar">Potong avatar</string>
     <string name="profile_restore_default">Pulihkan default</string>
     <string name="settings_section_general_basics">Bahasa &amp; Pembaruan</string>
     <string name="settings_section_general_interface">Antarmuka &amp; Animasi</string>

@@ -926,6 +926,7 @@ KernelPatch는 boot 이미지를 패치해야 합니다.
     <string name="profile_nickname_label">닉네임</string>
     <string name="profile_signature_label">서명</string>
     <string name="profile_choose_avatar">아바타 선택</string>
+    <string name="profile_crop_avatar">아바타 자르기</string>
     <string name="profile_restore_default">기본값으로 복원</string>
     <string name="settings_section_general_basics">언어 및 업데이트</string>
     <string name="settings_section_general_interface">인터페이스 및 모션</string>

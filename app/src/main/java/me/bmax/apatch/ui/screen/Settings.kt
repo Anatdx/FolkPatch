@@ -1,8 +1,10 @@
 package me.bmax.apatch.ui.screen
 
 import android.content.Intent
+import android.content.ActivityNotFoundException
 import android.net.Uri
 import android.os.Build
+import androidx.compose.foundation.Image
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -29,6 +31,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -56,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -97,7 +101,9 @@ import me.bmax.apatch.ui.component.folk.FolkNavigationPreference
 import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
 import me.bmax.apatch.ui.component.folk.folkGroupColor
 import me.bmax.apatch.ui.component.rememberLoadingDialog
+import me.bmax.apatch.ui.component.rememberSystemCropLauncher
 import me.bmax.apatch.ui.screen.settings.general.CleanStorageDialog
+import me.bmax.apatch.util.ui.showToast
 import me.bmax.apatch.util.BiometricUtils
 import me.bmax.apatch.util.SafeUriResolver
 import me.bmax.apatch.util.getBugreportFile
@@ -109,7 +115,15 @@ private const val FEEDBACK_URL = "https://github.com/LyraVoid/FolkPatch/issues/n
 
 private const val PROFILE_AVATAR_FILE = "profile_avatar"
 
-/** Copies the picked image into app storage and returns a cache-busted URI. */
+/** Square size the avatar is decoded at, in pixels. */
+private const val PROFILE_AVATAR_PX = 256
+
+/**
+ * Copies the picked image into app storage and returns a cache-busted URI.
+ *
+ * The square crop itself is not re-implemented here: [me.bmax.apatch.util.BottomBarIconConfig]
+ * already centre-crops custom nav icons, and the avatar reuses that.
+ */
 private suspend fun persistProfileAvatar(context: android.content.Context, uri: Uri): String? =
     withContext(Dispatchers.IO) {
         runCatching {
@@ -153,17 +167,32 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     var profileSignature by remember { mutableStateOf(prefs.getString("profile_signature", "").orEmpty()) }
     var profileAvatar by remember { mutableStateOf(prefs.getString("profile_avatar", "").orEmpty()) }
     var showProfileEditor by rememberSaveable { mutableStateOf(false) }
+    var pendingAvatarUri by remember { mutableStateOf<Uri?>(null) }
+    var showCropChoice by remember { mutableStateOf(false) }
+
+    fun applyAvatar(uri: Uri) {
+        scope.launch {
+            persistProfileAvatar(context, uri)?.let { stored ->
+                profileAvatar = stored
+                prefs.edit { putString("profile_avatar", stored) }
+            }
+        }
+    }
+
+    // Same platform crop flow the appearance settings use, locked to a square.
+    val avatarCropLauncher = rememberSystemCropLauncher(
+        cacheName = "profile_avatar_crop_cache",
+        aspectX = 1,
+        aspectY = 1,
+        outputSize = 512,
+    ) { uri -> applyAvatar(uri) }
 
     val pickAvatarLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->
         if (uri != null) {
-            scope.launch {
-                persistProfileAvatar(context, uri)?.let { stored ->
-                    profileAvatar = stored
-                    prefs.edit { putString("profile_avatar", stored) }
-                }
-            }
+            pendingAvatarUri = uri
+            showCropChoice = true
         }
     }
 
@@ -357,6 +386,41 @@ fun SettingScreen(navigator: DestinationsNavigator) {
         CleanStorageDialog(cleanStorageDialogState)
     }
 
+    val pendingCrop = pendingAvatarUri
+    if (showCropChoice && pendingCrop != null) {
+        AlertDialog(
+            onDismissRequest = {
+                showCropChoice = false
+                pendingAvatarUri = null
+            },
+            title = { Text(stringResource(R.string.profile_crop_avatar)) },
+            text = { Text(stringResource(R.string.settings_crop_dialog_message)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    showCropChoice = false
+                    pendingAvatarUri = null
+                    try {
+                        avatarCropLauncher.launch(pendingCrop)
+                    } catch (e: ActivityNotFoundException) {
+                        showToast(context, context.getString(R.string.settings_crop_not_supported))
+                        applyAvatar(pendingCrop)
+                    }
+                }) {
+                    Text(stringResource(R.string.settings_crop_dialog_crop))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showCropChoice = false
+                    pendingAvatarUri = null
+                    applyAvatar(pendingCrop)
+                }) {
+                    Text(stringResource(R.string.settings_crop_dialog_direct))
+                }
+            },
+        )
+    }
+
     if (showProfileEditor) {
         ProfileEditSheet(
             nickname = profileNickname.ifBlank { "FolkPatch" },
@@ -405,6 +469,17 @@ private fun ProfileEditSheet(
 ) {
     var name by remember { mutableStateOf(nickname) }
     var sign by remember { mutableStateOf(signature) }
+    val context = LocalContext.current
+    val avatarBitmap = remember(avatarUri) {
+        if (avatarUri.isBlank()) {
+            null
+        } else {
+            runCatching {
+                me.bmax.apatch.util.BottomBarIconConfig
+                    .loadIconBitmap(context, avatarUri, PROFILE_AVATAR_PX)
+            }.getOrNull()?.asImageBitmap()
+        }
+    }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -437,14 +512,12 @@ private fun ProfileEditSheet(
                         .background(MaterialTheme.colorScheme.surfaceContainerHighest),
                     contentAlignment = Alignment.Center,
                 ) {
-                    if (avatarUri.isNotBlank()) {
-                        AsyncImage(
-                            model = avatarUri,
+                    if (avatarBitmap != null) {
+                        Image(
+                            bitmap = avatarBitmap,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clip(CircleShape),
+                            modifier = Modifier.fillMaxSize(),
                         )
                     } else {
                         Icon(
@@ -558,6 +631,18 @@ private fun ProfileHeader(
     avatarUri: String,
     onAvatarClick: () -> Unit,
 ) {
+    val context = LocalContext.current
+    val avatarBitmap = remember(avatarUri) {
+        if (avatarUri.isBlank()) {
+            null
+        } else {
+            runCatching {
+                me.bmax.apatch.util.BottomBarIconConfig
+                    .loadIconBitmap(context, avatarUri, PROFILE_AVATAR_PX)
+            }.getOrNull()?.asImageBitmap()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -574,14 +659,12 @@ private fun ProfileHeader(
                     .clickable(onClick = onAvatarClick),
                 contentAlignment = Alignment.Center,
             ) {
-                if (avatarUri.isNotBlank()) {
-                    AsyncImage(
-                        model = avatarUri,
+                if (avatarBitmap != null) {
+                    Image(
+                        bitmap = avatarBitmap,
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape),
+                        modifier = Modifier.fillMaxSize(),
                     )
                 } else {
                     // The launcher vector carries a lot of transparent margin, so

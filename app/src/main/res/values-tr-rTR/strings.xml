@@ -952,6 +952,7 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="profile_nickname_label">Takma ad</string>
     <string name="profile_signature_label">İmza</string>
     <string name="profile_choose_avatar">Avatar seç</string>
+    <string name="profile_crop_avatar">Avatarı kırp</string>
     <string name="profile_restore_default">Varsayılana dön</string>
     <string name="settings_section_general_basics">Dil ve Güncellemeler</string>
     <string name="settings_section_general_interface">Arayüz ve Animasyon</string>

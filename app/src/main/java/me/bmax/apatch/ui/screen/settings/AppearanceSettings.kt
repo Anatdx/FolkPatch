@@ -1,12 +1,10 @@
 package me.bmax.apatch.ui.screen.settings
 
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
 import me.bmax.apatch.ui.component.ColorGenerationModeSelector
 import me.bmax.apatch.ui.component.SliderStyleConfig
 import me.bmax.apatch.ui.component.ColorStandardSelector
@@ -18,7 +16,6 @@ import me.bmax.apatch.util.ui.showToast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import java.io.File
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
@@ -88,7 +85,6 @@ import me.bmax.apatch.ui.screen.settings.appearance.colorNameToString
 import me.bmax.apatch.ui.screen.settings.appearance.homeLayoutStyleToString
 import me.bmax.apatch.util.PermissionUtils
 import me.bmax.apatch.util.BottomBarIconConfig
-import me.bmax.apatch.util.SafeUriResolver
 import me.bmax.apatch.util.ui.FloatingBarConfig
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
@@ -101,6 +97,7 @@ import me.bmax.apatch.ui.component.folk.FolkSettingsSectionGroup
 import me.bmax.apatch.ui.component.folk.FolkSliderPreference
 import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import me.bmax.apatch.ui.component.folk.FolkValuePreference
+import me.bmax.apatch.ui.component.rememberSystemCropLauncher
 import androidx.compose.material.icons.outlined.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -125,73 +122,28 @@ fun AppearanceSettingsContent(
     var showCropOptionDialog by remember { mutableStateOf(false) }
 
     // 裁剪 launcher：将选取的图片交给系统裁剪界面，返回裁剪后的 URI
-    val cropImageLauncher = rememberLauncherForActivityResult(
-        object : ActivityResultContract<Uri, Uri?>() {
-            override fun createIntent(context: Context, input: Uri): Intent {
-                val tempFile = File(context.cacheDir, "background_crop_cache").apply {
-                    parentFile?.mkdirs()
-                    delete()
-                    createNewFile()
-                    deleteOnExit()
-                }
-
-                SafeUriResolver.openInputStream(context, input).use { inputStream ->
-                    tempFile.outputStream().use { outputStream ->
-                        inputStream.copyTo(outputStream)
-                    }
-                }
-
-                val tempUri = FileProvider.getUriForFile(
-                    context,
-                    "${context.packageName}.fileprovider",
-                    tempFile
-                )
-
-                return Intent("com.android.camera.action.CROP").apply {
-                    setDataAndType(tempUri, "image/*")
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    putExtra("crop", "true")
-
-                    val displayMetrics = context.resources.displayMetrics
-                    val screenWidth = displayMetrics.widthPixels
-                    val screenHeight = displayMetrics.heightPixels
-
-                    putExtra("aspectX", screenWidth)
-                    putExtra("aspectY", screenHeight)
-                    putExtra("outputX", screenWidth)
-                    putExtra("outputY", screenHeight)
-
-                    putExtra("return-data", false)
-                    putExtra(MediaStore.EXTRA_OUTPUT, tempUri)
-                }
+    // （共用 ui/component/ImageCrop.kt 的实现）
+    val cropImageLauncher = rememberSystemCropLauncher(
+        cacheName = "background_crop_cache",
+    ) { uri: Uri ->
+        scope.launch {
+            loadingDialog.show()
+            val success = when (pickingType) {
+                "home" -> BackgroundManager.saveAndApplyHomeBackground(context, uri)
+                "kernel" -> BackgroundManager.saveAndApplyKernelBackground(context, uri)
+                "superuser" -> BackgroundManager.saveAndApplySuperuserBackground(context, uri)
+                "system" -> BackgroundManager.saveAndApplySystemModuleBackground(context, uri)
+                "settings" -> BackgroundManager.saveAndApplySettingsBackground(context, uri)
+                else -> BackgroundManager.saveAndApplyCustomBackground(context, uri)
             }
-
-            override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-                return if (resultCode == Activity.RESULT_OK) intent?.data else null
+            loadingDialog.hide()
+            if (success) {
+                snackBarHost.showSnackbar(message = context.getString(R.string.settings_custom_background_saved))
+                refreshTheme.value = true
+            } else {
+                snackBarHost.showSnackbar(message = context.getString(R.string.settings_custom_background_error))
             }
-        }
-    ) { uri: Uri? ->
-        uri?.let {
-            scope.launch {
-                loadingDialog.show()
-                val success = when (pickingType) {
-                    "home" -> BackgroundManager.saveAndApplyHomeBackground(context, it)
-                    "kernel" -> BackgroundManager.saveAndApplyKernelBackground(context, it)
-                    "superuser" -> BackgroundManager.saveAndApplySuperuserBackground(context, it)
-                    "system" -> BackgroundManager.saveAndApplySystemModuleBackground(context, it)
-                    "settings" -> BackgroundManager.saveAndApplySettingsBackground(context, it)
-                    else -> BackgroundManager.saveAndApplyCustomBackground(context, it)
-                }
-                loadingDialog.hide()
-                if (success) {
-                    snackBarHost.showSnackbar(message = context.getString(R.string.settings_custom_background_saved))
-                    refreshTheme.value = true
-                } else {
-                    snackBarHost.showSnackbar(message = context.getString(R.string.settings_custom_background_error))
-                }
-                pickingType = null
-            }
+            pickingType = null
         }
     }
 
