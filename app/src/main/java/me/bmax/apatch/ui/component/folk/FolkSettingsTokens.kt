@@ -71,14 +71,15 @@ object FolkSettingsDimens {
      * Vertical padding of a row.
      *
      * Constant, not content-dependent: the reference's single-line rows are
-     * ~55dp (2x17 + one 21dp line) and its two-line rows ~74dp (2x17 + 21 + 18),
+     * ~55dp (2x16 + one 20dp line, floored by the row's 56dp minimum) and its
+     * two-line rows ~74dp (2x16 + 20 + 18),
      * i.e. the height difference comes purely from the extra text line. Our
      * previous 13/17 split made single-line rows too tight and two-line rows
      * too tall, which is what read as "uneven / oddly large".
      */
-    val ItemVerticalPadding = 17.dp
+    val ItemVerticalPadding = 16.dp
 
-    val ItemVerticalPaddingWithSummary = 17.dp
+    val ItemVerticalPaddingWithSummary = 16.dp
 
     /** Leading icon size. The reference uses a standard 24dp icon box. */
     val IconSize = 24.dp
@@ -96,7 +97,7 @@ object FolkSettingsDimens {
     val TrailingSpacing = 14.dp
 
     /** Trailing chevron size. */
-    val ChevronSize = 20.dp
+    val ChevronSize = 18.dp
 
     val GroupShape = RoundedCornerShape(GroupCornerRadius)
 }
@@ -150,12 +151,12 @@ fun folkSectionTitleStyle(): TextStyle = MaterialTheme.typography.labelLarge.cop
  */
 @Composable
 fun folkPreferenceTitleStyle(): TextStyle = MaterialTheme.typography.bodyLarge.copy(
-    fontSize = 16.sp,
-    // Matches the reference's 21dp title line box, so a single-line row lands
-    // on ~53dp and a two-line row on ~73dp.
-    lineHeight = 21.sp,
-    fontWeight = FontWeight.SemiBold,
-    letterSpacing = 0.2.sp,
+    fontSize = 15.sp,
+    // 20dp line box: a single-line row lands on ~56dp (via the row's minimum
+    // height) and a two-line row on ~72dp, close to the reference's 55/74dp.
+    lineHeight = 20.sp,
+    fontWeight = FontWeight.Medium,
+    letterSpacing = 0.sp,
 )
 
 @Composable
@@ -163,7 +164,7 @@ fun folkPreferenceSummaryStyle(): TextStyle = MaterialTheme.typography.bodySmall
     fontSize = 13.sp,
     lineHeight = 18.sp,
     fontWeight = FontWeight.Normal,
-    letterSpacing = 0.3.sp,
+    letterSpacing = 0.sp,
 )
 
 @Composable

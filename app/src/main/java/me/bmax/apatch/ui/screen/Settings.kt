@@ -57,6 +57,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.dropUnlessResumed
@@ -95,6 +96,7 @@ private const val FEEDBACK_URL = "https://github.com/LyraVoid/FolkPatch/issues/n
 private data class SecondaryEntry(
     val icon: ImageVector,
     val label: String,
+    val iconSize: Dp = 24.dp,
     val onClick: () -> Unit,
 )
 
@@ -202,6 +204,9 @@ fun SettingScreen(navigator: DestinationsNavigator) {
             SecondaryEntry(
                 icon = Icons.Outlined.MusicNote,
                 label = stringResource(R.string.settings_category_multimedia),
+                // The music note's glyph is optically narrower than the others,
+                // so it needs a touch more size to carry the same weight.
+                iconSize = 26.dp,
                 onClick = { navigator.navigate(MultimediaSettingsScreenDestination(null)) },
             )
         )
@@ -213,8 +218,11 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                 title = {
                     Text(
                         text = stringResource(R.string.settings),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontSize = 22.sp,
+                            lineHeight = 28.sp,
+                        ),
+                        fontWeight = FontWeight.Medium,
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -249,13 +257,13 @@ fun SettingScreen(navigator: DestinationsNavigator) {
             }
 
             item(key = "secondary_entries") {
-                Spacer(Modifier.height(14.dp))
+                Spacer(Modifier.height(20.dp))
                 SettingsIconGrid(entries = secondaryEntries)
             }
 
             item(key = "utility_rows") {
-                Spacer(Modifier.height(17.dp))
-                FolkSettingsGroup(shape = RoundedCornerShape(8.dp)) {
+                Spacer(Modifier.height(16.dp))
+                FolkSettingsGroup(shape = RoundedCornerShape(12.dp)) {
                     item(key = "utility_send_log") {
                         FolkNavigationPreference(
                             icon = Icons.Outlined.Description,
@@ -351,26 +359,29 @@ private fun SettingsIdentityHeader(
             )
         }
 
-        Spacer(Modifier.width(14.dp))
+        Spacer(Modifier.width(16.dp))
 
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = deviceName,
-                style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp, lineHeight = 26.sp),
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleLarge.copy(fontSize = 19.sp, lineHeight = 24.sp),
+                fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Spacer(Modifier.height(7.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Spacer(Modifier.height(6.dp))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 StateChip(text = kernelChip, accent = false)
                 StateChip(text = systemChip, accent = systemActive)
             }
-            Spacer(Modifier.height(7.dp))
+            Spacer(Modifier.height(4.dp))
             Text(
                 text = summary,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp, lineHeight = 16.sp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -381,24 +392,27 @@ private fun SettingsIdentityHeader(
 
 @Composable
 private fun StateChip(text: String, accent: Boolean) {
-    val container = if (accent) {
-        MaterialTheme.colorScheme.primary.copy(alpha = 0.14f)
-    } else {
-        folkGroupColor().copy(alpha = 1f)
-    }
-    val content = if (accent) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
+    val style = MaterialTheme.typography.labelMedium.copy(fontSize = 11.sp, lineHeight = 16.sp)
+    // Only the active state keeps a container colour; the version chip stays a
+    // plain secondary label so the header does not read as a row of buttons.
+    if (!accent) {
+        Text(
+            text = text,
+            style = style,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+        )
+        return
     }
     Surface(
-        shape = RoundedCornerShape(8.dp),
-        color = container,
-        contentColor = content,
+        shape = RoundedCornerShape(6.dp),
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.14f),
+        contentColor = MaterialTheme.colorScheme.primary,
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelMedium,
+            style = style,
             fontWeight = FontWeight.Medium,
             maxLines = 1,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
@@ -416,7 +430,7 @@ private fun SettingsIconGrid(entries: List<SecondaryEntry>) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(12.dp),
         color = folkGroupColor(),
         tonalElevation = 0.dp,
     ) {
@@ -445,7 +459,7 @@ private fun GridEntry(
 ) {
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = entry.onClick)
             .padding(vertical = 8.dp, horizontal = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -454,7 +468,7 @@ private fun GridEntry(
             imageVector = entry.icon,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(entry.iconSize),
         )
         Spacer(Modifier.height(10.dp))
         Text(

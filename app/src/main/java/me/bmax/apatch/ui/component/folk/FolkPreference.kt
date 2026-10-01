@@ -4,6 +4,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -110,6 +111,9 @@ internal fun FolkPreferenceRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            // Every row keeps at least a 56dp touch target, but rows still
+            // grow with their content instead of being force-filled.
+            .defaultMinSize(minHeight = 56.dp)
             .padding(
                 start = FolkSettingsDimens.ItemHorizontalPadding,
                 end = FolkSettingsDimens.ItemEndPadding,
