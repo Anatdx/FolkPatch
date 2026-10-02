@@ -22,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.InstallMobile
-import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material.icons.filled.Fingerprint
@@ -46,7 +45,6 @@ import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material.icons.outlined.SdStorage
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import androidx.compose.material3.ElevatedCard
@@ -55,8 +53,6 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -79,7 +75,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.lifecycle.compose.dropUnlessResumed
@@ -104,7 +99,6 @@ import me.bmax.apatch.util.Version
 import me.bmax.apatch.util.Version.getManagerVersion
 import me.bmax.apatch.util.getSELinuxStatus
 import me.bmax.apatch.util.migrateStockBootBackup
-import me.bmax.apatch.util.reboot
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.HomeBottomSpacer
 
@@ -357,303 +351,6 @@ fun UninstallDialog(showDialog: MutableState<Boolean>, navigator: DestinationsNa
     }
 }
 
-@Composable
-fun StatusBadge(
-    text: String,
-    containerColor: Color = MaterialTheme.colorScheme.onPrimary,
-    contentColor: Color = MaterialTheme.colorScheme.primary
-) {
-    Surface(
-        color = containerColor.copy(alpha = 1f),
-        shape = RoundedCornerShape(4.dp),
-        tonalElevation = 0.dp,
-        shadowElevation = 0.dp
-    ) {
-        Text(
-            text = text,
-            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-            style = MaterialTheme.typography.labelSmall,
-            color = contentColor.copy(alpha = 1f),
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
-private fun KStatusCard(
-    kpState: APApplication.State, apState: APApplication.State, navigator: DestinationsNavigator
-) {
-
-    val showUninstallDialog = remember { mutableStateOf(false) }
-    if (showUninstallDialog.value) {
-        UninstallDialog(showDialog = showUninstallDialog, navigator)
-    }
-
-    val prefs = APApplication.sharedPreferences
-
-    // Check if update notification is blocked
-    val kpState = if (kpState == APApplication.State.KERNELPATCH_NEED_UPDATE && apApp.isKernelPatchUpdateBlocked()) {
-        APApplication.State.KERNELPATCH_INSTALLED
-    } else {
-        kpState
-    }
-
-    val apState = if (apState == APApplication.State.ANDROIDPATCH_NEED_UPDATE && apApp.isAndroidPatchUpdateBlocked()) {
-        APApplication.State.ANDROIDPATCH_INSTALLED
-    } else {
-        apState
-    }
-
-    val darkThemeFollowSys = prefs.getBoolean("night_mode_follow_sys", false)
-    val nightModeEnabled = prefs.getBoolean("night_mode_enabled", true)
-    val isDarkTheme = if (darkThemeFollowSys) {
-        isSystemInDarkTheme()
-    } else {
-        nightModeEnabled
-    }
-
-    // Jailbreak button appears when the kernel is not installed and SELinux is permissive.
-    val jailbreakState = LocalHomeJailbreakState.current
-    val isPermissive = jailbreakState.isPermissive
-    val isJailbreak = jailbreakState.isActive
-
-    val (cardBackgroundColor, cardContentColor) = when {
-        isJailbreak -> {
-            val containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
-                MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)
-            } else {
-                MaterialTheme.colorScheme.tertiaryContainer
-            }
-            containerColor to MaterialTheme.colorScheme.onTertiaryContainer
-        }
-
-        kpState == APApplication.State.KERNELPATCH_INSTALLED -> {
-            if (BackgroundConfig.isCustomBackgroundEnabled) {
-                val opacity = BackgroundConfig.customBackgroundOpacity
-                val contentColor = if (opacity <= 0.1f) {
-                    if (isDarkTheme) Color.White else Color.Black
-                } else {
-                    MaterialTheme.colorScheme.onPrimary
-                }
-                MaterialTheme.colorScheme.primary.copy(alpha = opacity) to contentColor
-            } else {
-                MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
-            }
-        }
-
-        kpState == APApplication.State.KERNELPATCH_NEED_UPDATE || kpState == APApplication.State.KERNELPATCH_NEED_REBOOT -> {
-            if (BackgroundConfig.isCustomBackgroundEnabled) {
-                MaterialTheme.colorScheme.secondary.copy(alpha = BackgroundConfig.customBackgroundOpacity) to MaterialTheme.colorScheme.onSecondary
-            } else {
-                MaterialTheme.colorScheme.secondary to MaterialTheme.colorScheme.onSecondary
-            }
-        }
-
-        else -> {
-            MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp) to MaterialTheme.colorScheme.onSurface
-        }
-    }
-
-    Card(
-        onClick = {
-            if (!isJailbreak && kpState != APApplication.State.KERNELPATCH_INSTALLED) {
-                navigator.navigate(InstallModeSelectScreenDestination)
-            }
-        },
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = cardBackgroundColor,
-            contentColor = cardContentColor
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (!isJailbreak && kpState == APApplication.State.KERNELPATCH_NEED_UPDATE) {
-                Row {
-                    Text(
-                        text = stringResource(R.string.kernel_patch),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                when {
-                    isJailbreak -> {
-                        Icon(Icons.Filled.LockOpen, stringResource(R.string.settings_jailbreak_mode))
-                    }
-
-                    kpState == APApplication.State.KERNELPATCH_INSTALLED -> {
-                        Icon(Icons.Filled.CheckCircle, stringResource(R.string.home_working))
-                    }
-
-                    kpState == APApplication.State.KERNELPATCH_NEED_UPDATE || kpState == APApplication.State.KERNELPATCH_NEED_REBOOT -> {
-                        Icon(Icons.Outlined.SystemUpdate, stringResource(R.string.home_kp_need_update))
-                    }
-
-                    else -> {
-                        Icon(Icons.AutoMirrored.Outlined.HelpOutline, "Unknown")
-                    }
-                }
-                Column(
-                    Modifier
-                        .weight(2f)
-                        .padding(start = 16.dp)
-                ) {
-                    when {
-                        isJailbreak -> {
-                            Text(
-                                text = stringResource(R.string.settings_jailbreak_mode),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Spacer(Modifier.height(6.dp))
-                            Text(
-                                text = stringResource(R.string.settings_jailbreak_mode_summary),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-
-                        kpState == APApplication.State.KERNELPATCH_INSTALLED -> {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = if (BackgroundConfig.isListWorkingCardModeHidden) {
-                                        stringResource(R.string.home_working) + "😋"
-                                    } else {
-                                        stringResource(R.string.home_working)
-                                    },
-                                    style = MaterialTheme.typography.titleMedium
-                                )
-                                if (!BackgroundConfig.isListWorkingCardModeHidden) {
-                                    Spacer(Modifier.width(8.dp))
-                                    StatusBadge(
-                                        text = BackgroundConfig.getCustomBadgeText() ?: if (apState == APApplication.State.ANDROIDPATCH_INSTALLED) "Full" else "Half"
-                                    )
-                                }
-                            }
-                        }
-
-                        kpState == APApplication.State.KERNELPATCH_NEED_UPDATE || kpState == APApplication.State.KERNELPATCH_NEED_REBOOT -> {
-                            Text(
-                                text = stringResource(R.string.home_kp_need_update),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Spacer(Modifier.height(6.dp))
-                            Text(
-                                text = stringResource(
-                                    R.string.kpatch_version_update,
-                                    Version.installedKPVString(),
-                                    Version.buildKPVString()
-                                ), style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-
-                        else -> {
-                            Text(
-                                text = stringResource(R.string.home_install_unknown),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Text(
-                                text = stringResource(R.string.home_install_unknown_summary),
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                        }
-                    }
-                    if (!isJailbreak && kpState != APApplication.State.UNKNOWN_STATE && kpState != APApplication.State.KERNELPATCH_NEED_UPDATE && kpState != APApplication.State.KERNELPATCH_NEED_REBOOT) {
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            text = "${Version.installedKPVString()} (${managerVersion.second})" + if (BackgroundConfig.isListWorkingCardModeHidden) " - " + (if (apState != APApplication.State.ANDROIDPATCH_NOT_INSTALLED) "Full" else "KernelPatch") else "",
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    }
-                }
-
-                Column(
-                    modifier = Modifier.align(Alignment.CenterVertically)
-                ) {
-                    val onAction = {
-                        when {
-                            isJailbreak -> jailbreakState.performPrimaryAction()
-
-                            kpState == APApplication.State.UNKNOWN_STATE -> {
-                                navigator.navigate(InstallModeSelectScreenDestination)
-                            }
-
-                            kpState == APApplication.State.KERNELPATCH_NEED_UPDATE -> {
-                                // todo: remove legacy compact for kp < 0.9.0
-                                if (Version.installedKPVUInt() < 0x900u) {
-                                    navigator.navigate(PatchesDestination(PatchesViewModel.PatchMode.PATCH_ONLY))
-                                } else {
-                                    navigator.navigate(InstallModeSelectScreenDestination)
-                                }
-                            }
-
-                            kpState == APApplication.State.KERNELPATCH_NEED_REBOOT -> {
-                                reboot()
-                            }
-
-                            kpState == APApplication.State.KERNELPATCH_UNINSTALLING -> {
-                                // Do nothing
-                            }
-
-                            else -> {
-                                if (apState == APApplication.State.ANDROIDPATCH_INSTALLED) {
-                                    showUninstallDialog.value = true
-                                } else {
-                                    navigator.navigate(PatchesDestination(PatchesViewModel.PatchMode.UNPATCH))
-                                }
-                            }
-                        }
-                    }
-
-                    Button(
-                        onClick = {
-                            if (kpState == APApplication.State.UNKNOWN_STATE && isPermissive) {
-                                jailbreakState.performPrimaryAction()
-                            } else {
-                                onAction()
-                            }
-                        },
-                        enabled = !jailbreakState.isTriggering,
-                        colors = if (BackgroundConfig.isCustomBackgroundEnabled && kpState == APApplication.State.KERNELPATCH_INSTALLED) {
-                            val opacity = BackgroundConfig.customBackgroundOpacity
-                            val contentColor = if (opacity <= 0.1f) {
-                                if (isDarkTheme) Color.White else Color.Black
-                            } else {
-                                MaterialTheme.colorScheme.onPrimary
-                            }
-                            ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = opacity),
-                                contentColor = contentColor
-                            )
-                        } else {
-                            ButtonDefaults.buttonColors()
-                        }, content = {
-                            when {
-                                jailbreakState.isTriggering -> Icon(Icons.Outlined.Cached, contentDescription = null)
-                                isJailbreak -> Text(text = stringResource(R.string.reboot_soft))
-                                kpState == APApplication.State.UNKNOWN_STATE && isPermissive -> Text(text = stringResource(R.string.jailbreak))
-                                else -> when (kpState) {
-                                APApplication.State.UNKNOWN_STATE -> Text(text = stringResource(id = R.string.home_ap_cando_install))
-                                APApplication.State.KERNELPATCH_NEED_UPDATE -> Text(text = stringResource(id = R.string.home_kp_cando_update))
-                                APApplication.State.KERNELPATCH_NEED_REBOOT -> Text(text = stringResource(id = R.string.home_ap_cando_reboot))
-                                APApplication.State.KERNELPATCH_UNINSTALLING -> Icon(Icons.Outlined.Cached, contentDescription = "busy")
-                                else -> Text(text = stringResource(id = R.string.home_ap_cando_uninstall))
-                                }
-                            }
-                        })
-                }
-            }
-        }
-    }
-}
 @Composable
 fun AStatusCard(apState: APApplication.State) {
     Card(
