@@ -10,18 +10,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -47,6 +42,7 @@ import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.apApp
 import me.bmax.apatch.data.ScriptInfo
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.util.getSafeDownloadsDir
 import me.bmax.apatch.util.ui.AnsiUtils
 import me.bmax.apatch.util.ui.LocalSnackbarHost
@@ -56,7 +52,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination<RootGraph>
 @Composable
 fun ScriptExecutionLogScreen(
@@ -160,45 +155,36 @@ fun ScriptExecutionLogScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.script_library_output)) },
-                navigationIcon = {
-                    IconButton(
-                        onClick = { navigator.popBackStack() }
-                    ) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            scope.launch {
-                                try {
-                                    val format = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault())
-                                    val date = format.format(Date())
-                                    val file = File(
-                                        getSafeDownloadsDir(context),
-                                        "FolkPatch/${scriptInfo.alias}_${date}.log"
-                                    )
-                                    file.writeText(fullLogBuffer.toString())
-                                    snackBarHost.showSnackbar("Log saved to ${file.absolutePath}")
-                                } catch (e: Exception) {
-                                    snackBarHost.showSnackbar("Failed to save log: ${e.message}")
-                                }
-                            }
+    FolkScaffold(
+        title = stringResource(R.string.script_library_output),
+        onBack = { navigator.popBackStack() },
+        actions = {
+            IconButton(
+                onClick = {
+                    scope.launch {
+                        try {
+                            val format = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault())
+                            val date = format.format(Date())
+                            val file = File(
+                                getSafeDownloadsDir(context),
+                                "FolkPatch/${scriptInfo.alias}_${date}.log"
+                            )
+                            file.writeText(fullLogBuffer.toString())
+                            snackBarHost.showSnackbar("Log saved to ${file.absolutePath}")
+                        } catch (e: Exception) {
+                            snackBarHost.showSnackbar("Failed to save log: ${e.message}")
                         }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Save,
-                            contentDescription = stringResource(R.string.script_library_save_log)
-                        )
                     }
                 }
-            )
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Save,
+                    contentDescription = stringResource(R.string.script_library_save_log)
+                )
+            }
         },
-        snackbarHost = { SnackbarHost(snackBarHost) },
+        snackbarHostState = snackBarHost,
+        addBottomClearance = false,
         bottomBar = {
             Row(
                 modifier = Modifier
