@@ -26,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -52,14 +54,20 @@ fun FolkPreference(
     trailing: (@Composable () -> Unit)? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
     val clickModifier = if (onClick != null) {
-        Modifier.combinedClickable(
-            enabled = enabled,
-            interactionSource = interactionSource,
-            indication = ripple(),
-            onClick = onClick,
-            onLongClick = onLongClick,
-        )
+        Modifier
+            .folkPressScale(interactionSource, enabled)
+            .combinedClickable(
+                enabled = enabled,
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = {
+                    haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onClick()
+                },
+                onLongClick = onLongClick,
+            )
     } else {
         Modifier
     }
