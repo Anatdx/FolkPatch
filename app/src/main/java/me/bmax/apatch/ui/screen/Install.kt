@@ -1,8 +1,7 @@
 package me.bmax.apatch.ui.screen
 
-import android.net.Uri
-import android.os.Environment
 import android.content.Intent
+import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.animation.core.tween
@@ -12,19 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,7 +32,6 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.dropUnlessResumed
 import com.ramcosta.composedestinations.annotation.Destination
@@ -50,6 +43,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.KeyEventBlocker
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.util.getSafeDownloadsDir
 import me.bmax.apatch.util.installModule
 import me.bmax.apatch.util.BulkInstallManager
@@ -147,62 +141,71 @@ fun InstallScreen(navigator: DestinationsNavigator, uri: Uri, type: MODULE_TYPE)
         }
     }
 
-    Scaffold(topBar = {
-        TopBar(onBack = dropUnlessResumed {
+    FolkScaffold(
+        title = stringResource(R.string.apm_install),
+        onBack = dropUnlessResumed {
             if (isExternalInstall) {
                 activity?.finish()
             } else {
                 BulkInstallManager.clear()
                 navigator.popBackStack()
             }
-        }, onSave = {
-            scope.launch {
-                val format = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault())
-                val date = format.format(Date())
-                val file = File(
-                    getSafeDownloadsDir(context),
-                    "APatch_install_${type}_log_${date}.log"
+        },
+        actions = {
+            IconButton(onClick = {
+                scope.launch {
+                    val format = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault())
+                    val date = format.format(Date())
+                    val file = File(
+                        getSafeDownloadsDir(context),
+                        "APatch_install_${type}_log_${date}.log"
+                    )
+                    file.writeText(fullLogBuffer.toString())
+                    snackBarHost.showSnackbar("Log saved to ${file.absolutePath}")
+                }
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.Save, contentDescription = "Save"
                 )
-                file.writeText(fullLogBuffer.toString())
-                snackBarHost.showSnackbar("Log saved to ${file.absolutePath}")
             }
-        })
-    }, floatingActionButton = {
-        if (showFloatAction) {
-            if (BulkInstallManager.hasNext()) {
-                val nextText = stringResource(id = R.string.next_module)
-                ExtendedFloatingActionButton(
-                    onClick = {
-                        val nextUri = BulkInstallManager.popNext()
-                        if (nextUri != null) {
-                            navigator.popBackStack()
-                            navigator.navigate(InstallScreenDestination(nextUri, type))
-                        }
-                    },
-                    icon = { Icon(Icons.AutoMirrored.Filled.ArrowForward, nextText) },
-                    text = { Text(text = nextText) },
-                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 1f),
-                    contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 1f),
-                )
-            } else {
-                val reboot = stringResource(id = R.string.reboot)
-                ExtendedFloatingActionButton(
-                    onClick = {
-                        scope.launch {
-                            withContext(Dispatchers.IO) {
-                                reboot()
+        },
+        snackbarHostState = snackBarHost,
+        floatingActionButton = {
+            if (showFloatAction) {
+                if (BulkInstallManager.hasNext()) {
+                    val nextText = stringResource(id = R.string.next_module)
+                    ExtendedFloatingActionButton(
+                        onClick = {
+                            val nextUri = BulkInstallManager.popNext()
+                            if (nextUri != null) {
+                                navigator.popBackStack()
+                                navigator.navigate(InstallScreenDestination(nextUri, type))
                             }
-                        }
-                    },
-                    icon = { Icon(Icons.Filled.Refresh, reboot) },
-                    text = { Text(text = reboot) },
-                    containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 1f),
-                    contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 1f),
-                )
+                        },
+                        icon = { Icon(Icons.AutoMirrored.Filled.ArrowForward, nextText) },
+                        text = { Text(text = nextText) },
+                        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 1f),
+                        contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 1f),
+                    )
+                } else {
+                    val reboot = stringResource(id = R.string.reboot)
+                    ExtendedFloatingActionButton(
+                        onClick = {
+                            scope.launch {
+                                withContext(Dispatchers.IO) {
+                                    reboot()
+                                }
+                            }
+                        },
+                        icon = { Icon(Icons.Filled.Refresh, reboot) },
+                        text = { Text(text = reboot) },
+                        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 1f),
+                        contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 1f),
+                    )
+                }
             }
-        }
-
-    }, snackbarHost = { SnackbarHost(snackBarHost) }) { innerPadding ->
+        },
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize(1f)
@@ -221,26 +224,4 @@ fun InstallScreen(navigator: DestinationsNavigator, uri: Uri, type: MODULE_TYPE)
             )
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar(onBack: () -> Unit = {}, onSave: () -> Unit = {}) {
-    TopAppBar(title = { Text(stringResource(R.string.apm_install)) }, navigationIcon = {
-        IconButton(
-            onClick = onBack
-        ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") }
-    }, actions = {
-        IconButton(onClick = onSave) {
-            Icon(
-                imageVector = Icons.Filled.Save, contentDescription = "Save"
-            )
-        }
-    })
-}
-
-@Preview
-@Composable
-fun InstallPreview() {
-//    InstallScreen(DestinationsNavigator(), uri = Uri.EMPTY)
 }
