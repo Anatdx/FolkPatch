@@ -27,6 +27,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.edit
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.theme.ThemeManager
 import me.bmax.apatch.ui.theme.refreshTheme
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
@@ -368,7 +369,8 @@ fun ThemeExportDialog(
                                 onConfirm(ThemeManager.ThemeMetadata(name = name, type = type, version = version, author = author, description = description))
                             }
                         },
-                        enabled = name.isNotEmpty()
+                        enabled = name.isNotEmpty(),
+                        colors = FolkButtonDefaults.filledColors()
                     ) { Text(stringResource(R.string.theme_export_action)) }
                 }
             }
@@ -446,7 +448,7 @@ fun ThemeImportDialog(
                 }
                 Row(modifier = Modifier.fillMaxWidth().padding(top = 20.dp), horizontalArrangement = Arrangement.End) {
                     TextButton(onClick = { showDialog.value = false }) { Text(stringResource(android.R.string.cancel)) }
-                    Button(onClick = { showDialog.value = false; onConfirm() }) { Text(stringResource(R.string.theme_import_action)) }
+                    Button(onClick = { showDialog.value = false; onConfirm() }, colors = FolkButtonDefaults.filledColors()) { Text(stringResource(R.string.theme_import_action)) }
                 }
             }
             val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
@@ -595,7 +597,8 @@ fun BannerApiConfigDialog(
                     OutlinedButton(onClick = { onClearCache() }, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.apm_banner_clear_cache)) }
                     Button(
                         onClick = { onConfirm(sourceText); showDialog.value = false; showToast(context, context.getString(R.string.apm_banner_api_source_saved)) },
-                        enabled = sourceText.isNotBlank(), modifier = Modifier.weight(1f)
+                        enabled = sourceText.isNotBlank(), modifier = Modifier.weight(1f),
+                        colors = FolkButtonDefaults.filledColors()
                     ) { Text(stringResource(android.R.string.ok)) }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
