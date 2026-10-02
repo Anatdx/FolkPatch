@@ -5,23 +5,13 @@ import android.net.Uri
 import me.bmax.apatch.util.ui.showToast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.ExpressiveCard
 import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.ui.component.LoadingDialogHandle
 import me.bmax.apatch.ui.theme.BackgroundConfig
@@ -29,12 +19,6 @@ import me.bmax.apatch.ui.theme.BackgroundManager
 import me.bmax.apatch.ui.theme.refreshTheme
 import me.bmax.apatch.ui.screen.settings.appearance.homeLayoutStyleToString
 import me.bmax.apatch.util.PermissionUtils
-import me.bmax.apatch.util.BottomBarIconConfig
-import me.bmax.apatch.util.ui.FloatingBarConfig
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import coil.compose.AsyncImage
 import me.bmax.apatch.ui.component.folk.FolkSettingsSectionGroup
 import me.bmax.apatch.ui.component.folk.FolkSliderPreference
 import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
@@ -117,323 +101,33 @@ fun AppearanceLayoutSection(
         )
         }
 
-        if (kPatchReady) {
-            item(key = "appearance_nav_layout") {
-                var expanded by remember { mutableStateOf(false) }
-                val rotationState by animateFloatAsState(
-                    targetValue = if (expanded) 180f else 0f,
-                    label = "ArrowRotation",
-                )
-                ExpressiveCard(flat = flat, onClick = { expanded = !expanded }) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(imageVector = Icons.Filled.Navigation, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(24.dp))
-                        Spacer(Modifier.width(16.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(id = R.string.settings_nav_layout_title),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = stringResource(id = R.string.settings_nav_layout_summary),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.outline,
-                            )
-                        }
-                        Icon(
-                            imageVector = Icons.Filled.KeyboardArrowDown,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.rotate(rotationState),
-                        )
-                    }
-                }
-                AnimatedVisibility(visible = expanded) {
-                    Column(modifier = Modifier.padding(start = 16.dp, top = 8.dp)) {
-                        me.bmax.apatch.ui.component.CheckboxItem(
-                            icon = null,
-                            title = stringResource(id = R.string.settings_show_apm),
-                            summary = null,
-                            checked = showNavApm,
-                            onCheckedChange = {
-                                onShowNavApmChange(it)
-                                prefs.edit().putBoolean("show_nav_apm", it).apply()
-                            },
-                        )
-                        me.bmax.apatch.ui.component.CheckboxItem(
-                            icon = null,
-                            title = stringResource(id = R.string.settings_show_kpm),
-                            summary = null,
-                            checked = showNavKpm,
-                            onCheckedChange = {
-                                onShowNavKpmChange(it)
-                                prefs.edit().putBoolean("show_nav_kpm", it).apply()
-                            },
-                        )
-                        me.bmax.apatch.ui.component.CheckboxItem(
-                            icon = null,
-                            title = stringResource(id = R.string.settings_show_superuser),
-                            summary = null,
-                            checked = showNavSuperUser,
-                            onCheckedChange = {
-                                onShowNavSuperUserChange(it)
-                                prefs.edit().putBoolean("show_nav_superuser", it).apply()
-                            },
-                        )
-                    }
-                }
-            }
-        }
-
-        item(key = "appearance_nav_scheme") {
-            FolkValuePreference(
-            icon = Icons.Outlined.Menu,
-            title = stringResource(id = R.string.settings_nav_scheme),
-            summary = navSchemeLabel,
-            onClick = { onShowNavSchemeDialog() },
+        appearanceNavItems(
+            kPatchReady = kPatchReady,
+            isFloatingNav = isFloatingNav,
+            flat = flat,
+            context = context,
+            prefs = prefs,
+            showNavApm = showNavApm,
+            onShowNavApmChange = onShowNavApmChange,
+            showNavKpm = showNavKpm,
+            onShowNavKpmChange = onShowNavKpmChange,
+            showNavSuperUser = showNavSuperUser,
+            onShowNavSuperUserChange = onShowNavSuperUserChange,
+            navSchemeLabel = navSchemeLabel,
+            onShowNavSchemeDialog = onShowNavSchemeDialog,
+            floatingAutoHide = floatingAutoHide,
+            onFloatingAutoHideChange = onFloatingAutoHideChange,
+            floatingSwipeHide = floatingSwipeHide,
+            onFloatingSwipeHideChange = onFloatingSwipeHideChange,
         )
-        }
 
-        if (isFloatingNav) {
-            item(key = "appearance_navbar_glass") {
-                FolkSwitchPreference(
-                    icon = Icons.Outlined.AutoAwesome,
-                    title = stringResource(id = R.string.settings_navbar_glass_effect),
-                    summary = stringResource(id = R.string.settings_navbar_glass_effect_summary),
-                    checked = BackgroundConfig.isNavBarGlassEnabled,
-                    onCheckedChange = {
-                        BackgroundConfig.setNavBarGlassEnabledState(it)
-                        BackgroundConfig.save(context)
-                    },
-                )
-            }
-
-            if (BackgroundConfig.isNavBarGlassEnabled) {
-                item(key = "appearance_navbar_glass_blur") {
-                    FolkSliderPreference(
-                        title = stringResource(id = R.string.settings_navbar_glass_blur_strength),
-                        value = BackgroundConfig.navBarGlassBlurStrength,
-                        onValueChange = { BackgroundConfig.setNavBarGlassBlurStrengthValue(it) },
-                        onValueChangeFinished = { BackgroundConfig.save(context) },
-                    )
-                }
-
-                item(key = "appearance_navbar_glass_transparency") {
-                    FolkSliderPreference(
-                        title = stringResource(id = R.string.settings_navbar_glass_transparency),
-                        value = BackgroundConfig.navBarGlassTransparency,
-                        onValueChange = { BackgroundConfig.setNavBarGlassTransparencyValue(it) },
-                        onValueChangeFinished = { BackgroundConfig.save(context) },
-                    )
-                }
-
-                item(key = "appearance_navbar_glass_highlight") {
-                    FolkSliderPreference(
-                        title = stringResource(id = R.string.settings_navbar_glass_highlight_strength),
-                        value = BackgroundConfig.navBarGlassHighlightStrength,
-                        onValueChange = { BackgroundConfig.setNavBarGlassHighlightStrengthValue(it) },
-                        onValueChangeFinished = { BackgroundConfig.save(context) },
-                    )
-                }
-
-                item(key = "appearance_navbar_glass_specular") {
-                    FolkSwitchPreference(
-                        icon = Icons.Outlined.LensBlur,
-                        title = stringResource(id = R.string.settings_navbar_glass_specular),
-                        summary = stringResource(id = R.string.settings_navbar_glass_specular_summary),
-                        checked = BackgroundConfig.isNavBarGlassSpecularEnabled,
-                        onCheckedChange = {
-                            BackgroundConfig.setNavBarGlassSpecularEnabledState(it)
-                            BackgroundConfig.save(context)
-                        },
-                    )
-                }
-
-                item(key = "appearance_navbar_glass_glow") {
-                    FolkSwitchPreference(
-                        icon = Icons.Outlined.Grain,
-                        title = stringResource(id = R.string.settings_navbar_glass_inner_glow),
-                        summary = stringResource(id = R.string.settings_navbar_glass_inner_glow_summary),
-                        checked = BackgroundConfig.isNavBarGlassInnerGlowEnabled,
-                        onCheckedChange = {
-                            BackgroundConfig.setNavBarGlassInnerGlowEnabledState(it)
-                            BackgroundConfig.save(context)
-                        },
-                    )
-                }
-
-                item(key = "appearance_navbar_glass_border") {
-                    FolkSwitchPreference(
-                        icon = Icons.Outlined.BorderStyle,
-                        title = stringResource(id = R.string.settings_navbar_glass_border),
-                        summary = stringResource(id = R.string.settings_navbar_glass_border_summary),
-                        checked = BackgroundConfig.isNavBarGlassBorderEnabled,
-                        onCheckedChange = {
-                            BackgroundConfig.setNavBarGlassBorderEnabledState(it)
-                            BackgroundConfig.save(context)
-                        },
-                    )
-                }
-            }
-
-            // ---- 紧凑圆角风格 ----
-            // 仅非毛玻璃模式显示（毛玻璃已有独立的外观控制）
-            if (!BackgroundConfig.isNavBarGlassEnabled) {
-                item(key = "appearance_compact_rounded_bar") {
-                    FolkSwitchPreference(
-                        icon = Icons.Outlined.RoundedCorner,
-                        title = stringResource(id = R.string.settings_compact_rounded_bar),
-                        summary = stringResource(id = R.string.settings_compact_rounded_bar_summary),
-                        checked = FloatingBarConfig.isCompactRoundedStyle,
-                        onCheckedChange = { enabled ->
-                            FloatingBarConfig.isCompactRoundedStyle = enabled
-                            FloatingBarConfig.save(context)
-                        },
-                    )
-                }
-            }
-
-            item(key = "appearance_floating_auto_hide") {
-                FolkSwitchPreference(
-                    icon = Icons.Outlined.VisibilityOff,
-                    title = stringResource(id = R.string.settings_floating_auto_hide),
-                    summary = stringResource(id = R.string.settings_floating_auto_hide_summary),
-                    checked = floatingAutoHide,
-                    onCheckedChange = {
-                        onFloatingAutoHideChange(it)
-                        prefs.edit().putBoolean("floating_auto_hide", it).apply()
-                    },
-                )
-            }
-
-            item(key = "appearance_floating_swipe_hide") {
-                FolkSwitchPreference(
-                    icon = Icons.Outlined.Swipe,
-                    title = stringResource(id = R.string.settings_floating_swipe_hide),
-                    summary = stringResource(id = R.string.settings_floating_swipe_hide_summary),
-                    checked = floatingSwipeHide,
-                    onCheckedChange = {
-                        onFloatingSwipeHideChange(it)
-                        prefs.edit().putBoolean("floating_swipe_hide", it).apply()
-                    },
-                )
-            }
-        }
-
-        item(key = "appearance_nav_custom_icons") {
-            val customNavIconsEnabled = remember { mutableStateOf(prefs.getBoolean("nav_icon_custom_enabled", false)) }
-            var editingDestName by remember { mutableStateOf<String?>(null) }
-            // Observe config revision so the previews below refresh immediately after pick/clear.
-            val iconRevision by BottomBarIconConfig.revision.collectAsStateWithLifecycle()
-            val iconPickerLauncher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.GetContent()
-            ) { uri ->
-                val dest = editingDestName ?: return@rememberLauncherForActivityResult
-                if (uri != null) {
-                    // Copy the picked image into internal storage so it survives app
-                    // restarts (content:// read grants are only temporary).
-                    scope.launch {
-                        val saved = withContext(Dispatchers.IO) {
-                            BottomBarIconConfig.saveCustomIcon(context, dest, uri)
-                        }
-                        snackBarHost.showSnackbar(
-                            context.getString(
-                                if (saved) R.string.nav_icon_set
-                                else R.string.nav_icon_set_failed
-                            )
-                        )
-                    }
-                }
-                editingDestName = null
-            }
-
-            FolkSwitchPreference(
-                icon = Icons.Outlined.Image,
-                title = stringResource(R.string.settings_nav_custom_icons),
-                summary = stringResource(R.string.settings_nav_custom_icons_summary),
-                checked = customNavIconsEnabled.value,
-                onCheckedChange = {
-                    customNavIconsEnabled.value = it
-                    BottomBarIconConfig.isEnabled = it
-                }
-            )
-
-            if (customNavIconsEnabled.value) {
-                Spacer(Modifier.height(8.dp))
-                val navDestinations = listOf(
-                    Triple("Home", R.string.nav_icon_home, Icons.Filled.Home),
-                    Triple("KModule", R.string.nav_icon_kpm, Icons.Filled.Archive),
-                    Triple("SuperUser", R.string.nav_icon_superuser, Icons.Filled.AdminPanelSettings),
-                    Triple("AModule", R.string.nav_icon_apm, Icons.Filled.Extension),
-                    Triple("Settings", R.string.nav_icon_settings, Icons.Filled.Settings),
-                )
-
-                Column {
-                    navDestinations.forEach { (destName, labelRes, defaultIcon) ->
-                        val customUri = remember(iconRevision, destName) { prefs.getString("nav_icon_$destName", null) }
-                        ExpressiveCard(
-                            flat = flat,
-                            onClick = {
-                                editingDestName = destName
-                                try { iconPickerLauncher.launch("image/*") } catch (_: Throwable) {}
-                            }
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                if (customUri != null) {
-                                    AsyncImage(
-                                        model = customUri,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(36.dp).clip(RoundedCornerShape(6.dp)),
-                                        contentScale = ContentScale.Crop
-                                    )
-                                } else {
-                                    Icon(
-                                        imageVector = defaultIcon,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        modifier = Modifier.size(36.dp)
-                                    )
-                                }
-                                Spacer(Modifier.width(16.dp))
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        stringResource(labelRes),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
-                                    Text(
-                                        if (customUri != null) stringResource(R.string.nav_icon_custom_selected)
-                                        else stringResource(R.string.nav_icon_default),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                }
-                                if (customUri != null) {
-                                    IconButton(
-                                        onClick = {
-                                            BottomBarIconConfig.clearCustomIcon(context, destName)
-                                            scope.launch {
-                                                snackBarHost.showSnackbar(context.getString(R.string.nav_icon_cleared))
-                                            }
-                                        }
-                                    ) {
-                                        Icon(Icons.Filled.Close, stringResource(R.string.nav_icon_clear), tint = MaterialTheme.colorScheme.error)
-                                    }
-                                }
-                            }
-                        }
-                        Spacer(Modifier.height(4.dp))
-                    }
-                }
-            }
-        }
+        appearanceNavCustomIconsItem(
+            flat = flat,
+            context = context,
+            prefs = prefs,
+            scope = scope,
+            snackBarHost = snackBarHost,
+        )
 
         item(key = "appearance_list_card_badge", visible = isListStyle) {
             FolkSwitchPreference(
