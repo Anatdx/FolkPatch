@@ -4,10 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import me.bmax.apatch.ui.component.ColorGenerationModeSelector
-import me.bmax.apatch.ui.component.SliderStyleConfig
-import me.bmax.apatch.ui.component.ColorStandardSelector
-import me.bmax.apatch.ui.component.ColorStylePicker
 import me.bmax.apatch.ui.theme.ColorGenerationMode
 import me.bmax.apatch.ui.theme.ColorStandard
 import me.bmax.apatch.ui.theme.ColorStyle
@@ -17,15 +13,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import java.io.File
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.automirrored.filled.ViewQuilt
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
@@ -39,7 +32,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
@@ -47,13 +39,9 @@ import androidx.core.content.edit
 import kotlinx.coroutines.launch
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.ExpressiveSwitch
-import me.bmax.apatch.ui.component.SwitchIconState
 import me.bmax.apatch.ui.component.FilePickerDialog
 
-import me.bmax.apatch.ui.component.ThemeColorPicker
 import me.bmax.apatch.ui.component.ThemeMode
-import me.bmax.apatch.ui.component.ThemeModeSelector
 import me.bmax.apatch.ui.component.rememberLoadingDialog
 import me.bmax.apatch.ui.component.LoadingDialogHandle
 import me.bmax.apatch.ui.theme.BackgroundConfig
@@ -67,6 +55,7 @@ import me.bmax.apatch.ui.screen.settings.appearance.AppearanceBackgroundSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceFocusCardSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceDashboardCardSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceLayoutSection
+import me.bmax.apatch.ui.screen.settings.appearance.AppearanceNightModeSection
 import me.bmax.apatch.ui.screen.settings.appearance.HomeLayoutChooseDialog
 import me.bmax.apatch.ui.screen.settings.appearance.NavModeChooseDialog
 import me.bmax.apatch.ui.screen.settings.appearance.StatsTopLayoutChooseDialog
@@ -77,8 +66,6 @@ import me.bmax.apatch.ui.screen.settings.appearance.colorNameToString
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
 import androidx.compose.ui.graphics.painter.Painter
-import me.bmax.apatch.ui.component.folk.FolkSettingsSectionGroup
-import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import androidx.compose.material.icons.outlined.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -256,180 +243,70 @@ fun AppearanceSettingsContent(
 
     Column(modifier = Modifier.fillMaxWidth()) {
 
-        FolkSettingsSectionGroup(title = stringResource(R.string.settings_appearance_night_mode), flat = flat, highlightKey = highlightKey) {
-            if (isNightModeSupported) {
-                item(key = "appearance_theme_mode") {
-                    ThemeModeSelector(
-                        selectedMode = themeMode,
-                        onModeSelected = { mode ->
-                            when (mode) {
-                                ThemeMode.LIGHT -> {
-                                    nightModeFollowSys = false
-                                    nightModeEnabled = false
-                                    prefs.edit().putBoolean("night_mode_follow_sys", false).putBoolean("night_mode_enabled", false).apply()
-                                }
-                                ThemeMode.DARK -> {
-                                    nightModeFollowSys = false
-                                    nightModeEnabled = true
-                                    prefs.edit().putBoolean("night_mode_follow_sys", false).putBoolean("night_mode_enabled", true).apply()
-                                }
-                                ThemeMode.SYSTEM -> {
-                                    nightModeFollowSys = true
-                                    prefs.edit().putBoolean("night_mode_follow_sys", true).apply()
-                                }
-                            }
-                            refreshTheme.value = true
-                        },
-                        flat = flat,
-                        bare = true,
-                    )
-                }
-            }
-
-            item(key = "appearance_theme_color") {
-                ThemeColorPicker(
-                    selectedColorKey = customColorScheme ?: "indigo",
-                    onColorSelected = { key ->
-                        prefs.edit().putString("custom_color", key).putBoolean("use_system_color_theme", false).apply()
-                        customColorScheme = key
-                        useSystemDynamicColor = false
-                        refreshTheme.value = true
-                    },
-                    isDarkTheme = isDarkTheme,
-                    flat = flat,
-                    isDynamicColorSupported = isDynamicColorSupport,
-                    isDynamicColorEnabled = useSystemDynamicColor,
-                    onDynamicColorSelected = {
-                        prefs.edit().putBoolean("use_system_color_theme", true).apply()
-                        useSystemDynamicColor = true
-                        refreshTheme.value = true
-                    },
-                    bare = true,
-                )
-            }
-
-            // Color generation mode & style pickers
-            item(key = "appearance_color_generation_mode") {
-                ColorGenerationModeSelector(
-                    selectedMode = colorGenerationMode,
-                    onModeSelected = { mode ->
-                        colorGenerationMode = mode
-                        prefs.edit().putString("color_generation_mode", mode.key).apply()
-                        refreshTheme.value = true
-                    },
-                    flat = flat,
-                    bare = true,
-                )
-            }
-
-            if (colorGenerationMode == ColorGenerationMode.CUSTOM) {
-                item(key = "appearance_color_standard") {
-                    ColorStandardSelector(
-                        selectedStandard = colorStandard,
-                        onStandardSelected = { standard ->
-                            colorStandard = standard
-                            prefs.edit().putString("color_standard", standard.name).apply()
-                            refreshTheme.value = true
-                        },
-                        flat = flat,
-                        bare = true,
-                    )
-                }
-
-                item(key = "appearance_color_style") {
-                    ColorStylePicker(
-                        selectedStyle = colorStyle,
-                        onStyleSelected = { style ->
-                            colorStyle = style
-                            prefs.edit().putString("color_style", style.name).apply()
-                            refreshTheme.value = true
-                        },
-                        flat = flat,
-                        bare = true,
-                    )
-                }
-            }
-
-            if (isDarkTheme) {
-                item(key = "appearance_amoled_theme") {
-                    val isWallpaperEnabled = BackgroundConfig.isCustomBackgroundEnabled
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .toggleable(
-                                value = amoledTheme,
-                                onValueChange = {
-                                    if (!isWallpaperEnabled) {
-                                        amoledTheme = it
-                                        prefs.edit().putBoolean("amoled_theme", it).apply()
-                                        refreshTheme.value = true
-                                    }
-                                },
-                                role = Role.Switch,
-                                enabled = !isWallpaperEnabled,
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = ripple(),
-                            )
-                            .padding(horizontal = 16.dp, vertical = 12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(imageVector = Icons.Filled.DarkMode, contentDescription = null, tint = if (!isWallpaperEnabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f), modifier = Modifier.size(24.dp))
-                        Spacer(Modifier.width(16.dp))
-                        Column(modifier = Modifier.weight(1f).padding(end = 16.dp)) {
-                            Text(
-                                text = stringResource(R.string.settings_amoled_theme),
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = if (!isWallpaperEnabled) MaterialTheme.colorScheme.onSurface
-                                else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-                            )
-                            Spacer(Modifier.height(4.dp))
-                            Text(
-                                text = stringResource(R.string.settings_amoled_theme_desc),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = if (!isWallpaperEnabled) MaterialTheme.colorScheme.onSurfaceVariant
-                                else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
-                            )
-                        }
-                        ExpressiveSwitch(
-                            checked = amoledTheme,
-                            onCheckedChange = null,
-                            enabled = !isWallpaperEnabled,
-                        )
+        AppearanceNightModeSection(
+            flat = flat,
+            highlightKey = highlightKey,
+            isNightModeSupported = isNightModeSupported,
+            isDynamicColorSupport = isDynamicColorSupport,
+            isDarkTheme = isDarkTheme,
+            themeMode = themeMode,
+            customColorScheme = customColorScheme ?: "indigo",
+            useSystemDynamicColor = useSystemDynamicColor,
+            colorGenerationMode = colorGenerationMode,
+            colorStandard = colorStandard,
+            colorStyle = colorStyle,
+            amoledTheme = amoledTheme,
+            onThemeModeSelected = { mode ->
+                when (mode) {
+                    ThemeMode.LIGHT -> {
+                        nightModeFollowSys = false
+                        nightModeEnabled = false
+                        prefs.edit().putBoolean("night_mode_follow_sys", false).putBoolean("night_mode_enabled", false).apply()
+                    }
+                    ThemeMode.DARK -> {
+                        nightModeFollowSys = false
+                        nightModeEnabled = true
+                        prefs.edit().putBoolean("night_mode_follow_sys", false).putBoolean("night_mode_enabled", true).apply()
+                    }
+                    ThemeMode.SYSTEM -> {
+                        nightModeFollowSys = true
+                        prefs.edit().putBoolean("night_mode_follow_sys", true).apply()
                     }
                 }
-            }
-
-            item(key = "appearance_switch_icon") {
-                var showSwitchIcon by remember { mutableStateOf(SwitchIconState.showIcon) }
-                FolkSwitchPreference(
-                    icon = Icons.Outlined.ToggleOn,
-                    title = stringResource(R.string.settings_switch_icon),
-                    summary = stringResource(R.string.settings_switch_icon_desc),
-                    checked = showSwitchIcon,
-                    onCheckedChange = {
-                        showSwitchIcon = it
-                        SwitchIconState.showIcon = it
-                        prefs.edit().putBoolean("show_switch_icon", it).apply()
-                    },
-                )
-            }
-
-            item(key = "appearance_discrete_slider") {
-                var isDiscreteSlider by remember { mutableStateOf(SliderStyleConfig.isDiscrete) }
-                FolkSwitchPreference(
-                    icon = Icons.Outlined.Segment,
-                    title = stringResource(R.string.settings_discrete_slider),
-                    summary = stringResource(R.string.settings_discrete_slider_desc),
-                    checked = isDiscreteSlider,
-                    onCheckedChange = {
-                        isDiscreteSlider = it
-                        SliderStyleConfig.isDiscrete = it
-                        prefs.edit().putBoolean("discrete_slider", it).apply()
-                    },
-                )
-            }
-        }
+                refreshTheme.value = true
+            },
+            onColorSelected = { key ->
+                prefs.edit().putString("custom_color", key).putBoolean("use_system_color_theme", false).apply()
+                customColorScheme = key
+                useSystemDynamicColor = false
+                refreshTheme.value = true
+            },
+            onDynamicColorSelected = {
+                prefs.edit().putBoolean("use_system_color_theme", true).apply()
+                useSystemDynamicColor = true
+                refreshTheme.value = true
+            },
+            onGenerationModeSelected = { mode ->
+                colorGenerationMode = mode
+                prefs.edit().putString("color_generation_mode", mode.key).apply()
+                refreshTheme.value = true
+            },
+            onStandardSelected = { standard ->
+                colorStandard = standard
+                prefs.edit().putString("color_standard", standard.name).apply()
+                refreshTheme.value = true
+            },
+            onStyleSelected = { style ->
+                colorStyle = style
+                prefs.edit().putString("color_style", style.name).apply()
+                refreshTheme.value = true
+            },
+            onAmoledChange = { value ->
+                amoledTheme = value
+                prefs.edit().putBoolean("amoled_theme", value).apply()
+                refreshTheme.value = true
+            },
+        )
 
         AppearanceLayoutSection(
             flat = flat,
