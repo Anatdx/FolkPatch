@@ -51,6 +51,13 @@ object FolkButtonDefaults {
         )
     }
 
+    /** Text action with a disabled label that still says what is unavailable. */
+    @Composable
+    fun textColors(): ButtonColors = ButtonDefaults.textButtonColors(
+        contentColor = MaterialTheme.colorScheme.primary,
+        disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+
     val LargeContentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp)
 }
 

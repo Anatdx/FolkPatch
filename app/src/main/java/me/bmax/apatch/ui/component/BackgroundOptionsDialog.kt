@@ -41,6 +41,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 
 /**
@@ -302,7 +303,8 @@ fun BackgroundOptionsDialog(
                                             onDismiss()
                                             onResetModuleInfo()
                                         },
-                                        enabled = hasChanges || hasSavedCustomInfo
+                                        enabled = hasChanges || hasSavedCustomInfo,
+                                        colors = FolkButtonDefaults.textColors(),
                                     ) {
                                         Text(resetLabel)
                                     }
@@ -312,7 +314,8 @@ fun BackgroundOptionsDialog(
                                             onDismiss()
                                             onSaveModuleInfo(ModuleInfoData(name, version, author, description))
                                         },
-                                        enabled = hasNonBlank && hasChanges
+                                        enabled = hasNonBlank && hasChanges,
+                                        colors = FolkButtonDefaults.textColors(),
                                     ) {
                                         Text(saveLabel)
                                     }
