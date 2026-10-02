@@ -19,21 +19,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.HelpOutline
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.InstallMobile
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material.icons.outlined.Block
-import androidx.compose.material.icons.outlined.Cached
-import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteForever
-import androidx.compose.material.icons.outlined.InstallMobile
-import androidx.compose.material.icons.outlined.SystemUpdate
 import androidx.compose.material.icons.outlined.Android
 import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material.icons.outlined.Code
@@ -350,152 +342,6 @@ fun UninstallDialog(showDialog: MutableState<Boolean>, navigator: DestinationsNa
         )
     }
 }
-
-@Composable
-fun AStatusCard(apState: APApplication.State) {
-    Card(
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = run {
-            if (BackgroundConfig.isCustomBackgroundEnabled) {
-                MaterialTheme.colorScheme.secondaryContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)
-            } else {
-                MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-            }
-        })
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row {
-                Text(
-                    text = stringResource(R.string.android_patch),
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                when (apState) {
-                    APApplication.State.ANDROIDPATCH_NOT_INSTALLED -> {
-                        Icon(Icons.Outlined.Block, stringResource(R.string.home_not_installed))
-                    }
-
-                    APApplication.State.ANDROIDPATCH_INSTALLING -> {
-                        Icon(Icons.Outlined.InstallMobile, stringResource(R.string.home_installing))
-                    }
-
-                    APApplication.State.ANDROIDPATCH_INSTALLED -> {
-                        Icon(Icons.Outlined.CheckCircle, stringResource(R.string.home_working))
-                    }
-
-                    APApplication.State.ANDROIDPATCH_NEED_UPDATE -> {
-                        Icon(Icons.Outlined.SystemUpdate, stringResource(R.string.home_kp_need_update))
-                    }
-
-                    else -> {
-                        Icon(
-                            Icons.AutoMirrored.Outlined.HelpOutline,
-                            stringResource(R.string.home_install_unknown)
-                        )
-                    }
-                }
-                Column(
-                    Modifier
-                        .weight(2f)
-                        .padding(start = 16.dp)
-                ) {
-
-                    when (apState) {
-                        APApplication.State.ANDROIDPATCH_NOT_INSTALLED -> {
-                            Text(
-                                text = stringResource(R.string.home_not_installed),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-
-                        APApplication.State.ANDROIDPATCH_INSTALLING -> {
-                            Text(
-                                text = stringResource(R.string.home_installing),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-
-                        APApplication.State.ANDROIDPATCH_INSTALLED -> {
-                            Text(
-                                text = stringResource(R.string.home_working),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-
-                        APApplication.State.ANDROIDPATCH_NEED_UPDATE -> {
-                            Text(
-                                text = stringResource(R.string.home_kp_need_update),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-
-                        else -> {
-                            Text(
-                                text = stringResource(R.string.home_install_unknown),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        }
-                    }
-                }
-                if (apState != APApplication.State.UNKNOWN_STATE) {
-                    Column(
-                        modifier = Modifier.align(Alignment.CenterVertically)
-                    ) {
-                        Button(onClick = {
-                            when (apState) {
-                                APApplication.State.ANDROIDPATCH_NOT_INSTALLED -> {
-                                    APApplication.installApatch()
-                                }
-
-                                APApplication.State.ANDROIDPATCH_UNINSTALLING -> {
-                                    // Do nothing
-                                }
-
-                                APApplication.State.ANDROIDPATCH_NEED_UPDATE -> {
-                                    APApplication.installApatch()
-                                }
-
-                                else -> {
-                                    APApplication.uninstallApatch()
-                                }
-                            }
-                        }, content = {
-                            when (apState) {
-                                APApplication.State.ANDROIDPATCH_NOT_INSTALLED -> {
-                                    Text(text = stringResource(id = R.string.home_ap_cando_install))
-                                }
-
-                                APApplication.State.ANDROIDPATCH_UNINSTALLING -> {
-                                    Icon(Icons.Outlined.Cached, contentDescription = "busy")
-                                }
-
-                                APApplication.State.ANDROIDPATCH_NEED_UPDATE -> {
-                                    Text(text = stringResource(id = R.string.home_kp_cando_update))
-                                }
-
-                                else -> {
-                                    Text(text = stringResource(id = R.string.home_ap_cando_uninstall))
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-        }
-    }
-}
-
 
 @Composable
 fun WarningCard() {
