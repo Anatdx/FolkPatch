@@ -10,12 +10,12 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -24,10 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
 
 /**
- * Colours for the collapsible settings bar.
+ * Colours for the settings bar.
  *
  * The bar fades from fully transparent to the elevated panel tone. Both ends
  * use the *same* RGB with only the alpha changing - using [Color.Transparent]
@@ -47,9 +48,8 @@ fun folkTopAppBarColors(): TopAppBarColors {
 /**
  * Shared chrome for every settings sub-screen.
  *
- * Uses a [LargeTopAppBar] with an exit-until-collapsed scroll behaviour: the
- * page title starts large under the back button and, as the content scrolls,
- * docks into the bar next to the back arrow.
+ * Uses a compact [TopAppBar] with the title beside the back button. The bar
+ * stays the same height while scrolling and gains the shared elevated tone.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,16 +60,19 @@ fun FolkSettingsScaffold(
     actions: @Composable RowScope.() -> Unit = {},
     content: LazyListScope.() -> Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            LargeTopAppBar(
+            TopAppBar(
                 title = {
                     Text(
                         text = title,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                 },
                 colors = folkTopAppBarColors(),
