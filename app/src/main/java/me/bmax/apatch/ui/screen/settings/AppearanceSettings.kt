@@ -76,6 +76,7 @@ import me.bmax.apatch.ui.screen.settings.appearance.AppearanceFontSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceThemeSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceBannerSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceFocusCardSection
+import me.bmax.apatch.ui.screen.settings.appearance.AppearanceDashboardCardSection
 import me.bmax.apatch.ui.screen.settings.appearance.HomeLayoutChooseDialog
 import me.bmax.apatch.ui.screen.settings.appearance.NavModeChooseDialog
 import me.bmax.apatch.ui.screen.settings.appearance.StatsTopLayoutChooseDialog
@@ -263,22 +264,6 @@ fun AppearanceSettingsContent(
                 } else {
                     snackBarHost.showSnackbar(message = context.getString(R.string.settings_grid_working_card_background_error))
                 }
-            }
-        }
-    }
-
-    val pickDashboardCardImageLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        uri?.let {
-            scope.launch {
-                loadingDialog.show()
-                val success = BackgroundManager.saveAndApplyDashboardCardBackground(context, it)
-                loadingDialog.hide()
-                snackBarHost.showSnackbar(
-                    if (success) context.getString(R.string.dashboard_card_background_saved)
-                    else context.getString(R.string.dashboard_card_background_error)
-                )
             }
         }
     }
@@ -1493,102 +1478,12 @@ fun AppearanceSettingsContent(
         }
 
         if (isDashboardStyle) {
-            FolkSettingsSectionGroup(
-                title = stringResource(R.string.dashboard_card_background_title),
+            AppearanceDashboardCardSection(
                 flat = flat,
                 highlightKey = highlightKey,
-            ) {
-                item(key = "appearance_dashboard_card_background_enabled") {
-                    FolkSwitchPreference(
-                        icon = Icons.Outlined.Wallpaper,
-                        title = stringResource(R.string.settings_dashboard_card_background),
-                        summary = if (BackgroundConfig.isDashboardCardBackgroundEnabled) {
-                            stringResource(R.string.settings_dashboard_card_background_enabled)
-                        } else {
-                            stringResource(R.string.settings_dashboard_card_background_summary)
-                        },
-                        checked = BackgroundConfig.isDashboardCardBackgroundEnabled,
-                        onCheckedChange = {
-                            BackgroundConfig.setDashboardCardBackgroundEnabledState(it)
-                            BackgroundConfig.save(context)
-                        },
-                    )
-                }
-
-                if (BackgroundConfig.isDashboardCardBackgroundEnabled) {
-                    item(key = "appearance_dashboard_card_dual_background") {
-                        DualBackgroundSettings(
-                            flat = flat,
-                            dualDimEnabled = BackgroundConfig.isDashboardCardDualDimEnabled,
-                            onDualDimEnabledChange = { BackgroundConfig.setDashboardCardDualDimEnabledState(it) },
-                            dim = BackgroundConfig.dashboardCardBgDim,
-                            onDimChange = { BackgroundConfig.setDashboardCardBgDimValue(it) },
-                            dayDim = BackgroundConfig.dashboardCardBgDayDim,
-                            onDayDimChange = { BackgroundConfig.setDashboardCardBgDayDimValue(it) },
-                            nightDim = BackgroundConfig.dashboardCardBgNightDim,
-                            onNightDimChange = { BackgroundConfig.setDashboardCardBgNightDimValue(it) },
-                            dualOpacityEnabled = BackgroundConfig.isDashboardCardDualOpacityEnabled,
-                            onDualOpacityEnabledChange = { BackgroundConfig.setDashboardCardDualOpacityEnabledState(it) },
-                            opacity = BackgroundConfig.dashboardCardBgOpacity,
-                            onOpacityChange = { BackgroundConfig.setDashboardCardBgOpacityValue(it) },
-                            dayOpacity = BackgroundConfig.dashboardCardBgDayOpacity,
-                            onDayOpacityChange = { BackgroundConfig.setDashboardCardBgDayOpacityValue(it) },
-                            nightOpacity = BackgroundConfig.dashboardCardBgNightOpacity,
-                            onNightOpacityChange = { BackgroundConfig.setDashboardCardBgNightOpacityValue(it) },
-                            save = { BackgroundConfig.save(context) },
-                            keyPrefix = "dashboard_card",
-                            dualDimTitle = stringResource(R.string.settings_dashboard_card_dual_dim),
-                            dualDimDescription = stringResource(R.string.settings_dashboard_card_dual_dim_desc),
-                            opacityTitle = stringResource(R.string.settings_dashboard_card_opacity),
-                            dayDimTitle = stringResource(R.string.settings_dashboard_card_day_dim),
-                            nightDimTitle = stringResource(R.string.settings_dashboard_card_night_dim),
-                            dualOpacityTitle = stringResource(R.string.settings_dashboard_card_dual_opacity),
-                            dualOpacityDescription = stringResource(R.string.settings_dashboard_card_dual_opacity_desc),
-                            dayOpacityTitle = stringResource(R.string.settings_dashboard_card_day_opacity),
-                            nightOpacityTitle = stringResource(R.string.settings_dashboard_card_night_opacity),
-                        )
-                    }
-
-                    item(key = "appearance_dashboard_card_select") {
-                        ExpressiveCard(
-                            flat = flat,
-                            onClick = {
-                                if (PermissionUtils.hasExternalStoragePermission(context)) {
-                                    try {
-                                        pickDashboardCardImageLauncher.launch("image/*")
-                                    } catch (e: ActivityNotFoundException) {
-                                        showToast(context, e.message ?: "")
-                                    }
-                                } else {
-                                    showToast(context, context.getString(R.string.focus_card_permission_required))
-                                }
-                            },
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Icon(Icons.Filled.Image, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Spacer(Modifier.width(16.dp))
-                                Column(Modifier.weight(1f)) {
-                                    Text(
-                                        text = stringResource(R.string.settings_select_background_image),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                    )
-                                    if (BackgroundConfig.dashboardCardBgUri != null) {
-                                        Text(
-                                            text = stringResource(R.string.settings_background_selected),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.outline,
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+                snackBarHost = snackBarHost,
+                loadingDialog = loadingDialog,
+            )
         }
 
         if (showCustomBadgeTextDialog.value) {
