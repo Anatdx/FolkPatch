@@ -36,6 +36,7 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.util.*
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.showToast
@@ -305,6 +306,7 @@ fun DpiChooseDialog(showDialog: MutableState<Boolean>) {
                             DPIUtils.setDpi(context, finalDpi)
                             activity?.recreate()
                         },
+                        colors = FolkButtonDefaults.filledColors(),
                     ) {
                         Icon(
                             Icons.Filled.Check,
@@ -414,7 +416,8 @@ fun SELinuxModeDialog(
                         onClick = {
                             showConfirmationDialog = true
                         },
-                        enabled = selectedMode != currentMode
+                        enabled = selectedMode != currentMode,
+                        colors = FolkButtonDefaults.filledColors(),
                     ) {
                         Text(stringResource(id = android.R.string.ok))
                     }
@@ -884,7 +887,7 @@ fun ResetSUPathDialog(showDialog: MutableState<Boolean>) {
                             }
                             showToast(context, if (success) R.string.success else R.string.failure)
                         }
-                    }) {
+                    }, colors = FolkButtonDefaults.filledColors()) {
                         Text(stringResource(id = android.R.string.ok))
                     }
                 }
@@ -954,7 +957,7 @@ fun CleanStorageDialog(showDialog: MutableState<Boolean>) {
                             }
                             showToast(context, if (success) R.string.settings_clean_storage_done else R.string.failure)
                         }
-                    }) {
+                    }, colors = FolkButtonDefaults.filledColors()) {
                         Text(stringResource(id = android.R.string.ok))
                     }
                 }
