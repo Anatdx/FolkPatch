@@ -32,7 +32,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import me.bmax.apatch.ui.component.TwoColumnGrid
 import me.bmax.apatch.ui.component.splicedLazyColumnGroup
 import me.bmax.apatch.ui.component.WarningCard
@@ -43,7 +42,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -68,9 +66,7 @@ import me.bmax.apatch.ui.component.rememberLoadingDialog
 import me.bmax.apatch.ui.viewmodel.APModuleViewModel
 import me.bmax.apatch.util.DownloadListener
 import me.bmax.apatch.util.download
-import me.bmax.apatch.util.isJailbreakMode
 import me.bmax.apatch.util.reboot
-import me.bmax.apatch.util.toggleModule
 import me.bmax.apatch.util.uninstallModule
 import me.bmax.apatch.util.undoUninstallModule
 import androidx.compose.material.icons.outlined.ErrorOutline
@@ -334,15 +330,10 @@ fun ModuleList(
                     }
                 },
                 itemContent = { module ->
-                    var isChecked by rememberSaveable(module) { mutableStateOf(module.enabled) }
-                    val scope = rememberCoroutineScope()
-                    val updatedModule = viewModel.getCachedUpdate(module.id)
-
-                    ModuleItem(
-                        navigator,
-                        module,
-                        isChecked,
-                        updatedModule.first,
+                    ModuleRow(
+                        navigator = navigator,
+                        viewModel = viewModel,
+                        module = module,
                         showMoreModuleInfo = showMoreModuleInfo,
                         foldSystemModule = foldSystemModule,
                         simpleListBottomBar = simpleListBottomBar,
@@ -351,55 +342,19 @@ fun ModuleList(
                         onExpandToggle = {
                             expandedModuleId = if (expandedModuleId == module.id) null else module.id
                         },
-                        onUninstall = {
-                            scope.launch { onModuleUninstall(module) }
-                        },
-                        onUndoUninstall = {
-                            scope.launch { onModuleUndoUninstall(module) }
-                        },
-                        onCheckChanged = { checked ->
-                            scope.launch {
-                                if (!checkStrongBiometric()) return@launch
-                                val success = loadingDialog.withLoading {
-                                    withContext(Dispatchers.IO) {
-                                        toggleModule(module.id, !isChecked)
-                                    }
-                                }
-                                if (success) {
-                                    isChecked = checked
-                                    viewModel.fetchModuleList()
-
-                                    // In jailbreak mode a full reboot would unload the
-                                    // runtime-loaded module, so apply without the prompt.
-                                    if (!withContext(Dispatchers.IO) { isJailbreakMode() }) {
-                                        val result = snackBarHost.showSnackbar(
-                                            message = rebootToApply,
-                                            actionLabel = reboot,
-                                            duration = SnackbarDuration.Long
-                                        )
-                                        if (result == SnackbarResult.ActionPerformed) {
-                                            reboot()
-                                        }
-                                    }
-                                } else {
-                                    val message = if (isChecked) failedDisable else failedEnable
-                                    snackBarHost.showSnackbar(message.format(module.name))
-                                }
-                            }
-                        },
-                        onUpdate = {
-                            scope.launch {
-                                onModuleUpdate(
-                                    module,
-                                    updatedModule.third,
-                                    updatedModule.first,
-                                    "${module.name}-${updatedModule.second}.zip"
-                                )
-                            }
-                        },
-                        onClick = { clickedModule ->
-                            onClickModule(clickedModule.id, clickedModule.name, clickedModule.hasWebUi)
-                        })
+                        snackBarHost = snackBarHost,
+                        context = context,
+                        checkStrongBiometric = checkStrongBiometric,
+                        loadingDialog = loadingDialog,
+                        failedEnable = failedEnable,
+                        failedDisable = failedDisable,
+                        rebootLabel = reboot,
+                        rebootToApply = rebootToApply,
+                        onModuleUpdate = { m, c, d, f -> onModuleUpdate(m, c, d, f) },
+                        onModuleUninstall = { m -> onModuleUninstall(m) },
+                        onModuleUndoUninstall = { m -> onModuleUndoUninstall(m) },
+                        onClickModule = onClickModule,
+                    )
                 }
             )
         } else {
@@ -499,15 +454,10 @@ fun ModuleList(
                                 key = { _, module -> module.id },
                                 contentType = { _, _ -> "ModuleItem" },
                             ) { _, module ->
-                                var isChecked by rememberSaveable(module) { mutableStateOf(module.enabled) }
-                                val scope = rememberCoroutineScope()
-                                val updatedModule = viewModel.getCachedUpdate(module.id)
-
-                                ModuleItem(
-                                    navigator,
-                                    module,
-                                    isChecked,
-                                    updatedModule.first,
+                                ModuleRow(
+                                    navigator = navigator,
+                                    viewModel = viewModel,
+                                    module = module,
                                     showMoreModuleInfo = showMoreModuleInfo,
                                     foldSystemModule = foldSystemModule,
                                     simpleListBottomBar = simpleListBottomBar,
@@ -516,70 +466,29 @@ fun ModuleList(
                                     onExpandToggle = {
                                         expandedModuleId = if (expandedModuleId == module.id) null else module.id
                                     },
-                                    onUninstall = {
-                                        scope.launch { onModuleUninstall(module) }
-                                    },
-                                    onUndoUninstall = {
-                                        scope.launch { onModuleUndoUninstall(module) }
-                                    },
-                                    onCheckChanged = { checked ->
-                                        scope.launch {
-                                            if (!checkStrongBiometric()) return@launch
-                                            val success = loadingDialog.withLoading {
-                                                withContext(Dispatchers.IO) {
-                                                    toggleModule(module.id, !isChecked)
-                                                }
-                                            }
-                                            if (success) {
-                                                isChecked = checked
-                                                viewModel.fetchModuleList()
-
-                                                // In jailbreak mode a full reboot would unload the
-                                                // runtime-loaded module, so apply without the prompt.
-                                                if (!withContext(Dispatchers.IO) { isJailbreakMode() }) {
-                                                    val result = snackBarHost.showSnackbar(
-                                                        message = rebootToApply,
-                                                        actionLabel = reboot,
-                                                        duration = SnackbarDuration.Long
-                                                    )
-                                                    if (result == SnackbarResult.ActionPerformed) {
-                                                        reboot()
-                                                    }
-                                                }
-                                            } else {
-                                                val message = if (isChecked) failedDisable else failedEnable
-                                                snackBarHost.showSnackbar(message.format(module.name))
-                                            }
-                                        }
-                                    },
-                                    onUpdate = {
-                                        scope.launch {
-                                            onModuleUpdate(
-                                                module,
-                                                updatedModule.third,
-                                                updatedModule.first,
-                                                "${module.name}-${updatedModule.second}.zip"
-                                            )
-                                        }
-                                    },
-                                    onClick = { clickedModule ->
-                                        onClickModule(clickedModule.id, clickedModule.name, clickedModule.hasWebUi)
-                                    })
+                                    snackBarHost = snackBarHost,
+                                    context = context,
+                                    checkStrongBiometric = checkStrongBiometric,
+                                    loadingDialog = loadingDialog,
+                                    failedEnable = failedEnable,
+                                    failedDisable = failedDisable,
+                                    rebootLabel = reboot,
+                                    rebootToApply = rebootToApply,
+                                    onModuleUpdate = { m, c, d, f -> onModuleUpdate(m, c, d, f) },
+                                    onModuleUninstall = { m -> onModuleUninstall(m) },
+                                    onModuleUndoUninstall = { m -> onModuleUndoUninstall(m) },
+                                    onClickModule = onClickModule,
+                                )
                             }
                             item { Spacer(Modifier.height(8.dp)) } // bottom clearance handled by contentPadding
                         } else {
                             item { Spacer(Modifier.height(8.dp)) }
                             itemsIndexed(modules, key = { _, module -> module.id }) { _, module ->
                                 Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                                var isChecked by rememberSaveable(module) { mutableStateOf(module.enabled) }
-                                val scope = rememberCoroutineScope()
-                                val updatedModule = viewModel.getCachedUpdate(module.id)
-
-                                ModuleItem(
-                                    navigator,
-                                    module,
-                                    isChecked,
-                                    updatedModule.first,
+                                ModuleRow(
+                                    navigator = navigator,
+                                    viewModel = viewModel,
+                                    module = module,
                                     showMoreModuleInfo = showMoreModuleInfo,
                                     foldSystemModule = foldSystemModule,
                                     simpleListBottomBar = simpleListBottomBar,
@@ -588,55 +497,19 @@ fun ModuleList(
                                     onExpandToggle = {
                                         expandedModuleId = if (expandedModuleId == module.id) null else module.id
                                     },
-                                    onUninstall = {
-                                        scope.launch { onModuleUninstall(module) }
-                                    },
-                                    onUndoUninstall = {
-                                        scope.launch { onModuleUndoUninstall(module) }
-                                    },
-                                    onCheckChanged = { checked ->
-                                        scope.launch {
-                                            if (!checkStrongBiometric()) return@launch
-                                            val success = loadingDialog.withLoading {
-                                                withContext(Dispatchers.IO) {
-                                                    toggleModule(module.id, !isChecked)
-                                                }
-                                            }
-                                            if (success) {
-                                                isChecked = checked
-                                                viewModel.fetchModuleList()
-
-                                                // In jailbreak mode a full reboot would unload the
-                                                // runtime-loaded module, so apply without the prompt.
-                                                if (!withContext(Dispatchers.IO) { isJailbreakMode() }) {
-                                                    val result = snackBarHost.showSnackbar(
-                                                        message = rebootToApply,
-                                                        actionLabel = reboot,
-                                                        duration = SnackbarDuration.Long
-                                                    )
-                                                    if (result == SnackbarResult.ActionPerformed) {
-                                                        reboot()
-                                                    }
-                                                }
-                                            } else {
-                                                val message = if (isChecked) failedDisable else failedEnable
-                                                snackBarHost.showSnackbar(message.format(module.name))
-                                            }
-                                        }
-                                    },
-                                    onUpdate = {
-                                        scope.launch {
-                                            onModuleUpdate(
-                                                module,
-                                                updatedModule.third,
-                                                updatedModule.first,
-                                                "${module.name}-${updatedModule.second}.zip"
-                                            )
-                                        }
-                                    },
-                                    onClick = { clickedModule ->
-                                        onClickModule(clickedModule.id, clickedModule.name, clickedModule.hasWebUi)
-                                    })
+                                    snackBarHost = snackBarHost,
+                                    context = context,
+                                    checkStrongBiometric = checkStrongBiometric,
+                                    loadingDialog = loadingDialog,
+                                    failedEnable = failedEnable,
+                                    failedDisable = failedDisable,
+                                    rebootLabel = reboot,
+                                    rebootToApply = rebootToApply,
+                                    onModuleUpdate = { m, c, d, f -> onModuleUpdate(m, c, d, f) },
+                                    onModuleUninstall = { m -> onModuleUninstall(m) },
+                                    onModuleUndoUninstall = { m -> onModuleUndoUninstall(m) },
+                                    onClickModule = onClickModule,
+                                )
 
                                 }
                             }
