@@ -241,18 +241,27 @@ kotlin {
     }
 }
 
+// -PkernelPatchArtifacts=/absolute/path/to/artifacts packages nonempty local
+// kpimg-android and kptools-android. Omit it to restore published binaries.
+// This override applies to Boot-mode assets; jailbreak KO downloads are separate.
 fun registerDownloadTask(
     taskName: String, srcUrl: String, destPath: String, project: Project, version: String? = null,
     localArtifact: String? = null
 ) {
+    // Resolve project-relative paths during configuration, before task execution.
+    val localDir = project.providers.gradleProperty("kernelPatchArtifacts").orNull
+    val localSource = if (localDir != null && localArtifact != null) {
+        File(project.file(localDir), localArtifact)
+    } else {
+        null
+    }
     project.tasks.register(taskName) {
         val destFile = File(destPath)
         val versionFile = File("$destPath.version")
 
         doLast {
-            val localDir = project.findProperty("kernelPatchArtifacts")?.toString()
-            if (localDir != null && localArtifact != null) {
-                val source = File(project.file(localDir), localArtifact)
+            if (localSource != null) {
+                val source = localSource
                 check(source.isFile && source.length() > 0) { "Missing local KernelPatch artifact: $source" }
                 destFile.parentFile.mkdirs()
                 source.copyTo(destFile, overwrite = true)
@@ -266,9 +275,9 @@ fun registerDownloadTask(
                 }
             }
 
-            if (!destFile.exists() || forceDownload || isFileUpdated(srcUrl, destFile)) {
+            if (!destFile.exists() || forceDownload || ArtifactDownload.isFileUpdated(srcUrl, destFile)) {
                 println(" - Downloading $srcUrl to ${destFile.absolutePath}")
-                downloadFile(srcUrl, destFile)
+                ArtifactDownload.downloadFile(srcUrl, destFile)
                 if (version != null) {
                     versionFile.writeText(version)
                 }
@@ -280,16 +289,19 @@ fun registerDownloadTask(
     }
 }
 
-fun isFileUpdated(url: String, localFile: File): Boolean {
-    val connection = URI.create(url).toURL().openConnection()
-    val remoteLastModified = connection.getHeaderFieldDate("Last-Modified", 0L)
-    return remoteLastModified > localFile.lastModified()
-}
+// Task actions call a standalone helper rather than capturing the Gradle script.
+object ArtifactDownload {
+    fun isFileUpdated(url: String, localFile: File): Boolean {
+        val connection = URI.create(url).toURL().openConnection()
+        val remoteLastModified = connection.getHeaderFieldDate("Last-Modified", 0L)
+        return remoteLastModified > localFile.lastModified()
+    }
 
-fun downloadFile(url: String, destFile: File) {
-    URI.create(url).toURL().openStream().use { input ->
-        destFile.outputStream().use { output ->
-            input.copyTo(output)
+    fun downloadFile(url: String, destFile: File) {
+        URI.create(url).toURL().openStream().use { input ->
+            destFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
         }
     }
 }
