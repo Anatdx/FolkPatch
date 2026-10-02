@@ -23,12 +23,10 @@ import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -57,13 +55,13 @@ import me.bmax.apatch.ui.component.OnlineModuleCard
 import me.bmax.apatch.ui.component.SearchAppBar
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.viewmodel.OnlineModuleViewModel
 import me.bmax.apatch.ui.viewmodel.RepoModuleViewModel
 import me.bmax.apatch.util.DownloadListener
 import me.bmax.apatch.util.download
 import me.bmax.apatch.util.ui.showToast
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination<RootGraph>
 @Composable
 fun OnlineModuleScreen(navigator: DestinationsNavigator) {
@@ -84,7 +82,7 @@ fun OnlineModuleScreen(navigator: DestinationsNavigator) {
         }
     }
 
-    Scaffold(
+    FolkScaffold(
         topBar = {
             SearchAppBar(
                 title = { Text(stringResource(R.string.online_module_title)) },
