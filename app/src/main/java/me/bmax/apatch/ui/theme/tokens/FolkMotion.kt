@@ -16,6 +16,10 @@ object FolkMotion {
     /** The spring a pressed surface returns with: a small overshoot that reads as a response. */
     val PressScale: FiniteAnimationSpec<Float> = spring(dampingRatio = 0.7f, stiffness = 700f)
 
+    /** The squeeze into the pressed state. Short enough that a quick tap still registers
+     *  before the action it triggers takes over the screen. */
+    val PressDown: FiniteAnimationSpec<Float> = tween(durationMillis = 80)
+
     /** Expanding and collapsing: settles without overshooting, so a growing group does not bounce
      *  past its final height. */
     fun <T> smoothSpring(): FiniteAnimationSpec<T> =

@@ -67,7 +67,8 @@ fun Modifier.folkPressScale(
     val pressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (pressed && enabled) FolkMotion.PressedScale else 1f,
-        animationSpec = FolkMotion.PressScale,
+        // Squeeze in fast so even a quick tap reads; release uses the spring.
+        animationSpec = if (pressed && enabled) FolkMotion.PressDown else FolkMotion.PressScale,
         label = "folkPressScale",
     )
     return this.graphicsLayer {
