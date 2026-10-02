@@ -30,3 +30,7 @@ fpd/.cargo/
 # demo project
 .research
 KernelPatch
+
+# Python
+__pycache__/
+*.pyc
