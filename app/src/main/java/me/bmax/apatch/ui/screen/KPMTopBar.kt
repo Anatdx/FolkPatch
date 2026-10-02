@@ -1,0 +1,160 @@
+package me.bmax.apatch.ui.screen
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.dropUnlessResumed
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.activity.compose.BackHandler
+import com.ramcosta.composedestinations.generated.destinations.OnlineKPMScreenDestination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import me.bmax.apatch.R
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.automirrored.filled.Sort
+import androidx.compose.material.icons.outlined.Storefront
+import androidx.compose.material3.*
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun KPMTopBar(
+    navigator: DestinationsNavigator,
+    searchQuery: String,
+    showCustomOrder: Boolean,
+    onCustomOrderClick: () -> Unit,
+    onSearchQueryChange: (String) -> Unit
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
+    var onSearch by remember { mutableStateOf(false) }
+
+    if (onSearch) {
+        LaunchedEffect(Unit) { focusRequester.requestFocus() }
+    }
+
+    BackHandler(
+        enabled = onSearch,
+        onBack = {
+            keyboardController?.hide()
+            onSearchQueryChange("")
+            onSearch = false
+        }
+    )
+
+    TopAppBar(
+        title = {
+            Box {
+                // 标题（搜索框未显示时）
+                AnimatedVisibility(
+                    modifier = Modifier.align(Alignment.CenterStart),
+                    visible = !onSearch,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    content = { Text(stringResource(R.string.kpm)) }
+                )
+
+                // 搜索框（搜索时显示）
+                AnimatedVisibility(
+                    visible = onSearch,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 2.dp, bottom = 2.dp, end = 14.dp)
+                            .focusRequester(focusRequester)
+                            .onFocusChanged { focusState ->
+                                if (focusState.isFocused) onSearch = true
+                            },
+                        value = searchQuery,
+                        onValueChange = onSearchQueryChange,
+                        shape = RoundedCornerShape(15.dp),
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {
+                                    onSearch = false
+                                    keyboardController?.hide()
+                                    onSearchQueryChange("")
+                                },
+                                content = { Icon(Icons.Filled.Close, "Close") }
+                            )
+                        },
+                        maxLines = 1,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text,
+                            imeAction = ImeAction.Search
+                        ),
+                        keyboardActions = KeyboardActions {
+                            keyboardController?.hide()
+                        },
+                    )
+                }
+            }
+        },
+        actions = {
+            AnimatedVisibility(
+                visible = !onSearch
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    // 搜索按钮
+                    IconButton(onClick = { onSearch = true }) {
+                        Icon(
+                            imageVector = Icons.Filled.Search,
+                            contentDescription = "Search"
+                        )
+                    }
+                    // 下载按钮
+                    IconButton(onClick = dropUnlessResumed { navigator.navigate(OnlineKPMScreenDestination) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Storefront,
+                            contentDescription = "Online KPM"
+                        )
+                    }
+                    // 自定义排序按钮（无模块时隐藏）
+                    if (showCustomOrder) {
+                        IconButton(onClick = onCustomOrderClick) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.Sort,
+                                contentDescription = stringResource(R.string.kpm_custom_order)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    )
+}
+
+
+

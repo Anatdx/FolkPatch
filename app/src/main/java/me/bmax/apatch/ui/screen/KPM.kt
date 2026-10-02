@@ -1,7 +1,6 @@
 package me.bmax.apatch.ui.screen
 
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -27,7 +26,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -46,7 +44,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -58,20 +55,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.contentDescription
@@ -79,7 +71,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -88,21 +79,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
-import androidx.compose.ui.window.PopupProperties
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
-import androidx.activity.compose.BackHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.InstallScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.OnlineKPMScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.PatchesDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.topjohnwu.superuser.nio.ExtendedFile
@@ -138,7 +124,6 @@ import me.bmax.apatch.util.rootShellForResult
 import java.io.IOException
 
 import androidx.compose.foundation.layout.offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.theme.bannerFadeColor
@@ -149,12 +134,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.automirrored.filled.Sort
 import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.ButtonDefaults
@@ -169,9 +150,7 @@ import androidx.compose.runtime.getValue
 
 import me.bmax.apatch.util.BiometricUtils
 import me.bmax.apatch.util.ModuleBackupUtils
-import me.bmax.apatch.util.ModuleBannerStorage
 import me.bmax.apatch.util.kpmBannerStorage
-import me.bmax.apatch.util.SafeUriResolver
 import me.bmax.apatch.util.getFileNameFromUri
 import me.bmax.apatch.util.CustomModuleInfo
 import me.bmax.apatch.util.isJailbreakMode
@@ -303,7 +282,7 @@ fun KPModuleScreen(navigator: DestinationsNavigator) {
 
     FolkScaffold(
         topBar = {
-            TopBar(
+            KPMTopBar(
                 navigator,
                 searchQuery,
                 showCustomOrder = viewModel.moduleList.isNotEmpty(),
@@ -1131,120 +1110,6 @@ private fun KPModuleList(
         }
     }
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar(
-    navigator: DestinationsNavigator,
-    searchQuery: String,
-    showCustomOrder: Boolean,
-    onCustomOrderClick: () -> Unit,
-    onSearchQueryChange: (String) -> Unit
-) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
-    var onSearch by remember { mutableStateOf(false) }
-
-    if (onSearch) {
-        LaunchedEffect(Unit) { focusRequester.requestFocus() }
-    }
-
-    BackHandler(
-        enabled = onSearch,
-        onBack = {
-            keyboardController?.hide()
-            onSearchQueryChange("")
-            onSearch = false
-        }
-    )
-
-    TopAppBar(
-        title = {
-            Box {
-                // 标题（搜索框未显示时）
-                AnimatedVisibility(
-                    modifier = Modifier.align(Alignment.CenterStart),
-                    visible = !onSearch,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                    content = { Text(stringResource(R.string.kpm)) }
-                )
-
-                // 搜索框（搜索时显示）
-                AnimatedVisibility(
-                    visible = onSearch,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 2.dp, bottom = 2.dp, end = 14.dp)
-                            .focusRequester(focusRequester)
-                            .onFocusChanged { focusState ->
-                                if (focusState.isFocused) onSearch = true
-                            },
-                        value = searchQuery,
-                        onValueChange = onSearchQueryChange,
-                        shape = RoundedCornerShape(15.dp),
-                        trailingIcon = {
-                            IconButton(
-                                onClick = {
-                                    onSearch = false
-                                    keyboardController?.hide()
-                                    onSearchQueryChange("")
-                                },
-                                content = { Icon(Icons.Filled.Close, "Close") }
-                            )
-                        },
-                        maxLines = 1,
-                        singleLine = true,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text,
-                            imeAction = ImeAction.Search
-                        ),
-                        keyboardActions = KeyboardActions {
-                            keyboardController?.hide()
-                        },
-                    )
-                }
-            }
-        },
-        actions = {
-            AnimatedVisibility(
-                visible = !onSearch
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    // 搜索按钮
-                    IconButton(onClick = { onSearch = true }) {
-                        Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = "Search"
-                        )
-                    }
-                    // 下载按钮
-                    IconButton(onClick = dropUnlessResumed { navigator.navigate(OnlineKPMScreenDestination) }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Storefront,
-                            contentDescription = "Online KPM"
-                        )
-                    }
-                    // 自定义排序按钮（无模块时隐藏）
-                    if (showCustomOrder) {
-                        IconButton(onClick = onCustomOrderClick) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Sort,
-                                contentDescription = stringResource(R.string.kpm_custom_order)
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    )
-}
-
-
 
 @Composable
 private fun KPModuleItem(
