@@ -51,6 +51,7 @@ import androidx.compose.material3.FloatingActionButtonMenu
 import androidx.compose.material3.FloatingActionButtonMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -473,6 +474,12 @@ private fun SelectionTopBar(
     onRevokeRoot: () -> Unit,
     onExclude: () -> Unit,
 ) {
+    // The bar sits on primaryContainer, where M3's default disabled alpha turns
+    // the three action icons into a grey smudge. Lift just the disabled tint so
+    // the icons stay readable while the enabled state is still clearly darker.
+    val actionColors = IconButtonDefaults.iconButtonColors(
+        disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.72f),
+    )
     TopAppBar(
         title = {
             Text(stringResource(R.string.su_multi_select_count, selectedCount))
@@ -489,6 +496,7 @@ private fun SelectionTopBar(
             IconButton(
                 onClick = onGrantRoot,
                 enabled = selectedCount > 0,
+                colors = actionColors,
             ) {
                 Icon(
                     imageVector = Icons.Filled.Shield,
@@ -498,6 +506,7 @@ private fun SelectionTopBar(
             IconButton(
                 onClick = onRevokeRoot,
                 enabled = selectedCount > 0,
+                colors = actionColors,
             ) {
                 Icon(
                     imageVector = Icons.Filled.Security,
@@ -507,6 +516,7 @@ private fun SelectionTopBar(
             IconButton(
                 onClick = onExclude,
                 enabled = selectedCount > 0,
+                colors = actionColors,
             ) {
                 Icon(
                     imageVector = Icons.Filled.Block,
