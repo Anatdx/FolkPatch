@@ -61,6 +61,12 @@ fun FolkScaffold(
     titleContent: (@Composable () -> Unit)? = null,
     floatingActionButton: @Composable () -> Unit = {},
     /**
+     * A persistent bottom bar, such as a command input. Callers that use this
+     * should usually pass `addBottomClearance = false`, because the bar already
+     * contributes to the content padding.
+     */
+    bottomBar: (@Composable () -> Unit)? = null,
+    /**
      * A fully custom bar. Screens whose bar is not a plain title (an animated
      * search field, a selection bar) supply it here so they still get the shared
      * insets and bottom clearance without reshaping their bar.
@@ -139,6 +145,12 @@ fun FolkScaffold(
             }
         },
         floatingActionButton = floatingActionButton,
+        bottomBar = {
+            val custom = bottomBar
+            if (custom != null) {
+                custom()
+            }
+        },
     ) { inner ->
         val layoutDirection = LocalLayoutDirection.current
         val clearance = if (addBottomClearance) folkBottomClearance() else 0.dp
