@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,14 +29,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.*
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -62,7 +57,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -70,7 +64,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.compose.foundation.background
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.viewModelScope
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.InstallScreenDestination
@@ -87,13 +80,7 @@ import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.apApp
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import me.bmax.apatch.ui.component.ConfirmResult
 import me.bmax.apatch.ui.component.LoadingDialogHandle
-import me.bmax.apatch.ui.component.TwoColumnGrid
-import me.bmax.apatch.ui.component.splicedLazyColumnGroup
-import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.ui.component.rememberLoadingDialog
 import me.bmax.apatch.ui.viewmodel.KPModel
 import me.bmax.apatch.ui.viewmodel.KPModuleViewModel
@@ -111,13 +98,11 @@ import me.bmax.apatch.ui.navigation.LocalBottomBarVisible
 import me.bmax.apatch.ui.navigation.LocalIsFloatingNavMode
 import me.bmax.apatch.ui.navigation.fabNavBottomClearance
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import android.widget.Toast
 
 import android.content.SharedPreferences
@@ -141,12 +126,6 @@ import org.ini4j.Ini
 
 private const val TAG = "KernelPatchModule"
 private val kpmInstallMutex = Mutex()
-private lateinit var targetKPMToControl: KPModel.KPMInfo
-
-private data class UninstallResult(
-    val unloaded: Boolean,
-    val removed: Boolean,
-)
 
 @Destination<RootGraph>
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -717,370 +696,6 @@ fun KPMControlDialog(showDialog: MutableState<Boolean>, onConfirm: (String) -> U
         }
         val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
         APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
-@Composable
-private fun KPModuleList(
-    viewModel: KPModuleViewModel,
-    moduleList: List<KPModel.KPMInfo>,
-    modifier: Modifier = Modifier,
-    state: LazyListState,
-    showMoreModuleInfo: Boolean,
-    foldSystemModule: Boolean,
-    simpleListBottomBar: Boolean,
-    splicedCardGroup: Boolean,
-    showKpmStatusBadge: Boolean,
-    checkStrongBiometric: suspend () -> Boolean
-) {
-    val moduleStr = stringResource(id = R.string.kpm)
-    val moduleUninstallConfirm = stringResource(id = R.string.kpm_unload_confirm)
-    val embeddedUnloadInvalid = stringResource(id = R.string.kpm_embedded_unload_invalid)
-    val uninstall = stringResource(id = R.string.kpm_unload)
-    val cancel = stringResource(id = android.R.string.cancel)
-
-    var expandedModuleId by remember { mutableStateOf<String?>(null) }
-
-    val confirmDialog = rememberConfirmDialog()
-    val loadingDialog = rememberLoadingDialog()
-    val outMsgStringRes = stringResource(id = R.string.kpm_control_outMsg)
-    val okStringRes = stringResource(id = R.string.kpm_control_ok)
-    val failedStringRes = stringResource(id = R.string.kpm_control_failed)
-
-    // Run on the caller's (ViewModel) scope: KPMControlDialog leaves
-    // composition on OK, cancelling any scope it owns.
-    suspend fun onModuleControl(module: KPModel.KPMInfo, param: String) {
-        lateinit var controlResult: Natives.KPMCtlRes
-        loadingDialog.withLoading {
-            withContext(Dispatchers.IO) {
-                controlResult = Natives.kernelPatchModuleControl(module.name, param)
-            }
-        }
-
-        if (controlResult.rc >= 0) {
-            showToast(apApp, "$okStringRes\n${outMsgStringRes}: ${controlResult.outMsg}")
-        } else {
-            showToast(apApp, "$failedStringRes\n${outMsgStringRes}: ${controlResult.outMsg}")
-        }
-    }
-
-    val showKPMControlDialog = remember { mutableStateOf(false) }
-    if (showKPMControlDialog.value) {
-        KPMControlDialog(showDialog = showKPMControlDialog, onConfirm = { param ->
-            viewModel.viewModelScope.launch { onModuleControl(targetKPMToControl, param) }
-        })
-    }
-
-    suspend fun onModuleUninstall(module: KPModel.KPMInfo) {
-        if (!checkStrongBiometric()) return
-        val confirmResult = confirmDialog.awaitConfirm(
-            moduleStr,
-            content = if (module.loadSource == "embedded") {
-                embeddedUnloadInvalid
-            } else {
-                moduleUninstallConfirm.format(module.name)
-            },
-            confirm = uninstall,
-            dismiss = cancel
-        )
-        if (confirmResult != ConfirmResult.Confirmed) {
-            return
-        }
-
-        val result = loadingDialog.withLoading {
-            withContext(Dispatchers.IO) {
-                val unloaded = module.loadSource.isBlank() || Natives.unloadKernelPatchModule(module.name) == 0L
-                val removed = if (module.installed && module.loadSource != "embedded") {
-                    val id = safeKpmModuleId(module.moduleId.ifBlank { module.name })
-                    val dir = "${APApplication.KPMS_DIR}$id"
-                    rootShellForResult("rm -rf '$dir' && test ! -e '$dir'").isSuccess
-                } else true
-                UninstallResult(unloaded, removed)
-            }
-        }
-
-        // Refresh even when the live kernel instance could not be unloaded:
-        // the persistent file may still have been removed and must not remain
-        // represented as installed in the UI.
-        if (result.removed) {
-            viewModel.fetchModuleList()
-        }
-    }
-
-    val pullToRefreshState = rememberPullToRefreshState()
-    PullToRefreshBox(
-        modifier = modifier,
-        onRefresh = { viewModel.fetchModuleList(forceEmbeddedRefresh = true) },
-        isRefreshing = viewModel.isRefreshing,
-        state = pullToRefreshState,
-        indicator = { PullToRefreshDefaults.LoadingIndicator(state = pullToRefreshState, isRefreshing = viewModel.isRefreshing, modifier = Modifier.align(Alignment.TopCenter)) }
-    ) {
-        val configuration = LocalConfiguration.current
-        val isWideScreen = configuration.screenWidthDp >= 600
-
-        if (isWideScreen) {
-            TwoColumnGrid(
-                modifier = Modifier.fillMaxSize(),
-                items = if (moduleList.isEmpty()) emptyList() else moduleList,
-                key = { module -> module.name },
-                verticalSpacing = 16.dp,
-                horizontalSpacing = 16.dp,
-                contentPadding = run {
-                    val bottomClearance = fabNavBottomClearance()
-                    remember(bottomClearance) {
-                        PaddingValues(
-                            start = 16.dp,
-                            top = 16.dp,
-                            end = 16.dp,
-                            bottom = bottomClearance
-                        )
-                    }
-                },
-                beforeItems = {
-                    if (moduleList.isEmpty()) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .defaultMinSize(minHeight = 300.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            if (viewModel.errorMessage != null && !viewModel.isRefreshing) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.ErrorOutline,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.error,
-                                        modifier = Modifier.size(48.dp)
-                                    )
-                                    Spacer(Modifier.height(12.dp))
-                                    Text(
-                                        text = viewModel.errorMessage ?: stringResource(R.string.kpm_load_failed),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.padding(horizontal = 16.dp)
-                                    )
-                                    Spacer(Modifier.height(12.dp))
-                                    Button(onClick = { viewModel.fetchModuleList() }) {
-                                        Text(stringResource(R.string.retry))
-                                    }
-                                }
-                            } else {
-                                Text(
-                                    stringResource(R.string.kpm_apm_empty), textAlign = TextAlign.Center
-                                )
-                            }
-                        }
-                    }
-                },
-                itemContent = { module ->
-                    val scope = rememberCoroutineScope()
-                    KPModuleItem(
-                        module,
-                        onUninstall = {
-                            scope.launch { onModuleUninstall(module) }
-                        },
-                        onControl = {
-                            scope.launch {
-                                if (checkStrongBiometric()) {
-                                    targetKPMToControl = module
-                                    showKPMControlDialog.value = true
-                                }
-                            }
-                        },
-                        onToggle = { enabled ->
-                            scope.launch {
-                                withContext(Dispatchers.IO) {
-                                    val id = safeKpmModuleId(module.moduleId.ifBlank { module.name })
-                                    if (enabled) {
-                                        rootShellForResult("rm -f '${APApplication.KPMS_DIR}$id/disable'")
-                                    } else {
-                                        rootShellForResult("touch '${APApplication.KPMS_DIR}$id/disable'")
-                                    }
-                                }
-                                viewModel.updateModuleDisabled(module.moduleId, !enabled)
-                                viewModel.markNeedRefresh()
-                                viewModel.fetchModuleList()
-                            }
-                        },
-                        showMoreModuleInfo = showMoreModuleInfo,
-                        simpleListBottomBar = simpleListBottomBar,
-                        foldSystemModule = foldSystemModule,
-                        expanded = expandedModuleId == module.name,
-                        onExpandToggle = {
-                            expandedModuleId = if (expandedModuleId == module.name) null else module.name
-                        },
-                        isEmbedded = if (showKpmStatusBadge) viewModel.embeddedKpmNames?.let { module.name.trim() in it } else null
-                    )
-                }
-            )
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                state = state,
-                contentPadding = run {
-                    val bottomClearance = fabNavBottomClearance()
-                    remember(bottomClearance) {
-                        PaddingValues(
-                            start = 0.dp,
-                            top = 16.dp,
-                            end = 0.dp,
-                            bottom = bottomClearance
-                        )
-                    }
-                },
-            ) {
-                when {
-                    viewModel.errorMessage != null && !viewModel.isRefreshing -> {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .fillParentMaxHeight(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.ErrorOutline,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.error,
-                                        modifier = Modifier.size(48.dp)
-                                    )
-                                    Spacer(Modifier.height(12.dp))
-                                    Text(
-                                        text = viewModel.errorMessage ?: stringResource(R.string.kpm_load_failed),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.padding(horizontal = 16.dp)
-                                    )
-                                    Spacer(Modifier.height(12.dp))
-                                    Button(onClick = { viewModel.fetchModuleList() }) {
-                                        Text(stringResource(R.string.retry))
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    moduleList.isEmpty() -> {
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .fillParentMaxHeight(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    stringResource(R.string.kpm_apm_empty), textAlign = TextAlign.Center
-                                )
-                            }
-                        }
-                    }
-
-                    else -> {
-                        if (splicedCardGroup) {
-                            item { Spacer(Modifier.height(8.dp)) }
-                            splicedLazyColumnGroup(
-                                items = moduleList,
-                                key = { _, module -> module.name },
-                                contentType = { _, _ -> "KPModuleItem" },
-                            ) { _, module ->
-                                val scope = rememberCoroutineScope()
-                                KPModuleItem(
-                                    module,
-                                    onUninstall = {
-                                        scope.launch { onModuleUninstall(module) }
-                                    },
-                                    onControl = {
-                                        scope.launch {
-                                            if (checkStrongBiometric()) {
-                                                targetKPMToControl = module
-                                                showKPMControlDialog.value = true
-                                            }
-                                        }
-                                    },
-                                    onToggle = { enabled ->
-                                        scope.launch {
-                                            withContext(Dispatchers.IO) {
-                                                val id = safeKpmModuleId(module.moduleId.ifBlank { module.name })
-                                                if (enabled) {
-                                                    rootShellForResult("rm -f '${APApplication.KPMS_DIR}$id/disable'")
-                                                } else {
-                                                    rootShellForResult("mkdir -p '${APApplication.KPMS_DIR}$id' && touch '${APApplication.KPMS_DIR}$id/disable'")
-                                                }
-                                            }
-                                            viewModel.markNeedRefresh()
-                                            viewModel.fetchModuleList()
-                                        }
-                                    },
-                                    showMoreModuleInfo = showMoreModuleInfo,
-                                    simpleListBottomBar = simpleListBottomBar,
-                                    foldSystemModule = foldSystemModule,
-                                    expanded = expandedModuleId == module.name,
-                                    onExpandToggle = {
-                                        expandedModuleId = if (expandedModuleId == module.name) null else module.name
-                                    },
-                                    isEmbedded = if (showKpmStatusBadge) viewModel.embeddedKpmNames?.let { module.name.trim() in it } else null
-                                )
-                            }
-                            item { Spacer(Modifier.height(8.dp)) } // bottom clearance handled by contentPadding
-                        } else {
-                            item { Spacer(Modifier.height(8.dp)) }
-                            itemsIndexed(moduleList, key = { _, module -> module.name }) { _, module ->
-                                Box(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                                val scope = rememberCoroutineScope()
-                                KPModuleItem(
-                                    module,
-                                    onUninstall = {
-                                        scope.launch { onModuleUninstall(module) }
-                                    },
-                                    onControl = {
-                                        scope.launch {
-                                            if (checkStrongBiometric()) {
-                                                targetKPMToControl = module
-                                                showKPMControlDialog.value = true
-                                            }
-                                        }
-                                    },
-                                    onToggle = { enabled ->
-                                        scope.launch {
-                                            withContext(Dispatchers.IO) {
-                                                val id = safeKpmModuleId(module.moduleId.ifBlank { module.name })
-                                                if (enabled) {
-                                                    rootShellForResult("rm -f '${APApplication.KPMS_DIR}$id/disable'")
-                                                } else {
-                                                    rootShellForResult("mkdir -p '${APApplication.KPMS_DIR}$id' && touch '${APApplication.KPMS_DIR}$id/disable'")
-                                                }
-                                            }
-                                            viewModel.markNeedRefresh()
-                                            viewModel.fetchModuleList()
-                                        }
-                                    },
-                                    showMoreModuleInfo = showMoreModuleInfo,
-                                    simpleListBottomBar = simpleListBottomBar,
-                                    foldSystemModule = foldSystemModule,
-                                    expanded = expandedModuleId == module.name,
-                                    onExpandToggle = {
-                                        expandedModuleId = if (expandedModuleId == module.name) null else module.name
-                                    },
-                                    isEmbedded = if (showKpmStatusBadge) viewModel.embeddedKpmNames?.let { module.name.trim() in it } else null
-                                )
-                                }
-                            }
-                            item { Spacer(Modifier.height(8.dp)) } // bottom clearance handled by contentPadding
-                        }
-                    }
-                }
-            }
-        }
     }
 }
 
