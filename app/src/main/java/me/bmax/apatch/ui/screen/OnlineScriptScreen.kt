@@ -25,12 +25,12 @@ import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.AppLoadingIndicator
 import me.bmax.apatch.ui.component.OnlineModuleCard
 import me.bmax.apatch.ui.component.SearchAppBar
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.viewmodel.OnlineScriptViewModel
 import me.bmax.apatch.util.SafeUriResolver
 import me.bmax.apatch.util.download
 import java.io.File
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination<RootGraph>
 @Composable
 fun OnlineScriptScreen(navigator: DestinationsNavigator) {
@@ -43,7 +43,7 @@ fun OnlineScriptScreen(navigator: DestinationsNavigator) {
         }
     }
 
-    Scaffold(
+    FolkScaffold(
         topBar = {
             SearchAppBar(
                 title = { Text(stringResource(R.string.online_script_title)) },
