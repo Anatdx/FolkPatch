@@ -13,22 +13,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import me.bmax.apatch.ui.theme.BackgroundConfig
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Card
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,7 +41,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import me.bmax.apatch.ui.theme.refreshTheme
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,7 +65,6 @@ import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.component.folk.FolkScaffold
-import me.bmax.apatch.apApp
 import me.bmax.apatch.ui.component.WelcomeGuideDialog
 import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.migrateStockBootBackup
@@ -324,60 +318,6 @@ fun UninstallDialog(showDialog: MutableState<Boolean>, navigator: DestinationsNa
     }
 }
 
-@Composable
-fun WarningCard() {
-    var show by rememberSaveable { mutableStateOf(apApp.getBackupWarningState()) }
-    if (show) {
-        ElevatedCard(
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 6.dp
-            ), colors = CardDefaults.elevatedCardColors(containerColor = run {
-                MaterialTheme.colorScheme.error
-            })
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(12.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(Icons.Filled.Warning, contentDescription = "warning")
-                }
-                Column(
-                    modifier = Modifier.padding(12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            modifier = Modifier.weight(1f),
-                            text = stringResource(id = R.string.patch_warnning),
-                        )
-
-                        Spacer(Modifier.width(12.dp))
-
-                        Icon(
-                            Icons.Outlined.Clear,
-                            contentDescription = stringResource(R.string.close),
-                            modifier = Modifier.clickable {
-                                show = false
-                                apApp.updateBackupWarningState(false)
-                            },
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 
 fun getSystemVersion(): String {
     return "${Build.VERSION.RELEASE} ${if (Build.VERSION.PREVIEW_SDK_INT != 0) "Preview" else ""} (API ${Build.VERSION.SDK_INT})"
@@ -393,29 +333,6 @@ fun getDeviceInfo(): String {
     return manufacturer
 }
 
-@Composable
-fun WarningCard(
-    message: String, color: Color = MaterialTheme.colorScheme.error, onClick: (() -> Unit)? = null
-) {
-    ElevatedCard(
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = color
-        ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = if (BackgroundConfig.isCustomBackgroundEnabled) 0.dp else 6.dp
-        ),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .then(onClick?.let { Modifier.clickable { it() } } ?: Modifier)
-                .padding(24.dp)) {
-            Text(
-                text = message, style = MaterialTheme.typography.bodyMedium
-            )
-        }
-    }
-}
 
 @Composable
 fun LearnMoreCard() {
