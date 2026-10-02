@@ -7,11 +7,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.edit
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.ramcosta.composedestinations.generated.destinations.LanguagePickerScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -355,170 +353,39 @@ fun GeneralSettingsContent(
     }
 
     if (kPatchReady && aPatchReady) {
-    FolkSettingsSection(title = stringResource(R.string.settings_section_general_mount)) {
-     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
-
-        item(key = "general_magic_mount", visible = kPatchReady && aPatchReady) {
-            FolkSwitchPreference(
-                icon = Icons.Outlined.FolderSpecial,
-                title = magicMountTitle,
-                summary = magicMountSummary,
-                checked = isMagicMountEnabled,
-                onCheckedChange = {
-                    setMagicMountEnabled(it)
-                    onMagicMountChange(it)
-                },
-            )
-        }
-
-        item(key = "general_sucompat", visible = kPatchReady && aPatchReady) {
-            var sucompatEnabled by remember { mutableStateOf(prefs.getBoolean("sucompat_enabled", false)) }
-            FolkSwitchPreference(
-                icon = Icons.Outlined.FeaturedPlayList,
-                title = stringResource(id = R.string.settings_sucompat),
-                summary = stringResource(id = R.string.settings_sucompat_summary),
-                checked = sucompatEnabled,
-                onCheckedChange = { enabled ->
-                    scope.launch {
-                        val result = if (enabled) {
-                            // Enable: create marker file and register hooks via supercall
-                            rootShellForResult("touch ${APApplication.SUCOMPAT_FILE}")
-                            Natives.controlFeature("sucompat_extra", true)
-                        } else {
-                            // Disable: remove marker file and unregister hooks via supercall
-                            rootShellForResult("rm -f ${APApplication.SUCOMPAT_FILE}")
-                            Natives.controlFeature("sucompat_extra", false)
-                        }
-                        if (result == 0L) {
-                            sucompatEnabled = enabled
-                            prefs.edit().putBoolean("sucompat_enabled", enabled).apply()
-                        }
-                    }
-                }
-            )
-        }
-        item(key = "general_selinux_hide", visible = kPatchReady && aPatchReady) {
-            val kernelVersion = remember { getKernelVersionCode() }
-            val kernelSupported = (kernelVersion ?: 0) >= 419
-            val isGki = remember { isGkiKernel() }
-            var selinuxHideEnabled by rememberSaveable {
-                mutableStateOf(prefs.getBoolean("selinux_hide_enabled", false))
-            }
-            val showSelinuxHideWarning = remember { mutableStateOf(false) }
-
-            fun applySelinuxHide(enabled: Boolean) {
-                scope.launch(Dispatchers.IO) {
-                    val command = if (enabled) {
-                        "touch ${APApplication.SELINUX_HIDE_FILE}"
-                    } else {
-                        "rm -f ${APApplication.SELINUX_HIDE_FILE}"
-                    }
-                    val result = rootShellForResult(command)
-                    if (result.isSuccess) {
-                        selinuxHideEnabled = enabled
-                        prefs.edit().putBoolean("selinux_hide_enabled", enabled).apply()
-                    }
-                }
-            }
-
-            FolkSwitchPreference(
-                icon = Icons.Outlined.Security,
-                title = stringResource(id = R.string.settings_selinux_hide),
-                summary = stringResource(id = R.string.settings_selinux_hide_summary),
-                checked = selinuxHideEnabled,
-                onCheckedChange = { enabled ->
-                    if (enabled) {
-                        // Only tested on 5.10+, and non-GKI carries a bigger risk, so warn first.
-                        val below510 = (kernelVersion ?: 0) < 510
-                        if (below510 || !isGki) {
-                            showSelinuxHideWarning.value = true
-                        } else {
-                            applySelinuxHide(true)
-                        }
-                    } else {
-                        applySelinuxHide(false)
-                    }
-                },
-                enabled = kernelSupported,
-            )
-
-            if (showSelinuxHideWarning.value) {
-                SelinuxHideWarningDialog(
-                    showDialog = showSelinuxHideWarning,
-                    kernelVersion = kernelVersion,
-                    isGki = isGki,
-                    onConfirm = { applySelinuxHide(true) },
-                )
-            }
-        }
-        item(key = "general_reset_su_path", visible = kPatchReady) {
-            FolkNavigationPreference(
-                icon = Icons.Outlined.LinkOff,
-                title = resetSuPathTitle,
-                onClick = { showResetSuPathDialog.value = true },
-            )
-        }
-
-     }
-    }
+        GeneralMountSection(
+            flat = flat,
+            highlightKey = highlightKey,
+            magicMountTitle = magicMountTitle,
+            magicMountSummary = magicMountSummary,
+            isMagicMountEnabled = isMagicMountEnabled,
+            onMagicMountChange = onMagicMountChange,
+            resetSuPathTitle = resetSuPathTitle,
+            showResetSuPathDialog = showResetSuPathDialog,
+        )
 
     }
     }
-    FolkSettingsSection(title = stringResource(R.string.settings_section_general_identity)) {
-     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
-
-        item(key = "general_alt_icon") {
-            FolkSwitchPreference(
-                icon = Icons.Outlined.Android,
-                title = launcherIconTitle,
-                summary = launcherIconSummary,
-                checked = useAltIcon.value,
-                onCheckedChange = {
-                    prefs.edit { putBoolean("use_alt_icon", it) }
-                    LauncherIconUtils.updateLauncherState(context)
-                    useAltIcon.value = it
-                },
-            )
-        }
-
-        item(key = "general_app_title") {
-            FolkValuePreference(
-                icon = Icons.Outlined.Label,
-                title = appTitleTitle,
-                summary = appTitleLabel,
-                onClick = { showAppTitleDialog.value = true },
-            )
-        }
-
-        item(key = "general_custom_app_title", visible = currentAppTitle == "custom") {
-            FolkValuePreference(
-                icon = Icons.Outlined.Edit,
-                title = customAppTitleTitle,
-                summary = currentCustomAppTitle,
-                onClick = { showCustomAppTitleDialog.value = true },
-            )
-        }
-
-        item(key = "general_desktop_app_name") {
-            FolkValuePreference(
-                icon = Icons.Outlined.PhoneAndroid,
-                title = desktopAppNameTitle,
-                summary = currentDesktopAppName,
-                onClick = { showDesktopAppNameDialog.value = true },
-            )
-        }
-
-        item(key = "general_dpi") {
-            FolkValuePreference(
-                icon = Icons.Outlined.FormatSize,
-                title = dpiTitle,
-                summary = dpiValue,
-                onClick = { showDpiDialog.value = true },
-            )
-        }
-
-     }
-    }
+    GeneralIdentitySection(
+        flat = flat,
+        highlightKey = highlightKey,
+        launcherIconTitle = launcherIconTitle,
+        launcherIconSummary = launcherIconSummary,
+        useAltIcon = useAltIcon,
+        appTitleTitle = appTitleTitle,
+        appTitleLabel = appTitleLabel,
+        currentAppTitle = currentAppTitle,
+        showAppTitleDialog = showAppTitleDialog,
+        customAppTitleTitle = customAppTitleTitle,
+        currentCustomAppTitle = currentCustomAppTitle,
+        showCustomAppTitleDialog = showCustomAppTitleDialog,
+        desktopAppNameTitle = desktopAppNameTitle,
+        currentDesktopAppName = currentDesktopAppName,
+        showDesktopAppNameDialog = showDesktopAppNameDialog,
+        dpiTitle = dpiTitle,
+        dpiValue = dpiValue,
+        showDpiDialog = showDpiDialog,
+    )
 
     GeneralMaintenanceSection(
         flat = flat,
