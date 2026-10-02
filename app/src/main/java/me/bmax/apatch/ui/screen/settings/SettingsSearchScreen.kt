@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,6 +45,7 @@ import com.ramcosta.composedestinations.generated.destinations.MultimediaSetting
 import com.ramcosta.composedestinations.generated.destinations.FunctionSettingsScreenDestination
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.SearchAppBar
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
 
 @Destination<RootGraph>
@@ -68,7 +68,7 @@ fun SettingsSearchScreen(navigator: DestinationsNavigator) {
         }
     }
 
-    Scaffold(
+    FolkScaffold(
         topBar = {
             SearchAppBar(
                 title = { Text(stringResource(R.string.settings_search_title)) },
@@ -79,7 +79,7 @@ fun SettingsSearchScreen(navigator: DestinationsNavigator) {
                 startInSearchMode = true,
             )
         },
-        containerColor = androidx.compose.ui.graphics.Color.Transparent,
+        addBottomClearance = false,
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
