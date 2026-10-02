@@ -1,8 +1,6 @@
 package me.bmax.apatch.ui.screen
 
 import android.app.Activity.RESULT_OK
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,15 +8,12 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.util.Patterns
-import org.json.JSONObject
 import me.bmax.apatch.util.ui.showToast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.expandVertically
@@ -27,7 +22,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.CircleShape
@@ -38,7 +32,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -49,25 +42,19 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.CardDefaults
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.asImageBitmap
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.topjohnwu.superuser.Shell
 import com.topjohnwu.superuser.io.SuFile
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.background
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material3.ButtonDefaults
@@ -75,7 +62,6 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Restore
-import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.material.icons.outlined.Terminal
 import androidx.compose.material.icons.automirrored.outlined.Wysiwyg
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -90,7 +76,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import me.bmax.apatch.ui.component.ExpressiveSwitch
-import me.bmax.apatch.ui.component.ExpressiveCard
 import me.bmax.apatch.ui.component.LocalInsideSplicedGroup
 import me.bmax.apatch.ui.component.ModuleLabel
 import me.bmax.apatch.ui.component.TwoColumnGrid
@@ -100,7 +85,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -117,22 +101,17 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.core.net.toUri
 import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -156,10 +135,6 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import me.bmax.apatch.ui.component.AdaptiveModuleButtonRow
 import me.bmax.apatch.ui.component.ConfirmResult
 import me.bmax.apatch.ui.component.ModuleButtonConfig
-import me.bmax.apatch.ui.component.ModuleRemoveButton
-import me.bmax.apatch.ui.component.ModuleStateIndicator
-import me.bmax.apatch.ui.component.ModuleUpdateButton
-import me.bmax.apatch.ui.component.SearchAppBar
 import me.bmax.apatch.ui.component.BackgroundOptionsDialog
 import me.bmax.apatch.ui.component.ModuleInfoData
 import me.bmax.apatch.ui.component.rememberConfirmDialog
@@ -178,33 +153,23 @@ import me.bmax.apatch.util.uninstallModule
 import me.bmax.apatch.util.undoUninstallModule
 
 import com.ramcosta.composedestinations.generated.destinations.ApmBulkInstallScreenDestination
-import com.ramcosta.composedestinations.generated.destinations.OnlineModuleScreenDestination
 import androidx.compose.material.icons.automirrored.filled.PlaylistAdd
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.MoreVert
-import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
-import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
-import me.bmax.apatch.util.SafeUriResolver
-import me.bmax.apatch.util.ModuleBannerStorage
 import me.bmax.apatch.util.apmBannerStorage
 import me.bmax.apatch.util.resolveModuleDir
 import me.bmax.apatch.util.readModulePropBanner
 import me.bmax.apatch.util.clearLegacyFolkBanner
 import me.bmax.apatch.util.CustomModuleInfo
 import me.bmax.apatch.util.apmCustomModuleInfoStorage
-import me.bmax.apatch.util.sanitizeModuleKey
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.theme.bannerFadeColor
 import me.bmax.apatch.ui.navigation.LocalBottomBarVisible
 import me.bmax.apatch.ui.navigation.LocalIsFloatingNavMode
 import me.bmax.apatch.ui.navigation.fabNavBottomClearance
 import androidx.compose.ui.platform.LocalConfiguration
-import java.util.Properties
-import java.io.File
 
 import me.bmax.apatch.util.BiometricUtils
 
@@ -1165,207 +1130,6 @@ private fun ModuleList(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar(
-    navigator: DestinationsNavigator,
-    viewModel: APModuleViewModel,
-    snackBarHost: SnackbarHostState,
-    searchQuery: String,
-    checkStrongBiometric: suspend () -> Boolean,
-    onSearchQueryChange: (String) -> Unit,
-    onToggleModuleBanner: () -> Unit
-) {
-    val confirmDialog = rememberConfirmDialog()
-    val scope = rememberCoroutineScope()
-    val disableAllTitle = stringResource(R.string.apm_disable_all_title)
-    val disableAllConfirm = stringResource(R.string.apm_disable_all_confirm)
-    val confirm = stringResource(android.R.string.ok)
-    val cancel = stringResource(android.R.string.cancel)
-    val context = LocalContext.current
-
-    var showMenu by remember { mutableStateOf(false) }
-    var showOrderDialog by remember { mutableStateOf(false) }
-    var orderedModules by remember { mutableStateOf(viewModel.moduleList) }
-
-    SearchAppBar(
-        title = { Text(stringResource(R.string.apm)) },
-        searchText = searchQuery,
-        onSearchTextChange = onSearchQueryChange,
-        onClearClick = { onSearchQueryChange("") },
-        dropdownContent = {
-            androidx.compose.material3.IconButton(onClick = {
-                navigator.navigate(OnlineModuleScreenDestination)
-            }) {
-                Icon(
-                    imageVector = Icons.Outlined.Storefront,
-                    contentDescription = "Online Modules"
-                )
-            }
-            androidx.compose.material3.IconButton(onClick = { showMenu = true }) {
-                Icon(Icons.Filled.MoreVert, contentDescription = "More")
-                WallpaperAwareDropdownMenu(
-                    expanded = showMenu,
-                    onDismissRequest = { showMenu = false }
-                ) {
-                    if (viewModel.moduleList.isNotEmpty()) {
-                        WallpaperAwareDropdownMenuItem(
-                            text = { Text(stringResource(R.string.apm_custom_order)) },
-                            onClick = {
-                                showMenu = false
-                                orderedModules = viewModel.moduleList
-                                showOrderDialog = true
-                            }
-                        )
-                    }
-                    WallpaperAwareDropdownMenuItem(
-                        text = { Text(stringResource(R.string.apm_disable_all_title)) },
-                        onClick = {
-                            showMenu = false
-                            scope.launch {
-                                if (!checkStrongBiometric()) return@launch
-                                val result = confirmDialog.awaitConfirm(
-                                    title = disableAllTitle,
-                                    content = disableAllConfirm,
-                                    confirm = confirm,
-                                    dismiss = cancel
-                                )
-                                if (result == ConfirmResult.Confirmed) {
-                                    viewModel.disableAllModules()
-                                }
-                            }
-                        }
-                    )
-                    WallpaperAwareDropdownMenuItem(
-                        text = { Text(stringResource(R.string.apm_copy_list_title)) },
-                        onClick = {
-                            showMenu = false
-                            val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                            val moduleNames = viewModel.moduleList.joinToString("\n") { it.name }
-                            val clip = ClipData.newPlainText("Module List", moduleNames)
-                            clipboardManager.setPrimaryClip(clip)
-                            scope.launch {
-                                snackBarHost.showSnackbar(
-                                    message = context.getString(R.string.apm_copy_list_success),
-                                    duration = SnackbarDuration.Short
-                                )
-                            }
-                        }
-                    )
-                }
-            }
-        }
-    )
-
-    if (showOrderDialog) {
-        val reorderThreshold = with(LocalDensity.current) { 40.dp.toPx() }
-        val dragToReorderDescription = stringResource(R.string.apm_drag_to_reorder)
-        var draggedModuleId by remember { mutableStateOf<String?>(null) }
-        var draggedDistance by remember { mutableStateOf(0f) }
-        AlertDialog(
-            onDismissRequest = { showOrderDialog = false },
-            title = { Text(stringResource(R.string.apm_custom_order)) },
-            text = {
-                LazyColumn(modifier = Modifier.heightIn(max = 480.dp)) {
-                    itemsIndexed(orderedModules, key = { _, module -> module.id }) { _, module ->
-                        val isDragging = draggedModuleId == module.id
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .then(
-                                    if (isDragging) {
-                                        Modifier
-                                            .zIndex(1f)
-                                            .graphicsLayer { translationY = draggedDistance }
-                                    } else {
-                                        Modifier.animateItem(
-                                            placementSpec = spring(
-                                                dampingRatio = Spring.DampingRatioMediumBouncy,
-                                                stiffness = Spring.StiffnessMediumLow
-                                            )
-                                        )
-                                    }
-                                ),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = module.name,
-                                modifier = Modifier.weight(1f),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            Column(
-                                modifier = Modifier
-                                    .padding(start = 12.dp, end = 4.dp)
-                                    .semantics { contentDescription = dragToReorderDescription }
-                                    .pointerInput(module.id) {
-                                        detectDragGestures(
-                                            onDragStart = {
-                                                draggedModuleId = module.id
-                                                draggedDistance = 0f
-                                            },
-                                            onDragEnd = {
-                                                draggedModuleId = null
-                                                draggedDistance = 0f
-                                            },
-                                            onDragCancel = {
-                                                draggedModuleId = null
-                                                draggedDistance = 0f
-                                            }
-                                        ) { change, dragAmount ->
-                                            change.consume()
-                                            draggedDistance += dragAmount.y
-                                            val currentIndex = orderedModules.indexOfFirst { it.id == module.id }
-                                            val targetIndex = when {
-                                                draggedDistance > reorderThreshold -> currentIndex + 1
-                                                draggedDistance < -reorderThreshold -> currentIndex - 1
-                                                else -> currentIndex
-                                            }
-                                            if (currentIndex >= 0 && targetIndex in orderedModules.indices && targetIndex != currentIndex) {
-                                                orderedModules = orderedModules.toMutableList().apply {
-                                                    add(targetIndex, removeAt(currentIndex))
-                                                }
-                                                viewModel.setCustomModuleOrder(orderedModules.map { it.id })
-                                                draggedDistance -= if (targetIndex > currentIndex) {
-                                                    reorderThreshold
-                                                } else {
-                                                    -reorderThreshold
-                                                }
-                                            }
-                                        }
-                                    }
-                                    .padding(vertical = 12.dp),
-                                verticalArrangement = Arrangement.spacedBy(4.dp)
-                            ) {
-                                repeat(2) {
-                                    Box(
-                                        modifier = Modifier
-                                            .size(width = 24.dp, height = 3.dp)
-                                            .clip(RoundedCornerShape(2.dp))
-                                            .background(MaterialTheme.colorScheme.onSurfaceVariant)
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            confirmButton = {
-                TextButton(onClick = { showOrderDialog = false }) {
-                    Text(stringResource(android.R.string.ok))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    viewModel.resetCustomModuleOrder()
-                    orderedModules = viewModel.moduleList
-                }) {
-                    Text(stringResource(R.string.apm_reset_order))
-                }
-            }
-        )
-    }
-}
 
 
 @Composable
