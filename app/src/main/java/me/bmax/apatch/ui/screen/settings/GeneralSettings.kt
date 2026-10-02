@@ -2,40 +2,20 @@ package me.bmax.apatch.ui.screen.settings
 
 import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
 import me.bmax.apatch.util.ui.showToast
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.window.DialogWindowProvider
 import androidx.core.content.FileProvider
 import androidx.core.content.edit
-import androidx.core.os.LocaleListCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,7 +25,6 @@ import me.bmax.apatch.APApplication
 import me.bmax.apatch.BuildConfig
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.ExpressiveCard
 import me.bmax.apatch.ui.component.UpdateDialog
 import me.bmax.apatch.ui.component.rememberLoadingDialog
 import me.bmax.apatch.ui.component.folk.FolkNavigationPreference
@@ -54,10 +33,7 @@ import me.bmax.apatch.ui.component.folk.FolkSettingsSection
 import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import me.bmax.apatch.ui.component.folk.FolkValuePreference
 import me.bmax.apatch.util.*
-import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.ui.screen.settings.general.*
-import java.io.File
-import java.util.Locale
 import androidx.compose.material.icons.outlined.*
 
 @Composable
@@ -719,65 +695,3 @@ fun GeneralSettingsContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SelinuxHideWarningDialog(
-    showDialog: MutableState<Boolean>,
-    kernelVersion: Int?,
-    isGki: Boolean,
-    onConfirm: () -> Unit,
-) {
-    BasicAlertDialog(
-        onDismissRequest = { showDialog.value = false },
-        properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
-    ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
-                Text(
-                    text = stringResource(id = R.string.settings_selinux_hide_warning_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp),
-                )
-                if ((kernelVersion ?: 0) < 510) {
-                    Text(
-                        text = stringResource(id = R.string.settings_selinux_hide_warning_below_5_10),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 8.dp),
-                    )
-                }
-                if (!isGki) {
-                    Text(
-                        text = stringResource(id = R.string.settings_selinux_hide_warning_non_gki),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(bottom = 16.dp),
-                    )
-                }
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    TextButton(onClick = { showDialog.value = false }) {
-                        Text(stringResource(id = android.R.string.cancel))
-                    }
-                    Spacer(Modifier.width(8.dp))
-                    Button(onClick = {
-                        showDialog.value = false
-                        onConfirm()
-                    }) {
-                        Text(stringResource(id = android.R.string.ok))
-                    }
-                }
-            }
-        }
-    }
-}
