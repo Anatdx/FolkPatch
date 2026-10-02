@@ -61,6 +61,7 @@ import me.bmax.apatch.data.ScriptInfo
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import me.bmax.apatch.ui.component.FilePickerDialog
+import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.component.TwoColumnGrid
@@ -785,7 +786,8 @@ private fun AddScriptDialog(
                 onClick = {
                     selectedFile?.let { onConfirm(it, scriptAlias) }
                 },
-                enabled = selectedFile != null
+                enabled = selectedFile != null,
+                colors = FolkButtonDefaults.filledColors()
             ) {
                 Text(stringResource(android.R.string.ok))
             }

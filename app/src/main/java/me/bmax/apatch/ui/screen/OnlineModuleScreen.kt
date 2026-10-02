@@ -55,6 +55,7 @@ import me.bmax.apatch.ui.component.OnlineModuleCard
 import me.bmax.apatch.ui.component.SearchAppBar
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
+import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.viewmodel.OnlineModuleViewModel
 import me.bmax.apatch.ui.viewmodel.RepoModuleViewModel
@@ -414,7 +415,8 @@ private fun RepoUrlDialog(
         confirmButton = {
             TextButton(
                 onClick = { onConfirm(inputUrl) },
-                enabled = isValid
+                enabled = isValid,
+                colors = FolkButtonDefaults.textColors()
             ) {
                 Text(stringResource(android.R.string.ok))
             }

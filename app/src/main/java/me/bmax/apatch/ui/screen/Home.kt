@@ -122,6 +122,7 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.apApp
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
@@ -372,6 +373,7 @@ fun UninstallDialog(showDialog: MutableState<Boolean>, navigator: DestinationsNa
                         }
                     },
                     enabled = selectedOption != null,
+                    colors = FolkButtonDefaults.filledColors()
                 ) {
                     Text(text = stringResource(android.R.string.ok))
                 }

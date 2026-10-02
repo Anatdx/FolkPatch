@@ -114,6 +114,7 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.component.folk.folkPressScale
 import me.bmax.apatch.apApp
@@ -756,7 +757,7 @@ fun KPMControlDialog(showDialog: MutableState<Boolean>, onConfirm: (String) -> U
                         // leaves composition here, cancelling any scope it owns.
                         onConfirm(controlParam)
 
-                    }, enabled = enable) {
+                    }, enabled = enable, colors = FolkButtonDefaults.filledColors()) {
                         Text(stringResource(id = android.R.string.ok))
                     }
                 }

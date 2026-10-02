@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ExpressiveCard
+import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.component.folk.FolkNavigationPreference
 import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
 import me.bmax.apatch.ui.component.folk.FolkSettingsSection
@@ -243,7 +244,8 @@ fun WebDavConfigDialog(showDialog: MutableState<Boolean>) {
                                 }
                             }
                         },
-                        enabled = !isTesting
+                        enabled = !isTesting,
+                        colors = FolkButtonDefaults.textColors()
                     ) {
                         Text(stringResource(R.string.test))
                     }
