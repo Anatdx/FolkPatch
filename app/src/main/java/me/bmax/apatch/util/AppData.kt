@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.Natives
 import org.json.JSONArray
+import java.util.concurrent.Semaphore
 
 /**
  * AppData - Data management center for badge counts
@@ -17,16 +18,31 @@ import org.json.JSONArray
 object AppData {
     private const val TAG = "AppData"
     private const val NATIVE_CALL_TIMEOUT_MS = 5_000L
+    private val nativeCallPermit = Semaphore(1)
 
     /**
      * Run a potentially blocking native call with a timeout fallback.
      * Since JNI syscalls cannot be cancelled by coroutines, we use a thread + join(timeout).
      */
     private fun <T> runNativeWithTimeout(timeoutMs: Long, defaultValue: T, block: () -> T): T {
+        // A timeout cannot cancel a JNI syscall. Keep its permit until the
+        // worker actually exits so repeated refreshes cannot accumulate threads.
+        if (!nativeCallPermit.tryAcquire()) return defaultValue
         var result: T? = null
-        val t = Thread { result = block() }
+        val t = Thread {
+            try {
+                result = block()
+            } finally {
+                nativeCallPermit.release()
+            }
+        }
         t.name = "native-call-timeout"
-        t.start()
+        try {
+            t.start()
+        } catch (e: Throwable) {
+            nativeCallPermit.release()
+            throw e
+        }
         t.join(timeoutMs)
         return if (t.isAlive) {
             Log.w(TAG, "Native call timed out after ${timeoutMs}ms")
@@ -159,4 +175,3 @@ object AppData {
         }
     }
 }
-

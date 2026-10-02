@@ -12,7 +12,7 @@ use std::{
 
 use anyhow::{Ok, Result, bail};
 use libc::{
-    EINTR, SIG_BLOCK, SIG_UNBLOCK, SIGWINCH, TIOCGWINSZ, TIOCSWINSZ, fork,
+    EINTR, SIG_BLOCK, SIGWINCH, TIOCGWINSZ, TIOCSWINSZ, fork,
     pthread_sigmask, sigaddset, sigemptyset, sigset_t, sigwait, waitpid, winsize,
 };
 use rustix::{
@@ -52,12 +52,13 @@ fn watch_sigwinch_async(slave: RawFd) {
         let mut winch = MaybeUninit::<sigset_t>::uninit();
         sigemptyset(winch.as_mut_ptr());
         sigaddset(winch.as_mut_ptr(), SIGWINCH);
-        pthread_sigmask(SIG_UNBLOCK, winch.as_mut_ptr(), null_mut());
+        // sigwait requires the signal to remain blocked in this thread.
+        pthread_sigmask(SIG_BLOCK, winch.as_mut_ptr(), null_mut());
         let mut sig: c_int = 0;
         loop {
             let mut w = MaybeUninit::<winsize>::uninit();
             if libc::ioctl(1, TIOCGWINSZ, w.as_mut_ptr()) < 0 {
-                continue;
+                break;
             }
             libc::ioctl(slave, TIOCSWINSZ, w.as_mut_ptr());
             if sigwait(winch.as_mut_ptr(), &mut sig) != 0 {

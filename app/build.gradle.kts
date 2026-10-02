@@ -242,13 +242,23 @@ kotlin {
 }
 
 fun registerDownloadTask(
-    taskName: String, srcUrl: String, destPath: String, project: Project, version: String? = null
+    taskName: String, srcUrl: String, destPath: String, project: Project, version: String? = null,
+    localArtifact: String? = null
 ) {
     project.tasks.register(taskName) {
         val destFile = File(destPath)
         val versionFile = File("$destPath.version")
 
         doLast {
+            val localDir = project.findProperty("kernelPatchArtifacts")?.toString()
+            if (localDir != null && localArtifact != null) {
+                val source = File(project.file(localDir), localArtifact)
+                check(source.isFile && source.length() > 0) { "Missing local KernelPatch artifact: $source" }
+                destFile.parentFile.mkdirs()
+                source.copyTo(destFile, overwrite = true)
+                versionFile.writeText("local")
+                return@doLast
+            }
             var forceDownload = false
             if (version != null) {
                 if (!versionFile.exists() || versionFile.readText().trim() != version) {
@@ -312,7 +322,8 @@ registerDownloadTask(
     srcUrl = "https://github.com/LyraVoid/KernelPatch/releases/download/$kernelPatchVersion/kpimg-android",
     destPath = "${project.projectDir}/src/main/assets/kpimg",
     project = project,
-    version = kernelPatchVersion
+    version = kernelPatchVersion,
+    localArtifact = "kpimg-android"
 )
 
 registerDownloadTask(
@@ -320,7 +331,8 @@ registerDownloadTask(
     srcUrl = "https://github.com/LyraVoid/KernelPatch/releases/download/$kernelPatchVersion/kptools-android",
     destPath = "${project.projectDir}/libs/arm64-v8a/libkptools.so",
     project = project,
-    version = kernelPatchVersion
+    version = kernelPatchVersion,
+    localArtifact = "kptools-android"
 )
 
 // Compat kp version less than 0.10.7
