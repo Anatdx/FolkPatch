@@ -1,7 +1,6 @@
 package me.bmax.apatch.ui.screen
 
 import android.os.Build
-import android.system.Os
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.background
@@ -21,20 +20,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material.icons.filled.RadioButtonUnchecked
-import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteForever
-import androidx.compose.material.icons.outlined.Android
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.DeveloperBoard
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Layers
-import androidx.compose.material.icons.outlined.PhoneAndroid
-import androidx.compose.material.icons.outlined.Shield
-import androidx.compose.material.icons.outlined.SdStorage
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
@@ -78,23 +67,15 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
-import me.bmax.apatch.Natives
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.apApp
 import me.bmax.apatch.ui.component.WelcomeGuideDialog
-import me.bmax.apatch.ui.component.copyableInfo
-import me.bmax.apatch.ui.component.folk.FolkWrapSafeText
 import me.bmax.apatch.ui.viewmodel.PatchesViewModel
-import me.bmax.apatch.util.Version
-import me.bmax.apatch.util.Version.getManagerVersion
-import me.bmax.apatch.util.getSELinuxStatus
 import me.bmax.apatch.util.migrateStockBootBackup
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.HomeBottomSpacer
-
-private val managerVersion = getManagerVersion()
 
 private enum class ApatchUninstallOption(
     @param:StringRes val titleRes: Int,
@@ -410,228 +391,6 @@ fun getDeviceInfo(): String {
     }
     manufacturer += " " + Build.MODEL + " "
     return manufacturer
-}
-
-@Composable
-fun InfoCard(kpState: APApplication.State, apState: APApplication.State) {
-    // 隐藏设定状态
-    val hideSuPath = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_su_path", false)) }
-    val hideKpatchVersion = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_kpatch_version", false)) }
-    val hideFingerprint = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_fingerprint", false)) }
-    val hideZygisk = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_zygisk", false)) }
-    val hideMount = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_mount", false)) }
-
-    var zygiskImplement by remember { mutableStateOf("None") }
-    var mountImplement by remember { mutableStateOf("None") }
-    val suPath = remember { Natives.suPath() }
-    LaunchedEffect(Unit) {
-        withContext(kotlinx.coroutines.Dispatchers.IO) {
-            try {
-                zygiskImplement = me.bmax.apatch.util.getZygiskImplement()
-                mountImplement = me.bmax.apatch.util.getMountImplement()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-    
-    Card(
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
-            MaterialTheme.colorScheme.surface
-        } else {
-            MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-        })
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 16.dp)
-        ) {
-            val contents = StringBuilder()
-            val uname = Os.uname()
-
-            @Composable
-            fun InfoCardItem(label: String, content: String) {
-                contents.appendLine(label).appendLine(content).appendLine()
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .copyableInfo(label, content)
-                ) {
-                    Text(text = label, style = MaterialTheme.typography.bodyLarge)
-                    FolkWrapSafeText(text = content, style = MaterialTheme.typography.bodySmall)
-                }
-            }
-
-            if (kpState != APApplication.State.UNKNOWN_STATE && !hideKpatchVersion.value) {
-                InfoCardItem(
-                    stringResource(R.string.home_kpatch_version), Version.installedKPVString()
-                )
-
-                Spacer(Modifier.height(16.dp))
-            }
-            
-            if (kpState != APApplication.State.UNKNOWN_STATE && !hideSuPath.value) {
-                InfoCardItem(stringResource(R.string.home_su_path), suPath)
-
-                Spacer(Modifier.height(16.dp))
-            }
-
-            if (apState != APApplication.State.UNKNOWN_STATE && apState != APApplication.State.ANDROIDPATCH_NOT_INSTALLED) {
-                InfoCardItem(
-                    stringResource(R.string.home_apatch_version), managerVersion.second.toString()
-                )
-                Spacer(Modifier.height(16.dp))
-            }
-
-            InfoCardItem(stringResource(R.string.home_device_info), getDeviceInfo())
-
-            Spacer(Modifier.height(16.dp))
-            InfoCardItem(stringResource(R.string.home_kernel), uname.release)
-
-            Spacer(Modifier.height(16.dp))
-            InfoCardItem(stringResource(R.string.home_system_version), getSystemVersion())
-
-            Spacer(Modifier.height(16.dp))
-            if (!hideFingerprint.value) {
-                InfoCardItem(stringResource(R.string.home_fingerprint), Build.FINGERPRINT)
-
-                Spacer(Modifier.height(16.dp))
-            }
-            
-            if (kpState != APApplication.State.UNKNOWN_STATE && zygiskImplement != "None" && !hideZygisk.value) {
-                InfoCardItem(stringResource(R.string.home_zygisk_implement), zygiskImplement)
-
-                Spacer(Modifier.height(16.dp))
-            }
-
-            if (kpState != APApplication.State.UNKNOWN_STATE && mountImplement != "None" && !hideMount.value) {
-                InfoCardItem(stringResource(R.string.home_mount_implement), mountImplement)
-
-                Spacer(Modifier.height(16.dp))
-            }
-
-            InfoCardItem(stringResource(R.string.home_selinux_status), getSELinuxStatus())
-
-        }
-    }
-}
-
-@Composable
-fun ListInfoCard(kpState: APApplication.State, apState: APApplication.State, showIcons: Boolean = false) {
-    val hideSuPath = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_su_path", false)) }
-    val hideKpatchVersion = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_kpatch_version", false)) }
-    val hideFingerprint = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_fingerprint", false)) }
-    val hideZygisk = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_zygisk", false)) }
-    val hideMount = remember { mutableStateOf(APApplication.sharedPreferences.getBoolean("hide_mount", false)) }
-
-    var zygiskImplement by remember { mutableStateOf("None") }
-    var mountImplement by remember { mutableStateOf("None") }
-    val suPath = remember { Natives.suPath() }
-    LaunchedEffect(Unit) {
-        withContext(kotlinx.coroutines.Dispatchers.IO) {
-            try {
-                zygiskImplement = me.bmax.apatch.util.getZygiskImplement()
-                mountImplement = me.bmax.apatch.util.getMountImplement()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-    Card(
-        shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
-            MaterialTheme.colorScheme.surface
-        } else {
-            MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-        })
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, top = 24.dp, end = 24.dp, bottom = 16.dp)
-        ) {
-            val uname = Os.uname()
-
-            @Composable
-            fun InfoCardItem(icon: ImageVector, label: String, content: String) {
-                if (showIcons) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .copyableInfo(label, content),
-                        verticalAlignment = Alignment.Top
-                    ) {
-                        Icon(
-                            imageVector = icon,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(top = 2.dp)
-                                .size(20.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(Modifier.width(12.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(text = label, style = MaterialTheme.typography.bodyLarge)
-                            FolkWrapSafeText(text = content, style = MaterialTheme.typography.bodyMedium)
-                        }
-                    }
-                } else {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .copyableInfo(label, content)
-                    ) {
-                        Text(text = label, style = MaterialTheme.typography.bodyLarge)
-                        FolkWrapSafeText(text = content, style = MaterialTheme.typography.bodyMedium)
-                    }
-                }
-            }
-
-            if (kpState != APApplication.State.UNKNOWN_STATE && !hideKpatchVersion.value) {
-                InfoCardItem(Icons.Outlined.Extension, stringResource(R.string.home_kpatch_version), Version.installedKPVString())
-                Spacer(Modifier.height(16.dp))
-            }
-
-            if (kpState != APApplication.State.UNKNOWN_STATE && !hideSuPath.value) {
-                InfoCardItem(Icons.Outlined.Code, stringResource(R.string.home_su_path), suPath)
-                Spacer(Modifier.height(16.dp))
-            }
-
-            if (apState != APApplication.State.UNKNOWN_STATE && apState != APApplication.State.ANDROIDPATCH_NOT_INSTALLED) {
-                InfoCardItem(Icons.Outlined.Android, stringResource(R.string.home_apatch_version), managerVersion.second.toString())
-                Spacer(Modifier.height(16.dp))
-            }
-
-            InfoCardItem(Icons.Outlined.PhoneAndroid, stringResource(R.string.home_device_info), getDeviceInfo())
-            Spacer(Modifier.height(16.dp))
-
-            InfoCardItem(Icons.Outlined.DeveloperBoard, stringResource(R.string.home_kernel), uname.release)
-            Spacer(Modifier.height(16.dp))
-
-            InfoCardItem(Icons.Outlined.Info, stringResource(R.string.home_system_version), getSystemVersion())
-            Spacer(Modifier.height(16.dp))
-
-            if (!hideFingerprint.value) {
-                InfoCardItem(Icons.Filled.Fingerprint, stringResource(R.string.home_fingerprint), Build.FINGERPRINT)
-                Spacer(Modifier.height(16.dp))
-            }
-
-            if (kpState != APApplication.State.UNKNOWN_STATE && zygiskImplement != "None" && !hideZygisk.value) {
-                InfoCardItem(Icons.Outlined.Layers, stringResource(R.string.home_zygisk_implement), zygiskImplement)
-                Spacer(Modifier.height(16.dp))
-            }
-
-            if (kpState != APApplication.State.UNKNOWN_STATE && mountImplement != "None" && !hideMount.value) {
-                InfoCardItem(Icons.Outlined.SdStorage, stringResource(R.string.home_mount_implement), mountImplement)
-                Spacer(Modifier.height(16.dp))
-            }
-
-            InfoCardItem(Icons.Outlined.Shield, stringResource(R.string.home_selinux_status), getSELinuxStatus())
-        }
-    }
 }
 
 @Composable
