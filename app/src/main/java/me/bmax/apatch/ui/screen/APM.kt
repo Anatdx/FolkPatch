@@ -26,6 +26,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -117,8 +118,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -145,6 +148,7 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.folkPressScale
 import me.bmax.apatch.apApp
 import me.bmax.apatch.ui.WebUIActivity
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
@@ -1608,11 +1612,18 @@ private fun ModuleItem(
 
     val cardShape = RoundedCornerShape(20.dp)
 
+    val cardInteractionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
+
     val clickModifier = Modifier
         .fillMaxWidth()
         .animateContentSize()
+        .folkPressScale(cardInteractionSource)
         .combinedClickable(
+            interactionSource = cardInteractionSource,
+            indication = null,
             onClick = {
+                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 if (foldSystemModule) {
                     onExpandToggle()
                 } else {
@@ -1620,6 +1631,7 @@ private fun ModuleItem(
                 }
             },
             onLongClick = {
+                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 showFolkBannerDialog = true
             }
         )

@@ -64,11 +64,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.input.pointer.pointerInput
@@ -89,6 +91,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.compose.ui.window.PopupProperties
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.graphics.Brush
@@ -112,6 +115,7 @@ import me.bmax.apatch.APApplication
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.component.folk.folkPressScale
 import me.bmax.apatch.apApp
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -1379,16 +1383,24 @@ private fun KPModuleItem(
 
     val cardShape = RoundedCornerShape(20.dp)
 
+    val cardInteractionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
+
     val clickModifier = Modifier
         .fillMaxWidth()
         .animateContentSize()
+        .folkPressScale(cardInteractionSource)
         .combinedClickable(
+            interactionSource = cardInteractionSource,
+            indication = null,
             onClick = {
+                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 if (foldSystemModule) {
                     onExpandToggle()
                 }
             },
             onLongClick = {
+                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 showFolkBannerDialog = true
             }
         )
