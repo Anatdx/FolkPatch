@@ -3,16 +3,11 @@ package me.bmax.apatch.ui.screen
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,14 +17,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.PlaylistAddCheck
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Close
@@ -39,7 +32,6 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Terminal
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
@@ -48,8 +40,6 @@ import androidx.compose.material3.FloatingActionButtonMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
@@ -64,14 +54,12 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -80,8 +68,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.AppProfileScreenDestination
@@ -90,21 +76,16 @@ import com.ramcosta.composedestinations.generated.destinations.SuAuditLogScreenD
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
 import me.bmax.apatch.APApplication
-import me.bmax.apatch.Natives
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.navigation.LocalBottomBarVisible
 import me.bmax.apatch.ui.navigation.LocalIsFloatingNavMode
 import me.bmax.apatch.ui.navigation.fabNavBottomClearance
-import me.bmax.apatch.ui.component.ExpressiveSwitch
 import me.bmax.apatch.ui.component.SearchAppBar
-import me.bmax.apatch.ui.component.SwitchItem
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
 import me.bmax.apatch.ui.component.splicedLazyColumnGroup
 import me.bmax.apatch.ui.viewmodel.SuperUserViewModel
-import me.bmax.apatch.util.PkgConfig
-import me.bmax.apatch.util.SuAuditLog
 import me.bmax.apatch.util.ui.showToast
 
 
@@ -524,231 +505,6 @@ private fun SelectionTopBar(
 }
 
 // ── M3E App Item ──────────────────────────────────────────────────────────
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun AppItemM3E(
-    app: SuperUserViewModel.AppInfo,
-    isSelected: Boolean = false,
-    selectionMode: Boolean = false,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-    onToggleSelection: (() -> Unit)? = null,
-) {
-    val config = app.config
-    val rootGranted = config.allow != 0
-    val excludeApp = config.exclude == 1
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                if (isSelected && selectionMode) 
-                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
-                else Color.Transparent
-            )
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick,
-            )
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(app.packageInfo)
-                .crossfade(true)
-                .build(),
-            contentDescription = app.label,
-            modifier = Modifier
-                .size(48.dp)
-                .clip(CircleShape),
-        )
-
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 16.dp),
-        ) {
-            Text(
-                text = app.label,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = app.packageName,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            FlowRow(modifier = Modifier.padding(top = 4.dp)) {
-                if (rootGranted) {
-                    LabelText(label = "ROOT", containerColor = MaterialTheme.colorScheme.primaryContainer)
-                }
-                if (excludeApp) {
-                    LabelText(
-                        label = stringResource(id = R.string.su_pkg_excluded_label),
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    )
-                }
-            }
-        }
-
-        if (selectionMode) {
-            Checkbox(
-                checked = isSelected,
-                onCheckedChange = { onToggleSelection?.invoke() },
-            )
-        } else {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(20.dp),
-            )
-        }
-    }
-}
-
-// ── Legacy App Item ───────────────────────────────────────────────────────
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun AppItemLegacy(
-    app: SuperUserViewModel.AppInfo,
-    isSelected: Boolean = false,
-    selectionMode: Boolean = false,
-    onToggleSelection: (() -> Unit)? = null,
-    onLongPress: (() -> Unit)? = null,
-) {
-    val config = app.config
-    var showEditProfile by remember { mutableStateOf(false) }
-    var rootGranted by remember { mutableStateOf(config.allow != 0) }
-    var excludeApp by remember { mutableIntStateOf(config.exclude) }
-
-    ListItem(
-        modifier = Modifier
-            .background(
-                if (isSelected && selectionMode)
-                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.12f)
-                else Color.Transparent
-            )
-            .combinedClickable(
-                onClick = {
-                    if (selectionMode) {
-                        onToggleSelection?.invoke()
-                    } else {
-                        // Tapping the row only toggles the profile editor;
-                        // granting or revoking root goes through the Switch
-                        // alone so a stray tap can never strip an app's root
-                        // access.
-                        showEditProfile = !showEditProfile
-                    }
-                },
-                onLongClick = {
-                    if (!selectionMode) {
-                        onLongPress?.invoke()
-                    }
-                }
-            ),
-        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        headlineContent = { Text(app.label) },
-        leadingContent = {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current).data(app.packageInfo)
-                    .crossfade(true).build(),
-                contentDescription = app.label,
-                modifier = Modifier
-                    .padding(4.dp)
-                    .width(48.dp)
-                    .height(48.dp)
-            )
-        },
-        supportingContent = {
-            Column {
-                Text(app.packageName)
-                FlowRow {
-                    if (excludeApp == 1) {
-                        LabelText(
-                            label = stringResource(id = R.string.su_pkg_excluded_label),
-                            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                        )
-                    }
-                    if (rootGranted) {
-                        LabelText(label = config.profile.uid.toString())
-                        LabelText(label = config.profile.toUid.toString())
-                        LabelText(
-                            label = when {
-                                config.profile.scontext.isNotEmpty() -> config.profile.scontext
-                                else -> stringResource(id = R.string.su_selinux_via_hook)
-                            }
-                        )
-                    }
-                }
-            }
-        },
-        trailingContent = {
-            if (selectionMode) {
-                Checkbox(
-                    checked = isSelected,
-                    onCheckedChange = { onToggleSelection?.invoke() },
-                )
-            } else {
-                ExpressiveSwitch(checked = rootGranted, onCheckedChange = {
-                    rootGranted = !rootGranted
-                    if (rootGranted) {
-                        excludeApp = 0
-                        config.allow = 1
-                        config.exclude = 0
-                        config.profile.scontext = APApplication.MAGISK_SCONTEXT
-                    } else {
-                        config.allow = 0
-                    }
-                    config.profile.uid = app.uid
-                    PkgConfig.changeConfig(config)
-                    if (config.allow == 1) {
-                        Natives.grantSu(app.uid, 0, config.profile.scontext)
-                        Natives.setUidExclude(app.uid, 0)
-                        SuAuditLog.logGrant(app.packageName, app.uid)
-                    } else {
-                        Natives.revokeSu(app.uid)
-                        SuAuditLog.logRevoke(app.packageName, app.uid)
-                    }
-                })
-            }
-        },
-    )
-
-    AnimatedVisibility(
-        visible = showEditProfile && !rootGranted,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        SwitchItem(
-            icon = Icons.Filled.Security,
-            title = stringResource(id = R.string.su_pkg_excluded_setting_title),
-            summary = stringResource(id = R.string.su_pkg_excluded_setting_summary),
-            checked = excludeApp == 1,
-            onCheckedChange = {
-                if (it) {
-                    excludeApp = 1
-                    config.allow = 0
-                    config.profile.scontext = APApplication.DEFAULT_SCONTEXT
-                    Natives.revokeSu(app.uid)
-                    SuAuditLog.logExclude(app.packageName, app.uid)
-                } else {
-                    excludeApp = 0
-                    SuAuditLog.logRevoke(app.packageName, app.uid)
-                }
-                config.exclude = excludeApp
-                config.profile.uid = app.uid
-                PkgConfig.changeConfig(config)
-                Natives.setUidExclude(app.uid, excludeApp)
-            },
-        )
-    }
-}
-
-// ── Label Text Badge ──────────────────────────────────────────────────────
 
 @Composable
 fun LabelText(
