@@ -6,14 +6,10 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Badge
-import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.Contrast
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Image
-import androidx.compose.material.icons.outlined.Label
-import androidx.compose.material.icons.outlined.TextFields
 import androidx.compose.material.icons.outlined.VideoFile
 import androidx.compose.material.icons.outlined.Wallpaper
 import androidx.compose.material3.AlertDialog
@@ -30,10 +26,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.DualBackgroundSettings
 import me.bmax.apatch.ui.component.LoadingDialogHandle
 import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.ui.component.rememberSystemCropLauncher
@@ -453,136 +447,17 @@ fun AppearanceBackgroundSection(
             }
         }
 
-        if (showGridCardSettings) {
-            item(key = "appearance_grid_card_bg") {
-                FolkSwitchPreference(
-                    icon = Icons.Outlined.GridView,
-                    title = stringResource(id = R.string.settings_grid_working_card_background),
-                    summary = if (BackgroundConfig.isGridWorkingCardBackgroundEnabled) stringResource(id = R.string.settings_grid_working_card_background_enabled) else stringResource(id = R.string.settings_grid_working_card_background_summary),
-                    checked = BackgroundConfig.isGridWorkingCardBackgroundEnabled,
-                    onCheckedChange = {
-                        BackgroundConfig.setGridWorkingCardBackgroundEnabledState(it)
-                        BackgroundConfig.save(context)
-                    },
-                )
-            }
-
-            if (BackgroundConfig.isGridWorkingCardBackgroundEnabled) {
-                item(key = "appearance_grid_dim") {
-                    DualBackgroundSettings(
-                        flat = flat,
-                        dualDimEnabled = false,
-                        onDualDimEnabledChange = {},
-                        dim = BackgroundConfig.gridWorkingCardBackgroundDim,
-                        onDimChange = { BackgroundConfig.setGridWorkingCardBackgroundDimValue(it) },
-                        dayDim = 0f,
-                        onDayDimChange = {},
-                        nightDim = 0f,
-                        onNightDimChange = {},
-                        dualOpacityEnabled = BackgroundConfig.isGridDualOpacityEnabled,
-                        onDualOpacityEnabledChange = { BackgroundConfig.setGridDualOpacityEnabledState(it) },
-                        opacity = BackgroundConfig.gridWorkingCardBackgroundOpacity,
-                        onOpacityChange = { BackgroundConfig.setGridWorkingCardBackgroundOpacityValue(it) },
-                        dayOpacity = BackgroundConfig.gridWorkingCardBackgroundDayOpacity,
-                        onDayOpacityChange = { BackgroundConfig.setGridWorkingCardBackgroundDayOpacityValue(it) },
-                        nightOpacity = BackgroundConfig.gridWorkingCardBackgroundNightOpacity,
-                        onNightOpacityChange = { BackgroundConfig.setGridWorkingCardBackgroundNightOpacityValue(it) },
-                        save = { BackgroundConfig.save(context) },
-                        keyPrefix = "grid_card",
-                        showDualDim = false,
-                    )
-                }
-
-                item(key = "appearance_grid_select_image") {
-                    FolkValuePreference(
-            icon = Icons.Outlined.Image,
-            title = stringResource(id = R.string.settings_select_background_image),
-            summary = if (!BackgroundConfig.gridWorkingCardBackgroundUri.isNullOrEmpty()) stringResource(id = R.string.settings_grid_working_card_background_selected) else null,
-            onClick = {                                if (PermissionUtils.hasExternalStoragePermission(context)) {
-                                try {
-                                    pickGridImageLauncher.launch("image/*")
-                                } catch (e: ActivityNotFoundException) {
-                                    showToast(context, e.message ?: "")
-                                }
-                            } else {
-                                showToast(context, context.getString(R.string.settings_background_permission_required))
-                            }
-                        },
+        appearanceBackgroundGridItems(
+            showGridCardSettings = showGridCardSettings,
+            flat = flat,
+            context = context,
+            scope = scope,
+            snackBarHost = snackBarHost,
+            loadingDialog = loadingDialog,
+            currentBadgeTextMode = currentBadgeTextMode,
+            showCustomBadgeTextDialog = showCustomBadgeTextDialog,
+            onSelectGridImage = { pickGridImageLauncher.launch("image/*") },
         )
-                }
-
-                item(key = "appearance_grid_clear_image") {
-                    val clearGridBackgroundDialog = rememberConfirmDialog(
-                        onConfirm = {
-                            scope.launch {
-                                loadingDialog.show()
-                                BackgroundManager.clearGridWorkingCardBackground(context)
-                                loadingDialog.hide()
-                                snackBarHost.showSnackbar(message = context.getString(R.string.settings_grid_working_card_background_cleared))
-                            }
-                        }
-                    )
-                    FolkValuePreference(
-            icon = Icons.Outlined.Delete,
-            title = stringResource(id = R.string.settings_clear_grid_working_card_background),
-            onClick = {                                clearGridBackgroundDialog.showConfirm(
-                                title = context.getString(R.string.settings_clear_grid_working_card_background),
-                                content = context.getString(R.string.settings_clear_grid_working_card_background_confirm),
-                                markdown = false,
-                            )
-                        },
-        )
-                }
-            }
-
-            item(key = "appearance_grid_card_check") {
-                FolkSwitchPreference(
-                    icon = Icons.Outlined.CheckCircle,
-                    title = stringResource(id = R.string.settings_grid_working_card_hide_check),
-                    summary = stringResource(id = R.string.settings_grid_working_card_hide_check_summary),
-                    checked = BackgroundConfig.isGridWorkingCardCheckHidden,
-                    onCheckedChange = {
-                        BackgroundConfig.setGridWorkingCardCheckHiddenState(it)
-                        BackgroundConfig.save(context)
-                    },
-                )
-            }
-
-            item(key = "appearance_grid_card_text") {
-                FolkSwitchPreference(
-                    icon = Icons.Outlined.TextFields,
-                    title = stringResource(id = R.string.settings_grid_working_card_hide_text),
-                    summary = stringResource(id = R.string.settings_grid_working_card_hide_text_summary),
-                    checked = BackgroundConfig.isGridWorkingCardTextHidden,
-                    onCheckedChange = {
-                        BackgroundConfig.setGridWorkingCardTextHiddenState(it)
-                        BackgroundConfig.save(context)
-                    },
-                )
-            }
-
-            item(key = "appearance_grid_card_mode") {
-                FolkSwitchPreference(
-                    icon = Icons.Outlined.Label,
-                    title = stringResource(id = R.string.settings_grid_working_card_hide_mode),
-                    summary = stringResource(id = R.string.settings_grid_working_card_hide_mode_summary),
-                    checked = BackgroundConfig.isGridWorkingCardModeHidden,
-                    onCheckedChange = {
-                        BackgroundConfig.setGridWorkingCardModeHiddenState(it)
-                        BackgroundConfig.save(context)
-                    },
-                )
-            }
-
-            item(key = "appearance_grid_badge_text", visible = !BackgroundConfig.isGridWorkingCardModeHidden) {
-                FolkValuePreference(
-            icon = Icons.Outlined.Badge,
-            title = stringResource(id = R.string.settings_custom_badge_text),
-            summary = currentBadgeTextMode,
-            onClick = { showCustomBadgeTextDialog.value = true },
-        )
-            }
-        }
 
     }
 }
