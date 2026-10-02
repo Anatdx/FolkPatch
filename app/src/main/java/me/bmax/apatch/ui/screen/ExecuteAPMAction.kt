@@ -1,6 +1,5 @@
 package me.bmax.apatch.ui.screen
 
-import android.os.Environment
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,16 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,6 +36,7 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.KeyEventBlocker
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.util.getSafeDownloadsDir
 import me.bmax.apatch.util.runAPModuleAction
 import me.bmax.apatch.util.ui.LocalSnackbarHost
@@ -130,13 +125,14 @@ fun ExecuteAPMActionScreen(navigator: DestinationsNavigator, moduleId: String) {
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopBar(
-                onBack = dropUnlessResumed {
-                    navigator.popBackStack()
-                },
-                onSave = {
+    FolkScaffold(
+        title = stringResource(R.string.apm_action),
+        onBack = dropUnlessResumed {
+            navigator.popBackStack()
+        },
+        actions = {
+            IconButton(
+                onClick = {
                     scope.launch {
                         val format = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault())
                         val date = format.format(Date())
@@ -147,10 +143,15 @@ fun ExecuteAPMActionScreen(navigator: DestinationsNavigator, moduleId: String) {
                         file.writeText(fullLogBuffer.toString())
                         snackBarHost.showSnackbar("Log saved to ${file.absolutePath}")
                     }
-                }
-            )
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Save,
+                    contentDescription = "Save log"
+                )
+            }
         },
-        snackbarHost = { SnackbarHost(snackBarHost) }
+        snackbarHostState = snackBarHost,
     ) { innerPadding ->
         KeyEventBlocker {
             it.key == Key.VolumeDown || it.key == Key.VolumeUp
@@ -173,25 +174,4 @@ fun ExecuteAPMActionScreen(navigator: DestinationsNavigator, moduleId: String) {
             )
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBar(onBack: () -> Unit = {}, onSave: () -> Unit = {}) {
-    TopAppBar(
-        title = { Text(stringResource(R.string.apm_action)) },
-        navigationIcon = {
-            IconButton(
-                onClick = onBack
-            ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back") }
-        },
-        actions = {
-            IconButton(onClick = onSave) {
-                Icon(
-                    imageVector = Icons.Filled.Save,
-                    contentDescription = "Save log"
-                )
-            }
-        }
-    )
 }
