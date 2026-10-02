@@ -60,8 +60,6 @@ import me.bmax.apatch.ui.screen.settings.appearance.NavModeChooseDialog
 import me.bmax.apatch.ui.screen.settings.appearance.StatsTopLayoutChooseDialog
 import me.bmax.apatch.ui.screen.settings.appearance.ThemeExportDialog
 import me.bmax.apatch.ui.screen.settings.appearance.ThemeImportDialog
-import me.bmax.apatch.ui.screen.settings.appearance.ThemeChooseDialog
-import me.bmax.apatch.ui.screen.settings.appearance.colorNameToString
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
 import androidx.compose.ui.graphics.painter.Painter
