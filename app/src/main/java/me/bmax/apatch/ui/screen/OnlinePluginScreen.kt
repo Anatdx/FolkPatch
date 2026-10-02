@@ -11,9 +11,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,12 +32,12 @@ import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.AppLoadingIndicator
 import me.bmax.apatch.ui.component.OnlineModuleCard
 import me.bmax.apatch.ui.component.SearchAppBar
+import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.viewmodel.OnlinePluginViewModel
 import me.bmax.apatch.util.download
 import me.bmax.apatch.util.installPlugin
 import me.bmax.apatch.util.ui.showToast
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination<RootGraph>
 @Composable
 fun OnlinePluginScreen(navigator: DestinationsNavigator) {
@@ -53,7 +51,7 @@ fun OnlinePluginScreen(navigator: DestinationsNavigator) {
         }
     }
 
-    Scaffold(
+    FolkScaffold(
         topBar = {
             SearchAppBar(
                 title = { Text(stringResource(R.string.online_plugin_title)) },
