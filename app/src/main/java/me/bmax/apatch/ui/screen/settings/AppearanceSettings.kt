@@ -39,14 +39,12 @@ import androidx.core.content.edit
 import kotlinx.coroutines.launch
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.FilePickerDialog
 
 import me.bmax.apatch.ui.component.ThemeMode
 import me.bmax.apatch.ui.component.rememberLoadingDialog
 import me.bmax.apatch.ui.component.LoadingDialogHandle
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.theme.FontConfig
-import me.bmax.apatch.ui.theme.ThemeManager
 import me.bmax.apatch.ui.theme.refreshTheme
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceFontSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceThemeSection
@@ -56,6 +54,7 @@ import me.bmax.apatch.ui.screen.settings.appearance.AppearanceFocusCardSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceDashboardCardSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceLayoutSection
 import me.bmax.apatch.ui.screen.settings.appearance.AppearanceNightModeSection
+import me.bmax.apatch.ui.screen.settings.appearance.AppearanceThemeIoDialogs
 import me.bmax.apatch.ui.screen.settings.appearance.HomeLayoutChooseDialog
 import me.bmax.apatch.ui.screen.settings.appearance.NavModeChooseDialog
 import me.bmax.apatch.ui.screen.settings.appearance.StatsTopLayoutChooseDialog
@@ -104,36 +103,8 @@ fun AppearanceSettingsContent(
         }
     }
 
-    var pendingExportMetadata by remember { mutableStateOf<ThemeManager.ThemeMetadata?>(null) }
     val showExportDialog = remember { mutableStateOf(false) }
-    var pendingImportUri by remember { mutableStateOf<Uri?>(null) }
-    var pendingImportMetadata by remember { mutableStateOf<ThemeManager.ThemeMetadata?>(null) }
-    val showImportDialog = remember { mutableStateOf(false) }
     val showFilePicker = remember { mutableStateOf(false) }
-
-    val importThemeLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.OpenDocument()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            scope.launch {
-                loadingDialog.show()
-                val metadata = ThemeManager.readThemeMetadata(context, uri)
-                loadingDialog.hide()
-                if (metadata != null) {
-                    pendingImportUri = uri
-                    pendingImportMetadata = metadata
-                    showImportDialog.value = true
-                } else {
-                    loadingDialog.show()
-                    val success = ThemeManager.importTheme(context, uri)
-                    loadingDialog.hide()
-                    snackBarHost.showSnackbar(
-                        message = if (success) context.getString(R.string.settings_theme_imported) else context.getString(R.string.settings_theme_import_failed)
-                    )
-                }
-            }
-        }
-    }
 
     val isNightModeSupported = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
     var nightModeFollowSys by remember { mutableStateOf(prefs.getBoolean("night_mode_follow_sys", true)) }
@@ -470,82 +441,10 @@ fun AppearanceSettingsContent(
         )
     }
 
-    if (showExportDialog.value) {
-        ThemeExportDialog(
-            showDialog = showExportDialog,
-            onConfirm = { metadata ->
-                pendingExportMetadata = metadata
-                scope.launch {
-                    loadingDialog.show()
-                    try {
-                        val exportDir = java.io.File("/storage/emulated/0/Download/FolkPatch/Themes/")
-                        if (!exportDir.exists()) {
-                            exportDir.mkdirs()
-                        }
-                        val safeName = metadata.name.replace("[\\\\/:*?\"<>|]".toRegex(), "_")
-                        val fileName = "$safeName.fpt"
-                        val file = java.io.File(exportDir, fileName)
-                        val uri = Uri.fromFile(file)
-                        val success = ThemeManager.exportTheme(context, uri, metadata)
-                        loadingDialog.hide()
-                        snackBarHost.showSnackbar(
-                            message = if (success) context.getString(R.string.settings_theme_saved) + ": ${file.absolutePath}" else context.getString(R.string.settings_theme_save_failed)
-                        )
-                    } catch (e: Exception) {
-                        loadingDialog.hide()
-                        snackBarHost.showSnackbar(message = context.getString(R.string.settings_theme_save_failed) + ": ${e.message}")
-                    }
-                    pendingExportMetadata = null
-                }
-            }
-        )
-    }
-
-    if (showImportDialog.value && pendingImportMetadata != null) {
-        ThemeImportDialog(
-            showDialog = showImportDialog,
-            metadata = pendingImportMetadata!!,
-            onConfirm = {
-                pendingImportUri?.let { uri ->
-                    scope.launch {
-                        loadingDialog.show()
-                        val success = ThemeManager.importTheme(context, uri)
-                        loadingDialog.hide()
-                        snackBarHost.showSnackbar(
-                            message = if (success) context.getString(R.string.settings_theme_imported) else context.getString(R.string.settings_theme_import_failed)
-                        )
-                        pendingImportUri = null
-                        pendingImportMetadata = null
-                    }
-                }
-            }
-        )
-    }
-
-    if (showFilePicker.value) {
-        FilePickerDialog(
-            onDismissRequest = { showFilePicker.value = false },
-            onFileSelected = { file ->
-                showFilePicker.value = false
-                val uri = Uri.fromFile(file)
-                scope.launch {
-                    loadingDialog.show()
-                    val metadata = ThemeManager.readThemeMetadata(context, uri)
-                    loadingDialog.hide()
-                    if (metadata != null) {
-                        pendingImportUri = uri
-                        pendingImportMetadata = metadata
-                        showImportDialog.value = true
-                    } else {
-                        loadingDialog.show()
-                        val success = ThemeManager.importTheme(context, uri)
-                        loadingDialog.hide()
-                        snackBarHost.showSnackbar(
-                            message = if (success) context.getString(R.string.settings_theme_imported) else context.getString(R.string.settings_theme_import_failed)
-                        )
-                    }
-                }
-            }
-        )
-    }
+    AppearanceThemeIoDialogs(
+        showExportDialog = showExportDialog,
+        showFilePicker = showFilePicker,
+        snackBarHost = snackBarHost,
+        loadingDialog = loadingDialog,
+    )
 }
