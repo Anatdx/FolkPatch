@@ -1,9 +1,5 @@
 package me.bmax.apatch.ui.screen.settings
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import me.bmax.apatch.util.ui.showToast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
@@ -14,15 +10,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import com.ramcosta.composedestinations.generated.destinations.LanguagePickerScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import me.bmax.apatch.APApplication
-import me.bmax.apatch.BuildConfig
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.UpdateDialog
@@ -263,65 +256,22 @@ fun GeneralSettingsContent(
      }
     }
 
-    FolkSettingsSection(title = stringResource(R.string.settings_section_general_interface)) {
-     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
-
-        item(key = "general_folkx_engine") {
-            FolkSwitchPreference(
-                icon = Icons.Outlined.AutoAwesome,
-                title = folkXEngineTitle,
-                summary = folkXEngineSummary,
-                checked = folkXEngineEnabled,
-                onCheckedChange = {
-                    folkXEngineEnabled = it
-                    prefs.edit().putBoolean("folkx_engine_enabled", it).apply()
-                },
-            )
-        }
-
-        item(key = "general_folkx_animation_type", visible = folkXEngineEnabled) {
-            val animationTypeLabel = when (currentType) {
-                "linear" -> R.string.settings_folkx_animation_linear
-                "spatial" -> R.string.settings_folkx_animation_spatial
-                "fade" -> R.string.settings_folkx_animation_fade
-                "vertical" -> R.string.settings_folkx_animation_vertical
-                "diagonal" -> R.string.settings_folkx_animation_diagonal
-                else -> R.string.settings_folkx_animation_linear
-            }
-
-            FolkValuePreference(
-                icon = Icons.Outlined.Animation,
-                title = stringResource(R.string.settings_folkx_animation_type),
-                summary = stringResource(animationTypeLabel),
-                onClick = { showFolkXAnimationTypeDialog.value = true },
-            )
-        }
-
-        item(key = "general_folkx_animation_speed", visible = folkXEngineEnabled) {
-            FolkValuePreference(
-                icon = Icons.Outlined.Speed,
-                title = stringResource(R.string.settings_folkx_animation_speed),
-                summary = "${currentSpeed}x",
-                onClick = { showFolkXAnimationSpeedDialog.value = true },
-            )
-        }
-
-        item(key = "general_predictive_back", visible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            FolkSwitchPreference(
-                icon = Icons.Outlined.ArrowBack,
-                title = predictiveBackTitle,
-                summary = predictiveBackSummary,
-                checked = predictiveBackEnabled,
-                onCheckedChange = {
-                    predictiveBackEnabled = it
-                    prefs.edit { putBoolean("predictive_back_enabled", it) }
-                    (context as? Activity)?.recreate()
-                },
-            )
-        }
-
-     }
-    }
+    GeneralInterfaceSection(
+        flat = flat,
+        highlightKey = highlightKey,
+        folkXEngineTitle = folkXEngineTitle,
+        folkXEngineSummary = folkXEngineSummary,
+        folkXEngineEnabled = folkXEngineEnabled,
+        onFolkXEngineEnabledChange = { folkXEngineEnabled = it },
+        currentType = currentType,
+        currentSpeed = currentSpeed,
+        predictiveBackTitle = predictiveBackTitle,
+        predictiveBackSummary = predictiveBackSummary,
+        predictiveBackEnabled = predictiveBackEnabled,
+        onPredictiveBackEnabledChange = { predictiveBackEnabled = it },
+        showFolkXAnimationTypeDialog = showFolkXAnimationTypeDialog,
+        showFolkXAnimationSpeedDialog = showFolkXAnimationSpeedDialog,
+    )
 
     if (kPatchReady) {
     FolkSettingsSection(title = stringResource(R.string.settings_section_general_root)) {
@@ -570,56 +520,14 @@ fun GeneralSettingsContent(
      }
     }
 
-    FolkSettingsSection(title = stringResource(R.string.settings_section_general_maintenance)) {
-     FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
-
-        item(key = "general_send_log") {
-            FolkNavigationPreference(
-                icon = Icons.Outlined.BugReport,
-                title = logTitle,
-                onClick = {
-                    scope.launch {
-                        val bugreport = loadingDialog.withLoading {
-                            withContext(Dispatchers.IO) {
-                                getBugreportFile(context)
-                            }
-                        }
-
-                        val uri: Uri = FileProvider.getUriForFile(
-                            context,
-                            "${BuildConfig.APPLICATION_ID}.fileprovider",
-                            bugreport
-                        )
-
-                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                            putExtra(Intent.EXTRA_STREAM, uri)
-                            type = "application/gzip"
-                            clipData = android.content.ClipData.newRawUri(null, uri)
-                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        }
-
-                        context.startActivity(
-                            Intent.createChooser(
-                                shareIntent,
-                                context.getString(R.string.send_log)
-                            )
-                        )
-                    }
-                },
-            )
-        }
-
-        item(key = "general_clean_storage") {
-            FolkValuePreference(
-                icon = Icons.Outlined.CleaningServices,
-                title = cleanStorageTitle,
-                summary = cleanStorageSummary,
-                onClick = { showCleanStorageDialog.value = true },
-            )
-        }
-
-     }
-    }
+    GeneralMaintenanceSection(
+        flat = flat,
+        highlightKey = highlightKey,
+        logTitle = logTitle,
+        cleanStorageTitle = cleanStorageTitle,
+        cleanStorageSummary = cleanStorageSummary,
+        showCleanStorageDialog = showCleanStorageDialog,
+    )
 
     if (showUpdateDialog.value) {
         UpdateDialog(
