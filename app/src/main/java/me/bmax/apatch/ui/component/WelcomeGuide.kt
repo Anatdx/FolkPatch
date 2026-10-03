@@ -1,7 +1,6 @@
 package me.bmax.apatch.ui.component
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -22,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
@@ -77,15 +77,17 @@ fun WelcomeGuideDialog(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val pageSlideSpec = MaterialTheme.motionScheme.defaultSpatialSpec<IntOffset>()
+            val pageFadeSpec = MaterialTheme.motionScheme.defaultEffectsSpec<Float>()
             // ── 页面内容（AnimatedContent 带动画过渡） ──
             AnimatedContent(
                 targetState = currentPage,
                 transitionSpec = {
                     val dir = if (targetState > initialState) 1 else -1
                     val enterOffset = { w: Int -> dir * w }
-                    (slideInHorizontally(tween(300)) { enterOffset(it) } + fadeIn(tween(200)))
+                    (slideInHorizontally(pageSlideSpec) { enterOffset(it) } + fadeIn(pageFadeSpec))
                         .togetherWith(
-                            slideOutHorizontally(tween(300)) { -enterOffset(it) } + fadeOut(tween(200))
+                            slideOutHorizontally(pageSlideSpec) { -enterOffset(it) } + fadeOut(pageFadeSpec)
                         )
                 },
                 label = "welcome_page"
