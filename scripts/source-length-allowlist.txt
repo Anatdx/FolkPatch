@@ -34,7 +34,6 @@ app/src/main/java/me/bmax/apatch/ui/screen/theme/ThemeStore.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/AppearanceSettings.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/FunctionSettingsHideAppItems.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/FunctionSettingsPickers.kt
-app/src/main/java/me/bmax/apatch/ui/screen/settings/FunctionSettingsScreen.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/GeneralSettings.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/appearance/AppearanceBackgroundSection.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/appearance/AppearanceOptionDialogs.kt
