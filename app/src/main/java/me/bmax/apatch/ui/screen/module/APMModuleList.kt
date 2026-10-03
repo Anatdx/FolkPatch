@@ -73,6 +73,8 @@ import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.Icons
 import me.bmax.apatch.ui.navigation.fabNavBottomClearance
 import androidx.compose.ui.platform.LocalConfiguration
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import androidx.compose.material.icons.outlined.Extension
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -324,8 +326,9 @@ fun ModuleList(
                                     }
                                 }
                             } else {
-                                Text(
-                                    stringResource(R.string.apm_empty), textAlign = TextAlign.Center
+                                FolkStateView(
+                                    title = stringResource(R.string.apm_empty),
+                                    icon = Icons.Outlined.Extension,
                                 )
                             }
                         }
@@ -443,8 +446,9 @@ fun ModuleList(
                                     .fillParentMaxHeight(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    stringResource(R.string.apm_empty), textAlign = TextAlign.Center
+                                FolkStateView(
+                                    title = stringResource(R.string.apm_empty),
+                                    icon = Icons.Outlined.Extension,
                                 )
                             }
                         }
