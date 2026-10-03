@@ -1406,4 +1406,5 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="settings_clear_cache">Limpar cache</string>
     <string name="settings_disclaimer">Isenção de responsabilidade</string>
     <string name="settings_disclaimer_message">Após obter root no dispositivo, atualizações do sistema, módulos de terceiros ou outros fatores externos podem causar riscos e perdas imprevistas, que você assume por conta própria. Continue apenas depois de entender bem os riscos.</string>
+    <string name="theme_store_subtitle">Descubra e aplique temas da comunidade</string>
 </resources>

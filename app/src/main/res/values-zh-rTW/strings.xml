@@ -1398,4 +1398,5 @@ KernelPatch 需要修補 boot 映像檔。
     <string name="settings_clear_cache">清除快取檔案</string>
     <string name="settings_disclaimer">免責聲明</string>
     <string name="settings_disclaimer_message">在裝置上進行 Root 後，系統更新、第三方模組或其它外部因素可能造成無法預期的風險與損失，需由你自行承擔。請在充分了解風險後再繼續使用。</string>
+    <string name="theme_store_subtitle">探索並套用社群主題</string>
 </resources>

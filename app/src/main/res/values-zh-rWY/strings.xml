@@ -1461,4 +1461,5 @@ KernelPatch 須用 boot 之像以補。
     <string name="settings_clear_cache">清積貯</string>
     <string name="settings_disclaimer">免責</string>
     <string name="settings_disclaimer_message">Root 其機，或生險於統系之更新、第三方之件，及他外因。所生之損與失，爾自任之。明其險而後行，可也。</string>
+    <string name="theme_store_subtitle">探眾題而施之</string>
 </resources>

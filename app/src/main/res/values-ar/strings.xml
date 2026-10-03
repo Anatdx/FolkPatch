@@ -1393,4 +1393,5 @@
     <string name="settings_clear_cache">مسح ذاكرة التخزين المؤقت</string>
     <string name="settings_disclaimer">إخلاء المسؤولية</string>
     <string name="settings_disclaimer_message">بعد عمل روت للجهاز، قد تتسبب تحديثات النظام أو الوحدات الخارجية أو عوامل خارجية أخرى في مخاطر وخسائر غير متوقعة، ويتعين عليك تحملها بنفسك. يرجى الاستمرار فقط بعد فهم المخاطر جيدًا.</string>
+    <string name="theme_store_subtitle">اكتشف سمات المجتمع وطبّقها</string>
 </resources>

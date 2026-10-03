@@ -11,10 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -40,8 +42,11 @@ import me.bmax.apatch.ui.navigation.LocalIsFloatingNavMode
  * [Inline] is the default on purpose: a collapsible [Large] title reads wrong on
  * a tab page (that combination caused a rework once already), so making the
  * large title an explicit opt-in keeps the mistake from happening by accident.
+ *
+ * [Flexible] is the Material 3 Expressive bar for content pages: it starts tall,
+ * carries an optional subtitle, and collapses to the inline height on scroll.
  */
-enum class FolkTitleStyle { Large, Inline, None }
+enum class FolkTitleStyle { Large, Flexible, Inline, None }
 
 /**
  * The shared chrome for a screen: title, back button, actions, snackbar and the
@@ -53,7 +58,7 @@ enum class FolkTitleStyle { Large, Inline, None }
  * a `TabRow` between the bar and the list. A shared "padding + chrome" contract
  * covers all of them without reshaping any of them.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FolkScaffold(
     title: String = "",
@@ -62,6 +67,8 @@ fun FolkScaffold(
     actions: @Composable RowScope.() -> Unit = {},
     snackbarHostState: SnackbarHostState? = null,
     titleContent: (@Composable () -> Unit)? = null,
+    /** Optional supporting line under a [FolkTitleStyle.Flexible] title. */
+    subtitle: String? = null,
     floatingActionButton: @Composable () -> Unit = {},
     /**
      * A persistent bottom bar, such as a command input. Callers that use this
@@ -87,7 +94,7 @@ fun FolkScaffold(
     Scaffold(
         // Only the collapsible built-in bar consumes scroll; the others need no
         // connection.
-        modifier = if (topBar == null && titleStyle == FolkTitleStyle.Large) {
+        modifier = if (topBar == null && (titleStyle == FolkTitleStyle.Large || titleStyle == FolkTitleStyle.Flexible)) {
             Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
         } else {
             Modifier
@@ -107,6 +114,25 @@ fun FolkScaffold(
                             } else {
                                 Text(text = title, fontWeight = FontWeight.Bold)
                             }
+                        },
+                        colors = folkTopAppBarColors(),
+                        navigationIcon = { FolkBackButton(onBack) },
+                        actions = actions,
+                        scrollBehavior = scrollBehavior,
+                    )
+
+                    FolkTitleStyle.Flexible -> MediumFlexibleTopAppBar(
+                        title = {
+                            if (titleContent != null) {
+                                titleContent()
+                            } else {
+                                Text(text = title, fontWeight = FontWeight.Bold)
+                            }
+                        },
+                        subtitle = if (subtitle != null) {
+                            { Text(text = subtitle) }
+                        } else {
+                            null
                         },
                         colors = folkTopAppBarColors(),
                         navigationIcon = { FolkBackButton(onBack) },

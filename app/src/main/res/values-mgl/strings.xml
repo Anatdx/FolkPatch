@@ -1391,4 +1391,5 @@ KernelPatch 魔法阵需要 boot 核心来施展。
     <string name="settings_clear_cache">清除缓存</string>
     <string name="settings_disclaimer">免责咒文</string>
     <string name="settings_disclaimer_message">对法器施以 Root 后，天地异变、外道模块或诸般外缘皆可能招致不可测之祸，需由你自行承担。待你明了凶险，方可续行。</string>
+    <string name="theme_store_subtitle">尋常魔環，施於掌中</string>
 </resources>

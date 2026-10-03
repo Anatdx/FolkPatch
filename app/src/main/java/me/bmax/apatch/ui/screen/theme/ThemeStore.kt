@@ -352,7 +352,8 @@ fun ThemeStoreScreen(
 
     FolkScaffold(
         title = stringResource(R.string.theme_store_title),
-        titleStyle = FolkTitleStyle.Inline,
+        titleStyle = if (isSearchActive) FolkTitleStyle.Inline else FolkTitleStyle.Flexible,
+        subtitle = stringResource(R.string.theme_store_subtitle),
         onBack = {
             if (isSearchActive) {
                 isSearchActive = false

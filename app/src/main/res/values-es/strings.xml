@@ -1408,4 +1408,5 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="settings_clear_cache">Borrar caché</string>
     <string name="settings_disclaimer">Descargo de responsabilidad</string>
     <string name="settings_disclaimer_message">Después de rootear el dispositivo, las actualizaciones del sistema, los módulos de terceros u otros factores externos pueden causar riesgos y pérdidas imprevistas. Debes asumirlos por tu cuenta. Asegúrate de entenderlos antes de continuar.</string>
+    <string name="theme_store_subtitle">Descubre y aplica temas de la comunidad</string>
 </resources>

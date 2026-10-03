@@ -1419,4 +1419,5 @@ KernelPatch는 boot 이미지를 패치해야 합니다.
     <string name="settings_clear_cache">캐시 지우기</string>
     <string name="settings_disclaimer">면책 조항</string>
     <string name="settings_disclaimer_message">기기를 루팅하면 시스템 업데이트, 서드파티 모듈 또는 기타 외부 요인으로 인해 예상치 못한 위험과 손실이 발생할 수 있으며, 이는 사용자 본인이 감수해야 합니다. 충분히 이해한 후 계속 사용하세요.</string>
+    <string name="theme_store_subtitle">커뮤니티 테마를 찾아 적용하세요</string>
 </resources>
