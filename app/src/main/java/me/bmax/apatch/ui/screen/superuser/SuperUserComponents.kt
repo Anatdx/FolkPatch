@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import me.bmax.apatch.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -116,7 +115,7 @@ fun LabelText(
         Text(
             text = label,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp),
-            style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+            style = MaterialTheme.typography.labelSmall,
             color = contentColorFor(containerColor),
             fontWeight = FontWeight.Medium,
         )
