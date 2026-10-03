@@ -3,6 +3,7 @@ package me.bmax.apatch.ui.component.folk
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
@@ -99,10 +100,14 @@ fun FolkSettingsScaffold(
             }
         },
     ) { innerPadding ->
+        // Keep the list viewport below the bar instead of only offsetting the
+        // first item: with a translucent bar in wallpaper mode, content that
+        // scrolls underneath would show through the title.
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = innerPadding.calculateTopPadding()),
             contentPadding = PaddingValues(
-                top = innerPadding.calculateTopPadding(),
                 bottom = innerPadding.calculateBottomPadding() + FolkSettingsDimens.ScreenPadding,
             ),
         ) {
