@@ -68,6 +68,7 @@ import me.bmax.apatch.util.Version
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.foundation.layout.size
 import me.bmax.apatch.core.ui.R as CoreR
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Composable
 fun StartButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -314,7 +315,7 @@ fun SetSuperKeyView(viewModel: PatchesViewModel) {
             label = { Text(stringResource(R.string.patch_set_superkey)) },
             singleLine = true,
             isError = invalid,
-            shape = ContinuousCornerShape(16.dp),
+            shape = FolkShape.Corner16,
             visualTransformation = if (keyVisible) {
                 VisualTransformation.None
             } else {
@@ -352,7 +353,7 @@ fun SetSuperKeyView(viewModel: PatchesViewModel) {
             supportingText = if (mismatch) {
                 { Text(stringResource(R.string.patch_skey_mismatch)) }
             } else null,
-            shape = ContinuousCornerShape(16.dp),
+            shape = FolkShape.Corner16,
             visualTransformation = if (confirmVisible) {
                 VisualTransformation.None
             } else {

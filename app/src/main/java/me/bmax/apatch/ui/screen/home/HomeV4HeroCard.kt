@@ -26,7 +26,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.LockOpen
@@ -82,6 +81,7 @@ import me.bmax.apatch.util.Version
 import me.bmax.apatch.util.Version.getManagerVersion
 import me.bmax.apatch.util.getSELinuxStatus
 import me.bmax.apatch.util.ui.showToast
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 private val managerVersion = getManagerVersion()
 
@@ -194,7 +194,7 @@ fun HeroStatusCard(
                 .then(if (wallpaperEnabled) Modifier.pointerInput(Unit) {
                     detectTapGestures(onLongPress = { showBackgroundOptions = true })
                 } else Modifier),
-            shape = ContinuousCornerShape(24.dp),
+            shape = FolkShape.Corner24,
             colors = CardDefaults.cardColors(
                 containerColor = Color.Transparent,
                 contentColor = contentColor
@@ -350,7 +350,7 @@ fun HeroStatusCard(
                         navigator.navigate(InstallModeSelectScreenDestination)
                     }
                 },
-            shape = ContinuousCornerShape(20.dp),
+            shape = FolkShape.Corner20,
             colors = CardDefaults.cardColors(
                 containerColor = finalContainerColor,
                 contentColor = MaterialTheme.colorScheme.onErrorContainer

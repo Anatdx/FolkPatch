@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,6 +27,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 /**
  * The pieces shared by every log screen: the neutral monospace line, the rounded
@@ -92,7 +92,7 @@ fun folkLogLevelColor(level: FolkLogLevel): Color = when (level) {
 fun FolkLogCard(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Surface(
         modifier = modifier,
-        shape = ContinuousCornerShape(16.dp),
+        shape = FolkShape.Corner16,
         color = MaterialTheme.colorScheme.surfaceContainer,
         content = content,
     )

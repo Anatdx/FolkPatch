@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RadioButtonChecked
@@ -70,6 +69,7 @@ import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.migrateStockBootBackup
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.HomeBottomSpacer
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 private enum class ApatchUninstallOption(
     @param:StringRes val titleRes: Int,
@@ -339,7 +339,7 @@ fun LearnMoreCard() {
     val uriHandler = LocalUriHandler.current
 
     Card(
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         colors = CardDefaults.cardColors(containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
             MaterialTheme.colorScheme.surface
         } else {

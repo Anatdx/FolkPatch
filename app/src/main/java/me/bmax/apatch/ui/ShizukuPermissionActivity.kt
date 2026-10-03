@@ -47,6 +47,7 @@ import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuApiConstants
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 /**
  * Shizuku 授权确认界面。
@@ -162,7 +163,7 @@ private fun PermissionDialog(
 ) {
     BasicAlertDialog(onDismissRequest = onDismiss) {
         Surface(
-            shape = ContinuousCornerShape(28.dp),
+            shape = FolkShape.Corner28,
             color = MaterialTheme.colorScheme.surfaceContainerHigh,
             tonalElevation = 6.dp,
             modifier = Modifier.fillMaxWidth(),

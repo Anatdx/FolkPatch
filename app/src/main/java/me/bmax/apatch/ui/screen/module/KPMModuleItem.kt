@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -77,6 +76,7 @@ import me.bmax.apatch.ui.component.BackgroundOptionsDialog
 import me.bmax.apatch.ui.component.ModuleInfoData
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Composable
 fun KPModuleItem(
@@ -214,7 +214,7 @@ fun KPModuleItem(
 
     val insideSplicedGroup = me.bmax.apatch.ui.component.LocalInsideSplicedGroup.current
 
-    val cardShape = ContinuousCornerShape(20.dp)
+    val cardShape = FolkShape.Corner20
 
     val cardInteractionSource = remember { MutableInteractionSource() }
     val haptics = LocalHapticFeedback.current

@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.rememberLazyListState
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.foundation.layout.offset
@@ -88,6 +87,7 @@ import me.bmax.apatch.ui.navigation.fabNavBottomClearance
 import androidx.compose.ui.platform.LocalConfiguration
 
 import me.bmax.apatch.util.BiometricUtils
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Destination<RootGraph>
@@ -411,7 +411,7 @@ fun APModuleScreen(navigator: DestinationsNavigator) {
                 showFirstTimeDialog = false
             },
             width = 350.dp,
-            shape = ContinuousCornerShape(20.dp),
+            shape = FolkShape.Corner20,
             blurBehind = false,
             dialogProperties = DialogProperties(dismissOnClickOutside = false, dismissOnBackPress = false),
         ) {

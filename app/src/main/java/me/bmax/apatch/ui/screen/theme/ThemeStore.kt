@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.Color
@@ -33,6 +32,7 @@ import me.bmax.apatch.ui.viewmodel.ThemeStoreViewModel
 import me.bmax.apatch.util.DownloadProgress
 import me.bmax.apatch.util.DownloadStatus
 import me.bmax.apatch.core.ui.R as CoreR
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Destination<RootGraph>
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -336,7 +336,7 @@ fun ThemeStoreScreen(
         FolkAlertDialog(
             onDismissRequest = { showFilterSheet = false },
             width = 320.dp,
-            shape = ContinuousCornerShape(28.dp),
+            shape = FolkShape.Corner28,
             blurBehind = false,
         ) {
             ThemeFilterSheetContent(

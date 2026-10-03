@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Composable
 fun SystemAreaChart(
@@ -64,7 +64,7 @@ fun SystemAreaChart(
             .height(140.dp)
             .background(
                 color = colors.surface,
-                shape = ContinuousCornerShape(16.dp)
+                shape = FolkShape.Corner16
             )
     ) {
         Text(

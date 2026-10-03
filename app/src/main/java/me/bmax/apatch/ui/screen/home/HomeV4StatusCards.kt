@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.Android
@@ -60,6 +59,7 @@ import me.bmax.apatch.R
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.util.SystemInfoCollector
 import me.bmax.apatch.core.ui.R as CoreR
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Composable
 fun HomeV4DeviceStatusCard(isWallpaperMode: Boolean, modifier: Modifier = Modifier) {
@@ -292,7 +292,7 @@ fun AndroidPatchCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = ContinuousCornerShape(16.dp),
+        shape = FolkShape.Corner16,
         colors = CardDefaults.cardColors(containerColor = containerColor)
     ) {
         Row(

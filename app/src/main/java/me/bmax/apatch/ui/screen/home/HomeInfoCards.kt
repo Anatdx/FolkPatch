@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.outlined.Android
@@ -50,6 +49,7 @@ import me.bmax.apatch.ui.component.folk.FolkWrapSafeText
 import me.bmax.apatch.util.Version
 import me.bmax.apatch.util.Version.getManagerVersion
 import me.bmax.apatch.util.getSELinuxStatus
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 private val managerVersion = getManagerVersion()
 
@@ -77,7 +77,7 @@ fun InfoCard(kpState: APApplication.State, apState: APApplication.State) {
     }
     
     Card(
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         colors = CardDefaults.cardColors(containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
             MaterialTheme.colorScheme.surface
         } else {
@@ -182,7 +182,7 @@ fun ListInfoCard(kpState: APApplication.State, apState: APApplication.State, sho
     }
 
     Card(
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         colors = CardDefaults.cardColors(containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
             MaterialTheme.colorScheme.surface
         } else {

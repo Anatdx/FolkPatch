@@ -16,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,6 +40,7 @@ import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.theme.BackgroundManager
 import me.bmax.apatch.util.PermissionUtils
 import me.bmax.apatch.util.ui.showToast
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Composable
 fun MagiskStyleCard(
@@ -125,7 +125,7 @@ fun MagiskStyleCard(
                     Modifier
                 }
             ),
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         colors = CardDefaults.cardColors(
             containerColor = if (hasCardWallpaper) Color.Transparent
                 else MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp),

@@ -4,7 +4,6 @@ import me.bmax.apatch.util.ui.showToast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Info
@@ -36,6 +35,7 @@ import me.bmax.apatch.ui.component.folk.FolkStateView
 import me.bmax.apatch.ui.component.folk.FolkStateTone
 import androidx.compose.material.icons.outlined.Api
 import androidx.compose.material.icons.outlined.Warning
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Destination<RootGraph>
 @OptIn(ExperimentalMaterial3Api::class)
@@ -172,7 +172,7 @@ private fun ApiMarketplaceItemCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         color = MaterialTheme.colorScheme.surface,
         tonalElevation = 1.dp
     ) {

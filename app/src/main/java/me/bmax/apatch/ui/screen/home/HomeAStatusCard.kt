@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
@@ -31,11 +30,12 @@ import androidx.compose.ui.unit.dp
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.core.ui.R as CoreR
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Composable
 fun AStatusCard(apState: APApplication.State) {
     Card(
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         colors = CardDefaults.cardColors(containerColor = run {
             if (BackgroundConfig.isCustomBackgroundEnabled) {
                 MaterialTheme.colorScheme.secondaryContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)

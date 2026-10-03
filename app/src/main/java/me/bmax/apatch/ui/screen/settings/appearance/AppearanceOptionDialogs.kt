@@ -29,6 +29,7 @@ import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.showToast
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import me.bmax.apatch.core.ui.R as CoreR
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +52,7 @@ fun ThemeExportDialog(
                 .fillMaxWidth(0.92f)
                 .widthIn(max = 440.dp)
                 .wrapContentHeight(),
-            shape = ContinuousCornerShape(28.dp),
+            shape = FolkShape.Corner28,
             tonalElevation = AlertDialogDefaults.TonalElevation,
             color = AlertDialogDefaults.containerColor,
         ) {
@@ -72,7 +73,7 @@ fun ThemeExportDialog(
                         onValueChange = { name = it },
                         label = { Text(stringResource(R.string.theme_name)) },
                         singleLine = true,
-                        shape = ContinuousCornerShape(16.dp),
+                        shape = FolkShape.Corner16,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Text(
@@ -145,7 +146,7 @@ fun ThemeExportDialog(
                         onValueChange = { version = it },
                         label = { Text(stringResource(R.string.theme_version)) },
                         singleLine = true,
-                        shape = ContinuousCornerShape(16.dp),
+                        shape = FolkShape.Corner16,
                         modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(
@@ -153,14 +154,14 @@ fun ThemeExportDialog(
                         onValueChange = { author = it },
                         label = { Text(stringResource(R.string.theme_author)) },
                         singleLine = true,
-                        shape = ContinuousCornerShape(16.dp),
+                        shape = FolkShape.Corner16,
                         modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(
                         value = description,
                         onValueChange = { description = it },
                         label = { Text(stringResource(R.string.theme_description)) },
-                        shape = ContinuousCornerShape(16.dp),
+                        shape = FolkShape.Corner16,
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3,
                         maxLines = 5
@@ -206,7 +207,7 @@ fun ThemeImportDialog(
                 .fillMaxWidth(0.92f)
                 .widthIn(max = 440.dp)
                 .wrapContentHeight(),
-            shape = ContinuousCornerShape(28.dp),
+            shape = FolkShape.Corner28,
             tonalElevation = AlertDialogDefaults.TonalElevation,
             color = AlertDialogDefaults.containerColor,
         ) {
@@ -355,7 +356,7 @@ fun BannerApiConfigDialog(
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 340.dp,
-        shape = ContinuousCornerShape(28.dp),
+        shape = FolkShape.Corner28,
     ) {
         Column(modifier = Modifier.padding(24.dp).verticalScroll(rememberScrollState())) {
             Text(text = stringResource(R.string.apm_banner_api_config_title), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))

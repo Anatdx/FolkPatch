@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
@@ -29,6 +28,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.R
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 /**
  * 首次启动欢迎引导对话框 —— 4 页分布式指导。
@@ -69,7 +69,7 @@ fun WelcomeGuideDialog(
     FolkAlertDialog(
         onDismissRequest = { /* intentionally no-op: use buttons to dismiss */ },
         width = 340.dp,
-        shape = ContinuousCornerShape(24.dp),
+        shape = FolkShape.Corner24,
         blurBehind = false,
         dialogProperties = DialogProperties(dismissOnClickOutside = false, dismissOnBackPress = false, usePlatformDefaultWidth = false),
     ) {

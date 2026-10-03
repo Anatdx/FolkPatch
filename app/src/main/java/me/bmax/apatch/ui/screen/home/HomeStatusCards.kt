@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
@@ -48,6 +47,7 @@ import me.bmax.apatch.util.Version
 import me.bmax.apatch.util.Version.getManagerVersion
 import me.bmax.apatch.util.reboot
 import me.bmax.apatch.core.ui.R as CoreR
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 private val managerVersion = getManagerVersion()
 
@@ -154,7 +154,7 @@ fun KStatusCard(
                 navigator.navigate(InstallModeSelectScreenDestination)
             }
         },
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         colors = CardDefaults.cardColors(
             containerColor = cardBackgroundColor,
             contentColor = cardContentColor

@@ -54,8 +54,8 @@ import androidx.compose.ui.unit.dp
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.folkGroupColor
 import kotlin.math.roundToInt
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.ui.semantics.Role
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 /** Square size the avatar is decoded at, in pixels. */
 private const val PROFILE_AVATAR_PX = 256
@@ -246,7 +246,7 @@ fun ProfileTextField(
         label = { Text(label) },
         singleLine = singleLine,
         minLines = minLines,
-        shape = ContinuousCornerShape(16.dp),
+        shape = FolkShape.Corner16,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,

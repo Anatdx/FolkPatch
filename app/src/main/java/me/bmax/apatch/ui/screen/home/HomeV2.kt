@@ -14,7 +14,6 @@ import androidx.compose.material.icons.outlined.Android
 import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material3.*
 import androidx.compose.material3.surfaceColorAtElevation
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,6 +56,7 @@ import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.ui.theme.BackgroundManager
 import me.bmax.apatch.util.PermissionUtils
 import me.bmax.apatch.util.ui.showToast
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 private val managerVersion = getManagerVersion()
 
@@ -304,7 +304,7 @@ fun StatusCardBig(
                     }
                 }
             ),
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         colors = CardDefaults.cardColors(containerColor = containerColor)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -463,7 +463,7 @@ fun SmallInfoCard(
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         colors = CardDefaults.cardColors(containerColor = containerColor)
     ) {
         Column(

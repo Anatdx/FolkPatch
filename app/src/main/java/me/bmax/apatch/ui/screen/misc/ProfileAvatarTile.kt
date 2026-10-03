@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
@@ -27,6 +26,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.ui.component.folk.folkPressScale
 import androidx.compose.ui.semantics.Role
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 /**
  * One of the two avatar choices. The selected tile is tinted and carries a
@@ -43,7 +43,7 @@ internal fun AvatarOptionTile(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val haptics = LocalHapticFeedback.current
-    val shape = ContinuousCornerShape(24.dp)
+    val shape = FolkShape.Corner24
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier

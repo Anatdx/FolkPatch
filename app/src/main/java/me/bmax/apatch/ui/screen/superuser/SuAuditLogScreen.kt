@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.filled.DeleteOutline
@@ -65,6 +64,7 @@ import me.bmax.apatch.util.SuAuditLog
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination<RootGraph>
@@ -352,7 +352,7 @@ private fun SuAuditClearDialog(
     FolkAlertDialog(
         onDismissRequest = onDismiss,
         width = 320.dp,
-        shape = ContinuousCornerShape(20.dp),
+        shape = FolkShape.Corner20,
         blurBehind = false,
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
