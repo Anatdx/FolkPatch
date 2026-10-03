@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,7 +42,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -56,6 +54,8 @@ import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.viewmodel.PluginViewModel
 import me.bmax.apatch.util.pickLocalizedString
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import me.bmax.apatch.ui.component.folk.FolkStateTone
 
 @Composable
 fun PluginCard(
@@ -236,69 +236,25 @@ fun PluginCard(
 
 @Composable
 fun EmptyPlugins(errorMessage: String?, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(
-            imageVector = if (errorMessage != null) Icons.Outlined.Warning else Icons.Outlined.Extension,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(56.dp)
-        )
-        Spacer(Modifier.height(16.dp))
-        Text(
-            text = stringResource(
-                if (errorMessage != null) R.string.plugin_load_failed else R.string.plugin_empty
-            ),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(Modifier.height(8.dp))
-        Text(
-            text = stringResource(R.string.plugin_empty_hint),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-    }
+    FolkStateView(
+        title = stringResource(
+            if (errorMessage != null) R.string.plugin_load_failed else R.string.plugin_empty
+        ),
+        modifier = modifier,
+        icon = if (errorMessage != null) Icons.Outlined.Warning else Icons.Outlined.Extension,
+        hint = stringResource(R.string.plugin_empty_hint),
+        tone = if (errorMessage != null) FolkStateTone.Critical else FolkStateTone.Neutral,
+    )
 }
 
-/** Centered plain-text prompt shown when APD is not installed. */
+/** Centered prompt shown when APD is not installed. */
 @Composable
 fun ApdNotInstalled() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.Extension,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(56.dp)
-        )
-        Spacer(Modifier.height(16.dp))
-        Text(
-            text = stringResource(R.string.plugin_summary_title),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(Modifier.height(8.dp))
-        Text(
-            text = stringResource(R.string.plugin_summary_not_installed),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-    }
+    FolkStateView(
+        title = stringResource(R.string.plugin_summary_title),
+        icon = Icons.Outlined.Extension,
+        hint = stringResource(R.string.plugin_summary_not_installed),
+    )
 }
 
 /** Load current values for all config fields of a plugin (from apd). */
