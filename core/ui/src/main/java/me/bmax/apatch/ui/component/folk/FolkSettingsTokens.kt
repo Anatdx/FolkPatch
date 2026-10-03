@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.bmax.apatch.ui.theme.tokens.FolkShape
 import me.bmax.apatch.ui.theme.tokens.FolkTheme
+import me.bmax.apatch.ui.theme.tokens.FolkType
 
 /**
  * Measurements that give the FolkPatch settings its own rhythm.
@@ -136,22 +137,10 @@ fun folkSectionTitleStyle(): TextStyle = MaterialTheme.typography.labelLarge.cop
  * user-selected custom fonts keep working.
  */
 @Composable
-fun folkPreferenceTitleStyle(): TextStyle = MaterialTheme.typography.bodyLarge.copy(
-    fontSize = 15.sp,
-    // 20dp line box: a single-line row lands on ~56dp (via the row's minimum
-    // height) and a two-line row on ~72dp, the same 55/74dp the rows use.
-    lineHeight = 20.sp,
-    fontWeight = FontWeight.Medium,
-    letterSpacing = 0.sp,
-)
+fun folkPreferenceTitleStyle(): TextStyle = FolkType.Title
 
 @Composable
-fun folkPreferenceSummaryStyle(): TextStyle = MaterialTheme.typography.bodySmall.copy(
-    fontSize = 13.sp,
-    lineHeight = 18.sp,
-    fontWeight = FontWeight.Normal,
-    letterSpacing = 0.sp,
-)
+fun folkPreferenceSummaryStyle(): TextStyle = FolkType.Summary
 
 @Composable
 fun folkPreferenceValueStyle(): TextStyle = MaterialTheme.typography.bodyMedium.copy(
