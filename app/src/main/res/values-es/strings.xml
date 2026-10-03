@@ -952,6 +952,7 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="profile_choose_avatar">Elegir avatar</string>
     <string name="profile_avatar_default">Avatar predeterminado</string>
     <string name="profile_avatar_custom">Avatar personalizado</string>
+    <string name="profile_avatar_opacity">Opacidad del avatar</string>
     <string name="profile_crop_avatar">Recortar avatar</string>
     <string name="profile_restore_default">Restaurar valores</string>
     <string name="settings_section_general_basics">Idioma y actualizaciones</string>

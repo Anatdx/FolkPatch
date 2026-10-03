@@ -29,6 +29,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -41,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -58,6 +60,7 @@ import androidx.compose.ui.unit.sp
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.folkGroupColor
 import me.bmax.apatch.ui.component.folk.folkPressScale
+import kotlin.math.roundToInt
 
 /** Square size the avatar is decoded at, in pixels. */
 private const val PROFILE_AVATAR_PX = 256
@@ -73,8 +76,10 @@ fun ProfileEditSheet(
     nickname: String,
     signature: String,
     avatarUri: String,
+    avatarOpacity: Float,
     onPickAvatar: () -> Unit,
     onUseDefaultAvatar: () -> Unit,
+    onAvatarOpacityChange: (Float) -> Unit,
     onRestoreDefault: () -> Unit,
     onDismiss: () -> Unit,
     onSave: (String, String) -> Unit,
@@ -124,6 +129,7 @@ fun ProfileEditSheet(
                     label = stringResource(R.string.profile_avatar_default),
                     selected = avatarUri.isBlank(),
                     onClick = onUseDefaultAvatar,
+                    opacity = avatarOpacity,
                     modifier = Modifier.weight(1f),
                 ) {
                     Icon(
@@ -137,6 +143,7 @@ fun ProfileEditSheet(
                     label = stringResource(R.string.profile_avatar_custom),
                     selected = avatarUri.isNotBlank(),
                     onClick = onPickAvatar,
+                    opacity = avatarOpacity,
                     modifier = Modifier.weight(1f),
                 ) {
                     if (avatarBitmap != null) {
@@ -158,6 +165,31 @@ fun ProfileEditSheet(
             }
 
             Spacer(Modifier.height(18.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.profile_avatar_opacity),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.weight(1f),
+                )
+                Text(
+                    text = "${(avatarOpacity * 100).roundToInt()}%",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+            Slider(
+                value = avatarOpacity,
+                onValueChange = onAvatarOpacityChange,
+                valueRange = 0.1f..1f,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            Spacer(Modifier.height(8.dp))
 
             ProfileTextField(
                 value = name,
@@ -211,6 +243,7 @@ private fun AvatarOptionTile(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    opacity: Float = 1f,
     preview: @Composable () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -235,6 +268,7 @@ private fun AvatarOptionTile(
             Box(
                 modifier = Modifier
                     .size(64.dp)
+                    .alpha(opacity)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surfaceContainerHighest),
                 contentAlignment = Alignment.Center,
@@ -318,6 +352,7 @@ fun ProfileHeader(
     signature: String,
     deviceName: String,
     avatarUri: String,
+    avatarOpacity: Float,
     onAvatarClick: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -342,6 +377,9 @@ fun ProfileHeader(
             Box(
                 modifier = Modifier
                     .size(68.dp)
+                    // Alpha before clip/background so the whole avatar - circle
+                    // fill included - fades together and the wallpaper shows through.
+                    .alpha(avatarOpacity)
                     // Plain circle, no shadow and no coloured ring.
                     .clip(CircleShape)
                     .background(folkGroupColor().copy(alpha = 1f))

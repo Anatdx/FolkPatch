@@ -885,6 +885,7 @@ Kontynuować mimo to?</string>
     <string name="profile_choose_avatar">Wybierz awatar</string>
     <string name="profile_avatar_default">Domyślny awatar</string>
     <string name="profile_avatar_custom">Własny awatar</string>
+    <string name="profile_avatar_opacity">Krycie awatara</string>
     <string name="profile_crop_avatar">Przytnij awatar</string>
     <string name="profile_restore_default">Przywróć domyślne</string>
     <string name="settings_section_general_basics">Język i aktualizacje</string>

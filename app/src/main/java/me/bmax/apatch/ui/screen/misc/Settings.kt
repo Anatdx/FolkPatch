@@ -143,6 +143,7 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     var profileNickname by remember { mutableStateOf(prefs.getString("profile_nickname", "").orEmpty()) }
     var profileSignature by remember { mutableStateOf(prefs.getString("profile_signature", "").orEmpty()) }
     var profileAvatar by remember { mutableStateOf(prefs.getString("profile_avatar", "").orEmpty()) }
+    var profileAvatarOpacity by remember { mutableStateOf(prefs.getFloat("profile_avatar_opacity", 1f)) }
     var showProfileEditor by rememberSaveable { mutableStateOf(false) }
     var pendingAvatarUri by remember { mutableStateOf<Uri?>(null) }
     var showCropChoice by remember { mutableStateOf(false) }
@@ -291,6 +292,7 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                     signature = profileSignature,
                     deviceName = getDeviceInfo().trim(),
                     avatarUri = profileAvatar,
+                    avatarOpacity = profileAvatarOpacity,
                     onAvatarClick = { showProfileEditor = true },
                 )
             }
@@ -403,11 +405,16 @@ fun SettingScreen(navigator: DestinationsNavigator) {
             nickname = profileNickname.ifBlank { "FolkPatch" },
             signature = profileSignature,
             avatarUri = profileAvatar,
+            avatarOpacity = profileAvatarOpacity,
             onPickAvatar = { pickAvatarLauncher.launch("image/*") },
             onUseDefaultAvatar = {
                 profileAvatar = ""
                 runCatching { File(context.filesDir, PROFILE_AVATAR_FILE).delete() }
                 prefs.edit { remove("profile_avatar") }
+            },
+            onAvatarOpacityChange = { value ->
+                profileAvatarOpacity = value
+                prefs.edit { putFloat("profile_avatar_opacity", value) }
             },
             onRestoreDefault = {
                 profileNickname = ""

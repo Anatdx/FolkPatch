@@ -933,6 +933,7 @@ KernelPatch는 boot 이미지를 패치해야 합니다.
     <string name="profile_choose_avatar">아바타 선택</string>
     <string name="profile_avatar_default">기본 아바타</string>
     <string name="profile_avatar_custom">사용자 지정 아바타</string>
+    <string name="profile_avatar_opacity">아바타 불투명도</string>
     <string name="profile_crop_avatar">아바타 자르기</string>
     <string name="profile_restore_default">기본값으로 복원</string>
     <string name="settings_section_general_basics">언어 및 업데이트</string>

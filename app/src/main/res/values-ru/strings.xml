@@ -962,6 +962,7 @@ KernelPatch требует образ boot для патча.
     <string name="profile_choose_avatar">Выбрать аватар</string>
     <string name="profile_avatar_default">Аватар по умолчанию</string>
     <string name="profile_avatar_custom">Свой аватар</string>
+    <string name="profile_avatar_opacity">Непрозрачность аватара</string>
     <string name="profile_crop_avatar">Обрезать аватар</string>
     <string name="profile_restore_default">Сбросить настройки</string>
     <string name="settings_section_general_basics">Язык и обновления</string>
