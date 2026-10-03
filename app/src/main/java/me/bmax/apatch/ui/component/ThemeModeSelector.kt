@@ -54,7 +54,6 @@ fun ThemeModeSelector(
                 label = stringResource(R.string.theme_light),
                 isSelected = selectedMode == ThemeMode.LIGHT,
                 onClick = { onModeSelected(ThemeMode.LIGHT) },
-                flat = flat,
                 modifier = Modifier.weight(1f),
             )
 
@@ -63,7 +62,6 @@ fun ThemeModeSelector(
                 label = stringResource(R.string.theme_dark),
                 isSelected = selectedMode == ThemeMode.DARK,
                 onClick = { onModeSelected(ThemeMode.DARK) },
-                flat = flat,
                 modifier = Modifier.weight(1f),
             )
 
@@ -72,7 +70,6 @@ fun ThemeModeSelector(
                 label = stringResource(R.string.theme_system),
                 isSelected = selectedMode == ThemeMode.SYSTEM,
                 onClick = { onModeSelected(ThemeMode.SYSTEM) },
-                flat = flat,
                 modifier = Modifier.weight(1f),
             )
         }
@@ -94,7 +91,6 @@ private fun ThemeModeOption(
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    flat: Boolean = false,
 ) {
     val scale by animateFloatAsState(
         targetValue = if (isSelected) 1.05f else 1f,
@@ -102,12 +98,8 @@ private fun ThemeModeOption(
         label = "themeModeScale",
     )
 
-    val bgColor = when {
-        isSelected && flat -> MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.7f)
-        isSelected -> MaterialTheme.colorScheme.primaryContainer
-        flat -> MaterialTheme.colorScheme.surfaceContainerLow.copy(alpha = 0.4f)
-        else -> MaterialTheme.colorScheme.surface
-    }
+    val bgColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
+    else MaterialTheme.colorScheme.surfaceContainerLow
 
     val contentColor = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
     else MaterialTheme.colorScheme.onSurfaceVariant
@@ -132,8 +124,7 @@ private fun ThemeModeOption(
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
-            color = if (isSelected) MaterialTheme.colorScheme.onPrimaryContainer
-            else MaterialTheme.colorScheme.onSurface,
+            color = contentColor,
         )
     }
 }
