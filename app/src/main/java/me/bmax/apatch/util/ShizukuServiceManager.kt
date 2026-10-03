@@ -30,7 +30,9 @@ object ShizukuServiceManager {
 
     /** server 入口类 */
     private const val SERVER_CLASS = "rikka.shizuku.server.ShizukuService"
-    private const val SERVER_START_LOG = "/data/user_de/0/com.android.shell/shizuku_start.log"
+    // Kept off the shell's user_de dir: the elevated `su` namespace cannot always
+    // resolve it, which made the root launch candidate fail its redirect.
+    private const val SERVER_START_LOG = "/data/local/tmp/shizuku_start.log"
     private const val FLAG_ALLOWED = 1 shl 1
     private const val FLAG_DENIED = 1 shl 2
     private const val MASK_PERMISSION = FLAG_ALLOWED or FLAG_DENIED
