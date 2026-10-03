@@ -1456,4 +1456,9 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="jailbreak">Jailbreak</string>
     <string name="jailbreak_triggered">Jailbreak triggered. Wait for root, then soft reboot.</string>
     <string name="reboot_soft">Soft reboot</string>
+    <string name="settings_faq">FAQ</string>
+    <string name="settings_bug_feedback">Bug report</string>
+    <string name="settings_clear_cache">Clear cache</string>
+    <string name="settings_disclaimer">Disclaimer</string>
+    <string name="settings_disclaimer_message">Rooting your device may carry risks from system updates, third-party modules, or other external causes. You are responsible for any resulting damage or loss. Please continue only if you understand the risks.</string>
 </resources>

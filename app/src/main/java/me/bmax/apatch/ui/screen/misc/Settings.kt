@@ -92,6 +92,7 @@ import me.bmax.apatch.util.ui.NavigationBarsSpacer
 import java.io.File
 import java.io.FileOutputStream
 import com.ramcosta.composedestinations.generated.destinations.PluginScreenDestination
+import me.bmax.apatch.ui.component.folk.FolkPreference
 
 private const val FEEDBACK_URL = "https://github.com/LyraVoid/FolkPatch/issues/new/choose"
 
@@ -186,6 +187,7 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     }
 
     val cleanStorageDialogState = remember { mutableStateOf(false) }
+    val disclaimerDialogState = remember { mutableStateOf(false) }
 
     // The icon grid holds our secondary entries - the settings categories. The
     // bottom bar already covers Home / KPModule / SuperUser / APModule / Settings,
@@ -312,6 +314,34 @@ fun SettingScreen(navigator: DestinationsNavigator) {
             item(key = "utility_rows") {
                 Spacer(Modifier.height(16.dp))
                 FolkSettingsGroup(shape = RoundedCornerShape(12.dp)) {
+                    item(key = "utility_faq") {
+                        FolkPreference(
+                            icon = Icons.Outlined.HelpOutline,
+                            title = stringResource(R.string.settings_faq),
+                            enabled = false,
+                        )
+                    }
+                    item(key = "utility_feedback") {
+                        FolkNavigationPreference(
+                            icon = Icons.Outlined.BugReport,
+                            title = stringResource(R.string.settings_bug_feedback),
+                            onClick = { uriHandler.openUri(FEEDBACK_URL) },
+                        )
+                    }
+                    item(key = "utility_clean_storage") {
+                        FolkNavigationPreference(
+                            icon = Icons.Outlined.CleaningServices,
+                            title = stringResource(R.string.settings_clear_cache),
+                            onClick = { cleanStorageDialogState.value = true },
+                        )
+                    }
+                    item(key = "utility_disclaimer") {
+                        FolkNavigationPreference(
+                            icon = Icons.Outlined.Policy,
+                            title = stringResource(R.string.settings_disclaimer),
+                            onClick = { disclaimerDialogState.value = true },
+                        )
+                    }
                     item(key = "utility_send_log") {
                         FolkNavigationPreference(
                             icon = Icons.Outlined.Description,
@@ -337,20 +367,6 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                             },
                         )
                     }
-                    item(key = "utility_feedback") {
-                        FolkNavigationPreference(
-                            icon = Icons.Outlined.BugReport,
-                            title = stringResource(R.string.home_more_menu_feedback_or_suggestion),
-                            onClick = { uriHandler.openUri(FEEDBACK_URL) },
-                        )
-                    }
-                    item(key = "utility_clean_storage") {
-                        FolkNavigationPreference(
-                            icon = Icons.Outlined.CleaningServices,
-                            title = stringResource(R.string.settings_clean_storage),
-                            onClick = { cleanStorageDialogState.value = true },
-                        )
-                    }
                     item(key = "utility_about") {
                         FolkNavigationPreference(
                             icon = Icons.Outlined.Info,
@@ -369,7 +385,11 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     }
 
     if (cleanStorageDialogState.value) {
-        CleanStorageDialog(cleanStorageDialogState)
+        CleanStorageDialog(cleanStorageDialogState, R.string.settings_clear_cache)
+    }
+
+    if (disclaimerDialogState.value) {
+        SettingsDisclaimerDialog(disclaimerDialogState)
     }
 
     val pendingCrop = pendingAvatarUri

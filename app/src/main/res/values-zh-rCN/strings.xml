@@ -1400,4 +1400,9 @@ KernelPatch 需要修补 boot 镜像。
     <string name="jailbreak">越狱</string>
     <string name="jailbreak_triggered">越狱已触发，等待获取 root 后软重启。</string>
     <string name="reboot_soft">软重启</string>
+    <string name="settings_faq">常见问题</string>
+    <string name="settings_bug_feedback">Bug 反馈</string>
+    <string name="settings_clear_cache">清除缓存文件</string>
+    <string name="settings_disclaimer">免责声明</string>
+    <string name="settings_disclaimer_message">对设备进行 Root 后，系统更新、第三方模块或其它外部因素可能造成不可预期的风险与损失，需要你自行承担。请在充分了解风险后再继续使用。</string>
 </resources>

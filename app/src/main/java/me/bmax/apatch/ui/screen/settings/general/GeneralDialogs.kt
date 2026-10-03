@@ -108,7 +108,10 @@ private fun String.shellSingleQuoted(): String {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CleanStorageDialog(showDialog: MutableState<Boolean>) {
+fun CleanStorageDialog(
+    showDialog: MutableState<Boolean>,
+    titleRes: Int = R.string.settings_clean_storage,
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -119,7 +122,7 @@ fun CleanStorageDialog(showDialog: MutableState<Boolean>) {
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
             Text(
-                text = stringResource(id = R.string.settings_clean_storage),
+                text = stringResource(id = titleRes),
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(bottom = 16.dp)
             )
