@@ -322,7 +322,9 @@ fun AndroidPatchCard(
                         imageVector = Icons.Outlined.SystemUpdate,
                         contentDescription = null,
                         modifier = Modifier.size(28.dp),
-                        tint = MaterialTheme.colorScheme.onTertiaryContainer
+                        // The tertiary role turns pink under some seeds, which reads as
+                        // an error here; stay on the app's action colour instead.
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
                 else -> {
