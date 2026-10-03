@@ -96,7 +96,8 @@ fun ScriptLibraryScreen(navigator: DestinationsNavigator) {
 
     FolkScaffold(
         title = stringResource(R.string.script_library_title),
-        titleStyle = FolkTitleStyle.Inline,
+        titleStyle = FolkTitleStyle.Flexible,
+        subtitle = stringResource(R.string.script_library_subtitle),
         onBack = { navigator.navigateUp() },
         actions = {
             IconButton(onClick = { showAddDialog = true }) {

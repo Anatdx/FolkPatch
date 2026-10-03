@@ -1388,4 +1388,5 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="settings_disclaimer">Penafian</string>
     <string name="settings_disclaimer_message">Setelah melakukan root pada perangkat, pembaruan sistem, modul pihak ketiga, atau faktor eksternal lain dapat menimbulkan risiko dan kerugian yang tidak terduga, dan Anda harus menanggungnya sendiri. Pastikan Anda memahaminya sebelum melanjutkan.</string>
     <string name="theme_store_subtitle">Temukan dan terapkan tema komunitas</string>
+    <string name="script_library_subtitle">Jalankan dan kelola skrip lokal</string>
 </resources>

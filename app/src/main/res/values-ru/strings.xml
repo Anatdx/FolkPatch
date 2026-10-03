@@ -1406,4 +1406,5 @@ KernelPatch требует образ boot для патча.
     <string name="settings_disclaimer">Отказ от ответственности</string>
     <string name="settings_disclaimer_message">После получения root-прав обновления системы, сторонние модули и другие внешние факторы могут привести к непредвиденным рискам и потерям. Вы принимаете эти риски на себя. Пожалуйста, продолжайте только после того, как полностью их осознаете.</string>
     <string name="theme_store_subtitle">Открывайте и применяйте темы сообщества</string>
+    <string name="script_library_subtitle">Запуск и управление локальными скриптами</string>
 </resources>

@@ -1405,4 +1405,5 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="settings_disclaimer">Tuyên bố miễn trừ trách nhiệm</string>
     <string name="settings_disclaimer_message">Sau khi root thiết bị, các bản cập nhật hệ thống, mô-đun của bên thứ ba hoặc các yếu tố bên ngoài khác có thể gây ra rủi ro và tổn thất không lường trước, bạn phải tự chịu trách nhiệm. Hãy tiếp tục sau khi đã hiểu rõ rủi ro.</string>
     <string name="theme_store_subtitle">Khám phá và áp dụng chủ đề cộng đồng</string>
+    <string name="script_library_subtitle">Chạy và quản lý script cục bộ</string>
 </resources>

@@ -1464,4 +1464,5 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="settings_disclaimer">Disclaimer</string>
     <string name="settings_disclaimer_message">Rooting your device may carry risks from system updates, third-party modules, or other external causes. You are responsible for any resulting damage or loss. Please continue only if you understand the risks.</string>
     <string name="theme_store_subtitle">Discover and apply community themes</string>
+    <string name="script_library_subtitle">Run and manage local scripts</string>
 </resources>
