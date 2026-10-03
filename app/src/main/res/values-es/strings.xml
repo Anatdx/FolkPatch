@@ -1412,4 +1412,5 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="script_library_subtitle">Ejecuta y administra scripts locales</string>
     <string name="plugin_subtitle">Amplía lo que FolkPatch puede hacer</string>
     <string name="my_themes_subtitle">Temas que has guardado</string>
+    <string name="apm_api_marketplace_subtitle">Explora las API compartidas por la comunidad</string>
 </resources>

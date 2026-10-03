@@ -88,7 +88,8 @@ fun ApiMarketplaceScreen(
 
     FolkScaffold(
         title = stringResource(R.string.apm_api_marketplace_title),
-        titleStyle = FolkTitleStyle.Inline,
+        titleStyle = FolkTitleStyle.Flexible,
+        subtitle = stringResource(R.string.apm_api_marketplace_subtitle),
         onBack = { navigator.popBackStack() },
         snackbarHostState = snackbarHostState,
     ) { paddingValues ->

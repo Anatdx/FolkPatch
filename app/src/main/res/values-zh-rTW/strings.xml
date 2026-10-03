@@ -1402,4 +1402,5 @@ KernelPatch 需要修補 boot 映像檔。
     <string name="script_library_subtitle">執行與管理本機指令碼</string>
     <string name="plugin_subtitle">擴充 FolkPatch 的能力</string>
     <string name="my_themes_subtitle">你儲存的主題</string>
+    <string name="apm_api_marketplace_subtitle">瀏覽社群分享的 API</string>
 </resources>

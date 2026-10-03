@@ -1332,4 +1332,5 @@ KernelPatch は boot イメージをパッチする必要があります。
     <string name="script_library_subtitle">ローカルスクリプトの実行と管理</string>
     <string name="plugin_subtitle">FolkPatch の機能を拡張</string>
     <string name="my_themes_subtitle">保存したテーマ</string>
+    <string name="apm_api_marketplace_subtitle">コミュニティ共有の API を閲覧</string>
 </resources>

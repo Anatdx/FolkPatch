@@ -1467,4 +1467,5 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="script_library_subtitle">Run and manage local scripts</string>
     <string name="plugin_subtitle">Extend what FolkPatch can do</string>
     <string name="my_themes_subtitle">Themes you have saved</string>
+    <string name="apm_api_marketplace_subtitle">Browse community-shared APIs</string>
 </resources>

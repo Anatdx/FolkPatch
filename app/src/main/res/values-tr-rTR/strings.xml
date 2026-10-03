@@ -1405,4 +1405,5 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="script_library_subtitle">Yerel betikleri çalıştırın ve yönetin</string>
     <string name="plugin_subtitle">FolkPatch yeteneklerini genişletin</string>
     <string name="my_themes_subtitle">Kaydettiğiniz temalar</string>
+    <string name="apm_api_marketplace_subtitle">Topluluk API\'lerine göz atın</string>
 </resources>

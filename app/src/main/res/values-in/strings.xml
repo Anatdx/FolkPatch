@@ -1391,4 +1391,5 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="script_library_subtitle">Jalankan dan kelola skrip lokal</string>
     <string name="plugin_subtitle">Perluas kemampuan FolkPatch</string>
     <string name="my_themes_subtitle">Tema yang kamu simpan</string>
+    <string name="apm_api_marketplace_subtitle">Jelajahi API yang dibagikan komunitas</string>
 </resources>

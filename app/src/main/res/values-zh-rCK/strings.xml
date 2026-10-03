@@ -1393,4 +1393,5 @@ KernelPatch 这道菜需要用 boot 主料来烹饪。
     <string name="script_library_subtitle">掌灶本機食譜</string>
     <string name="plugin_subtitle">添菜加料</string>
     <string name="my_themes_subtitle">你存的菜谱</string>
+    <string name="apm_api_marketplace_subtitle">瞧瞧街坊的方子 API</string>
 </resources>

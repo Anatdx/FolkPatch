@@ -1397,4 +1397,5 @@
     <string name="script_library_subtitle">تشغيل وإدارة النصوص البرمجية المحلية</string>
     <string name="plugin_subtitle">وسّع قدرات FolkPatch</string>
     <string name="my_themes_subtitle">السمات التي حفظتها</string>
+    <string name="apm_api_marketplace_subtitle">تصفّح واجهات API التي يشاركها المجتمع</string>
 </resources>

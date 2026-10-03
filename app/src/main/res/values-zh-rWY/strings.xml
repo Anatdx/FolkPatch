@@ -1465,4 +1465,5 @@ KernelPatch 須用 boot 之像以補。
     <string name="script_library_subtitle">掌本機簡牒</string>
     <string name="plugin_subtitle">增廣其能</string>
     <string name="my_themes_subtitle">汝所藏之題</string>
+    <string name="apm_api_marketplace_subtitle">覽眾所施之 API</string>
 </resources>
