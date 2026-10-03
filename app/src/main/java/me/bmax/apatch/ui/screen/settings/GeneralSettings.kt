@@ -122,7 +122,7 @@ fun GeneralSettingsContent(
 
     val logTitle = stringResource(id = R.string.send_log)
 
-    val cleanStorageTitle = stringResource(id = R.string.settings_clean_storage)
+    val cleanStorageTitle = stringResource(id = R.string.settings_clear_cache)
     val cleanStorageSummary = stringResource(id = R.string.settings_clean_storage_summary)
 
     val folkXEngineTitle = stringResource(id = R.string.settings_folkx_engine_title)
@@ -411,7 +411,7 @@ fun GeneralSettingsContent(
     }
 
     if (showCleanStorageDialog.value) {
-        CleanStorageDialog(showCleanStorageDialog)
+        CleanStorageDialog(showCleanStorageDialog, R.string.settings_clear_cache)
     }
 
     if (showSELinuxModeDialog.value) {
