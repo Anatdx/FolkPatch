@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 data class StoragePartition(
     val label: String,
@@ -41,7 +42,7 @@ fun StorageColumnChart(
             .fillMaxWidth()
             .background(
                 color = colors.surface,
-                shape = RoundedCornerShape(16.dp)
+                shape = ContinuousCornerShape(16.dp)
             )
     ) {
         Column(

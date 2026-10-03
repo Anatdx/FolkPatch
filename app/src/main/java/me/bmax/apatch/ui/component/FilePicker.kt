@@ -9,7 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Folder
@@ -81,7 +81,7 @@ fun FilePickerDialog(
                 .fillMaxWidth(0.94f)
                 .widthIn(max = 720.dp)
                 .fillMaxHeight(0.88f),
-            shape = RoundedCornerShape(24.dp),
+            shape = ContinuousCornerShape(24.dp),
             // Force opaque color to avoid transparency issues
             color = MaterialTheme.colorScheme.surface.copy(alpha = 1f),
             tonalElevation = 6.dp

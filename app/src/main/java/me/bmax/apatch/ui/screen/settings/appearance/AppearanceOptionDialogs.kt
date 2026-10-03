@@ -50,7 +50,7 @@ fun ThemeExportDialog(
                 .fillMaxWidth(0.92f)
                 .widthIn(max = 440.dp)
                 .wrapContentHeight(),
-            shape = RoundedCornerShape(28.dp),
+            shape = ContinuousCornerShape(28.dp),
             tonalElevation = AlertDialogDefaults.TonalElevation,
             color = AlertDialogDefaults.containerColor,
         ) {
@@ -71,7 +71,7 @@ fun ThemeExportDialog(
                         onValueChange = { name = it },
                         label = { Text(stringResource(R.string.theme_name)) },
                         singleLine = true,
-                        shape = RoundedCornerShape(16.dp),
+                        shape = ContinuousCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth()
                     )
                     Text(
@@ -144,7 +144,7 @@ fun ThemeExportDialog(
                         onValueChange = { version = it },
                         label = { Text(stringResource(R.string.theme_version)) },
                         singleLine = true,
-                        shape = RoundedCornerShape(16.dp),
+                        shape = ContinuousCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(
@@ -152,14 +152,14 @@ fun ThemeExportDialog(
                         onValueChange = { author = it },
                         label = { Text(stringResource(R.string.theme_author)) },
                         singleLine = true,
-                        shape = RoundedCornerShape(16.dp),
+                        shape = ContinuousCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth()
                     )
                     OutlinedTextField(
                         value = description,
                         onValueChange = { description = it },
                         label = { Text(stringResource(R.string.theme_description)) },
-                        shape = RoundedCornerShape(16.dp),
+                        shape = ContinuousCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth(),
                         minLines = 3,
                         maxLines = 5
@@ -205,7 +205,7 @@ fun ThemeImportDialog(
                 .fillMaxWidth(0.92f)
                 .widthIn(max = 440.dp)
                 .wrapContentHeight(),
-            shape = RoundedCornerShape(28.dp),
+            shape = ContinuousCornerShape(28.dp),
             tonalElevation = AlertDialogDefaults.TonalElevation,
             color = AlertDialogDefaults.containerColor,
         ) {
@@ -218,7 +218,7 @@ fun ThemeImportDialog(
                     modifier = Modifier.padding(top = 8.dp, bottom = 20.dp)
                 )
                 Surface(
-                    shape = RoundedCornerShape(18.dp),
+                    shape = ContinuousCornerShape(18.dp),
                     color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f),
                     modifier = Modifier.fillMaxWidth()
                 ) {
