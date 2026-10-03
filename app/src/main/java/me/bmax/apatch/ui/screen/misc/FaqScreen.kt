@@ -54,6 +54,8 @@ import me.bmax.apatch.ui.component.folk.folkPressScale
 import org.json.JSONObject
 import android.content.Context
 import java.util.Locale
+import androidx.compose.animation.core.animateDpAsState
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 private const val FAQ_FALLBACK_ASSET = "faq/default.json"
 
@@ -109,10 +111,16 @@ private fun FaqCard(item: FaqItem, expanded: Boolean, onToggle: () -> Unit) {
         targetValue = if (expanded) 180f else 0f,
         label = "FaqChevronRotation",
     )
+    // Grow the corner while the answer is open so the card reads as lifted.
+    val corner by animateDpAsState(
+        targetValue = if (expanded) 28.dp else 20.dp,
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+        label = "FaqCardCorner",
+    )
 
     Surface(
         color = folkGroupColor(),
-        shape = FolkSettingsDimens.GroupShape,
+        shape = ContinuousCornerShape(corner),
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
