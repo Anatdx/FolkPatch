@@ -41,6 +41,8 @@ import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.component.folk.folkPressScale
 import me.bmax.apatch.ui.viewmodel.ThemeStoreViewModel
 import java.io.File
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import androidx.compose.material.icons.outlined.Palette
 
 @Destination<RootGraph>
 @Composable
@@ -223,23 +225,18 @@ fun MyThemesScreen(
     ) { paddingValues ->
         if (viewModel.localThemes.isEmpty()) {
             // 空状态
-            Column(
-                modifier = Modifier.fillMaxSize().padding(paddingValues),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = stringResource(R.string.my_themes_empty),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(
-                    onClick = { navigator.popBackStack() }
-                ) {
-                    Text(stringResource(R.string.my_themes_empty_action))
-                }
-            }
+            FolkStateView(
+                title = stringResource(R.string.my_themes_empty),
+                modifier = Modifier.padding(paddingValues),
+                icon = Icons.Outlined.Palette,
+                action = {
+                    Button(
+                        onClick = { navigator.popBackStack() }
+                    ) {
+                        Text(stringResource(R.string.my_themes_empty_action))
+                    }
+                },
+            )
         } else {
             // 主题瀑布流（和主题商店一致）
             LazyVerticalStaggeredGrid(
