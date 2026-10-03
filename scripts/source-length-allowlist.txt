@@ -14,7 +14,7 @@ app/src/main/java/me/bmax/apatch/ui/navigation/NavigationBarContent.kt
 app/src/main/java/me/bmax/apatch/ui/screen/module/APM.kt
 app/src/main/java/me/bmax/apatch/ui/screen/module/APMModuleItem.kt
 app/src/main/java/me/bmax/apatch/ui/screen/module/APMModuleList.kt
-app/src/main/java/me/bmax/apatch/ui/screen/ApiMarketplace.kt
+app/src/main/java/me/bmax/apatch/ui/screen/theme/ApiMarketplace.kt
 app/src/main/java/me/bmax/apatch/ui/screen/home/HomeCircleCards.kt
 app/src/main/java/me/bmax/apatch/ui/screen/home/HomeStatsSections.kt
 app/src/main/java/me/bmax/apatch/ui/screen/home/HomeV2.kt
@@ -26,11 +26,11 @@ app/src/main/java/me/bmax/apatch/ui/screen/module/KPMModuleItem.kt
 app/src/main/java/me/bmax/apatch/ui/screen/module/KPMModuleList.kt
 app/src/main/java/me/bmax/apatch/ui/screen/module/OnlineModuleScreen.kt
 app/src/main/java/me/bmax/apatch/ui/screen/patches/PatchesViews.kt
-app/src/main/java/me/bmax/apatch/ui/screen/PluginComponents.kt
+app/src/main/java/me/bmax/apatch/ui/screen/plugin/PluginComponents.kt
 app/src/main/java/me/bmax/apatch/ui/screen/script/ScriptLibraryItems.kt
-app/src/main/java/me/bmax/apatch/ui/screen/Settings.kt
+app/src/main/java/me/bmax/apatch/ui/screen/misc/Settings.kt
 app/src/main/java/me/bmax/apatch/ui/screen/superuser/SuperUser.kt
-app/src/main/java/me/bmax/apatch/ui/screen/ThemeStore.kt
+app/src/main/java/me/bmax/apatch/ui/screen/theme/ThemeStore.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/AppearanceSettings.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/FunctionSettingsHideAppItems.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/FunctionSettingsPickers.kt
