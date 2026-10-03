@@ -1,5 +1,6 @@
 package me.bmax.apatch.ui.component.folk
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -104,13 +107,22 @@ fun folkLogTextStyle() = MaterialTheme.typography.bodySmall.copy(
     lineHeight = 17.sp,
 )
 
-/** A single log line, with only the level letter tinted and bold. */
+/**
+ * A single log line, with only the level letter tinted and bold.
+ *
+ * [scrollState] and [contentWidth] are hoisted so a whole stream can share one
+ * horizontal scroll: forcing every line to the same content width keeps each
+ * line's scroll range identical, which is what makes a shared offset meaningful.
+ * Leave them at their defaults for a line that scrolls on its own.
+ */
 @Composable
 fun FolkLogLine(
     level: FolkLogLevel,
     text: String,
     levelIndex: Int,
     modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState(),
+    contentWidth: Dp = Dp.Unspecified,
 ) {
     val tint = folkLogLevelColor(level)
     val styled = remember(text, levelIndex, level, tint) {
@@ -126,14 +138,17 @@ fun FolkLogLine(
             }
         }
     }
+    val widthModifier =
+        if (contentWidth != Dp.Unspecified) Modifier.width(contentWidth) else Modifier.fillMaxWidth()
     Text(
         text = styled,
         modifier = modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
+            .horizontalScroll(scrollState)
+            .then(widthModifier)
             .padding(vertical = 1.dp),
         style = folkLogTextStyle(),
         color = MaterialTheme.colorScheme.onSurfaceVariant,
+        softWrap = false,
     )
 }
 

@@ -40,12 +40,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.ramcosta.composedestinations.annotation.Destination
@@ -63,6 +66,7 @@ import me.bmax.apatch.ui.component.folk.FolkLogLine
 import me.bmax.apatch.ui.component.folk.FolkLogLoading
 import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.component.folk.folkLogLevelColor
+import me.bmax.apatch.ui.component.folk.folkLogTextStyle
 import me.bmax.apatch.ui.component.folk.parseFolkLogLevel
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
@@ -125,6 +129,13 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
 
     val listState = rememberLazyListState()
 
+    // One horizontal scroll shared by the whole log stream, so dragging any line
+    // shifts every line together instead of each line scrolling on its own.
+    val logScrollState = rememberScrollState()
+    val textMeasurer = rememberTextMeasurer()
+    val logStyle = folkLogTextStyle()
+    val density = LocalDensity.current
+
     fun refresh() {
         scope.launch {
             isLoading = true
@@ -145,6 +156,19 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
         allLines.filter { line ->
             (activeLevels.isEmpty() || line.level in activeLevels) &&
                 (query.isBlank() || line.text.contains(query, ignoreCase = true))
+        }
+    }
+
+    // Every line is forced to the widest line's width (plus a little slack) so that
+    // sharing [logScrollState] cannot clamp against a shorter line's scroll range.
+    val logContentWidth = remember(visibleLines, logStyle) {
+        val widest = visibleLines.maxByOrNull { it.text.length }?.text
+        if (widest == null) {
+            Dp.Unspecified
+        } else {
+            with(density) {
+                (textMeasurer.measure(widest, logStyle).size.width + 16.dp.roundToPx()).toDp()
+            }
         }
     }
 
@@ -345,6 +369,8 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
                                     level = line.level,
                                     text = line.text,
                                     levelIndex = line.levelIndex,
+                                    scrollState = logScrollState,
+                                    contentWidth = logContentWidth,
                                 )
                             }
                         }
