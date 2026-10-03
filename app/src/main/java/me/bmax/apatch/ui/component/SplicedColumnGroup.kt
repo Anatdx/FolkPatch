@@ -2,10 +2,8 @@ package me.bmax.apatch.ui.component
 
 import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -89,7 +87,6 @@ fun SplicedColumnGroup(
             Column(verticalArrangement = Arrangement.Top) {
                 val firstVisibleIndex = allItems.indexOfFirst { it.visible }
                 val lastVisibleIndex = allItems.indexOfLast { it.visible }
-                val sharedStiffness = Spring.StiffnessMediumLow
                 val isAtLeastTiramisu = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
                 allItems.forEachIndexed { index, itemData ->
@@ -100,13 +97,13 @@ fun SplicedColumnGroup(
                             visible = itemData.visible,
                             modifier = Modifier.zIndex(zIndex),
                             enter = expandVertically(
-                                animationSpec = spring(stiffness = sharedStiffness),
+                                animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                                 expandFrom = Alignment.Top,
-                            ) + fadeIn(animationSpec = spring(stiffness = sharedStiffness)),
+                            ) + fadeIn(animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec()),
                             exit = shrinkVertically(
-                                animationSpec = spring(stiffness = sharedStiffness),
+                                animationSpec = MaterialTheme.motionScheme.fastSpatialSpec(),
                                 shrinkTowards = Alignment.Top,
-                            ) + fadeOut(animationSpec = spring(stiffness = sharedStiffness)),
+                            ) + fadeOut(animationSpec = MaterialTheme.motionScheme.fastEffectsSpec()),
                         ) {
                             val isFirst = index == firstVisibleIndex
                             val isLast = index == lastVisibleIndex
@@ -117,7 +114,7 @@ fun SplicedColumnGroup(
                             val currentTopRadius = if (isAtLeastTiramisu) {
                                 animateDpAsState(
                                     targetValue = targetTopRadius,
-                                    animationSpec = spring(stiffness = sharedStiffness),
+                                    animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                                     label = "TopCornerRadius",
                                 ).value
                             } else {
@@ -127,7 +124,7 @@ fun SplicedColumnGroup(
                             val currentBottomRadius = if (isAtLeastTiramisu) {
                                 animateDpAsState(
                                     targetValue = targetBottomRadius,
-                                    animationSpec = spring(stiffness = sharedStiffness),
+                                    animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                                     label = "BottomCornerRadius",
                                 ).value
                             } else {
@@ -145,7 +142,7 @@ fun SplicedColumnGroup(
                             val currentTopPadding = if (isAtLeastTiramisu) {
                                 animateDpAsState(
                                     targetValue = targetTopPadding,
-                                    animationSpec = spring(stiffness = sharedStiffness),
+                                    animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                                     label = "TopPadding",
                                 ).value
                             } else {

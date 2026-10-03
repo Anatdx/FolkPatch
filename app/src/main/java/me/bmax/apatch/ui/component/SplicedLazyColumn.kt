@@ -1,9 +1,7 @@
 package me.bmax.apatch.ui.component
 
 import android.os.Build
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
@@ -31,7 +29,6 @@ fun <T> LazyListScope.splicedLazyColumnGroup(
     contentType: (index: Int, item: T) -> Any? = { _, _ -> null },
     itemContent: @Composable LazyItemScope.(index: Int, item: T) -> Unit,
 ) {
-    val sharedStiffness = Spring.StiffnessMediumLow
     val isAtLeastTiramisu = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
     itemsIndexed(
@@ -48,7 +45,7 @@ fun <T> LazyListScope.splicedLazyColumnGroup(
         val currentTopRadius = if (isAtLeastTiramisu) {
             animateDpAsState(
                 targetValue = targetTopRadius,
-                animationSpec = spring(stiffness = sharedStiffness),
+                animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                 label = "TopCornerRadius",
             ).value
         } else {
@@ -58,7 +55,7 @@ fun <T> LazyListScope.splicedLazyColumnGroup(
         val currentBottomRadius = if (isAtLeastTiramisu) {
             animateDpAsState(
                 targetValue = targetBottomRadius,
-                animationSpec = spring(stiffness = sharedStiffness),
+                animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                 label = "BottomCornerRadius",
             ).value
         } else {

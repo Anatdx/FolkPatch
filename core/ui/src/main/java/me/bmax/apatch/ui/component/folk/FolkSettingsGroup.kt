@@ -30,7 +30,6 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
-import me.bmax.apatch.ui.theme.tokens.FolkMotion
 
 /**
  * Whether the current composable is rendered inside a [FolkSettingsGroup].
@@ -118,13 +117,13 @@ internal fun FolkSettingsGroupItems(
                         AnimatedVisibility(
                             visible = item.visible,
                             enter = expandVertically(
-                                animationSpec = FolkMotion.smoothSpring(),
+                                animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                                 expandFrom = Alignment.Top,
-                            ) + fadeIn(animationSpec = FolkMotion.smoothSpring()),
+                            ) + fadeIn(animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec()),
                             exit = shrinkVertically(
-                                animationSpec = FolkMotion.smoothSpring(),
+                                animationSpec = MaterialTheme.motionScheme.fastSpatialSpec(),
                                 shrinkTowards = Alignment.Top,
-                            ) + fadeOut(animationSpec = FolkMotion.smoothSpring()),
+                            ) + fadeOut(animationSpec = MaterialTheme.motionScheme.fastEffectsSpec()),
                         ) {
                             val isHighlighted =
                                 highlightKey != null && item.key?.toString() == highlightKey
