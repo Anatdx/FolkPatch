@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -15,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.ui.component.folk.LocalInsideFolkGroup
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @Composable
 fun ExpressiveCard(
@@ -46,8 +46,9 @@ fun ExpressiveCard(
         return
     }
 
-    // Standalone: use Card/ElevatedCard with rounded corners
-    val shape = RoundedCornerShape(32.dp)
+    // Standalone: an ElevatedCard whose corners ease out of the edges instead of
+    // meeting them in a circular arc.
+    val shape = ContinuousCornerShape(32.dp)
     val colors = if (flat) {
         CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     } else {
