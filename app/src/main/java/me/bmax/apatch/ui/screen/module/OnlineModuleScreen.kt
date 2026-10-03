@@ -51,7 +51,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.generated.destinations.InstallScreenDestination
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.AppLoadingIndicator
+import me.bmax.apatch.ui.component.folk.FolkLoadingIndicator
 import me.bmax.apatch.ui.component.OnlineModuleCard
 import me.bmax.apatch.ui.component.SearchAppBar
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
@@ -197,7 +197,7 @@ private fun OfficialContent(
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (viewModel.isRefreshing) {
-            AppLoadingIndicator(
+            FolkLoadingIndicator(
                 text = stringResource(R.string.loading_modules),
                 modifier = Modifier.align(Alignment.Center)
             )
@@ -242,7 +242,7 @@ private fun RepoContent(
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (viewModel.isRefreshing) {
-            AppLoadingIndicator(
+            FolkLoadingIndicator(
                 text = stringResource(R.string.loading_modules),
                 modifier = Modifier.align(Alignment.Center)
             )

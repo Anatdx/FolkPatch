@@ -26,7 +26,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.AppLoadingIndicator
+import me.bmax.apatch.ui.component.folk.FolkLoadingIndicator
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.model.ApiMarketplaceItem
@@ -105,7 +105,7 @@ fun ApiMarketplaceScreen(
                         .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
-                    AppLoadingIndicator(
+                    FolkLoadingIndicator(
                         text = stringResource(R.string.loading_apis)
                     )
                 }

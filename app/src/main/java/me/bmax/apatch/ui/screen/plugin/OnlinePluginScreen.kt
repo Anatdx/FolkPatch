@@ -27,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.AppLoadingIndicator
+import me.bmax.apatch.ui.component.folk.FolkLoadingIndicator
 import me.bmax.apatch.ui.component.OnlineModuleCard
 import me.bmax.apatch.ui.component.SearchAppBar
 import me.bmax.apatch.ui.component.folk.FolkScaffold
@@ -68,7 +68,7 @@ fun OnlinePluginScreen(navigator: DestinationsNavigator) {
             .fillMaxSize()
             .padding(innerPadding)) {
             if (viewModel.isRefreshing) {
-                AppLoadingIndicator(
+                FolkLoadingIndicator(
                     text = stringResource(R.string.loading_modules),
                     modifier = Modifier.align(Alignment.Center)
                 )

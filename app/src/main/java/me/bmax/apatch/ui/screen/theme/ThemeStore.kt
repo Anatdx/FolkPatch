@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.component.AppLoadingIndicator
+import me.bmax.apatch.ui.component.folk.FolkLoadingIndicator
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.viewmodel.ThemeStoreViewModel
@@ -415,7 +415,7 @@ fun ThemeStoreScreen(
                 modifier = Modifier.fillMaxSize().padding(paddingValues),
                 contentAlignment = Alignment.Center,
             ) {
-                AppLoadingIndicator(
+                FolkLoadingIndicator(
                     text = stringResource(R.string.loading_themes),
                 )
             }
