@@ -1,6 +1,10 @@
 package me.bmax.apatch.ui.screen.settings
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -113,7 +117,11 @@ fun FunctionSettingsHideSection(
                         )
                     }
 
-                    AnimatedVisibility(visible = isKernelSpoofEnabled) {
+                    AnimatedVisibility(
+                        visible = isKernelSpoofEnabled,
+                        enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) + expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                        exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) + fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
+                    ) {
                         Column(modifier = Modifier.padding(top = 12.dp)) {
                             OutlinedTextField(
                                 value = kernelSpoofVersion,

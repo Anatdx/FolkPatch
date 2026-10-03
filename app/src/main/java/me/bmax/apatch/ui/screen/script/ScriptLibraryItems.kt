@@ -197,7 +197,7 @@ fun ScriptItem(
     val cardShape = RoundedCornerShape(20.dp)
     val clickModifier = Modifier
         .fillMaxWidth()
-        .animateContentSize()
+        .animateContentSize(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec())
         .combinedClickable(
             onClick = { if (foldCard) onExpandToggle() else onRun() },
             onLongClick = { showBannerDialog = true }
@@ -271,8 +271,8 @@ fun ScriptItem(
                 Spacer(modifier = Modifier.height(16.dp))
                 AnimatedVisibility(
                     visible = !foldCard || expanded,
-                    enter = fadeIn() + expandVertically(),
-                    exit = shrinkVertically() + fadeOut()
+                    enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) + expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                    exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) + fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     FilledTonalButton(

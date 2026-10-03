@@ -1,6 +1,10 @@
 package me.bmax.apatch.ui.screen.settings
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -103,7 +107,11 @@ fun FolkSettingsGroupScope.functionPathHideItem(
                     )
                 }
 
-                AnimatedVisibility(visible = isPathHideEnabled) {
+                AnimatedVisibility(
+                    visible = isPathHideEnabled,
+                    enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) + expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                    exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) + fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
+                ) {
                     Column(modifier = Modifier.padding(top = 12.dp)) {
                         OutlinedTextField(
                             value = pathHidePaths,
@@ -248,7 +256,11 @@ fun FolkSettingsGroupScope.functionPathHideItem(
                             )
                         }
 
-                        AnimatedVisibility(visible = isPathHideUidMode) {
+                        AnimatedVisibility(
+                            visible = isPathHideUidMode,
+                            enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) + expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                            exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) + fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
+                        ) {
                             Column(modifier = Modifier.padding(top = 8.dp)) {
                                 val pm = context.packageManager
                                 val noAppsText = stringResource(R.string.path_hide_no_apps_selected)
@@ -371,7 +383,11 @@ fun FolkSettingsGroupScope.functionNetIsolateItem(
                     )
                 }
 
-                AnimatedVisibility(visible = isNetIsolateEnabled) {
+                AnimatedVisibility(
+                    visible = isNetIsolateEnabled,
+                    enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) + expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                    exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) + fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
+                ) {
                     Column(modifier = Modifier.padding(top = 12.dp)) {
                         val pm = context.packageManager
 

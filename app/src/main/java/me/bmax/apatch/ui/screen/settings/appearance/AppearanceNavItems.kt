@@ -3,6 +3,10 @@ package me.bmax.apatch.ui.screen.settings.appearance
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -101,7 +105,11 @@ fun FolkSettingsGroupScope.appearanceNavItems(
                     )
                 }
             }
-            AnimatedVisibility(visible = expanded) {
+            AnimatedVisibility(
+                visible = expanded,
+                enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) + expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) + fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
+            ) {
                 Column(modifier = Modifier.padding(start = 16.dp, top = 8.dp)) {
                     me.bmax.apatch.ui.component.CheckboxItem(
                         icon = null,
@@ -270,125 +278,6 @@ fun FolkSettingsGroupScope.appearanceNavItems(
                     prefs.edit().putBoolean("floating_swipe_hide", it).apply()
                 },
             )
-        }
-    }
-}
-
-fun FolkSettingsGroupScope.appearanceNavCustomIconsItem(
-    flat: Boolean,
-    context: Context,
-    prefs: SharedPreferences,
-    scope: CoroutineScope,
-    snackBarHost: SnackbarHostState,
-) {
-    item(key = "appearance_nav_custom_icons") {
-        val customNavIconsEnabled = remember { mutableStateOf(prefs.getBoolean("nav_icon_custom_enabled", false)) }
-        var editingDestName by remember { mutableStateOf<String?>(null) }
-        // Observe config revision so the previews below refresh immediately after pick/clear.
-        val iconRevision by BottomBarIconConfig.revision.collectAsStateWithLifecycle()
-        val iconPickerLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.GetContent()
-        ) { uri ->
-            val dest = editingDestName ?: return@rememberLauncherForActivityResult
-            if (uri != null) {
-                // Copy the picked image into internal storage so it survives app
-                // restarts (content:// read grants are only temporary).
-                scope.launch {
-                    val saved = withContext(Dispatchers.IO) {
-                        BottomBarIconConfig.saveCustomIcon(context, dest, uri)
-                    }
-                    snackBarHost.showSnackbar(
-                        context.getString(
-                            if (saved) R.string.nav_icon_set
-                            else R.string.nav_icon_set_failed
-                        )
-                    )
-                }
-            }
-            editingDestName = null
-        }
-
-        FolkSwitchPreference(
-            icon = Icons.Outlined.Image,
-            title = stringResource(R.string.settings_nav_custom_icons),
-            summary = stringResource(R.string.settings_nav_custom_icons_summary),
-            checked = customNavIconsEnabled.value,
-            onCheckedChange = {
-                customNavIconsEnabled.value = it
-                BottomBarIconConfig.isEnabled = it
-            }
-        )
-
-        if (customNavIconsEnabled.value) {
-            Spacer(Modifier.height(8.dp))
-            val navDestinations = listOf(
-                Triple("Home", R.string.nav_icon_home, Icons.Filled.Home),
-                Triple("KModule", R.string.nav_icon_kpm, Icons.Filled.Archive),
-                Triple("SuperUser", R.string.nav_icon_superuser, Icons.Filled.AdminPanelSettings),
-                Triple("AModule", R.string.nav_icon_apm, Icons.Filled.Extension),
-                Triple("Settings", R.string.nav_icon_settings, Icons.Filled.Settings),
-            )
-
-            Column {
-                navDestinations.forEach { (destName, labelRes, defaultIcon) ->
-                    val customUri = remember(iconRevision, destName) { prefs.getString("nav_icon_$destName", null) }
-                    ExpressiveCard(
-                        flat = flat,
-                        onClick = {
-                            editingDestName = destName
-                            try { iconPickerLauncher.launch("image/*") } catch (_: Throwable) {}
-                        }
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            if (customUri != null) {
-                                AsyncImage(
-                                    model = customUri,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(36.dp).clip(RoundedCornerShape(6.dp)),
-                                    contentScale = ContentScale.Crop
-                                )
-                            } else {
-                                Icon(
-                                    imageVector = defaultIcon,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    modifier = Modifier.size(36.dp)
-                                )
-                            }
-                            Spacer(Modifier.width(16.dp))
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    stringResource(labelRes),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Text(
-                                    if (customUri != null) stringResource(R.string.nav_icon_custom_selected)
-                                    else stringResource(R.string.nav_icon_default),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                            if (customUri != null) {
-                                IconButton(
-                                    onClick = {
-                                        BottomBarIconConfig.clearCustomIcon(context, destName)
-                                        scope.launch {
-                                            snackBarHost.showSnackbar(context.getString(R.string.nav_icon_cleared))
-                                        }
-                                    }
-                                ) {
-                                    Icon(Icons.Filled.Close, stringResource(R.string.nav_icon_clear), tint = MaterialTheme.colorScheme.error)
-                                }
-                            }
-                        }
-                    }
-                    Spacer(Modifier.height(4.dp))
-                }
-            }
         }
     }
 }
