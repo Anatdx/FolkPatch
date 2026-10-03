@@ -262,8 +262,7 @@ fun VersionInfoColumn(
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Medium,
+            style = MaterialTheme.typography.bodyLargeEmphasized,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -341,8 +340,7 @@ fun AndroidPatchCard(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(R.string.android_patch),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium
+                    style = MaterialTheme.typography.titleMediumEmphasized,
                 )
             }
 

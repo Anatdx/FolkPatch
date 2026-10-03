@@ -45,7 +45,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -150,8 +149,7 @@ internal fun SystemInfoCard(
                 Spacer(Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.home_kpatch_info_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium
+                    style = MaterialTheme.typography.titleMediumEmphasized,
                 )
             }
 
@@ -260,8 +258,7 @@ fun StorageInfoCard(modifier: Modifier = Modifier) {
                 Spacer(Modifier.width(8.dp))
                 Text(
                     text = stringResource(R.string.home_storage_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Medium
+                    style = MaterialTheme.typography.titleMediumEmphasized,
                 )
             }
 
@@ -362,8 +359,7 @@ internal fun LearnMoreCardV4() {
             Column {
                 Text(
                     text = stringResource(R.string.home_learn_apatch),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Medium
+                    style = MaterialTheme.typography.titleSmallEmphasized,
                 )
                 Text(
                     text = stringResource(R.string.home_click_to_learn_apatch),
