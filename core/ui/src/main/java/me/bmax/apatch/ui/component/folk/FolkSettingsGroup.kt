@@ -2,7 +2,6 @@ package me.bmax.apatch.ui.component.folk
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -125,6 +124,8 @@ internal fun FolkSettingsGroupItems(
                                 shrinkTowards = Alignment.Top,
                             ) + fadeOut(animationSpec = MaterialTheme.motionScheme.fastEffectsSpec()),
                         ) {
+                            val highlightInSpec = MaterialTheme.motionScheme.defaultEffectsSpec<Float>()
+                            val highlightOutSpec = MaterialTheme.motionScheme.slowEffectsSpec<Float>()
                             val isHighlighted =
                                 highlightKey != null && item.key?.toString() == highlightKey
                             val focusRequester = remember { FocusRequester() }
@@ -137,13 +138,13 @@ internal fun FolkSettingsGroupItems(
                                     animate(
                                         initialValue = 0f,
                                         targetValue = 0.16f,
-                                        animationSpec = tween(300),
+                                        animationSpec = highlightInSpec,
                                     ) { value, _ -> highlightAlpha = value }
                                     delay(2000)
                                     animate(
                                         initialValue = 0.16f,
                                         targetValue = 0f,
-                                        animationSpec = tween(500),
+                                        animationSpec = highlightOutSpec,
                                     ) { value, _ -> highlightAlpha = value }
                                 }
                             }

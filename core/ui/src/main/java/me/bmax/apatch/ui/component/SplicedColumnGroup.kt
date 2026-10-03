@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -169,6 +168,8 @@ fun SplicedColumnGroup(
                                 color = containerColor,
                                 tonalElevation = 0.dp,
                             ) {
+                                val highlightInSpec = MaterialTheme.motionScheme.defaultEffectsSpec<Float>()
+                                val highlightOutSpec = MaterialTheme.motionScheme.slowEffectsSpec<Float>()
                                 var highlightAlpha by remember { mutableStateOf(0f) }
 
                                 if (isHighlighted) {
@@ -178,7 +179,7 @@ fun SplicedColumnGroup(
                                         animate(
                                             initialValue = 0f,
                                             targetValue = 0.18f,
-                                            animationSpec = tween(300),
+                                            animationSpec = highlightInSpec,
                                         ) { value, _ ->
                                             highlightAlpha = value
                                         }
@@ -186,7 +187,7 @@ fun SplicedColumnGroup(
                                         animate(
                                             initialValue = 0.18f,
                                             targetValue = 0f,
-                                            animationSpec = tween(500),
+                                            animationSpec = highlightOutSpec,
                                         ) { value, _ ->
                                             highlightAlpha = value
                                         }
