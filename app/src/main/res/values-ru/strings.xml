@@ -667,6 +667,11 @@ KernelPatch требует образ boot для патча.
     <string name="shizuku_log_copied">Скопировано в буфер обмена</string>
     <string name="shizuku_log_source_server">Журнал сервера</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">Подробный</string>
+    <string name="shizuku_log_level_debug">Отладка</string>
+    <string name="shizuku_log_level_info">Информация</string>
+    <string name="shizuku_log_level_warn">Предупреждение</string>
+    <string name="shizuku_log_level_error">Ошибка</string>
     <string name="shizuku_log_search_hint">Поиск по журналам</string>
 <string name="settings_app_title">Заголовок приложения</string>
     <string name="app_title_custom">Пользовательский</string>

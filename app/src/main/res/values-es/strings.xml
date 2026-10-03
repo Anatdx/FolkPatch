@@ -660,6 +660,11 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="shizuku_log_copied">Copiado al portapapeles</string>
     <string name="shizuku_log_source_server">Registro del servidor</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">Detallado</string>
+    <string name="shizuku_log_level_debug">Depuración</string>
+    <string name="shizuku_log_level_info">Información</string>
+    <string name="shizuku_log_level_warn">Advertencia</string>
+    <string name="shizuku_log_level_error">Error</string>
     <string name="shizuku_log_search_hint">Buscar registros</string>
 <string name="settings_app_title">Título de la App</string>
     <string name="app_title_custom">Personalizado</string>

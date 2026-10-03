@@ -613,6 +613,11 @@ KernelPatch は boot イメージをパッチする必要があります。
     <string name="shizuku_log_copied">クリップボードにコピーしました</string>
     <string name="shizuku_log_source_server">サーバーログ</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">詳細</string>
+    <string name="shizuku_log_level_debug">デバッグ</string>
+    <string name="shizuku_log_level_info">情報</string>
+    <string name="shizuku_log_level_warn">警告</string>
+    <string name="shizuku_log_level_error">エラー</string>
     <string name="shizuku_log_search_hint">ログを検索</string>
 <!-- Umount Service -->
     <string name="settings_umount_service">Umount Service</string>

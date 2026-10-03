@@ -667,6 +667,11 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="shizuku_log_copied">Copiado para a área de transferência</string>
     <string name="shizuku_log_source_server">Log do servidor</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">Detalhado</string>
+    <string name="shizuku_log_level_debug">Depuração</string>
+    <string name="shizuku_log_level_info">Informação</string>
+    <string name="shizuku_log_level_warn">Aviso</string>
+    <string name="shizuku_log_level_error">Erro</string>
     <string name="shizuku_log_search_hint">Pesquisar logs</string>
 <string name="settings_app_title">Título do App</string>
     <string name="app_title_custom">Personalizado</string>

@@ -661,6 +661,11 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="shizuku_log_copied">Đã sao chép vào bộ nhớ tạm</string>
     <string name="shizuku_log_source_server">Nhật ký máy chủ</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">Chi tiết</string>
+    <string name="shizuku_log_level_debug">Gỡ lỗi</string>
+    <string name="shizuku_log_level_info">Thông tin</string>
+    <string name="shizuku_log_level_warn">Cảnh báo</string>
+    <string name="shizuku_log_level_error">Lỗi</string>
     <string name="shizuku_log_search_hint">Tìm kiếm nhật ký</string>
 <string name="settings_app_title">Tên ứng dụng</string>
     <string name="app_title_custom">Tùy chỉnh</string>

@@ -660,6 +660,11 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="shizuku_log_copied">Disalin ke papan klip</string>
     <string name="shizuku_log_source_server">Log server</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">Verbose</string>
+    <string name="shizuku_log_level_debug">Debug</string>
+    <string name="shizuku_log_level_info">Info</string>
+    <string name="shizuku_log_level_warn">Peringatan</string>
+    <string name="shizuku_log_level_error">Kesalahan</string>
     <string name="shizuku_log_search_hint">Cari log</string>
 <string name="settings_app_title">Judul Aplikasi</string>
     <string name="app_title_custom">Kustom</string>

@@ -661,6 +661,11 @@
     <string name="shizuku_log_copied">تم النسخ إلى الحافظة</string>
     <string name="shizuku_log_source_server">سجل الخادم</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">مفصّل</string>
+    <string name="shizuku_log_level_debug">تصحيح الأخطاء</string>
+    <string name="shizuku_log_level_info">معلومات</string>
+    <string name="shizuku_log_level_warn">تحذير</string>
+    <string name="shizuku_log_level_error">خطأ</string>
     <string name="shizuku_log_search_hint">البحث في السجلات</string>
 <string name="settings_app_title">عنوان التطبيق</string>
     <string name="app_title_custom">مخصص</string>

@@ -660,6 +660,11 @@ KernelPatch 需要修補 boot 映像檔。
     <string name="shizuku_log_copied">已複製到剪貼簿</string>
     <string name="shizuku_log_source_server">服務端日誌</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">詳細</string>
+    <string name="shizuku_log_level_debug">偵錯</string>
+    <string name="shizuku_log_level_info">資訊</string>
+    <string name="shizuku_log_level_warn">警告</string>
+    <string name="shizuku_log_level_error">錯誤</string>
     <string name="shizuku_log_search_hint">搜尋日誌</string>
 <string name="settings_app_title">應用程式標題</string>
     <string name="app_title_custom">自訂</string>

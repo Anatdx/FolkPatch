@@ -658,6 +658,11 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="shizuku_log_copied">Panoya kopyalandı</string>
     <string name="shizuku_log_source_server">Sunucu günlüğü</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">Ayrıntılı</string>
+    <string name="shizuku_log_level_debug">Hata ayıklama</string>
+    <string name="shizuku_log_level_info">Bilgi</string>
+    <string name="shizuku_log_level_warn">Uyarı</string>
+    <string name="shizuku_log_level_error">Hata</string>
     <string name="shizuku_log_search_hint">Günlüklerde ara</string>
 <string name="settings_app_title">Uygulama Başlığı</string>
     <string name="app_title_custom">Özel</string>

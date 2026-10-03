@@ -660,6 +660,11 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="shizuku_log_copied">已摹写至剪贴板</string>
     <string name="shizuku_log_source_server">天机阁日志</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">详察</string>
+    <string name="shizuku_log_level_debug">调试</string>
+    <string name="shizuku_log_level_info">天机</string>
+    <string name="shizuku_log_level_warn">警示</string>
+    <string name="shizuku_log_level_error">劫难</string>
     <string name="shizuku_log_search_hint">探寻记录</string>
 <string name="settings_app_title">仙器名讳</string>
     <string name="app_title_custom">自赐名讳</string>

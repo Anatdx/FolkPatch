@@ -605,6 +605,11 @@ Kontynuować mimo to?</string>
     <string name="shizuku_log_copied">Skopiowano do schowka</string>
     <string name="shizuku_log_source_server">Log serwera</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">Szczegółowy</string>
+    <string name="shizuku_log_level_debug">Debugowanie</string>
+    <string name="shizuku_log_level_info">Informacje</string>
+    <string name="shizuku_log_level_warn">Ostrzeżenie</string>
+    <string name="shizuku_log_level_error">Błąd</string>
     <string name="shizuku_log_search_hint">Szukaj w logach</string>
 <string name="settings_app_title">Tytuł aplikacji</string>
     <string name="app_title_custom">Niestandardowy</string>
