@@ -42,6 +42,8 @@ import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.ui.viewmodel.ScriptLibraryViewModel
 import me.bmax.apatch.util.ui.LocalSnackbarHost
 import java.io.File
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import androidx.compose.material.icons.outlined.Code
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination<RootGraph>
@@ -117,16 +119,10 @@ fun ScriptLibraryScreen(navigator: DestinationsNavigator) {
             indicator = { PullToRefreshDefaults.LoadingIndicator(state = pullToRefreshState, isRefreshing = isLoading, modifier = Modifier.align(Alignment.TopCenter)) }
         ) {
             if (scripts.isEmpty()) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.script_library_empty),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                FolkStateView(
+                    title = stringResource(R.string.script_library_empty),
+                    icon = Icons.Outlined.Code,
+                )
             } else {
                 val isWideScreen = LocalConfiguration.current.screenWidthDp >= 600
                 if (isWideScreen) {
