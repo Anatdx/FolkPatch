@@ -361,14 +361,13 @@ fun StatusCircle(
             }
             Text(
                 text = value,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleLargeEmphasized,
                 color = if (isWallpaper) Color.White else MaterialTheme.colorScheme.onSurface
             )
         }
         Text(
             text = label,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMediumEmphasized,
             color = labelColor
         )
     }

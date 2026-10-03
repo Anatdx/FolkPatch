@@ -150,13 +150,12 @@ fun HomeV4StatusCircle(
             }
             Text(
                 text = value,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.titleLargeEmphasized,
             )
         }
         Text(
             text = label,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMediumEmphasized,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
