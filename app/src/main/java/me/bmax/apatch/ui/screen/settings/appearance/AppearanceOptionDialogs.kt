@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
+import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.theme.ThemeManager
@@ -272,45 +273,37 @@ fun NavModeChooseDialog(
     onModeSelected: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    BasicAlertDialog(
+    FolkAlertDialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(decorFitsSystemWindows = true, usePlatformDefaultWidth = false)
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier.width(310.dp).wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(text = stringResource(R.string.settings_nav_scheme), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
-                Surface(shape = RoundedCornerShape(12.dp), color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
-                    Column {
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_nav_mode_floating)) },
-                            leadingContent = { RadioButton(selected = currentMode == "floating", onClick = null) },
-                            modifier = Modifier.clickable { onModeSelected("floating") }
-                        )
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_nav_mode_auto)) },
-                            leadingContent = { RadioButton(selected = currentMode == "auto", onClick = null) },
-                            modifier = Modifier.clickable { onModeSelected("auto") }
-                        )
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_nav_mode_bottom)) },
-                            leadingContent = { RadioButton(selected = currentMode == "bottom", onClick = null) },
-                            modifier = Modifier.clickable { onModeSelected("bottom") }
-                        )
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_nav_mode_rail)) },
-                            leadingContent = { RadioButton(selected = currentMode == "rail", onClick = null) },
-                            modifier = Modifier.clickable { onModeSelected("rail") }
-                        )
-                    }
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(text = stringResource(R.string.settings_nav_scheme), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
+            Surface(shape = RoundedCornerShape(12.dp), color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
+                Column {
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_nav_mode_floating)) },
+                        leadingContent = { RadioButton(selected = currentMode == "floating", onClick = null) },
+                        modifier = Modifier.clickable { onModeSelected("floating") }
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_nav_mode_auto)) },
+                        leadingContent = { RadioButton(selected = currentMode == "auto", onClick = null) },
+                        modifier = Modifier.clickable { onModeSelected("auto") }
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_nav_mode_bottom)) },
+                        leadingContent = { RadioButton(selected = currentMode == "bottom", onClick = null) },
+                        modifier = Modifier.clickable { onModeSelected("bottom") }
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_nav_mode_rail)) },
+                        leadingContent = { RadioButton(selected = currentMode == "rail", onClick = null) },
+                        modifier = Modifier.clickable { onModeSelected("rail") }
+                    )
                 }
             }
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
         }
     }
 }
@@ -323,35 +316,27 @@ fun StatsTopLayoutChooseDialog(
     onModeSelected: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
-    BasicAlertDialog(
+    FolkAlertDialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(decorFitsSystemWindows = true, usePlatformDefaultWidth = false)
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier.width(310.dp).wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(text = stringResource(R.string.settings_stats_top_layout), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
-                Surface(shape = RoundedCornerShape(12.dp), color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
-                    Column {
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_stats_top_layout_list)) },
-                            leadingContent = { RadioButton(selected = currentMode == "list", onClick = null) },
-                            modifier = Modifier.clickable { onModeSelected("list") }
-                        )
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_stats_top_layout_grid)) },
-                            leadingContent = { RadioButton(selected = currentMode == "grid", onClick = null) },
-                            modifier = Modifier.clickable { onModeSelected("grid") }
-                        )
-                    }
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(text = stringResource(R.string.settings_stats_top_layout), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
+            Surface(shape = RoundedCornerShape(12.dp), color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
+                Column {
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_stats_top_layout_list)) },
+                        leadingContent = { RadioButton(selected = currentMode == "list", onClick = null) },
+                        modifier = Modifier.clickable { onModeSelected("list") }
+                    )
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_stats_top_layout_grid)) },
+                        leadingContent = { RadioButton(selected = currentMode == "grid", onClick = null) },
+                        modifier = Modifier.clickable { onModeSelected("grid") }
+                    )
                 }
             }
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
         }
     }
 }
@@ -367,54 +352,46 @@ fun BannerApiConfigDialog(
     val context = LocalContext.current
     var sourceText by remember { mutableStateOf(currentSource) }
 
-    BasicAlertDialog(
+    FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        properties = DialogProperties(decorFitsSystemWindows = true, usePlatformDefaultWidth = false)
+        width = 340.dp,
+        shape = RoundedCornerShape(28.dp),
     ) {
-        Surface(
-            modifier = Modifier.width(340.dp).wrapContentHeight(),
-            shape = RoundedCornerShape(28.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp).verticalScroll(rememberScrollState())) {
-                Text(text = stringResource(R.string.apm_banner_api_config_title), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
-                Text(text = stringResource(R.string.apm_banner_api_config_desc), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 16.dp))
-                OutlinedTextField(
-                    value = sourceText, onValueChange = { sourceText = it },
-                    label = { Text(stringResource(R.string.apm_banner_api_source)) },
-                    placeholder = { Text(stringResource(R.string.apm_banner_api_source_hint), style = MaterialTheme.typography.bodySmall) },
-                    modifier = Modifier.fillMaxWidth(), singleLine = true,
-                    trailingIcon = {
-                        if (sourceText.isNotEmpty()) {
-                            IconButton(onClick = { sourceText = "" }) { Icon(Icons.Filled.Clear, contentDescription = "Clear") }
-                        }
-                    }
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Surface(shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)) {
-                    Column(modifier = Modifier.padding(12.dp)) {
-                        Text(text = stringResource(R.string.apm_banner_api_examples_title), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(text = stringResource(R.string.apm_banner_api_examples), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Column(modifier = Modifier.padding(24.dp).verticalScroll(rememberScrollState())) {
+            Text(text = stringResource(R.string.apm_banner_api_config_title), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
+            Text(text = stringResource(R.string.apm_banner_api_config_desc), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(bottom = 16.dp))
+            OutlinedTextField(
+                value = sourceText, onValueChange = { sourceText = it },
+                label = { Text(stringResource(R.string.apm_banner_api_source)) },
+                placeholder = { Text(stringResource(R.string.apm_banner_api_source_hint), style = MaterialTheme.typography.bodySmall) },
+                modifier = Modifier.fillMaxWidth(), singleLine = true,
+                trailingIcon = {
+                    if (sourceText.isNotEmpty()) {
+                        IconButton(onClick = { sourceText = "" }) { Icon(Icons.Filled.Clear, contentDescription = "Clear") }
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    OutlinedButton(onClick = { onClearCache() }, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.apm_banner_clear_cache)) }
-                    Button(
-                        onClick = { onConfirm(sourceText); showDialog.value = false; showToast(context, context.getString(R.string.apm_banner_api_source_saved)) },
-                        enabled = sourceText.isNotBlank(), modifier = Modifier.weight(1f),
-                        colors = FolkButtonDefaults.filledColors()
-                    ) { Text(stringResource(android.R.string.ok)) }
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    TextButton(onClick = { showDialog.value = false }) { Text(stringResource(android.R.string.cancel)) }
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Surface(shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Text(text = stringResource(R.string.apm_banner_api_examples_title), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = stringResource(R.string.apm_banner_api_examples), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedButton(onClick = { onClearCache() }, modifier = Modifier.weight(1f)) { Text(stringResource(R.string.apm_banner_clear_cache)) }
+                Button(
+                    onClick = { onConfirm(sourceText); showDialog.value = false; showToast(context, context.getString(R.string.apm_banner_api_source_saved)) },
+                    enabled = sourceText.isNotBlank(), modifier = Modifier.weight(1f),
+                    colors = FolkButtonDefaults.filledColors()
+                ) { Text(stringResource(android.R.string.ok)) }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                TextButton(onClick = { showDialog.value = false }) { Text(stringResource(android.R.string.cancel)) }
+            }
         }
     }
 }

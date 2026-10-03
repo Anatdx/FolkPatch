@@ -17,13 +17,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.window.DialogWindowProvider
 import androidx.core.content.edit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -33,7 +30,6 @@ import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.util.*
-import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.showToast
 
 
@@ -51,71 +47,58 @@ fun NewAppProfileModeDialog(
         2 to R.string.settings_new_app_profile_exclude,
     )
 
-    BasicAlertDialog(
+    FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(
-                    text = stringResource(R.string.settings_new_app_profile_mode),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(
+                text = stringResource(R.string.settings_new_app_profile_mode),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = AlertDialogDefaults.containerColor,
-                    tonalElevation = 2.dp
-                ) {
-                    Column {
-                        options.forEach { (mode, labelId) ->
-                            ListItem(
-                                headlineContent = { Text(stringResource(labelId)) },
-                                leadingContent = {
-                                    RadioButton(
-                                        selected = currentMode.intValue == mode,
-                                        onClick = null
-                                    )
-                                },
-                                modifier = Modifier.clickable {
-                                    val result = Natives.setNewAppProfileMode(mode)
-                                    if (result == 0L) {
-                                        currentMode.intValue = mode
-                                        onModeChanged(mode)
-                                        showDialog.value = false
-                                    } else {
-                                        showToast(context, context.getString(R.string.settings_new_app_profile_update_failed, result.toString()))
-                                    }
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = AlertDialogDefaults.containerColor,
+                tonalElevation = 2.dp
+            ) {
+                Column {
+                    options.forEach { (mode, labelId) ->
+                        ListItem(
+                            headlineContent = { Text(stringResource(labelId)) },
+                            leadingContent = {
+                                RadioButton(
+                                    selected = currentMode.intValue == mode,
+                                    onClick = null
+                                )
+                            },
+                            modifier = Modifier.clickable {
+                                val result = Natives.setNewAppProfileMode(mode)
+                                if (result == 0L) {
+                                    currentMode.intValue = mode
+                                    onModeChanged(mode)
+                                    showDialog.value = false
+                                } else {
+                                    showToast(context, context.getString(R.string.settings_new_app_profile_update_failed, result.toString()))
                                 }
-                            )
-                        }
-                    }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 24.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { showDialog.value = false }) {
-                        Text(stringResource(id = android.R.string.cancel))
+                            }
+                        )
                     }
                 }
             }
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text(stringResource(id = android.R.string.cancel))
+                }
+            }
         }
     }
 }
@@ -316,95 +299,82 @@ fun SELinuxModeDialog(
     var selectedMode by remember { mutableStateOf(currentMode) }
     var showConfirmationDialog by remember { mutableStateOf(false) }
 
-    BasicAlertDialog(
+    FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(
-                    text = stringResource(R.string.settings_selinux_mode),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(
+                text = stringResource(R.string.settings_selinux_mode),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = AlertDialogDefaults.containerColor,
-                    tonalElevation = 2.dp
-                ) {
-                    Column {
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_selinux_mode_enforcing)) },
-                            supportingContent = {
-                                Text(
-                                    text = stringResource(R.string.settings_selinux_mode_enforcing_summary),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.outline
-                                )
-                            },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = selectedMode == "Enforcing",
-                                    onClick = { selectedMode = "Enforcing" }
-                                )
-                            },
-                            modifier = Modifier.clickable { selectedMode = "Enforcing" }
-                        )
-
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_selinux_mode_permissive)) },
-                            supportingContent = {
-                                Text(
-                                    text = stringResource(R.string.settings_selinux_mode_permissive_summary),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.outline
-                                )
-                            },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = selectedMode == "Permissive",
-                                    onClick = { selectedMode = "Permissive" }
-                                )
-                            },
-                            modifier = Modifier.clickable { selectedMode = "Permissive" }
-                        )
-                    }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 24.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { showDialog.value = false }) {
-                        Text(stringResource(id = android.R.string.cancel))
-                    }
-
-                    Button(
-                        onClick = {
-                            showConfirmationDialog = true
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = AlertDialogDefaults.containerColor,
+                tonalElevation = 2.dp
+            ) {
+                Column {
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_selinux_mode_enforcing)) },
+                        supportingContent = {
+                            Text(
+                                text = stringResource(R.string.settings_selinux_mode_enforcing_summary),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.outline
+                            )
                         },
-                        enabled = selectedMode != currentMode,
-                        colors = FolkButtonDefaults.filledColors(),
-                    ) {
-                        Text(stringResource(id = android.R.string.ok))
-                    }
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedMode == "Enforcing",
+                                onClick = { selectedMode = "Enforcing" }
+                            )
+                        },
+                        modifier = Modifier.clickable { selectedMode = "Enforcing" }
+                    )
+
+                    ListItem(
+                        headlineContent = { Text(stringResource(R.string.settings_selinux_mode_permissive)) },
+                        supportingContent = {
+                            Text(
+                                text = stringResource(R.string.settings_selinux_mode_permissive_summary),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.outline
+                            )
+                        },
+                        leadingContent = {
+                            RadioButton(
+                                selected = selectedMode == "Permissive",
+                                onClick = { selectedMode = "Permissive" }
+                            )
+                        },
+                        modifier = Modifier.clickable { selectedMode = "Permissive" }
+                    )
                 }
             }
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text(stringResource(id = android.R.string.cancel))
+                }
+
+                Button(
+                    onClick = {
+                        showConfirmationDialog = true
+                    },
+                    enabled = selectedMode != currentMode,
+                    colors = FolkButtonDefaults.filledColors(),
+                ) {
+                    Text(stringResource(id = android.R.string.ok))
+                }
+            }
         }
     }
 

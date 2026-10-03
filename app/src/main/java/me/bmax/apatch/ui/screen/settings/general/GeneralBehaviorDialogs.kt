@@ -12,16 +12,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.window.DialogWindowProvider
 import androidx.core.content.edit
+import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.util.*
-import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,41 +41,28 @@ fun AppTitleChooseDialog(showDialog: MutableState<Boolean>, onTitleChanged: (Str
         "magicpatch" to stringResource(R.string.app_title_magicpatch)
     )
 
-    BasicAlertDialog(
-        onDismissRequest = { showDialog.value = false }, properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+    FolkAlertDialog(
+        onDismissRequest = { showDialog.value = false },
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            LazyColumn {
-                items(titles.size, key = { it }) { index ->
-                    val (key, displayName) = titles[index]
-                    ListItem(
-                        headlineContent = { Text(text = displayName) },
-                        modifier = Modifier.clickable {
-                            showDialog.value = false
-                            prefs.edit { putString("app_title", key) }
-                            onTitleChanged(key)
-                        },
-                        trailingContent = {
-                            if (currentTitle == key) {
-                                Icon(Icons.Filled.Check, contentDescription = null)
-                            }
+        LazyColumn {
+            items(titles.size, key = { it }) { index ->
+                val (key, displayName) = titles[index]
+                ListItem(
+                    headlineContent = { Text(text = displayName) },
+                    modifier = Modifier.clickable {
+                        showDialog.value = false
+                        prefs.edit { putString("app_title", key) }
+                        onTitleChanged(key)
+                    },
+                    trailingContent = {
+                        if (currentTitle == key) {
+                            Icon(Icons.Filled.Check, contentDescription = null)
                         }
-                    )
-                }
+                    }
+                )
             }
-
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
         }
     }
 }
@@ -91,61 +75,47 @@ fun CustomAppTitleDialog(showDialog: MutableState<Boolean>, snackBarHost: Snackb
         mutableStateOf(prefs.getString("custom_app_title", "FolkPatch") ?: "FolkPatch")
     }
 
-    BasicAlertDialog(
-        onDismissRequest = { showDialog.value = false }, properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+    FolkAlertDialog(
+        onDismissRequest = { showDialog.value = false },
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight()
-                .padding(24.dp),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            Text(
+                text = stringResource(R.string.custom_app_title_dialog_title),
+                style = MaterialTheme.typography.titleMedium
+            )
+            OutlinedTextField(
+                value = customTitle,
+                onValueChange = { customTitle = it },
+                placeholder = { Text(stringResource(R.string.custom_app_title_dialog_hint)) },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(
-                    text = stringResource(R.string.custom_app_title_dialog_title),
-                    style = MaterialTheme.typography.titleMedium
-                )
-                OutlinedTextField(
-                    value = customTitle,
-                    onValueChange = { customTitle = it },
-                    placeholder = { Text(stringResource(R.string.custom_app_title_dialog_hint)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { showDialog.value = false }) {
-                        Text(stringResource(R.string.cancel))
-                    }
-                    TextButton(onClick = {
-                        val trimmed = customTitle.trim()
-                        if (trimmed.isEmpty()) {
-                            showDialog.value = false
-                            return@TextButton
-                        }
-                        prefs.edit { putString("custom_app_title", trimmed) }
-                        onTitleChanged(trimmed)
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text(stringResource(R.string.cancel))
+                }
+                TextButton(onClick = {
+                    val trimmed = customTitle.trim()
+                    if (trimmed.isEmpty()) {
                         showDialog.value = false
-                    }) {
-                        Text(stringResource(R.string.custom_app_title_dialog_confirm))
+                        return@TextButton
                     }
+                    prefs.edit { putString("custom_app_title", trimmed) }
+                    onTitleChanged(trimmed)
+                    showDialog.value = false
+                }) {
+                    Text(stringResource(R.string.custom_app_title_dialog_confirm))
                 }
             }
-
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
         }
     }
 }
@@ -156,61 +126,48 @@ fun DesktopAppNameChooseDialog(showDialog: MutableState<Boolean>, onNameChanged:
     val prefs = APApplication.sharedPreferences
     val context = LocalContext.current
     val currentName = remember { prefs.getString("desktop_app_name", "FolkPatch") }
-    BasicAlertDialog(
-        onDismissRequest = { showDialog.value = false }, properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+    FolkAlertDialog(
+        onDismissRequest = { showDialog.value = false },
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            LazyColumn {
-                item {
-                    ListItem(
-                        headlineContent = { Text(text = "FolkPatch") },
-                        modifier = Modifier.clickable {
-                            showDialog.value = false
-                            prefs.edit {
-                                putString("desktop_app_name", "FolkPatch")
-                            }
-                            onNameChanged("FolkPatch")
-                            LauncherIconUtils.applySaved(context)
-                        },
-                        trailingContent = {
-                            if (currentName == "FolkPatch" || currentName == null) {
-                                Icon(Icons.Filled.Check, contentDescription = null)
-                            }
+        LazyColumn {
+            item {
+                ListItem(
+                    headlineContent = { Text(text = "FolkPatch") },
+                    modifier = Modifier.clickable {
+                        showDialog.value = false
+                        prefs.edit {
+                            putString("desktop_app_name", "FolkPatch")
                         }
-                    )
-                }
-                item {
-                    ListItem(
-                        headlineContent = { Text(text = "FPatch") },
-                        modifier = Modifier.clickable {
-                            showDialog.value = false
-                            prefs.edit {
-                                putString("desktop_app_name", "FPatch")
-                            }
-                            onNameChanged("FPatch")
-                            LauncherIconUtils.applySaved(context)
-                        },
-                        trailingContent = {
-                            if (currentName == "FPatch") {
-                                Icon(Icons.Filled.Check, contentDescription = null)
-                            }
+                        onNameChanged("FolkPatch")
+                        LauncherIconUtils.applySaved(context)
+                    },
+                    trailingContent = {
+                        if (currentName == "FolkPatch" || currentName == null) {
+                            Icon(Icons.Filled.Check, contentDescription = null)
                         }
-                    )
-                }
+                    }
+                )
             }
-
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
+            item {
+                ListItem(
+                    headlineContent = { Text(text = "FPatch") },
+                    modifier = Modifier.clickable {
+                        showDialog.value = false
+                        prefs.edit {
+                            putString("desktop_app_name", "FPatch")
+                        }
+                        onNameChanged("FPatch")
+                        LauncherIconUtils.applySaved(context)
+                    },
+                    trailingContent = {
+                        if (currentName == "FPatch") {
+                            Icon(Icons.Filled.Check, contentDescription = null)
+                        }
+                    }
+                )
+            }
         }
     }
 }
@@ -220,75 +177,63 @@ fun DesktopAppNameChooseDialog(showDialog: MutableState<Boolean>, onNameChanged:
 fun FolkXAnimationTypeDialog(showDialog: MutableState<Boolean>, onTypeChanged: (String) -> Unit = {}) {
     val prefs = APApplication.sharedPreferences
 
-    BasicAlertDialog(
-        onDismissRequest = { showDialog.value = false }, properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+    FolkAlertDialog(
+        onDismissRequest = { showDialog.value = false },
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(
-                    text = stringResource(R.string.settings_folkx_animation_type),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(
+                text = stringResource(R.string.settings_folkx_animation_type),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
-                val currentType = remember { prefs.getString("folkx_animation_type", "linear") }
+            val currentType = remember { prefs.getString("folkx_animation_type", "linear") }
 
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = AlertDialogDefaults.containerColor,
-                    tonalElevation = 2.dp
-                ) {
-                    Column {
-                        listOf("linear", "spatial", "fade", "vertical", "diagonal").forEach { type ->
-                            val labelId = when (type) {
-                                "linear" -> R.string.settings_folkx_animation_linear
-                                "spatial" -> R.string.settings_folkx_animation_spatial
-                                "fade" -> R.string.settings_folkx_animation_fade
-                                "vertical" -> R.string.settings_folkx_animation_vertical
-                                "diagonal" -> R.string.settings_folkx_animation_diagonal
-                                else -> R.string.settings_folkx_animation_linear
-                            }
-                            ListItem(
-                                headlineContent = { Text(stringResource(labelId)) },
-                                leadingContent = {
-                                    RadioButton(
-                                        selected = currentType == type,
-                                        onClick = null
-                                    )
-                                },
-                                modifier = Modifier.clickable {
-                                    prefs.edit().putString("folkx_animation_type", type).apply()
-                                    onTypeChanged(type)
-                                    showDialog.value = false
-                                }
-                            )
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = AlertDialogDefaults.containerColor,
+                tonalElevation = 2.dp
+            ) {
+                Column {
+                    listOf("linear", "spatial", "fade", "vertical", "diagonal").forEach { type ->
+                        val labelId = when (type) {
+                            "linear" -> R.string.settings_folkx_animation_linear
+                            "spatial" -> R.string.settings_folkx_animation_spatial
+                            "fade" -> R.string.settings_folkx_animation_fade
+                            "vertical" -> R.string.settings_folkx_animation_vertical
+                            "diagonal" -> R.string.settings_folkx_animation_diagonal
+                            else -> R.string.settings_folkx_animation_linear
                         }
-                    }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 24.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { showDialog.value = false }) {
-                        Text(stringResource(id = android.R.string.cancel))
+                        ListItem(
+                            headlineContent = { Text(stringResource(labelId)) },
+                            leadingContent = {
+                                RadioButton(
+                                    selected = currentType == type,
+                                    onClick = null
+                                )
+                            },
+                            modifier = Modifier.clickable {
+                                prefs.edit().putString("folkx_animation_type", type).apply()
+                                onTypeChanged(type)
+                                showDialog.value = false
+                            }
+                        )
                     }
                 }
             }
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text(stringResource(id = android.R.string.cancel))
+                }
+            }
         }
     }
 }
@@ -298,72 +243,60 @@ fun FolkXAnimationTypeDialog(showDialog: MutableState<Boolean>, onTypeChanged: (
 fun AppListLoadingSchemeDialog(showDialog: MutableState<Boolean>, onSchemeChanged: (String) -> Unit = {}) {
     val prefs = APApplication.sharedPreferences
 
-    BasicAlertDialog(
-        onDismissRequest = { showDialog.value = false }, properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+    FolkAlertDialog(
+        onDismissRequest = { showDialog.value = false },
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(
-                    text = stringResource(R.string.settings_app_list_loading_scheme),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(
+                text = stringResource(R.string.settings_app_list_loading_scheme),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
-                val currentScheme = remember { prefs.getString("app_list_loading_scheme", "root_service") }
+            val currentScheme = remember { prefs.getString("app_list_loading_scheme", "root_service") }
 
-                Surface(
-                    shape = RoundedCornerShape(12.dp),
-                    color = AlertDialogDefaults.containerColor,
-                    tonalElevation = 2.dp
-                ) {
-                    Column {
-                        val schemes = listOf(
-                            "root_service" to R.string.app_list_loading_scheme_root_service,
-                            "package_manager" to R.string.app_list_loading_scheme_package_manager
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = AlertDialogDefaults.containerColor,
+                tonalElevation = 2.dp
+            ) {
+                Column {
+                    val schemes = listOf(
+                        "root_service" to R.string.app_list_loading_scheme_root_service,
+                        "package_manager" to R.string.app_list_loading_scheme_package_manager
+                    )
+
+                    schemes.forEach { (scheme, labelId) ->
+                        ListItem(
+                            headlineContent = { Text(stringResource(labelId)) },
+                            leadingContent = {
+                                RadioButton(
+                                    selected = currentScheme == scheme,
+                                    onClick = null
+                                )
+                            },
+                            modifier = Modifier.clickable {
+                                prefs.edit { putString("app_list_loading_scheme", scheme) }
+                                onSchemeChanged(scheme)
+                                showDialog.value = false
+                            }
                         )
-
-                        schemes.forEach { (scheme, labelId) ->
-                            ListItem(
-                                headlineContent = { Text(stringResource(labelId)) },
-                                leadingContent = {
-                                    RadioButton(
-                                        selected = currentScheme == scheme,
-                                        onClick = null
-                                    )
-                                },
-                                modifier = Modifier.clickable {
-                                    prefs.edit { putString("app_list_loading_scheme", scheme) }
-                                    onSchemeChanged(scheme)
-                                    showDialog.value = false
-                                }
-                            )
-                        }
-                    }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 24.dp),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { showDialog.value = false }) {
-                        Text(stringResource(id = android.R.string.cancel))
                     }
                 }
             }
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text(stringResource(id = android.R.string.cancel))
+                }
+            }
         }
     }
 }
