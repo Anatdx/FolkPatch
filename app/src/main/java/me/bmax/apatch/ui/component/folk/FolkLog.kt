@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -74,14 +75,19 @@ fun parseFolkLogLevel(line: String): Pair<FolkLogLevel, Int> {
 }
 
 /**
- * M3 has no "caution" role, so warning takes the scheme's tertiary accent. It is
- * derived rather than a fixed hue so AMOLED, dynamic colour and every classic
- * theme keep working.
+ * M3 has no "caution" role. Tertiary alone can land on a hue that reads as info
+ * or even as success, so warning is blended a third of the way towards error: it
+ * stays derived (AMOLED, dynamic colour and every classic theme keep working)
+ * while always leaning warm and attention-seeking.
  */
 @Composable
 fun folkLogLevelColor(level: FolkLogLevel): Color = when (level) {
     FolkLogLevel.Error -> MaterialTheme.colorScheme.error
-    FolkLogLevel.Warn -> MaterialTheme.colorScheme.tertiary
+    FolkLogLevel.Warn -> lerp(
+        MaterialTheme.colorScheme.tertiary,
+        MaterialTheme.colorScheme.error,
+        0.35f,
+    )
     FolkLogLevel.Info -> MaterialTheme.colorScheme.onSurface
     FolkLogLevel.Debug -> MaterialTheme.colorScheme.onSurfaceVariant
     FolkLogLevel.Verbose -> MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
