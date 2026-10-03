@@ -81,6 +81,7 @@ import me.bmax.apatch.ui.component.folk.folkGroupColor
 import me.bmax.apatch.ui.component.folk.folkPressScale
 import me.bmax.apatch.ui.component.rememberLoadingDialog
 import me.bmax.apatch.ui.component.rememberSystemCropLauncher
+import me.bmax.apatch.ui.screen.home.getDeviceInfo
 import me.bmax.apatch.ui.screen.settings.general.CleanStorageDialog
 import me.bmax.apatch.util.ui.showToast
 import me.bmax.apatch.util.BiometricUtils

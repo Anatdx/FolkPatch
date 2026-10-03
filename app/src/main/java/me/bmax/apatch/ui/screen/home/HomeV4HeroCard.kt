@@ -1,4 +1,4 @@
-package me.bmax.apatch.ui.screen
+package me.bmax.apatch.ui.screen.home
 
 import android.content.ActivityNotFoundException
 import android.net.Uri

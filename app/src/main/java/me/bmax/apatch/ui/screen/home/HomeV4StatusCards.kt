@@ -1,4 +1,4 @@
-package me.bmax.apatch.ui.screen
+package me.bmax.apatch.ui.screen.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,4 @@
-package me.bmax.apatch.ui.screen
+package me.bmax.apatch.ui.screen.home
 
 import android.os.Build
 import androidx.annotation.StringRes

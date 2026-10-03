@@ -15,11 +15,11 @@ app/src/main/java/me/bmax/apatch/ui/screen/APM.kt
 app/src/main/java/me/bmax/apatch/ui/screen/APMModuleItem.kt
 app/src/main/java/me/bmax/apatch/ui/screen/APMModuleList.kt
 app/src/main/java/me/bmax/apatch/ui/screen/ApiMarketplace.kt
-app/src/main/java/me/bmax/apatch/ui/screen/HomeCircleCards.kt
-app/src/main/java/me/bmax/apatch/ui/screen/HomeStatsSections.kt
-app/src/main/java/me/bmax/apatch/ui/screen/HomeV2.kt
-app/src/main/java/me/bmax/apatch/ui/screen/HomeV3Cards.kt
-app/src/main/java/me/bmax/apatch/ui/screen/HomeV4HeroCard.kt
+app/src/main/java/me/bmax/apatch/ui/screen/home/HomeCircleCards.kt
+app/src/main/java/me/bmax/apatch/ui/screen/home/HomeStatsSections.kt
+app/src/main/java/me/bmax/apatch/ui/screen/home/HomeV2.kt
+app/src/main/java/me/bmax/apatch/ui/screen/home/HomeV3Cards.kt
+app/src/main/java/me/bmax/apatch/ui/screen/home/HomeV4HeroCard.kt
 app/src/main/java/me/bmax/apatch/ui/screen/InstallModeSelect.kt
 app/src/main/java/me/bmax/apatch/ui/screen/KPM.kt
 app/src/main/java/me/bmax/apatch/ui/screen/KPMModuleItem.kt
