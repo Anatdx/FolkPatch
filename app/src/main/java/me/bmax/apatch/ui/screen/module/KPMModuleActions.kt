@@ -1,4 +1,4 @@
-package me.bmax.apatch.ui.screen
+package me.bmax.apatch.ui.screen.module
 
 import android.net.Uri
 import android.util.Log

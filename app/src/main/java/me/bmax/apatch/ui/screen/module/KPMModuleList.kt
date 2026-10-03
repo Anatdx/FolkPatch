@@ -1,4 +1,4 @@
-package me.bmax.apatch.ui.screen
+package me.bmax.apatch.ui.screen.module
 
 import me.bmax.apatch.util.ui.showToast
 import androidx.compose.foundation.layout.Arrangement
