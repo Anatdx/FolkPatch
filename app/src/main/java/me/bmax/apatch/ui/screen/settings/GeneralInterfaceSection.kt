@@ -16,6 +16,7 @@ import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
 import me.bmax.apatch.ui.component.folk.FolkSettingsSection
 import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import me.bmax.apatch.ui.component.folk.FolkValuePreference
+import me.bmax.apatch.ui.theme.refreshTheme
 
 @Composable
 fun GeneralInterfaceSection(
@@ -90,6 +91,21 @@ fun GeneralInterfaceSection(
                     onPredictiveBackEnabledChange(it)
                     prefs.edit { putBoolean("predictive_back_enabled", it) }
                     (context as? Activity)?.recreate()
+                },
+            )
+        }
+
+        item(key = "general_expressive_motion") {
+            var expressiveMotion by remember { mutableStateOf(prefs.getBoolean("expressive_motion", false)) }
+            FolkSwitchPreference(
+                icon = Icons.Outlined.Waves,
+                title = stringResource(R.string.settings_expressive_motion),
+                summary = stringResource(R.string.settings_expressive_motion_summary),
+                checked = expressiveMotion,
+                onCheckedChange = {
+                    expressiveMotion = it
+                    prefs.edit { putBoolean("expressive_motion", it) }
+                    refreshTheme.value = true
                 },
             )
         }

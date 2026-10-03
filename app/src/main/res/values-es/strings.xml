@@ -1240,6 +1240,8 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="theme_download_finalizing">Finalizando...</string>
     <string name="settings_predictive_back">Gesto atrás predictivo</string>
     <string name="settings_predictive_back_summary">Habilitar la animación del gesto atrás predictivo de Android 14+</string>
+    <string name="settings_expressive_motion">Movimiento expresivo</string>
+    <string name="settings_expressive_motion_summary">Usa las curvas de movimiento de Material 3 Expressive</string>
 
     <string name="home_device_status_battery_charging">Cargando</string>
     <string name="home_device_status_cpu_temp">Temp. CPU</string>

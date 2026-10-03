@@ -1270,6 +1270,8 @@ KernelPatch 附魔需要 boot 方块作为材料。
     <string name="umount_config_save_failed">配置保存失败</string>
     <string name="settings_predictive_back">预测性返回手势</string>
     <string name="settings_predictive_back_summary">启用 Android 14+ 的预测性返回手势动画</string>
+    <string name="settings_expressive_motion">冒險動勢</string>
+    <string name="settings_expressive_motion_summary">使用 Material 3 Expressive 的動勢曲線</string>
 
     <string name="home_device_status_battery_charging">充电中（附魔中）</string>
     <string name="home_device_status_cpu_temp">CPU温度（熔炉温度）</string>

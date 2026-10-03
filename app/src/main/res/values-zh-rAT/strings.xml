@@ -1236,6 +1236,8 @@
     <string name="theme_download_finalizing">圣光凝聚中...</string>
     <string name="settings_predictive_back">圣预返回手势</string>
     <string name="settings_predictive_back_summary">启用圣域 Android 14+ 的预知返回圣光动画</string>
+    <string name="settings_expressive_motion">神機動勢</string>
+    <string name="settings_expressive_motion_summary">使用 Material 3 Expressive 之動勢曲線</string>
 
     <string name="home_device_status_battery_charging">圣光充能中</string>
     <string name="home_device_status_cpu_temp">神念温度</string>

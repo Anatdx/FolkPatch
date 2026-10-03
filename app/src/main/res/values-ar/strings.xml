@@ -1225,6 +1225,8 @@
     <string name="theme_download_finalizing">جارٍ الانتهاء...</string>
     <string name="settings_predictive_back">إيماءة العودة التنبؤية</string>
     <string name="settings_predictive_back_summary">تمكين رسوم إيماءة العودة التنبؤية المتحركة في Android 14+</string>
+    <string name="settings_expressive_motion">حركة تعبيرية</string>
+    <string name="settings_expressive_motion_summary">استخدم منحنيات الحركة في Material 3 Expressive</string>
 
     <string name="home_device_status_battery_charging">جارٍ الشحن</string>
     <string name="home_device_status_cpu_temp">درجة حرارة المعالج</string>

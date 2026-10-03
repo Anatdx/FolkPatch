@@ -1245,6 +1245,8 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="theme_download_finalizing">Tamamlanıyor...</string>
     <string name="settings_predictive_back">Tahmin Edici Geri Hareketi</string>
     <string name="settings_predictive_back_summary">Android 14+ tahmin edici geri hareketi animasyonunu etkinleştir</string>
+    <string name="settings_expressive_motion">İfade edici hareket</string>
+    <string name="settings_expressive_motion_summary">Material 3 Expressive hareket eğrilerini kullan</string>
 
     <string name="home_device_status_battery_charging">Şarj Oluyor</string>
     <string name="home_device_status_cpu_temp">CPU Sıcaklığı</string>

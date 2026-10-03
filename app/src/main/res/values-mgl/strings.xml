@@ -1235,6 +1235,8 @@ KernelPatch 魔法阵需要 boot 核心来施展。
     <string name="theme_download_finalizing">魔法凝聚中...</string>
     <string name="settings_predictive_back">预知回溯魔法手势</string>
     <string name="settings_predictive_back_summary">启用 Android 14+ 的预知回溯魔法动画</string>
+    <string name="settings_expressive_motion">魔法動勢</string>
+    <string name="settings_expressive_motion_summary">使用 Material 3 Expressive 的動勢曲線</string>
 
     <string name="home_device_status_battery_charging">魔力充盈中</string>
     <string name="home_device_status_cpu_temp">魔法温度</string>

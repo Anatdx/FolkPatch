@@ -1246,6 +1246,8 @@ KernelPatch требует образ boot для патча.
     <string name="theme_download_finalizing">Завершение...</string>
     <string name="settings_predictive_back">Предиктивный жест назад</string>
     <string name="settings_predictive_back_summary">Включить анимацию предиктивного жеста назад (Android 14+)</string>
+    <string name="settings_expressive_motion">Выразительная анимация</string>
+    <string name="settings_expressive_motion_summary">Использовать кривые анимации Material 3 Expressive</string>
 
     <string name="home_device_status_battery_charging">Зарядка</string>
     <string name="home_device_status_cpu_temp">Температура ЦПУ</string>

@@ -1377,6 +1377,8 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="script_library_log_save_failed">Failed to save log: %s</string>
     <string name="settings_predictive_back">Predictive Back Gesture</string>
     <string name="settings_predictive_back_summary">Enable the Android 14+ predictive back gesture animation</string>
+    <string name="settings_expressive_motion">Expressive motion</string>
+    <string name="settings_expressive_motion_summary">Use the Material 3 Expressive motion curves</string>
 
     <string name="app_title_superroot">SuperRoot</string>
     <string name="backup_failed">Backup failed: %s</string>

@@ -1277,6 +1277,8 @@ KernelPatch 需要修补 boot 镜像才能工作喵。
     <string name="theme_download_finalizing">正在完成喵...</string>
     <string name="settings_predictive_back">预测性返回手势喵</string>
     <string name="settings_predictive_back_summary">启用 Android 14+ 的预测性返回手势动画喵</string>
+    <string name="settings_expressive_motion">实验性动效喵</string>
+    <string name="settings_expressive_motion_summary">使用 Material 3 Expressive 的动效曲线喵</string>
     <string name="theme_download">下载喵</string>
     <string name="theme_install">安装喵</string>
     <string name="theme_install_failed">安装失败了喵</string>

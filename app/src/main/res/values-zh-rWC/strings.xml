@@ -1233,6 +1233,8 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="theme_download_finalizing">凝丹中...</string>
     <string name="settings_predictive_back">仙预返回手势</string>
     <string name="settings_predictive_back_summary">启用仙界 Android 14+ 的预知返回仙法动画</string>
+    <string name="settings_expressive_motion">仙法動勢</string>
+    <string name="settings_expressive_motion_summary">使用 Material 3 Expressive 之動勢法門</string>
 
     <string name="home_device_status_battery_charging">灵力充盈中</string>
     <string name="home_device_status_cpu_temp">道力温度</string>

@@ -1142,6 +1142,8 @@ Kontynuować mimo to?</string>
     <string name="theme_download_finalizing">Finalizowanie...</string>
     <string name="settings_predictive_back">Predykcyjny gest wstecz</string>
     <string name="settings_predictive_back_summary">Włącz animację predykcyjnego gestu wstecz w Androidzie 14+</string>
+    <string name="settings_expressive_motion">Ruch ekspresyjny</string>
+    <string name="settings_expressive_motion_summary">Użyj krzywych ruchu Material 3 Expressive</string>
     <string name="app_title_apatch_folk">Folk APatch</string>
     <string name="app_title_apatchx">APatch X</string>
     <string name="app_title_apatch">APatch</string>

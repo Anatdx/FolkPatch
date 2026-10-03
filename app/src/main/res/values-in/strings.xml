@@ -1228,6 +1228,8 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="theme_download_finalizing">Menyelesaikan...</string>
     <string name="settings_predictive_back">Gestur Kembali Prediktif</string>
     <string name="settings_predictive_back_summary">Aktifkan animasi gestur kembali prediktif Android 14+</string>
+    <string name="settings_expressive_motion">Gerakan ekspresif</string>
+    <string name="settings_expressive_motion_summary">Gunakan kurva gerakan Material 3 Expressive</string>
 
     <string name="home_device_status_battery_charging">Mengisi Daya</string>
     <string name="home_device_status_cpu_temp">Suhu CPU</string>

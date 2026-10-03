@@ -1245,6 +1245,8 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="theme_download_finalizing">Đang hoàn tất...</string>
     <string name="settings_predictive_back">Cử chỉ quay lại dự đoán</string>
     <string name="settings_predictive_back_summary">Bật hoạt ảnh cử chỉ quay lại dự đoán Android 14+</string>
+    <string name="settings_expressive_motion">Chuyển động biểu cảm</string>
+    <string name="settings_expressive_motion_summary">Dùng đường cong chuyển động Material 3 Expressive</string>
 
     <string name="home_device_status_battery_charging">Đang sạc</string>
     <string name="home_device_status_cpu_temp">Nhiệt độ CPU</string>

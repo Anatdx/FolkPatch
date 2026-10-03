@@ -1277,6 +1277,8 @@ KernelPatch 需要修補 boot 映像檔。
     <string name="theme_download_finalizing">正在完成...</string>
     <string name="settings_predictive_back">預測性返回手勢</string>
     <string name="settings_predictive_back_summary">啟用 Android 14+ 的預測性返回手勢動畫</string>
+    <string name="settings_expressive_motion">實驗性動效</string>
+    <string name="settings_expressive_motion_summary">使用 Material 3 Expressive 的動態曲線</string>
 
     <string name="home_device_status_battery_charging">充電中</string>
     <string name="home_device_status_cpu_temp">CPU 溫度</string>
