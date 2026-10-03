@@ -30,14 +30,15 @@ fun FolkAlertDialog(
     width: Dp = 310.dp,
     shape: Shape = RoundedCornerShape(30.dp),
     blurBehind: Boolean = true,
+    dialogProperties: DialogProperties = DialogProperties(
+        decorFitsSystemWindows = true,
+        usePlatformDefaultWidth = false,
+    ),
     content: @Composable () -> Unit,
 ) {
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,
-        properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        ),
+        properties = dialogProperties,
     ) {
         Surface(
             modifier = modifier
