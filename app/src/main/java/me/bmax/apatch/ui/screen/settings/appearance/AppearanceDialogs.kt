@@ -1,6 +1,5 @@
 package me.bmax.apatch.ui.screen.settings.appearance
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -10,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
+import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 
@@ -50,55 +50,55 @@ fun HomeLayoutChooseDialog(showDialog: MutableState<Boolean>, onLayoutSelected: 
                 tonalElevation = 2.dp
             ) {
                 Column {
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_home_layout_default)) },
-                        leadingContent = { RadioButton(selected = currentStyle == "default", onClick = null) },
-                        modifier = Modifier.clickable {
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_home_layout_default),
+                        selected = currentStyle == "default",
+                        onClick = {
                             prefs.edit().putString("home_layout_style", "default").apply()
                             onLayoutSelected("default")
                             showDialog.value = false
                         }
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_home_layout_grid)) },
-                        leadingContent = { RadioButton(selected = currentStyle == "kernelsu", onClick = null) },
-                        modifier = Modifier.clickable {
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_home_layout_grid),
+                        selected = currentStyle == "kernelsu",
+                        onClick = {
                             prefs.edit().putString("home_layout_style", "kernelsu").apply()
                             onLayoutSelected("kernelsu")
                             showDialog.value = false
                         }
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_home_layout_focus)) },
-                        leadingContent = { RadioButton(selected = currentStyle == "focus", onClick = null) },
-                        modifier = Modifier.clickable {
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_home_layout_focus),
+                        selected = currentStyle == "focus",
+                        onClick = {
                             prefs.edit().putString("home_layout_style", "focus").apply()
                             onLayoutSelected("focus")
                             showDialog.value = false
                         }
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_home_layout_circle)) },
-                        leadingContent = { RadioButton(selected = currentStyle == "circle", onClick = null) },
-                        modifier = Modifier.clickable {
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_home_layout_circle),
+                        selected = currentStyle == "circle",
+                        onClick = {
                             prefs.edit().putString("home_layout_style", "circle").apply()
                             onLayoutSelected("circle")
                             showDialog.value = false
                         }
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_home_layout_dashboard_pro)) },
-                        leadingContent = { RadioButton(selected = currentStyle == "dashboard_ui", onClick = null) },
-                        modifier = Modifier.clickable {
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_home_layout_dashboard_pro),
+                        selected = currentStyle == "dashboard_ui",
+                        onClick = {
                             prefs.edit().putString("home_layout_style", "dashboard_ui").apply()
                             onLayoutSelected("dashboard_ui")
                             showDialog.value = false
                         }
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_home_layout_stats)) },
-                        leadingContent = { RadioButton(selected = currentStyle == "stats", onClick = null) },
-                        modifier = Modifier.clickable {
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_home_layout_stats),
+                        selected = currentStyle == "stats",
+                        onClick = {
                             prefs.edit().putString("home_layout_style", "stats").apply()
                             onLayoutSelected("stats")
                             showDialog.value = false
