@@ -1,3 +1,4 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class)
 package me.bmax.apatch.ui.screen.home
 
 import android.content.ActivityNotFoundException
@@ -197,7 +198,9 @@ fun MagiskStyleCard(
                         Button(
                             onClick = onActionClick,
                             enabled = actionEnabled,
-                            contentPadding = PaddingValues(horizontal = 24.dp),
+                            // Material 3 Expressive's medium size: a taller, roomier
+                            // primary action than the compact default.
+                            contentPadding = ButtonDefaults.MediumContentPadding,
                             colors = FolkButtonDefaults.filledColors()
                         ) {
                             Text(text = actionText)
