@@ -25,7 +25,19 @@ import me.bmax.apatch.ui.component.folk.FolkSliderPreference
 import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import me.bmax.apatch.ui.component.folk.FolkValuePreference
 import androidx.compose.material.icons.outlined.*
-import me.bmax.apatch.ui.component.folk.FolkSelectableRow
+import androidx.compose.material3.Surface
+import androidx.compose.material3.RadioButton
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import me.bmax.apatch.ui.component.folk.folkPressScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,25 +102,50 @@ fun AppearanceThemeSection(
                         val builtinLabel = stringResource(R.string.theme_mode_builtin_label)
                         val compatLabel = stringResource(R.string.theme_mode_compat_label)
                         listOf("builtin" to builtinLabel, "compat" to compatLabel).forEach { (mode, label) ->
-                            FolkSelectableRow(
-                                title = label,
-                                summary = if (mode == "compat") {
-                                    stringResource(R.string.theme_mode_compat_desc)
+                            val modeInteractionSource = remember { MutableInteractionSource() }
+                            val modeHaptics = LocalHapticFeedback.current
+                            Surface(
+                                shape = RoundedCornerShape(12.dp),
+                                color = if (themeStoreMode == mode) {
+                                    MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)
                                 } else {
-                                    stringResource(R.string.theme_mode_builtin_desc)
+                                    Color.Transparent
                                 },
-                                selected = themeStoreMode == mode,
-                                onClick = {
-                                    prefs.edit { putString("theme_mode", mode) }
-                                    onThemeStoreModeChanged?.invoke(mode)
-                                    showModeSwitchDialog.value = false
-                                    scope.launch {
-                                        snackBarHost.showSnackbar(
-                                            context.getString(R.string.theme_mode_switched, label)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .folkPressScale(modeInteractionSource, true)
+                                    .selectable(
+                                        selected = themeStoreMode == mode,
+                                        interactionSource = modeInteractionSource,
+                                        indication = null,
+                                        role = Role.RadioButton,
+                                        onClick = {
+                                            modeHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                            prefs.edit { putString("theme_mode", mode) }
+                                            onThemeStoreModeChanged?.invoke(mode)
+                                            showModeSwitchDialog.value = false
+                                            scope.launch {
+                                                snackBarHost.showSnackbar(
+                                                    context.getString(R.string.theme_mode_switched, label)
+                                                )
+                                            }
+                                        },
+                                    ),
+                            ) {
+                                Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    RadioButton(selected = themeStoreMode == mode, onClick = null)
+                                    Spacer(Modifier.width(12.dp))
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(label, style = MaterialTheme.typography.titleMedium)
+                                        Text(
+                                            if (mode == "compat") stringResource(R.string.theme_mode_compat_desc)
+                                            else stringResource(R.string.theme_mode_builtin_desc),
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
-                                },
-                            )
+                                }
+                            }
                             Spacer(Modifier.height(8.dp))
                         }
 

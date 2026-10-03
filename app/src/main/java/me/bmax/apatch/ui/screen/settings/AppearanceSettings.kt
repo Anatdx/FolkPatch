@@ -62,7 +62,17 @@ import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.material.icons.outlined.*
-import me.bmax.apatch.ui.component.folk.FolkSelectableRow
+import androidx.compose.material3.RadioButton
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import me.bmax.apatch.ui.component.folk.folkPressScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -347,15 +357,31 @@ fun AppearanceSettingsContent(
                             modifier = Modifier.padding(bottom = 16.dp),
                         )
                         badgeTextModes.forEachIndexed { index, mode ->
-                            FolkSelectableRow(
-                                title = mode,
-                                selected = index == currentBadgeTextModeIndex,
-                                onClick = {
-                                    BackgroundConfig.setCustomBadgeTextModeValue(index)
-                                    BackgroundConfig.save(context)
-                                    showCustomBadgeTextDialog.value = false
-                                },
-                            )
+                            val badgeInteractionSource = remember { MutableInteractionSource() }
+                            val badgeHaptics = LocalHapticFeedback.current
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .folkPressScale(badgeInteractionSource, true)
+                                    .selectable(
+                                        selected = index == currentBadgeTextModeIndex,
+                                        interactionSource = badgeInteractionSource,
+                                        indication = null,
+                                        role = Role.RadioButton,
+                                        onClick = {
+                                            badgeHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                            BackgroundConfig.setCustomBadgeTextModeValue(index)
+                                            BackgroundConfig.save(context)
+                                            showCustomBadgeTextDialog.value = false
+                                        },
+                                    )
+                                    .padding(vertical = 12.dp)
+                            ) {
+                                RadioButton(selected = index == currentBadgeTextModeIndex, onClick = null)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(text = mode)
+                            }
                         }
                     }
                 },
