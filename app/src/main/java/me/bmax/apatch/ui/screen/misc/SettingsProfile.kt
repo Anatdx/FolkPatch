@@ -342,28 +342,16 @@ fun ProfileHeader(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(Modifier.height(5.dp))
-                // The device stands in for the email other apps put here.
+                // A signature overwrites the device model on the same line; the
+                // device stands in for the email other apps put here.
                 Text(
-                    text = deviceName,
+                    text = signature.ifBlank { deviceName },
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, lineHeight = 20.sp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-        }
-
-        // The signature sits below the whole block.
-        // Nothing is rendered when the user has not written one.
-        if (signature.isNotBlank()) {
-            Spacer(Modifier.height(18.dp))
-            Text(
-                text = signature,
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, lineHeight = 20.sp),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-            )
         }
     }
 }
