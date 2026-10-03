@@ -34,11 +34,13 @@ import me.bmax.apatch.util.ui.NavigationBarsSpacer
  * use the *same* RGB with only the alpha changing - using [Color.Transparent]
  * instead would make Material interpolate the colour from black, which showed
  * up as a grey scrim washing over the title and the content while scrolling.
+ * The panel tone keeps its own alpha so the bar follows the custom background
+ * opacity instead of turning opaque.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun folkTopAppBarColors(): TopAppBarColors {
-    val elevated = folkGroupColor().copy(alpha = 1f)
+    val elevated = folkGroupColor()
     return TopAppBarDefaults.largeTopAppBarColors(
         containerColor = elevated.copy(alpha = 0f),
         scrolledContainerColor = elevated,
