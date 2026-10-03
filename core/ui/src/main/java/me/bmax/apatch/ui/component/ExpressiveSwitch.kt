@@ -17,12 +17,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import me.bmax.apatch.APApplication
 
 object SwitchIconState {
-    var showIcon by mutableStateOf(
-        APApplication.sharedPreferences.getBoolean("show_switch_icon", true)
-    )
+    var showIcon by mutableStateOf(true)
 }
 
 @Composable
