@@ -53,6 +53,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import me.bmax.apatch.core.ui.R as CoreR
 
 enum class MODULE_TYPE {
     KPM, APM
@@ -165,7 +166,7 @@ fun InstallScreen(navigator: DestinationsNavigator, uri: Uri, type: MODULE_TYPE)
                 }
             }) {
                 Icon(
-                    imageVector = Icons.Filled.Save, contentDescription = "Save"
+                    imageVector = Icons.Filled.Save, contentDescription = stringResource(CoreR.string.core_action_save)
                 )
             }
         },

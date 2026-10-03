@@ -44,6 +44,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import me.bmax.apatch.ui.component.folk.folkDefaultAppBarColors
+import me.bmax.apatch.core.ui.R as CoreR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -108,7 +109,7 @@ fun KPMTopBar(
                                     keyboardController?.hide()
                                     onSearchQueryChange("")
                                 },
-                                content = { Icon(Icons.Filled.Close, "Close") }
+                                content = { Icon(Icons.Filled.Close, stringResource(CoreR.string.core_action_close)) }
                             )
                         },
                         maxLines = 1,
@@ -133,14 +134,14 @@ fun KPMTopBar(
                     IconButton(onClick = { onSearch = true }) {
                         Icon(
                             imageVector = Icons.Filled.Search,
-                            contentDescription = "Search"
+                            contentDescription = stringResource(CoreR.string.core_action_search)
                         )
                     }
                     // 下载按钮
                     IconButton(onClick = dropUnlessResumed { navigator.navigate(OnlineKPMScreenDestination) }) {
                         Icon(
                             imageVector = Icons.Outlined.Storefront,
-                            contentDescription = "Online KPM"
+                            contentDescription = stringResource(R.string.online_kpm_title)
                         )
                     }
                     // 自定义排序按钮（无模块时隐藏）

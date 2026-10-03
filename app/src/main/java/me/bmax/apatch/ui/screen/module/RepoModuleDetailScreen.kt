@@ -46,6 +46,7 @@ import me.bmax.apatch.util.download
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import me.bmax.apatch.core.ui.R as CoreR
 
 @Destination<RootGraph>
 @Composable
@@ -211,7 +212,7 @@ fun RepoModuleDetailScreen(
                                                 module.description
                                             )
                                         }) {
-                                            Icon(Icons.Filled.Download, contentDescription = "Download")
+                                            Icon(Icons.Filled.Download, contentDescription = stringResource(CoreR.string.core_action_download))
                                         }
                                     }
                                 }

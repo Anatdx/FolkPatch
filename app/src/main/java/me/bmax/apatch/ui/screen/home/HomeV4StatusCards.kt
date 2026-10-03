@@ -59,6 +59,7 @@ import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.util.SystemInfoCollector
+import me.bmax.apatch.core.ui.R as CoreR
 
 @Composable
 fun HomeV4DeviceStatusCard(isWallpaperMode: Boolean, modifier: Modifier = Modifier) {
@@ -372,7 +373,7 @@ fun AndroidPatchCard(
                         Text(stringResource(R.string.home_kp_cando_update))
                     APApplication.State.ANDROIDPATCH_INSTALLING,
                     APApplication.State.ANDROIDPATCH_UNINSTALLING -> 
-                        Icon(Icons.Outlined.Cached, contentDescription = "busy")
+                        Icon(Icons.Outlined.Cached, contentDescription = stringResource(CoreR.string.core_state_busy))
                     else -> 
                         Text(stringResource(R.string.home_ap_cando_uninstall))
                 }

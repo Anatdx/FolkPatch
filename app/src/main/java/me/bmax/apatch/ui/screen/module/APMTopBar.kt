@@ -58,6 +58,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
+import me.bmax.apatch.core.ui.R as CoreR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -93,11 +94,11 @@ fun TopBar(
             }) {
                 Icon(
                     imageVector = Icons.Outlined.Storefront,
-                    contentDescription = "Online Modules"
+                    contentDescription = stringResource(R.string.online_module_title)
                 )
             }
             androidx.compose.material3.IconButton(onClick = { showMenu = true }) {
-                Icon(Icons.Filled.MoreVert, contentDescription = "More")
+                Icon(Icons.Filled.MoreVert, contentDescription = stringResource(CoreR.string.core_action_more))
                 WallpaperAwareDropdownMenu(
                     expanded = showMenu,
                     onDismissRequest = { showMenu = false }

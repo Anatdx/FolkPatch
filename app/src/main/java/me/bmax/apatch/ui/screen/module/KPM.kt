@@ -93,6 +93,7 @@ import me.bmax.apatch.util.isJailbreakMode
 import me.bmax.apatch.util.kpmCustomModuleInfoStorage
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import me.bmax.apatch.core.ui.R as CoreR
 
 
 private const val TAG = "KernelPatchModule"
@@ -296,12 +297,12 @@ fun KPModuleScreen(navigator: DestinationsNavigator) {
                                 if (isExpanded) {
                                     Icon(
                                         Icons.Filled.Close,
-                                        contentDescription = "Close",
+                                        contentDescription = stringResource(CoreR.string.core_action_close),
                                     )
                                 } else {
                                     Icon(
                                         painter = painterResource(id = R.drawable.package_import),
-                                        contentDescription = "Install module",
+                                        contentDescription = stringResource(R.string.apm_install_confirm_title),
                                     )
                                 }
                             }

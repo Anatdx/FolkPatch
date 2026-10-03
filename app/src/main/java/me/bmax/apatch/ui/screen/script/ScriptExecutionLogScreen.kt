@@ -51,6 +51,7 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import me.bmax.apatch.core.ui.R as CoreR
 
 @Destination<RootGraph>
 @Composable
@@ -216,7 +217,7 @@ fun ScriptExecutionLogScreen(
                         }
                     }
                 ) {
-                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send")
+                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = stringResource(CoreR.string.core_action_send))
                 }
             }
         }

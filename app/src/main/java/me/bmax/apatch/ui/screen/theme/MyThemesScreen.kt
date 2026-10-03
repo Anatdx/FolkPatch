@@ -43,6 +43,7 @@ import me.bmax.apatch.ui.viewmodel.ThemeStoreViewModel
 import java.io.File
 import me.bmax.apatch.ui.component.folk.FolkStateView
 import androidx.compose.material.icons.outlined.Palette
+import me.bmax.apatch.core.ui.R as CoreR
 
 @Destination<RootGraph>
 @Composable
@@ -205,19 +206,19 @@ fun MyThemesScreen(
             if (isSearchActive) {
                 if (viewModel.localSearchQuery.isNotEmpty()) {
                     IconButton(onClick = { viewModel.onLocalSearchQueryChange("") }) {
-                        Icon(Icons.Filled.Close, contentDescription = "Clear")
+                        Icon(Icons.Filled.Close, contentDescription = stringResource(CoreR.string.core_action_clear))
                     }
                 }
             } else {
                 IconButton(onClick = { isSearchActive = true }) {
-                    Icon(Icons.Filled.Search, contentDescription = "Search")
+                    Icon(Icons.Filled.Search, contentDescription = stringResource(CoreR.string.core_action_search))
                 }
                 IconButton(onClick = {
                     refreshing = true
                     viewModel.loadLocalThemes()
                     refreshing = false
                 }) {
-                    Icon(Icons.Filled.Refresh, contentDescription = "Refresh")
+                    Icon(Icons.Filled.Refresh, contentDescription = stringResource(CoreR.string.core_action_refresh))
                 }
             }
         },

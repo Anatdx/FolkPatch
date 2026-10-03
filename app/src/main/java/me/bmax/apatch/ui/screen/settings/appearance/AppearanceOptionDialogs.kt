@@ -28,6 +28,7 @@ import me.bmax.apatch.ui.theme.ThemeManager
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.showToast
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import me.bmax.apatch.core.ui.R as CoreR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -368,7 +369,7 @@ fun BannerApiConfigDialog(
                 modifier = Modifier.fillMaxWidth(), singleLine = true,
                 trailingIcon = {
                     if (sourceText.isNotEmpty()) {
-                        IconButton(onClick = { sourceText = "" }) { Icon(Icons.Filled.Clear, contentDescription = "Clear") }
+                        IconButton(onClick = { sourceText = "" }) { Icon(Icons.Filled.Clear, contentDescription = stringResource(CoreR.string.core_action_clear)) }
                     }
                 }
             )

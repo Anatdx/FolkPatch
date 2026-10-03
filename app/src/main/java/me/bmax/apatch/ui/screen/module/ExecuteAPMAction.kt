@@ -147,7 +147,7 @@ fun ExecuteAPMActionScreen(navigator: DestinationsNavigator, moduleId: String) {
             ) {
                 Icon(
                     imageVector = Icons.Filled.Save,
-                    contentDescription = "Save log"
+                    contentDescription = stringResource(R.string.save_log)
                 )
             }
         },

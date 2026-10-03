@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
+import me.bmax.apatch.core.ui.R as CoreR
 
 @Composable
 fun AStatusCard(apState: APApplication.State) {
@@ -157,7 +158,7 @@ fun AStatusCard(apState: APApplication.State) {
                                 }
 
                                 APApplication.State.ANDROIDPATCH_UNINSTALLING -> {
-                                    Icon(Icons.Outlined.Cached, contentDescription = "busy")
+                                    Icon(Icons.Outlined.Cached, contentDescription = stringResource(CoreR.string.core_state_busy))
                                 }
 
                                 APApplication.State.ANDROIDPATCH_NEED_UPDATE -> {

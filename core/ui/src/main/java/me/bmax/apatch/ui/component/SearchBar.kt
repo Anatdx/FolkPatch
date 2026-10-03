@@ -42,6 +42,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.ui.component.folk.folkDefaultAppBarColors
+import me.bmax.apatch.core.ui.R
+import androidx.compose.ui.res.stringResource
 
 private const val TAG = "SearchBar"
 
@@ -135,7 +137,7 @@ fun SearchAppBar(
                                     keyboardController?.hide()
                                     onClearClick()
                                 },
-                                content = { Icon(Icons.Filled.Close, "Clear search") }
+                                content = { Icon(Icons.Filled.Close, stringResource(R.string.core_action_clear)) }
                             )
                         },
                         maxLines = 1,
@@ -157,7 +159,7 @@ fun SearchAppBar(
             if (onBackClick != null) {
                 IconButton(
                     onClick = onBackClick,
-                    content = { Icon(Icons.AutoMirrored.Outlined.ArrowBack, "Back") }
+                    content = { Icon(Icons.AutoMirrored.Outlined.ArrowBack, stringResource(R.string.core_action_back)) }
                 )
             }
         },
@@ -171,7 +173,7 @@ fun SearchAppBar(
                     leadingActions?.invoke()
                     IconButton(
                         onClick = { onSearch = true },
-                        content = { Icon(Icons.Filled.Search, "Search") }
+                        content = { Icon(Icons.Filled.Search, stringResource(R.string.core_action_search)) }
                     )
                 }
             }

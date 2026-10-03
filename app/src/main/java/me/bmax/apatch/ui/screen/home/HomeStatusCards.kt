@@ -47,6 +47,7 @@ import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.Version
 import me.bmax.apatch.util.Version.getManagerVersion
 import me.bmax.apatch.util.reboot
+import me.bmax.apatch.core.ui.R as CoreR
 
 private val managerVersion = getManagerVersion()
 
@@ -337,7 +338,7 @@ fun KStatusCard(
                                 APApplication.State.UNKNOWN_STATE -> Text(text = stringResource(id = R.string.home_ap_cando_install))
                                 APApplication.State.KERNELPATCH_NEED_UPDATE -> Text(text = stringResource(id = R.string.home_kp_cando_update))
                                 APApplication.State.KERNELPATCH_NEED_REBOOT -> Text(text = stringResource(id = R.string.home_ap_cando_reboot))
-                                APApplication.State.KERNELPATCH_UNINSTALLING -> Icon(Icons.Outlined.Cached, contentDescription = "busy")
+                                APApplication.State.KERNELPATCH_UNINSTALLING -> Icon(Icons.Outlined.Cached, contentDescription = stringResource(CoreR.string.core_state_busy))
                                 else -> Text(text = stringResource(id = R.string.home_ap_cando_uninstall))
                                 }
                             }

@@ -30,6 +30,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import java.io.File
+import me.bmax.apatch.core.ui.R as CoreR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -183,7 +184,7 @@ fun FilePickerDialog(
                                         currentPath = rootPath
                                     }
                                 }) {
-                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(CoreR.string.core_action_back))
                                 }
                             }
                         },

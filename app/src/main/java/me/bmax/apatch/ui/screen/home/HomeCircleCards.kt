@@ -40,6 +40,7 @@ import me.bmax.apatch.ui.component.copyableInfo
 import androidx.compose.material3.surfaceColorAtElevation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import me.bmax.apatch.core.ui.R as CoreR
 
 @Composable
 fun StatusCardCircle(
@@ -490,7 +491,7 @@ fun AStatusCardCircle(apState: APApplication.State) {
                             }
 
                             APApplication.State.ANDROIDPATCH_UNINSTALLING -> {
-                                Icon(Icons.Outlined.Cached, contentDescription = "busy")
+                                Icon(Icons.Outlined.Cached, contentDescription = stringResource(CoreR.string.core_state_busy))
                             }
 
                             APApplication.State.ANDROIDPATCH_NEED_UPDATE -> {

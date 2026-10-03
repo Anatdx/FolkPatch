@@ -67,6 +67,7 @@ import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.Version
 import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.foundation.layout.size
+import me.bmax.apatch.core.ui.R as CoreR
 
 @Composable
 fun StartButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -171,7 +172,7 @@ fun ExtraItem(extra: KPModel.IExtraInfo, existed: Boolean, onDelete: () -> Unit)
                 if (extra.type == KPModel.ExtraType.KPM) {
                     Icon(
                         imageVector = Icons.Default.Settings,
-                        contentDescription = "Config",
+                        contentDescription = stringResource(CoreR.string.core_action_config),
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .clickable { showConfigDialog = true }
@@ -180,7 +181,7 @@ fun ExtraItem(extra: KPModel.IExtraInfo, existed: Boolean, onDelete: () -> Unit)
 
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete",
+                    contentDescription = stringResource(CoreR.string.core_action_delete),
                     modifier = Modifier
                         .padding(end = 8.dp)
                         .clickable { onDelete() })
