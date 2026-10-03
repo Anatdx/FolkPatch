@@ -30,6 +30,10 @@ import me.bmax.apatch.ui.viewmodel.OnlineScriptViewModel
 import me.bmax.apatch.util.SafeUriResolver
 import me.bmax.apatch.util.download
 import java.io.File
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import me.bmax.apatch.ui.component.folk.FolkStateTone
+import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.Icons
 
 @Destination<RootGraph>
 @Composable
@@ -63,20 +67,16 @@ fun OnlineScriptScreen(navigator: DestinationsNavigator) {
                     modifier = Modifier.align(Alignment.Center)
                 )
             } else if (viewModel.errorMessage != null) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = viewModel.errorMessage ?: "Unknown error",
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Button(onClick = { viewModel.fetchModules() }) {
-                        Text(stringResource(R.string.retry))
-                    }
-                }
+                FolkStateView(
+                    title = viewModel.errorMessage ?: "Unknown error",
+                    icon = Icons.Outlined.Warning,
+                    tone = FolkStateTone.Critical,
+                    action = {
+                        Button(onClick = { viewModel.fetchModules() }) {
+                            Text(stringResource(R.string.retry))
+                        }
+                    },
+                )
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 320.dp),

@@ -3,7 +3,6 @@ package me.bmax.apatch.ui.screen.plugin
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,6 +35,10 @@ import me.bmax.apatch.ui.viewmodel.OnlinePluginViewModel
 import me.bmax.apatch.util.download
 import me.bmax.apatch.util.installPlugin
 import me.bmax.apatch.util.ui.showToast
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import me.bmax.apatch.ui.component.folk.FolkStateTone
+import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.Icons
 
 @Destination<RootGraph>
 @Composable
@@ -71,20 +73,16 @@ fun OnlinePluginScreen(navigator: DestinationsNavigator) {
                     modifier = Modifier.align(Alignment.Center)
                 )
             } else if (viewModel.errorMessage != null) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = viewModel.errorMessage ?: "Unknown error",
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Button(onClick = { viewModel.fetchPlugins() }) {
-                        Text(stringResource(R.string.retry))
-                    }
-                }
+                FolkStateView(
+                    title = viewModel.errorMessage ?: "Unknown error",
+                    icon = Icons.Outlined.Warning,
+                    tone = FolkStateTone.Critical,
+                    action = {
+                        Button(onClick = { viewModel.fetchPlugins() }) {
+                            Text(stringResource(R.string.retry))
+                        }
+                    },
+                )
             } else {
                 LazyVerticalGrid(
                     columns = GridCells.Adaptive(minSize = 320.dp),
