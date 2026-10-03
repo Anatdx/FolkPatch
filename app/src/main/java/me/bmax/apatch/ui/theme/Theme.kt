@@ -55,6 +55,7 @@ import me.bmax.apatch.ui.theme.tokens.FolkShape
 import me.bmax.apatch.ui.theme.tokens.FolkThemeCatalog
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import me.bmax.apatch.ui.theme.tokens.FolkExpressiveMotionScheme
 
 @Composable
 private fun SystemBarStyle(
@@ -117,9 +118,9 @@ fun APatchTheme(
 ) {
     val context = LocalContext.current
     val prefs = APApplication.sharedPreferences
-    // Pilot: A/B the M3 Expressive motion scheme at runtime without a rebuild.
+    // The experimental switch swaps in a springier scheme than the default one.
     val motionScheme = if (prefs.getBoolean("expressive_motion", false)) {
-        MotionScheme.expressive()
+        FolkExpressiveMotionScheme
     } else {
         MotionScheme.standard()
     }
