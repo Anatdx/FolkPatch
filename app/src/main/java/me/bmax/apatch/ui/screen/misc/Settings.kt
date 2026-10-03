@@ -53,7 +53,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
 import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.dropUnlessResumed
@@ -268,10 +267,7 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                 title = {
                     Text(
                         text = stringResource(R.string.settings),
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontSize = 22.sp,
-                            lineHeight = 28.sp,
-                        ),
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Medium,
                     )
                 },
@@ -578,7 +574,7 @@ private fun GridEntry(
         Spacer(Modifier.height(10.dp))
         Text(
             text = entry.label,
-            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, lineHeight = 20.sp),
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurface,
             maxLines = 1,

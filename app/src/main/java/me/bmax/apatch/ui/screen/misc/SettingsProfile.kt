@@ -348,7 +348,7 @@ fun ProfileHeader(
                 // device stands in for the email other apps put here.
                 Text(
                     text = signature.ifBlank { deviceName },
-                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, lineHeight = 20.sp),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
