@@ -92,7 +92,7 @@ import me.bmax.apatch.util.ui.NavigationBarsSpacer
 import java.io.File
 import java.io.FileOutputStream
 import com.ramcosta.composedestinations.generated.destinations.PluginScreenDestination
-import me.bmax.apatch.ui.component.folk.FolkPreference
+import com.ramcosta.composedestinations.generated.destinations.FaqScreenDestination
 
 private const val FEEDBACK_URL = "https://github.com/LyraVoid/FolkPatch/issues/new/choose"
 
@@ -315,10 +315,10 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                 Spacer(Modifier.height(16.dp))
                 FolkSettingsGroup(shape = RoundedCornerShape(12.dp)) {
                     item(key = "utility_faq") {
-                        FolkPreference(
+                        FolkNavigationPreference(
                             icon = Icons.Outlined.HelpOutline,
                             title = stringResource(R.string.settings_faq),
-                            enabled = false,
+                            onClick = { navigator.navigate(FaqScreenDestination) },
                         )
                     }
                     item(key = "utility_feedback") {
