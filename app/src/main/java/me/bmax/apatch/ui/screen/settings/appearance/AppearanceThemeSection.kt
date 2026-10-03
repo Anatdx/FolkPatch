@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,6 +25,7 @@ import me.bmax.apatch.ui.component.folk.FolkSliderPreference
 import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import me.bmax.apatch.ui.component.folk.FolkValuePreference
 import androidx.compose.material.icons.outlined.*
+import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,7 +90,14 @@ fun AppearanceThemeSection(
                         val builtinLabel = stringResource(R.string.theme_mode_builtin_label)
                         val compatLabel = stringResource(R.string.theme_mode_compat_label)
                         listOf("builtin" to builtinLabel, "compat" to compatLabel).forEach { (mode, label) ->
-                            Surface(
+                            FolkSelectableRow(
+                                title = label,
+                                summary = if (mode == "compat") {
+                                    stringResource(R.string.theme_mode_compat_desc)
+                                } else {
+                                    stringResource(R.string.theme_mode_builtin_desc)
+                                },
+                                selected = themeStoreMode == mode,
                                 onClick = {
                                     prefs.edit { putString("theme_mode", mode) }
                                     onThemeStoreModeChanged?.invoke(mode)
@@ -101,33 +108,7 @@ fun AppearanceThemeSection(
                                         )
                                     }
                                 },
-                                shape = RoundedCornerShape(12.dp),
-                                color = if (themeStoreMode == mode) MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f) else Color.Transparent,
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(12.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    RadioButton(
-                                        selected = themeStoreMode == mode,
-                                        onClick = null
-                                    )
-                                    Spacer(Modifier.width(12.dp))
-                                    Column(modifier = Modifier.weight(1f)) {
-                                        Text(
-                                            label,
-                                            style = MaterialTheme.typography.titleMedium
-                                        )
-                                        Text(
-                                            if (mode == "compat") stringResource(R.string.theme_mode_compat_desc)
-                                            else stringResource(R.string.theme_mode_builtin_desc),
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
-                                }
-                            }
+                            )
                             Spacer(Modifier.height(8.dp))
                         }
 

@@ -1,7 +1,6 @@
 package me.bmax.apatch.ui.screen.settings.multimedia
 
 import android.content.Context
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -11,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
+import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.theme.SoundEffectConfig
 import me.bmax.apatch.ui.theme.VibrationConfig
@@ -60,30 +60,20 @@ fun MultimediaDialogs(
                     tonalElevation = 2.dp
                 ) {
                     Column {
-                        ListItem(
-                            headlineContent = { Text(soundEffectSourceLocal) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = SoundEffectConfig.sourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = soundEffectSourceLocal,
+                            selected = SoundEffectConfig.sourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL,
+                            onClick = {
                                 SoundEffectConfig.setSourceTypeValue(SoundEffectConfig.SOURCE_TYPE_LOCAL)
                                 SoundEffectConfig.save(context)
                                 showSoundEffectSourceDialog.value = false
                             }
                         )
 
-                        ListItem(
-                            headlineContent = { Text(soundEffectSourcePreset) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = SoundEffectConfig.sourceType == SoundEffectConfig.SOURCE_TYPE_PRESET,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = soundEffectSourcePreset,
+                            selected = SoundEffectConfig.sourceType == SoundEffectConfig.SOURCE_TYPE_PRESET,
+                            onClick = {
                                 SoundEffectConfig.setSourceTypeValue(SoundEffectConfig.SOURCE_TYPE_PRESET)
                                 SoundEffectConfig.save(context)
                                 showSoundEffectSourceDialog.value = false
@@ -129,15 +119,10 @@ fun MultimediaDialogs(
                     androidx.compose.foundation.lazy.LazyColumn {
                         items(SoundEffectConfig.PRESETS.size, key = { it }) { index ->
                             val preset = SoundEffectConfig.PRESETS[index]
-                            ListItem(
-                                headlineContent = { Text(preset) },
-                                leadingContent = {
-                                    RadioButton(
-                                        selected = SoundEffectConfig.presetName == preset,
-                                        onClick = null
-                                    )
-                                },
-                                modifier = Modifier.clickable {
+                            FolkSelectableRow(
+                                title = preset,
+                                selected = SoundEffectConfig.presetName == preset,
+                                onClick = {
                                     SoundEffectConfig.setPresetNameValue(preset)
                                     SoundEffectConfig.save(context)
                                     showSoundEffectPresetDialog.value = false
@@ -181,30 +166,20 @@ fun MultimediaDialogs(
                     tonalElevation = 2.dp
                 ) {
                     Column {
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_sound_effect_scope_global)) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = SoundEffectConfig.scope == SoundEffectConfig.SCOPE_GLOBAL,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = stringResource(R.string.settings_sound_effect_scope_global),
+                            selected = SoundEffectConfig.scope == SoundEffectConfig.SCOPE_GLOBAL,
+                            onClick = {
                                 SoundEffectConfig.setScopeValue(SoundEffectConfig.SCOPE_GLOBAL)
                                 SoundEffectConfig.save(context)
                                 showSoundEffectScopeDialog.value = false
                             }
                         )
 
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_sound_effect_scope_bottom_bar)) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = SoundEffectConfig.scope == SoundEffectConfig.SCOPE_BOTTOM_BAR,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = stringResource(R.string.settings_sound_effect_scope_bottom_bar),
+                            selected = SoundEffectConfig.scope == SoundEffectConfig.SCOPE_BOTTOM_BAR,
+                            onClick = {
                                 SoundEffectConfig.setScopeValue(SoundEffectConfig.SCOPE_BOTTOM_BAR)
                                 SoundEffectConfig.save(context)
                                 showSoundEffectScopeDialog.value = false
@@ -247,30 +222,20 @@ fun MultimediaDialogs(
                     tonalElevation = 2.dp
                 ) {
                     Column {
-                        ListItem(
-                            headlineContent = { Text(startupSourceLocal) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = SoundEffectConfig.startupSourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = startupSourceLocal,
+                            selected = SoundEffectConfig.startupSourceType == SoundEffectConfig.SOURCE_TYPE_LOCAL,
+                            onClick = {
                                 SoundEffectConfig.setStartupSourceTypeValue(SoundEffectConfig.SOURCE_TYPE_LOCAL)
                                 SoundEffectConfig.save(context)
                                 showStartupSourceDialog.value = false
                             }
                         )
 
-                        ListItem(
-                            headlineContent = { Text(startupSourcePreset) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = SoundEffectConfig.startupSourceType == SoundEffectConfig.SOURCE_TYPE_PRESET,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = startupSourcePreset,
+                            selected = SoundEffectConfig.startupSourceType == SoundEffectConfig.SOURCE_TYPE_PRESET,
+                            onClick = {
                                 SoundEffectConfig.setStartupSourceTypeValue(SoundEffectConfig.SOURCE_TYPE_PRESET)
                                 SoundEffectConfig.save(context)
                                 showStartupSourceDialog.value = false
@@ -316,15 +281,10 @@ fun MultimediaDialogs(
                     androidx.compose.foundation.lazy.LazyColumn {
                         items(SoundEffectConfig.STARTUP_PRESETS.size, key = { it }) { index ->
                             val preset = SoundEffectConfig.STARTUP_PRESETS[index]
-                            ListItem(
-                                headlineContent = { Text(preset) },
-                                leadingContent = {
-                                    RadioButton(
-                                        selected = SoundEffectConfig.startupPresetName == preset,
-                                        onClick = null
-                                    )
-                                },
-                                modifier = Modifier.clickable {
+                            FolkSelectableRow(
+                                title = preset,
+                                selected = SoundEffectConfig.startupPresetName == preset,
+                                onClick = {
                                     SoundEffectConfig.setStartupPresetNameValue(preset)
                                     SoundEffectConfig.save(context)
                                     showStartupPresetDialog.value = false
@@ -368,30 +328,20 @@ fun MultimediaDialogs(
                     tonalElevation = 2.dp
                 ) {
                     Column {
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_vibration_scope_global)) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = VibrationConfig.scope == VibrationConfig.SCOPE_GLOBAL,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = stringResource(R.string.settings_vibration_scope_global),
+                            selected = VibrationConfig.scope == VibrationConfig.SCOPE_GLOBAL,
+                            onClick = {
                                 VibrationConfig.setScopeValue(VibrationConfig.SCOPE_GLOBAL)
                                 VibrationConfig.save(context)
                                 showVibrationScopeDialog.value = false
                             }
                         )
 
-                        ListItem(
-                            headlineContent = { Text(stringResource(R.string.settings_vibration_scope_bottom_bar)) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = VibrationConfig.scope == VibrationConfig.SCOPE_BOTTOM_BAR,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = stringResource(R.string.settings_vibration_scope_bottom_bar),
+                            selected = VibrationConfig.scope == VibrationConfig.SCOPE_BOTTOM_BAR,
+                            onClick = {
                                 VibrationConfig.setScopeValue(VibrationConfig.SCOPE_BOTTOM_BAR)
                                 VibrationConfig.save(context)
                                 showVibrationScopeDialog.value = false

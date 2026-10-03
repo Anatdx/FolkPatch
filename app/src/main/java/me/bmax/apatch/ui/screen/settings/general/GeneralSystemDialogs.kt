@@ -28,6 +28,7 @@ import me.bmax.apatch.APApplication
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
+import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.util.*
 import me.bmax.apatch.util.ui.showToast
@@ -66,15 +67,10 @@ fun NewAppProfileModeDialog(
             ) {
                 Column {
                     options.forEach { (mode, labelId) ->
-                        ListItem(
-                            headlineContent = { Text(stringResource(labelId)) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = currentMode.intValue == mode,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = stringResource(labelId),
+                            selected = currentMode.intValue == mode,
+                            onClick = {
                                 val result = Natives.setNewAppProfileMode(mode)
                                 if (result == 0L) {
                                     currentMode.intValue = mode
@@ -317,40 +313,18 @@ fun SELinuxModeDialog(
                 tonalElevation = 2.dp
             ) {
                 Column {
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_selinux_mode_enforcing)) },
-                        supportingContent = {
-                            Text(
-                                text = stringResource(R.string.settings_selinux_mode_enforcing_summary),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.outline
-                            )
-                        },
-                        leadingContent = {
-                            RadioButton(
-                                selected = selectedMode == "Enforcing",
-                                onClick = { selectedMode = "Enforcing" }
-                            )
-                        },
-                        modifier = Modifier.clickable { selectedMode = "Enforcing" }
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_selinux_mode_enforcing),
+                        summary = stringResource(R.string.settings_selinux_mode_enforcing_summary),
+                        selected = selectedMode == "Enforcing",
+                        onClick = { selectedMode = "Enforcing" }
                     )
 
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_selinux_mode_permissive)) },
-                        supportingContent = {
-                            Text(
-                                text = stringResource(R.string.settings_selinux_mode_permissive_summary),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.outline
-                            )
-                        },
-                        leadingContent = {
-                            RadioButton(
-                                selected = selectedMode == "Permissive",
-                                onClick = { selectedMode = "Permissive" }
-                            )
-                        },
-                        modifier = Modifier.clickable { selectedMode = "Permissive" }
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_selinux_mode_permissive),
+                        summary = stringResource(R.string.settings_selinux_mode_permissive_summary),
+                        selected = selectedMode == "Permissive",
+                        onClick = { selectedMode = "Permissive" }
                     )
                 }
             }

@@ -2,7 +2,6 @@
 
 package me.bmax.apatch.ui.screen.settings.general
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.filled.*
@@ -18,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
+import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
@@ -195,15 +195,10 @@ fun FolkXAnimationSpeedDialog(showDialog: MutableState<Boolean>, onSpeedChanged:
                     )
 
                     speeds.forEach { (speed, label) ->
-                        ListItem(
-                            headlineContent = { Text(label) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = currentSpeed == speed,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = label,
+                            selected = currentSpeed == speed,
+                            onClick = {
                                 prefs.edit().putFloat("folkx_animation_speed", speed).apply()
                                 onSpeedChanged(speed)
                                 showDialog.value = false

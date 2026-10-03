@@ -1,6 +1,5 @@
 package me.bmax.apatch.ui.screen.settings.appearance
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.DialogWindowProvider
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
+import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.theme.ThemeManager
@@ -282,25 +282,25 @@ fun NavModeChooseDialog(
             Text(text = stringResource(R.string.settings_nav_scheme), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
             Surface(shape = RoundedCornerShape(12.dp), color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
                 Column {
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_nav_mode_floating)) },
-                        leadingContent = { RadioButton(selected = currentMode == "floating", onClick = null) },
-                        modifier = Modifier.clickable { onModeSelected("floating") }
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_nav_mode_floating),
+                        selected = currentMode == "floating",
+                        onClick = { onModeSelected("floating") }
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_nav_mode_auto)) },
-                        leadingContent = { RadioButton(selected = currentMode == "auto", onClick = null) },
-                        modifier = Modifier.clickable { onModeSelected("auto") }
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_nav_mode_auto),
+                        selected = currentMode == "auto",
+                        onClick = { onModeSelected("auto") }
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_nav_mode_bottom)) },
-                        leadingContent = { RadioButton(selected = currentMode == "bottom", onClick = null) },
-                        modifier = Modifier.clickable { onModeSelected("bottom") }
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_nav_mode_bottom),
+                        selected = currentMode == "bottom",
+                        onClick = { onModeSelected("bottom") }
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_nav_mode_rail)) },
-                        leadingContent = { RadioButton(selected = currentMode == "rail", onClick = null) },
-                        modifier = Modifier.clickable { onModeSelected("rail") }
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_nav_mode_rail),
+                        selected = currentMode == "rail",
+                        onClick = { onModeSelected("rail") }
                     )
                 }
             }
@@ -325,15 +325,15 @@ fun StatsTopLayoutChooseDialog(
             Text(text = stringResource(R.string.settings_stats_top_layout), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
             Surface(shape = RoundedCornerShape(12.dp), color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
                 Column {
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_stats_top_layout_list)) },
-                        leadingContent = { RadioButton(selected = currentMode == "list", onClick = null) },
-                        modifier = Modifier.clickable { onModeSelected("list") }
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_stats_top_layout_list),
+                        selected = currentMode == "list",
+                        onClick = { onModeSelected("list") }
                     )
-                    ListItem(
-                        headlineContent = { Text(stringResource(R.string.settings_stats_top_layout_grid)) },
-                        leadingContent = { RadioButton(selected = currentMode == "grid", onClick = null) },
-                        modifier = Modifier.clickable { onModeSelected("grid") }
+                    FolkSelectableRow(
+                        title = stringResource(R.string.settings_stats_top_layout_grid),
+                        selected = currentMode == "grid",
+                        onClick = { onModeSelected("grid") }
                     )
                 }
             }

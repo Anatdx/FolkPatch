@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
+import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.util.*
@@ -206,15 +207,10 @@ fun FolkXAnimationTypeDialog(showDialog: MutableState<Boolean>, onTypeChanged: (
                             "diagonal" -> R.string.settings_folkx_animation_diagonal
                             else -> R.string.settings_folkx_animation_linear
                         }
-                        ListItem(
-                            headlineContent = { Text(stringResource(labelId)) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = currentType == type,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = stringResource(labelId),
+                            selected = currentType == type,
+                            onClick = {
                                 prefs.edit().putString("folkx_animation_type", type).apply()
                                 onTypeChanged(type)
                                 showDialog.value = false
@@ -269,15 +265,10 @@ fun AppListLoadingSchemeDialog(showDialog: MutableState<Boolean>, onSchemeChange
                     )
 
                     schemes.forEach { (scheme, labelId) ->
-                        ListItem(
-                            headlineContent = { Text(stringResource(labelId)) },
-                            leadingContent = {
-                                RadioButton(
-                                    selected = currentScheme == scheme,
-                                    onClick = null
-                                )
-                            },
-                            modifier = Modifier.clickable {
+                        FolkSelectableRow(
+                            title = stringResource(labelId),
+                            selected = currentScheme == scheme,
+                            onClick = {
                                 prefs.edit { putString("app_list_loading_scheme", scheme) }
                                 onSchemeChanged(scheme)
                                 showDialog.value = false

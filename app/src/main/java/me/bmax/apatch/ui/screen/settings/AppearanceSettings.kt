@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import java.io.File
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,7 +24,6 @@ import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -64,6 +62,7 @@ import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.material.icons.outlined.*
+import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -348,24 +347,15 @@ fun AppearanceSettingsContent(
                             modifier = Modifier.padding(bottom = 16.dp),
                         )
                         badgeTextModes.forEachIndexed { index, mode ->
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        BackgroundConfig.setCustomBadgeTextModeValue(index)
-                                        BackgroundConfig.save(context)
-                                        showCustomBadgeTextDialog.value = false
-                                    }
-                                    .padding(vertical = 12.dp)
-                            ) {
-                                RadioButton(
-                                    selected = index == currentBadgeTextModeIndex,
-                                    onClick = null
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = mode)
-                            }
+                            FolkSelectableRow(
+                                title = mode,
+                                selected = index == currentBadgeTextModeIndex,
+                                onClick = {
+                                    BackgroundConfig.setCustomBadgeTextModeValue(index)
+                                    BackgroundConfig.save(context)
+                                    showCustomBadgeTextDialog.value = false
+                                },
+                            )
                         }
                     }
                 },
