@@ -58,7 +58,7 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.component.folk.FolkTitleStyle
-import me.bmax.apatch.ui.screen.LabelText
+import me.bmax.apatch.ui.screen.superuser.LabelText
 import me.bmax.apatch.util.ShizukuServiceManager
 import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
 import me.bmax.apatch.ui.component.folk.FolkSwitchPreference

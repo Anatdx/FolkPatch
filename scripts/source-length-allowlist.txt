@@ -29,7 +29,7 @@ app/src/main/java/me/bmax/apatch/ui/screen/PatchesViews.kt
 app/src/main/java/me/bmax/apatch/ui/screen/PluginComponents.kt
 app/src/main/java/me/bmax/apatch/ui/screen/ScriptLibraryItems.kt
 app/src/main/java/me/bmax/apatch/ui/screen/Settings.kt
-app/src/main/java/me/bmax/apatch/ui/screen/SuperUser.kt
+app/src/main/java/me/bmax/apatch/ui/screen/superuser/SuperUser.kt
 app/src/main/java/me/bmax/apatch/ui/screen/ThemeStore.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/AppearanceSettings.kt
 app/src/main/java/me/bmax/apatch/ui/screen/settings/FunctionSettingsHideAppItems.kt

@@ -1,4 +1,4 @@
-package me.bmax.apatch.ui.screen
+package me.bmax.apatch.ui.screen.superuser
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
