@@ -1,3 +1,4 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class)
 package me.bmax.apatch.ui.screen.patches
 
 import android.app.Activity
@@ -71,6 +72,9 @@ fun StartButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit
         modifier = modifier,
         onClick = onClick,
         shape = MaterialTheme.shapes.large,
+        // Material 3 Expressive's medium size: the primary action reads as the
+        // biggest touch target on the page.
+        contentPadding = ButtonDefaults.MediumContentPadding,
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
