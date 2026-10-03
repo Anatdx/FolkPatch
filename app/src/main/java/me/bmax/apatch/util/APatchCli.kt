@@ -21,7 +21,7 @@ import me.bmax.apatch.BuildConfig
 import me.bmax.apatch.Natives
 import me.bmax.apatch.R
 import me.bmax.apatch.apApp
-import me.bmax.apatch.ui.screen.MODULE_TYPE
+import me.bmax.apatch.ui.screen.patches.MODULE_TYPE
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit

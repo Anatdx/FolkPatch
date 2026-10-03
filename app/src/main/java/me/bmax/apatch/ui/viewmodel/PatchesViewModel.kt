@@ -51,8 +51,8 @@ import java.util.Locale
 import me.bmax.apatch.util.getFileNameFromUri
 import me.bmax.apatch.util.ModuleBackupUtils
 import me.bmax.apatch.util.SafeUriResolver
-import me.bmax.apatch.ui.screen.selectedKPImg
-import me.bmax.apatch.ui.screen.selectedBootImage
+import me.bmax.apatch.ui.screen.patches.selectedKPImg
+import me.bmax.apatch.ui.screen.patches.selectedBootImage
 
 private const val TAG = "PatchViewModel"
 

@@ -20,12 +20,12 @@ app/src/main/java/me/bmax/apatch/ui/screen/home/HomeStatsSections.kt
 app/src/main/java/me/bmax/apatch/ui/screen/home/HomeV2.kt
 app/src/main/java/me/bmax/apatch/ui/screen/home/HomeV3Cards.kt
 app/src/main/java/me/bmax/apatch/ui/screen/home/HomeV4HeroCard.kt
-app/src/main/java/me/bmax/apatch/ui/screen/InstallModeSelect.kt
+app/src/main/java/me/bmax/apatch/ui/screen/patches/InstallModeSelect.kt
 app/src/main/java/me/bmax/apatch/ui/screen/module/KPM.kt
 app/src/main/java/me/bmax/apatch/ui/screen/module/KPMModuleItem.kt
 app/src/main/java/me/bmax/apatch/ui/screen/module/KPMModuleList.kt
 app/src/main/java/me/bmax/apatch/ui/screen/module/OnlineModuleScreen.kt
-app/src/main/java/me/bmax/apatch/ui/screen/PatchesViews.kt
+app/src/main/java/me/bmax/apatch/ui/screen/patches/PatchesViews.kt
 app/src/main/java/me/bmax/apatch/ui/screen/PluginComponents.kt
 app/src/main/java/me/bmax/apatch/ui/screen/ScriptLibraryItems.kt
 app/src/main/java/me/bmax/apatch/ui/screen/Settings.kt

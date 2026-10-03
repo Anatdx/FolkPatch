@@ -1,5 +1,5 @@
 package me.bmax.apatch.ui.screen.module
-import me.bmax.apatch.ui.screen.MODULE_TYPE
+import me.bmax.apatch.ui.screen.patches.MODULE_TYPE
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent

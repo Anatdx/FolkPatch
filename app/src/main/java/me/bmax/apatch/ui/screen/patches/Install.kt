@@ -1,4 +1,4 @@
-package me.bmax.apatch.ui.screen
+package me.bmax.apatch.ui.screen.patches
 
 import android.content.Intent
 import android.net.Uri
