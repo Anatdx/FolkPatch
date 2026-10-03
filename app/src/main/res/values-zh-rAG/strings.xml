@@ -991,6 +991,13 @@ KernelPatch 需要修补 boot 镜像才能工作喵。
     <string name="profile_avatar_default">默认喵像</string>
     <string name="profile_avatar_custom">自定义喵像</string>
     <string name="profile_avatar_opacity">头像透明度喵</string>
+    <string name="profile_avatar_source_title">选头像来源喵</string>
+    <string name="profile_avatar_source_local">从本机选喵</string>
+    <string name="profile_avatar_source_qq">QQ 头像喵</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">QQ 号喵</string>
+    <string name="profile_avatar_gravatar_hint">邮箱喵</string>
+    <string name="profile_avatar_fetch_failed">获取头像失败喵</string>
     <string name="profile_crop_avatar">裁剪头像喵</string>
     <string name="profile_restore_default">恢复默认喵</string>
     <string name="settings_section_general_basics">语言与更新喵</string>

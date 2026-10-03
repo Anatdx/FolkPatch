@@ -1007,6 +1007,13 @@ KernelPatch 需要修補 boot 映像檔。
     <string name="profile_avatar_default">預設頭像</string>
     <string name="profile_avatar_custom">自訂頭像</string>
     <string name="profile_avatar_opacity">頭像透明度</string>
+    <string name="profile_avatar_source_title">選擇頭像來源</string>
+    <string name="profile_avatar_source_local">從本機選擇</string>
+    <string name="profile_avatar_source_qq">QQ 頭像</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">QQ 號碼</string>
+    <string name="profile_avatar_gravatar_hint">電子郵件</string>
+    <string name="profile_avatar_fetch_failed">無法取得頭像</string>
     <string name="profile_crop_avatar">裁剪頭像</string>
     <string name="profile_restore_default">恢復預設</string>
     <string name="settings_section_general_basics">語言與更新</string>

@@ -963,6 +963,13 @@
     <string name="profile_avatar_default">默认圣像</string>
     <string name="profile_avatar_custom">自定圣像</string>
     <string name="profile_avatar_opacity">头像明晦</string>
+    <string name="profile_avatar_source_title">择头像之源</string>
+    <string name="profile_avatar_source_local">择于机</string>
+    <string name="profile_avatar_source_qq">QQ 神像</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">QQ 号</string>
+    <string name="profile_avatar_gravatar_hint">信笺</string>
+    <string name="profile_avatar_fetch_failed">神像不可召</string>
     <string name="profile_crop_avatar">裁切圣像</string>
     <string name="profile_restore_default">归于初始</string>
     <string name="settings_section_general_basics">圣言与更新</string>

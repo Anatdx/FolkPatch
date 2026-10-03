@@ -1043,6 +1043,13 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="profile_avatar_default">Default avatar</string>
     <string name="profile_avatar_custom">Custom avatar</string>
     <string name="profile_avatar_opacity">Avatar opacity</string>
+    <string name="profile_avatar_source_title">Choose avatar source</string>
+    <string name="profile_avatar_source_local">Choose from device</string>
+    <string name="profile_avatar_source_qq">QQ avatar</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">QQ number</string>
+    <string name="profile_avatar_gravatar_hint">Email</string>
+    <string name="profile_avatar_fetch_failed">Couldn\'t fetch the avatar</string>
     <string name="profile_crop_avatar">Crop avatar</string>
     <string name="profile_restore_default">Restore defaults</string>
     <string name="settings_section_general_interface">Interface &amp; Motion</string>

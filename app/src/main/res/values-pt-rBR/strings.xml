@@ -958,6 +958,13 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="profile_avatar_default">Avatar padrão</string>
     <string name="profile_avatar_custom">Avatar personalizado</string>
     <string name="profile_avatar_opacity">Opacidade do avatar</string>
+    <string name="profile_avatar_source_title">Escolher origem do avatar</string>
+    <string name="profile_avatar_source_local">Escolher do dispositivo</string>
+    <string name="profile_avatar_source_qq">Avatar do QQ</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">Número do QQ</string>
+    <string name="profile_avatar_gravatar_hint">E-mail</string>
+    <string name="profile_avatar_fetch_failed">Não foi possível obter o avatar</string>
     <string name="profile_crop_avatar">Recortar avatar</string>
     <string name="profile_restore_default">Restaurar padrão</string>
     <string name="settings_section_general_basics">Idioma e atualizações</string>

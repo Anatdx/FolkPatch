@@ -886,6 +886,13 @@ Kontynuować mimo to?</string>
     <string name="profile_avatar_default">Domyślny awatar</string>
     <string name="profile_avatar_custom">Własny awatar</string>
     <string name="profile_avatar_opacity">Krycie awatara</string>
+    <string name="profile_avatar_source_title">Wybierz źródło awatara</string>
+    <string name="profile_avatar_source_local">Wybierz z urządzenia</string>
+    <string name="profile_avatar_source_qq">Awatar QQ</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">Numer QQ</string>
+    <string name="profile_avatar_gravatar_hint">E-mail</string>
+    <string name="profile_avatar_fetch_failed">Nie udało się pobrać awatara</string>
     <string name="profile_crop_avatar">Przytnij awatar</string>
     <string name="profile_restore_default">Przywróć domyślne</string>
     <string name="settings_section_general_basics">Język i aktualizacje</string>

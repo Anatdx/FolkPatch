@@ -949,6 +949,13 @@ KernelPatch 附魔需要 boot 方块作为材料。
     <string name="profile_avatar_default">默认头像</string>
     <string name="profile_avatar_custom">自定义头像</string>
     <string name="profile_avatar_opacity">头像透明度</string>
+    <string name="profile_avatar_source_title">选择头像来源</string>
+    <string name="profile_avatar_source_local">从设备选择</string>
+    <string name="profile_avatar_source_qq">QQ 头像</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">QQ 号</string>
+    <string name="profile_avatar_gravatar_hint">邮箱</string>
+    <string name="profile_avatar_fetch_failed">获取头像失败</string>
     <string name="profile_crop_avatar">裁剪头像</string>
     <string name="profile_restore_default">恢复默认</string>
     <string name="settings_section_general_basics">语言与更新</string>

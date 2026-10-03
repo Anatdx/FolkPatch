@@ -960,6 +960,13 @@
     <string name="profile_avatar_default">صورة افتراضية</string>
     <string name="profile_avatar_custom">صورة مخصصة</string>
     <string name="profile_avatar_opacity">شفافية الصورة الرمزية</string>
+    <string name="profile_avatar_source_title">اختيار مصدر الصورة الرمزية</string>
+    <string name="profile_avatar_source_local">اختيار من الجهاز</string>
+    <string name="profile_avatar_source_qq">صورة QQ الرمزية</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">رقم QQ</string>
+    <string name="profile_avatar_gravatar_hint">البريد الإلكتروني</string>
+    <string name="profile_avatar_fetch_failed">تعذّر جلب الصورة الرمزية</string>
     <string name="profile_crop_avatar">قص الصورة</string>
     <string name="profile_restore_default">استعادة الافتراضي</string>
     <string name="settings_section_general_basics">اللغة والتحديثات</string>

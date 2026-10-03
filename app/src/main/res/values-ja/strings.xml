@@ -911,6 +911,13 @@ KernelPatch は boot イメージをパッチする必要があります。
     <string name="profile_avatar_default">デフォルトのアバター</string>
     <string name="profile_avatar_custom">カスタムアバター</string>
     <string name="profile_avatar_opacity">アバターの不透明度</string>
+    <string name="profile_avatar_source_title">アバターのソースを選択</string>
+    <string name="profile_avatar_source_local">デバイスから選択</string>
+    <string name="profile_avatar_source_qq">QQ アバター</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">QQ 番号</string>
+    <string name="profile_avatar_gravatar_hint">メールアドレス</string>
+    <string name="profile_avatar_fetch_failed">アバターを取得できませんでした</string>
     <string name="profile_crop_avatar">アイコンを切り抜き</string>
     <string name="profile_restore_default">初期設定に戻す</string>
     <string name="settings_section_general_basics">言語とアップデート</string>

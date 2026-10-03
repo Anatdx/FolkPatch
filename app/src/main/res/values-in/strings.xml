@@ -944,6 +944,13 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="profile_avatar_default">Avatar bawaan</string>
     <string name="profile_avatar_custom">Avatar kustom</string>
     <string name="profile_avatar_opacity">Opasitas avatar</string>
+    <string name="profile_avatar_source_title">Pilih sumber avatar</string>
+    <string name="profile_avatar_source_local">Pilih dari perangkat</string>
+    <string name="profile_avatar_source_qq">Avatar QQ</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">Nomor QQ</string>
+    <string name="profile_avatar_gravatar_hint">Email</string>
+    <string name="profile_avatar_fetch_failed">Tidak dapat mengambil avatar</string>
     <string name="profile_crop_avatar">Potong avatar</string>
     <string name="profile_restore_default">Pulihkan default</string>
     <string name="settings_section_general_basics">Bahasa &amp; Pembaruan</string>

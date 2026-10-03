@@ -3,6 +3,7 @@ package me.bmax.apatch.ui.screen.misc
 import android.content.Intent
 import android.content.ActivityNotFoundException
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -93,7 +94,7 @@ import java.io.FileOutputStream
 
 private const val FEEDBACK_URL = "https://github.com/LyraVoid/FolkPatch/issues/new/choose"
 
-private const val PROFILE_AVATAR_FILE = "profile_avatar"
+internal const val PROFILE_AVATAR_FILE = "profile_avatar"
 
 /**
  * Copies the picked image into app storage and returns a cache-busted URI.
@@ -147,6 +148,8 @@ fun SettingScreen(navigator: DestinationsNavigator) {
     var showProfileEditor by rememberSaveable { mutableStateOf(false) }
     var pendingAvatarUri by remember { mutableStateOf<Uri?>(null) }
     var showCropChoice by remember { mutableStateOf(false) }
+    var showAvatarSource by remember { mutableStateOf(false) }
+    var avatarSourceInput by remember { mutableStateOf<AvatarSource?>(null) }
 
     fun applyAvatar(uri: Uri) {
         scope.launch {
@@ -406,7 +409,7 @@ fun SettingScreen(navigator: DestinationsNavigator) {
             signature = profileSignature,
             avatarUri = profileAvatar,
             avatarOpacity = profileAvatarOpacity,
-            onPickAvatar = { pickAvatarLauncher.launch("image/*") },
+            onPickAvatar = { showAvatarSource = true },
             onUseDefaultAvatar = {
                 profileAvatar = ""
                 runCatching { File(context.filesDir, PROFILE_AVATAR_FILE).delete() }
@@ -433,6 +436,45 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                     if (sign.isBlank()) remove("profile_signature") else putString("profile_signature", sign)
                 }
                 showProfileEditor = false
+            },
+        )
+    }
+
+    AvatarSourceDialog(
+        showDialog = showAvatarSource,
+        onDismiss = { showAvatarSource = false },
+        onSelect = { source ->
+            showAvatarSource = false
+            when (source) {
+                AvatarSource.Local -> pickAvatarLauncher.launch("image/*")
+                AvatarSource.Qq, AvatarSource.Gravatar -> avatarSourceInput = source
+            }
+        },
+    )
+
+    avatarSourceInput?.let { source ->
+        AvatarIdDialog(
+            title = stringResource(
+                if (source == AvatarSource.Qq) R.string.profile_avatar_source_qq
+                else R.string.profile_avatar_source_gravatar
+            ),
+            label = stringResource(
+                if (source == AvatarSource.Qq) R.string.profile_avatar_qq_hint
+                else R.string.profile_avatar_gravatar_hint
+            ),
+            onDismiss = { avatarSourceInput = null },
+            onConfirm = { value ->
+                avatarSourceInput = null
+                val url = if (source == AvatarSource.Qq) qqAvatarUrl(value) else gravatarUrl(value)
+                scope.launch {
+                    val stored = downloadProfileAvatar(context, url)
+                    if (stored != null) {
+                        profileAvatar = stored
+                        prefs.edit { putString("profile_avatar", stored) }
+                    } else {
+                        Toast.makeText(context, R.string.profile_avatar_fetch_failed, Toast.LENGTH_SHORT).show()
+                    }
+                }
             },
         )
     }

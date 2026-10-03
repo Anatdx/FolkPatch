@@ -3,7 +3,6 @@ package me.bmax.apatch.ui.screen.misc
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -47,10 +45,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -59,7 +55,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.folkGroupColor
-import me.bmax.apatch.ui.component.folk.folkPressScale
 import kotlin.math.roundToInt
 
 /** Square size the avatar is decoded at, in pixels. */
@@ -230,77 +225,6 @@ fun ProfileEditSheet(
                 }
             }
         }
-    }
-}
-
-/**
- * One of the two avatar choices. The selected tile is tinted and carries a
- * check badge, so the current mode is obvious at a glance.
- */
-@Composable
-private fun AvatarOptionTile(
-    label: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    opacity: Float = 1f,
-    preview: @Composable () -> Unit,
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val haptics = LocalHapticFeedback.current
-    val shape = RoundedCornerShape(24.dp)
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .clip(shape)
-            .background(
-                if (selected) MaterialTheme.colorScheme.secondaryContainer
-                else MaterialTheme.colorScheme.surfaceContainerHighest,
-            )
-            .folkPressScale(interactionSource, true)
-            .clickable(interactionSource = interactionSource, indication = null) {
-                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                onClick()
-            }
-            .padding(vertical = 16.dp),
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .alpha(opacity)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceContainerHighest),
-                contentAlignment = Alignment.Center,
-            ) {
-                preview()
-            }
-            if (selected) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .size(22.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Check,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(14.dp),
-                    )
-                }
-            }
-        }
-        Spacer(Modifier.height(10.dp))
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelLarge,
-            color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer
-            else MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-        )
     }
 }
 

@@ -963,6 +963,13 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="profile_avatar_default">默认仙容</string>
     <string name="profile_avatar_custom">自定仙容</string>
     <string name="profile_avatar_opacity">神相明晦</string>
+    <string name="profile_avatar_source_title">择头像之源</string>
+    <string name="profile_avatar_source_local">自器择之</string>
+    <string name="profile_avatar_source_qq">QQ 幻像</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">QQ 号</string>
+    <string name="profile_avatar_gravatar_hint">传讯</string>
+    <string name="profile_avatar_fetch_failed">幻像难求</string>
     <string name="profile_crop_avatar">裁切仙容</string>
     <string name="profile_restore_default">归于初始</string>
     <string name="settings_section_general_basics">道文与更新</string>

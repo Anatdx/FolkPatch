@@ -934,6 +934,13 @@ KernelPatch는 boot 이미지를 패치해야 합니다.
     <string name="profile_avatar_default">기본 아바타</string>
     <string name="profile_avatar_custom">사용자 지정 아바타</string>
     <string name="profile_avatar_opacity">아바타 불투명도</string>
+    <string name="profile_avatar_source_title">아바타 소스 선택</string>
+    <string name="profile_avatar_source_local">기기에서 선택</string>
+    <string name="profile_avatar_source_qq">QQ 아바타</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">QQ 번호</string>
+    <string name="profile_avatar_gravatar_hint">이메일</string>
+    <string name="profile_avatar_fetch_failed">아바타를 가져오지 못했습니다</string>
     <string name="profile_crop_avatar">아바타 자르기</string>
     <string name="profile_restore_default">기본값으로 복원</string>
     <string name="settings_section_general_basics">언어 및 업데이트</string>

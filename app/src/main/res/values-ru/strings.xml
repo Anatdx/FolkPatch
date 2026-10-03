@@ -963,6 +963,13 @@ KernelPatch требует образ boot для патча.
     <string name="profile_avatar_default">Аватар по умолчанию</string>
     <string name="profile_avatar_custom">Свой аватар</string>
     <string name="profile_avatar_opacity">Непрозрачность аватара</string>
+    <string name="profile_avatar_source_title">Выбрать источник аватара</string>
+    <string name="profile_avatar_source_local">Выбрать с устройства</string>
+    <string name="profile_avatar_source_qq">Аватар QQ</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">Номер QQ</string>
+    <string name="profile_avatar_gravatar_hint">Эл. почта</string>
+    <string name="profile_avatar_fetch_failed">Не удалось загрузить аватар</string>
     <string name="profile_crop_avatar">Обрезать аватар</string>
     <string name="profile_restore_default">Сбросить настройки</string>
     <string name="settings_section_general_basics">Язык и обновления</string>

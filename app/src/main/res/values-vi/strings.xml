@@ -962,6 +962,13 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="profile_avatar_default">Ảnh đại diện mặc định</string>
     <string name="profile_avatar_custom">Ảnh đại diện tùy chỉnh</string>
     <string name="profile_avatar_opacity">Độ mờ ảnh đại diện</string>
+    <string name="profile_avatar_source_title">Chọn nguồn ảnh đại diện</string>
+    <string name="profile_avatar_source_local">Chọn từ thiết bị</string>
+    <string name="profile_avatar_source_qq">Ảnh đại diện QQ</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">Số QQ</string>
+    <string name="profile_avatar_gravatar_hint">Email</string>
+    <string name="profile_avatar_fetch_failed">Không thể tải ảnh đại diện</string>
     <string name="profile_crop_avatar">Cắt ảnh đại diện</string>
     <string name="profile_restore_default">Khôi phục mặc định</string>
     <string name="settings_section_general_basics">Ngôn ngữ &amp; Cập nhật</string>

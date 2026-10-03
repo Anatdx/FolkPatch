@@ -960,6 +960,13 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="profile_avatar_default">Varsayılan avatar</string>
     <string name="profile_avatar_custom">Özel avatar</string>
     <string name="profile_avatar_opacity">Avatar opaklığı</string>
+    <string name="profile_avatar_source_title">Avatar kaynağını seç</string>
+    <string name="profile_avatar_source_local">Cihazdan seç</string>
+    <string name="profile_avatar_source_qq">QQ avatarı</string>
+    <string name="profile_avatar_source_gravatar">Gravatar</string>
+    <string name="profile_avatar_qq_hint">QQ numarası</string>
+    <string name="profile_avatar_gravatar_hint">E-posta</string>
+    <string name="profile_avatar_fetch_failed">Avatar alınamadı</string>
     <string name="profile_crop_avatar">Avatarı kırp</string>
     <string name="profile_restore_default">Varsayılana dön</string>
     <string name="settings_section_general_basics">Dil ve Güncellemeler</string>
