@@ -101,6 +101,46 @@ class CheckPackageBoundariesTest(unittest.TestCase):
             ],
         )
 
+    def test_core_component_importing_screen_is_reported(self):
+        core_ui = "core/ui/src/main/java/me/bmax/apatch/ui"
+        root = self.make_tree(
+            {
+                f"{core_ui}/component/Foo.kt": "package me.bmax.apatch.ui.component\n"
+                "import me.bmax.apatch.ui.screen.Bar\n"
+            }
+        )
+        self.assertEqual(
+            checker.find_violations(root),
+            [("reverse-import", f"{core_ui}/component/Foo.kt", "imports ui.screen.*")],
+        )
+
+    def test_core_module_depending_on_app_is_reported(self):
+        root = self.make_tree(
+            {
+                "core/ui/build.gradle.kts": "dependencies {\n"
+                '    implementation(project(":app"))\n}\n'
+            }
+        )
+        self.assertEqual(
+            checker.find_violations(root),
+            [
+                (
+                    "core-depends-on-app",
+                    "core/ui/build.gradle.kts",
+                    "core module depends on :app",
+                )
+            ],
+        )
+
+    def test_core_module_without_app_dependency_is_allowed(self):
+        root = self.make_tree(
+            {
+                "core/ui/build.gradle.kts": "dependencies {\n"
+                '    implementation(project(":core:designsystem"))\n}\n'
+            }
+        )
+        self.assertEqual(checker.find_violations(root), [])
+
     def test_non_kotlin_files_are_ignored(self):
         root = self.make_tree({f"{UI}/component/notes.txt": "Color(0xFF112233)\n"})
         self.assertEqual(checker.find_violations(root), [])
