@@ -54,6 +54,7 @@ import me.bmax.apatch.util.ModuleShortcut
 import me.bmax.apatch.util.scriptBannerStorage
 import me.bmax.apatch.util.ui.showToast
 import java.io.File
+import androidx.compose.animation.core.animateDpAsState
 
 private val scriptBannerSemaphore = Semaphore(4)
 
@@ -195,7 +196,12 @@ fun ScriptItem(
         }
     }
 
-    val cardShape = ContinuousCornerShape(20.dp)
+    val cardCorner by animateDpAsState(
+        targetValue = if (expanded && foldCard) 28.dp else 20.dp,
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+        label = "scriptCardCorner",
+    )
+    val cardShape = ContinuousCornerShape(cardCorner)
     val clickModifier = Modifier
         .fillMaxWidth()
         .animateContentSize(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec())
