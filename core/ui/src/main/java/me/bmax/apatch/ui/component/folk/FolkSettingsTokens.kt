@@ -26,6 +26,13 @@ object FolkSettingsDimens {
     val ScreenPadding = 16.dp
 
     /**
+     * Cap for the content column on large screens. The shells centre the
+     * content within this width so lines stay readable on tablets and
+     * desktop-sized windows.
+     */
+    val ContentMaxWidth = 840.dp
+
+    /**
      * Vertical gap after a section (before the next section title).
      * Measured: panel bottom -> next panel top is ~51.5dp in total, which is
      * sectionSpacing + one title line box (~18dp) + SectionTitleSpacing.

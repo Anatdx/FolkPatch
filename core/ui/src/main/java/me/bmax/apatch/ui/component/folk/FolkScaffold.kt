@@ -35,6 +35,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.ui.navigation.LocalBottomBarVisible
 import me.bmax.apatch.ui.navigation.LocalIsFloatingNavMode
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.Alignment
 
 /**
  * How a [FolkScaffold] presents its title.
@@ -190,15 +192,24 @@ fun FolkScaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = inner.calculateTopPadding()),
+            contentAlignment = Alignment.TopCenter,
         ) {
-            content(
-                PaddingValues(
-                    start = inner.calculateStartPadding(layoutDirection),
-                    end = inner.calculateEndPadding(layoutDirection),
-                    top = 0.dp,
-                    bottom = inner.calculateBottomPadding() + clearance,
+            // Cap the content column on large screens so rows do not stretch
+            // across a tablet or desktop window; on a phone this is a no-op.
+            Box(
+                modifier = Modifier
+                    .widthIn(max = FolkSettingsDimens.ContentMaxWidth)
+                    .fillMaxSize(),
+            ) {
+                content(
+                    PaddingValues(
+                        start = inner.calculateStartPadding(layoutDirection),
+                        end = inner.calculateEndPadding(layoutDirection),
+                        top = 0.dp,
+                        bottom = inner.calculateBottomPadding() + clearance,
+                    )
                 )
-            )
+            }
         }
     }
 }

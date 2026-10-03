@@ -28,6 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import me.bmax.apatch.ui.theme.tokens.FolkTheme
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.Box
 
 /**
  * Colours for the settings bar.
@@ -129,17 +132,24 @@ fun FolkSettingsScaffold(
         // Keep the list viewport below the bar instead of only offsetting the
         // first item: with a translucent bar in wallpaper mode, content that
         // scrolls underneath would show through the title.
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = innerPadding.calculateTopPadding()),
-            contentPadding = PaddingValues(
-                bottom = innerPadding.calculateBottomPadding() + FolkSettingsDimens.ScreenPadding,
-            ),
+        // Cap the list width on large screens so rows stay readable.
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.TopCenter,
         ) {
-            content()
-            item(key = "folk_bottom") {
-                NavigationBarsSpacer()
+            LazyColumn(
+                modifier = Modifier
+                    .widthIn(max = FolkSettingsDimens.ContentMaxWidth)
+                    .fillMaxSize()
+                    .padding(top = innerPadding.calculateTopPadding()),
+                contentPadding = PaddingValues(
+                    bottom = innerPadding.calculateBottomPadding() + FolkSettingsDimens.ScreenPadding,
+                ),
+            ) {
+                content()
+                item(key = "folk_bottom") {
+                    NavigationBarsSpacer()
+                }
             }
         }
     }
