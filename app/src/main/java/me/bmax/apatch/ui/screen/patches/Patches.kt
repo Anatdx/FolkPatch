@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.util.Log
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,6 +53,7 @@ import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.component.ExpressiveCard
 import me.bmax.apatch.ui.component.WarningCard
+import me.bmax.apatch.ui.theme.tokens.FolkMotion
 import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.isJailbreakPatchBlocked
 import me.bmax.apatch.util.reboot
@@ -267,7 +267,7 @@ fun Patches(mode: PatchesViewModel.PatchMode) {
                         kotlinx.coroutines.yield()
                         logScrollState.animateScrollTo(
                             logScrollState.maxValue,
-                            animationSpec = tween(durationMillis = 80)
+                            animationSpec = FolkMotion.ScrollIntoView
                         )
                     }
                 }

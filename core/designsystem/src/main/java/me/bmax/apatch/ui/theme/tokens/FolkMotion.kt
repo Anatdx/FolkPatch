@@ -25,6 +25,10 @@ object FolkMotion {
     fun <T> smoothSpring(): FiniteAnimationSpec<T> =
         spring(dampingRatio = Spring.DampingRatioNoBouncy, stiffness = 250f)
 
+    /** Jumping a list back to its end after new content arrives: quick enough that the list reads
+     *  as already settled rather than scrolling. */
+    val ScrollIntoView: FiniteAnimationSpec<Float> = tween(durationMillis = 80)
+
     /** Fading something in or out. */
     val FadeInOut: FiniteAnimationSpec<Float> = tween(durationMillis = 200)
 

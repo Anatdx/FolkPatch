@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -44,6 +43,7 @@ import kotlinx.coroutines.withContext
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.KeyEventBlocker
 import me.bmax.apatch.ui.component.folk.FolkScaffold
+import me.bmax.apatch.ui.theme.tokens.FolkMotion
 import me.bmax.apatch.util.getSafeDownloadsDir
 import me.bmax.apatch.util.installModule
 import me.bmax.apatch.util.BulkInstallManager
@@ -214,7 +214,7 @@ fun InstallScreen(navigator: DestinationsNavigator, uri: Uri, type: MODULE_TYPE)
                 .verticalScroll(scrollState),
         ) {
             LaunchedEffect(text) {
-                scrollState.animateScrollTo(scrollState.maxValue, animationSpec = tween(durationMillis = 80))
+                scrollState.animateScrollTo(scrollState.maxValue, animationSpec = FolkMotion.ScrollIntoView)
             }
             Text(
                 modifier = Modifier.padding(8.dp),

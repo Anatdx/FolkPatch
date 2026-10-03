@@ -15,6 +15,7 @@ class FolkMotionTest {
     fun animationSpecsAreConfigured() {
         assertNotNull(FolkMotion.PressScale)
         assertNotNull(FolkMotion.PressDown)
+        assertNotNull(FolkMotion.ScrollIntoView)
         assertNotNull(FolkMotion.FadeInOut)
         assertNotNull(FolkMotion.IconRotation)
         assertNotNull(FolkMotion.smoothSpring<Float>())
