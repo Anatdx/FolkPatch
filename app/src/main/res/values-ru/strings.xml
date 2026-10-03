@@ -1398,4 +1398,9 @@ KernelPatch требует образ boot для патча.
     <string name="kpm_installed">Установлен</string>
     <string name="kpm_disabled">Отключён (вступит в силу после перезагрузки)</string>
     <string name="kpm_embedded_unload_invalid">Встроенные KPM нельзя выгрузить; после перезагрузки они останутся активными.</string>
+    <string name="settings_faq">Частые вопросы</string>
+    <string name="settings_bug_feedback">Сообщить об ошибке</string>
+    <string name="settings_clear_cache">Очистить кэш</string>
+    <string name="settings_disclaimer">Отказ от ответственности</string>
+    <string name="settings_disclaimer_message">После получения root-прав обновления системы, сторонние модули и другие внешние факторы могут привести к непредвиденным рискам и потерям. Вы принимаете эти риски на себя. Пожалуйста, продолжайте только после того, как полностью их осознаете.</string>
 </resources>

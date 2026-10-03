@@ -1397,4 +1397,9 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="kpm_installed">Đã cài đặt</string>
     <string name="kpm_disabled">Đã tắt (có hiệu lực sau khi khởi động lại)</string>
     <string name="kpm_embedded_unload_invalid">Không thể tải KPM đã nhúng; chúng vẫn hoạt động sau khi khởi động lại.</string>
+    <string name="settings_faq">Câu hỏi thường gặp</string>
+    <string name="settings_bug_feedback">Báo lỗi</string>
+    <string name="settings_clear_cache">Xóa bộ nhớ đệm</string>
+    <string name="settings_disclaimer">Tuyên bố miễn trừ trách nhiệm</string>
+    <string name="settings_disclaimer_message">Sau khi root thiết bị, các bản cập nhật hệ thống, mô-đun của bên thứ ba hoặc các yếu tố bên ngoài khác có thể gây ra rủi ro và tổn thất không lường trước, bạn phải tự chịu trách nhiệm. Hãy tiếp tục sau khi đã hiểu rõ rủi ro.</string>
 </resources>

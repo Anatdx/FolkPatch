@@ -1381,4 +1381,9 @@ KernelPatch 附魔需要 boot 方块作为材料。
     <string name="jailbreak">解封</string>
     <string name="jailbreak_triggered">解封已触发，等拿到 OP 权限就快速重生。</string>
     <string name="reboot_soft">快速重生</string>
+    <string name="settings_faq">常见问题</string>
+    <string name="settings_bug_feedback">缺陷回报</string>
+    <string name="settings_clear_cache">清理缓存</string>
+    <string name="settings_disclaimer">免责契约</string>
+    <string name="settings_disclaimer_message">将设备 Root 之后，系统更新、第三方模块或其它外界因素皆可能带来不可预知的危险与损失，须由你自行承担。待你明了风险，方可继续冒险。</string>
 </resources>

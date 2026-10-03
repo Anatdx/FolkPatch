@@ -1386,4 +1386,9 @@
     <string name="kpm_installed">مثبّت</string>
     <string name="kpm_disabled">معطّل (يسري بعد إعادة التشغيل)</string>
     <string name="kpm_embedded_unload_invalid">لا يمكن إلغاء تحميل وحدات KPM المضمّنة؛ ستظل فعّالة بعد إعادة التشغيل.</string>
+    <string name="settings_faq">الأسئلة الشائعة</string>
+    <string name="settings_bug_feedback">الإبلاغ عن خطأ</string>
+    <string name="settings_clear_cache">مسح ذاكرة التخزين المؤقت</string>
+    <string name="settings_disclaimer">إخلاء المسؤولية</string>
+    <string name="settings_disclaimer_message">بعد عمل روت للجهاز، قد تتسبب تحديثات النظام أو الوحدات الخارجية أو عوامل خارجية أخرى في مخاطر وخسائر غير متوقعة، ويتعين عليك تحملها بنفسك. يرجى الاستمرار فقط بعد فهم المخاطر جيدًا.</string>
 </resources>

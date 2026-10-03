@@ -1401,4 +1401,9 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="kpm_installed">Instalado</string>
     <string name="kpm_disabled">Desactivado (se aplicará después de reiniciar)</string>
     <string name="kpm_embedded_unload_invalid">Los KPM incrustados no se pueden descargar; seguirán activos después de reiniciar.</string>
+    <string name="settings_faq">Preguntas frecuentes</string>
+    <string name="settings_bug_feedback">Informar de un error</string>
+    <string name="settings_clear_cache">Borrar caché</string>
+    <string name="settings_disclaimer">Descargo de responsabilidad</string>
+    <string name="settings_disclaimer_message">Después de rootear el dispositivo, las actualizaciones del sistema, los módulos de terceros u otros factores externos pueden causar riesgos y pérdidas imprevistas. Debes asumirlos por tu cuenta. Asegúrate de entenderlos antes de continuar.</string>
 </resources>

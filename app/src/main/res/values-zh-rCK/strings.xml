@@ -1382,4 +1382,9 @@ KernelPatch 这道菜需要用 boot 主料来烹饪。
     <string name="jailbreak">解禁</string>
     <string name="jailbreak_triggered">解禁已触发，等拿到 root 就小火回锅。</string>
     <string name="reboot_soft">小火回锅</string>
+    <string name="settings_faq">常见问题</string>
+    <string name="settings_bug_feedback">Bug 反馈</string>
+    <string name="settings_clear_cache">清除缓存</string>
+    <string name="settings_disclaimer">免责声明</string>
+    <string name="settings_disclaimer_message">给设备上 Root 之后，系统更新、第三方模块或别的外在因素都可能带来没准儿的风险和损失，得你自己承担。弄明白风险了再接着用。</string>
 </resources>

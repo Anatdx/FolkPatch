@@ -1399,4 +1399,9 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="kpm_installed">Instalado</string>
     <string name="kpm_disabled">Desativado (entra em vigor após reiniciar)</string>
     <string name="kpm_embedded_unload_invalid">Não é possível descarregar KPMs embutidos; eles continuarão ativos após reiniciar.</string>
+    <string name="settings_faq">Perguntas frequentes</string>
+    <string name="settings_bug_feedback">Relatar bug</string>
+    <string name="settings_clear_cache">Limpar cache</string>
+    <string name="settings_disclaimer">Isenção de responsabilidade</string>
+    <string name="settings_disclaimer_message">Após obter root no dispositivo, atualizações do sistema, módulos de terceiros ou outros fatores externos podem causar riscos e perdas imprevistas, que você assume por conta própria. Continue apenas depois de entender bem os riscos.</string>
 </resources>

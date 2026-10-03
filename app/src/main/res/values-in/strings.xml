@@ -1380,4 +1380,9 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="kpm_installed">Terpasang</string>
     <string name="kpm_disabled">Dinonaktifkan (berlaku setelah mulai ulang)</string>
     <string name="kpm_embedded_unload_invalid">KPM tertanam tidak dapat dibongkar; akan tetap aktif setelah mulai ulang.</string>
+    <string name="settings_faq">Pertanyaan umum</string>
+    <string name="settings_bug_feedback">Laporkan bug</string>
+    <string name="settings_clear_cache">Hapus cache</string>
+    <string name="settings_disclaimer">Penafian</string>
+    <string name="settings_disclaimer_message">Setelah melakukan root pada perangkat, pembaruan sistem, modul pihak ketiga, atau faktor eksternal lain dapat menimbulkan risiko dan kerugian yang tidak terduga, dan Anda harus menanggungnya sendiri. Pastikan Anda memahaminya sebelum melanjutkan.</string>
 </resources>

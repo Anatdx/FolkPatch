@@ -1321,4 +1321,9 @@ KernelPatch は boot イメージをパッチする必要があります。
     <string name="kpm_installed">インストール済み</string>
     <string name="kpm_disabled">無効（再起動後に反映）</string>
     <string name="kpm_embedded_unload_invalid">埋め込み KPM はアンロードできません。再起動後も有効です。</string>
+    <string name="settings_faq">よくある質問</string>
+    <string name="settings_bug_feedback">バグ報告</string>
+    <string name="settings_clear_cache">キャッシュを削除</string>
+    <string name="settings_disclaimer">免責事項</string>
+    <string name="settings_disclaimer_message">端末を Root 化すると、システム更新やサードパーティ製モジュールなど外部要因により予期しないリスクや損害が生じる可能性があります。それらはご自身の責任で負担していただく必要があります。十分に理解した上でご利用ください。</string>
 </resources>

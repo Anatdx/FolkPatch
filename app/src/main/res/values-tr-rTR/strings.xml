@@ -1394,4 +1394,9 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="jailbreak">Jailbreak</string>
     <string name="jailbreak_triggered">Jailbreak tetiklendi. Root bekleyin, ardından yumuşak yeniden başlatma yapın.</string>
     <string name="reboot_soft">Yumuşak yeniden başlatma</string>
+    <string name="settings_faq">Sık sorulan sorular</string>
+    <string name="settings_bug_feedback">Hata bildir</string>
+    <string name="settings_clear_cache">Önbelleği temizle</string>
+    <string name="settings_disclaimer">Sorumluluk reddi</string>
+    <string name="settings_disclaimer_message">Cihazı root ettikten sonra sistem güncellemeleri, üçüncü taraf modüller veya diğer dış etkenler öngörülemeyen risk ve kayıplara yol açabilir; bunları kendiniz üstlenmeniz gerekir. Lütfen riskleri tam olarak anladıktan sonra devam edin.</string>
 </resources>

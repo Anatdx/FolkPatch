@@ -1391,4 +1391,9 @@ KernelPatch 需要修補 boot 映像檔。
     <string name="kpm_installed">已安裝</string>
     <string name="kpm_disabled">已停用（重新啟動後生效）</string>
     <string name="kpm_embedded_unload_invalid">嵌入的 KPM 無法卸載；重新啟動後仍會保持啟用。</string>
+    <string name="settings_faq">常見問題</string>
+    <string name="settings_bug_feedback">Bug 回報</string>
+    <string name="settings_clear_cache">清除快取檔案</string>
+    <string name="settings_disclaimer">免責聲明</string>
+    <string name="settings_disclaimer_message">在裝置上進行 Root 後，系統更新、第三方模組或其它外部因素可能造成無法預期的風險與損失，需由你自行承擔。請在充分了解風險後再繼續使用。</string>
 </resources>

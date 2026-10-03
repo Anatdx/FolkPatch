@@ -1322,4 +1322,9 @@ Kontynuować mimo to?</string>
     <string name="kpm_installed">Zainstalowano</string>
     <string name="kpm_disabled">Wyłączono (zacznie obowiązywać po ponownym uruchomieniu)</string>
     <string name="kpm_embedded_unload_invalid">Osadzonych modułów KPM nie można odładować; pozostaną aktywne po ponownym uruchomieniu.</string>
+    <string name="settings_faq">Częste pytania</string>
+    <string name="settings_bug_feedback">Zgłoś błąd</string>
+    <string name="settings_clear_cache">Wyczyść pamięć podręczną</string>
+    <string name="settings_disclaimer">Wyłączenie odpowiedzialności</string>
+    <string name="settings_disclaimer_message">Po uzyskaniu uprawnień root aktualizacje systemu, moduły firm trzecich lub inne czynniki zewnętrzne mogą powodować nieprzewidziane ryzyko i straty, które ponosisz na własną odpowiedzialność. Kontynuuj dopiero po pełnym zrozumieniu ryzyka.</string>
 </resources>

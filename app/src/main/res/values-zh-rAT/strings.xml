@@ -1385,4 +1385,9 @@
     <string name="jailbreak">圣辉解禁</string>
     <string name="jailbreak_triggered">圣辉解禁已触发，等待获得神恩后圣翼轻旋。</string>
     <string name="reboot_soft">圣翼轻旋</string>
+    <string name="settings_faq">常见疑问</string>
+    <string name="settings_bug_feedback">缺陷奏报</string>
+    <string name="settings_clear_cache">涤除缓存</string>
+    <string name="settings_disclaimer">免责神谕</string>
+    <string name="settings_disclaimer_message">对设备施以 Root 之后，系统更新、第三方模块或其它外缘皆可能降下不可预知之险与损，须由你自负。待你明晓其险，方可续行。</string>
 </resources>
