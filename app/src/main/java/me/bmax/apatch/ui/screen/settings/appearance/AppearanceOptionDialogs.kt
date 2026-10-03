@@ -96,8 +96,8 @@ fun ThemeExportDialog(
                                     .weight(1f)
                                     .height(56.dp),
                                 shape = when (index) {
-                                    0 -> RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp)
-                                    else -> RoundedCornerShape(topEnd = 16.dp, bottomEnd = 16.dp)
+                                    0 -> ContinuousCornerShape(topStart = 16.dp, bottomStart = 16.dp)
+                                    else -> ContinuousCornerShape(topEnd = 16.dp, bottomEnd = 16.dp)
                                 },
                                 color = if (selected) {
                                     MaterialTheme.colorScheme.secondaryContainer

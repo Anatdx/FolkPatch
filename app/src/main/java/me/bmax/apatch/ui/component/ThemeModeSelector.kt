@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.DarkMode
@@ -28,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.R
 import androidx.compose.ui.semantics.Role
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 enum class ThemeMode {
     LIGHT, DARK, SYSTEM
@@ -115,7 +115,7 @@ private fun ThemeModeOption(
     Column(
         modifier = modifier
             .scale(scale)
-            .clip(RoundedCornerShape(24.dp))
+            .clip(FolkShape.Corner24)
             .background(bgColor)
             .clickable(role = Role.RadioButton, onClick = onClick)
             .padding(vertical = 12.dp),
