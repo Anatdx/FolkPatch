@@ -82,7 +82,7 @@ fun RepoModuleDetailScreen(
             item(key = "info") {
                 ExpressiveCard(flat = true) {
                     Column(
-                        modifier = Modifier.padding(18.dp),
+                        modifier = Modifier.padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         // Label row

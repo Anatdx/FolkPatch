@@ -223,7 +223,7 @@ fun ThemeImportDialog(
                     color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f),
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column(modifier = Modifier.padding(18.dp)) {
+                    Column(modifier = Modifier.padding(16.dp)) {
                         Text(metadata.name, style = MaterialTheme.typography.titleLarge)
                         Row(
                             modifier = Modifier.padding(top = 8.dp),
