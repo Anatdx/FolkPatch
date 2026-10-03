@@ -29,6 +29,8 @@ class FolkPalette internal constructor(
     val caution: Color,
     val critical: Color,
     val neutral: Color,
+    /** True when the page shows a custom background image, so chrome should read straight through. */
+    val onCustomBackground: Boolean,
 ) {
     companion object {
         /** Dark is read from luminance, which is what the settings pages were calibrated against. */
@@ -59,6 +61,7 @@ class FolkPalette internal constructor(
                 caution = scheme.tertiary,
                 critical = scheme.error,
                 neutral = scheme.onSurfaceVariant,
+                onCustomBackground = onCustomBackground,
             )
         }
     }

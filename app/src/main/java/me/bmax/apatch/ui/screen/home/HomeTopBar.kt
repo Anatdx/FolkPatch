@@ -52,6 +52,7 @@ import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
 import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.util.reboot
+import me.bmax.apatch.ui.component.folk.folkDefaultAppBarColors
 
 data class RebootOption(
     @param:StringRes val titleRes: Int,
@@ -118,7 +119,9 @@ fun HomeTopBar(
         BackgroundConfig.titleImageOffsetX * 100f
     } else 0f
 
-    TopAppBar(title = {
+    TopAppBar(
+        colors = folkDefaultAppBarColors(),
+        title = {
         if (useAdvancedTitleStyle) {
             AsyncImage(
                 model = ImageRequest.Builder(context)

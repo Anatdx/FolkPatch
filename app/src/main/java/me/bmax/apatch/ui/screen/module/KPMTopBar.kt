@@ -43,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import me.bmax.apatch.ui.component.folk.folkDefaultAppBarColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,6 +72,7 @@ fun KPMTopBar(
     )
 
     TopAppBar(
+        colors = folkDefaultAppBarColors(),
         title = {
             Box {
                 // 标题（搜索框未显示时）

@@ -26,27 +26,53 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import me.bmax.apatch.ui.theme.tokens.FolkTheme
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
 
 /**
  * Colours for the settings bar.
  *
- * The bar fades from fully transparent to the elevated panel tone. Both ends
- * use the *same* RGB with only the alpha changing - using [Color.Transparent]
- * instead would make Material interpolate the colour from black, which showed
- * up as a grey scrim washing over the title and the content while scrolling.
- * The panel tone keeps its own alpha so the bar follows the custom background
- * opacity instead of turning opaque.
+ * With a custom background the bar is fully transparent so the image reads
+ * straight through it on every page.
+ *
+ * Otherwise the bar fades from fully transparent to the elevated panel tone.
+ * Both ends use the *same* RGB with only the alpha changing - using
+ * [Color.Transparent] instead would make Material interpolate the colour from
+ * black, which showed up as a grey scrim washing over the title and the
+ * content while scrolling.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun folkTopAppBarColors(): TopAppBarColors {
+    if (FolkTheme.palette.onCustomBackground) {
+        return TopAppBarDefaults.largeTopAppBarColors(
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent,
+        )
+    }
     val elevated = folkGroupColor()
     return TopAppBarDefaults.largeTopAppBarColors(
         containerColor = elevated.copy(alpha = 0f),
         scrolledContainerColor = elevated,
     )
 }
+
+/**
+ * Colours for the screens that build their own bar (home, modules, search):
+ * the Material defaults, except that a custom background reads straight
+ * through the bar on every page.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun folkDefaultAppBarColors(): TopAppBarColors =
+    if (FolkTheme.palette.onCustomBackground) {
+        TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Transparent,
+            scrolledContainerColor = Color.Transparent,
+        )
+    } else {
+        TopAppBarDefaults.topAppBarColors()
+    }
 
 /**
  * Shared chrome for every settings sub-screen.
