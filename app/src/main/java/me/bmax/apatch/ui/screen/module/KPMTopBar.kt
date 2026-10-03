@@ -79,16 +79,16 @@ fun KPMTopBar(
                 AnimatedVisibility(
                     modifier = Modifier.align(Alignment.CenterStart),
                     visible = !onSearch,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
+                    enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
+                    exit = fadeOut(MaterialTheme.motionScheme.fastEffectsSpec()),
                     content = { Text(stringResource(R.string.kpm)) }
                 )
 
                 // 搜索框（搜索时显示）
                 AnimatedVisibility(
                     visible = onSearch,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+                    enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
+                    exit = fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
                 ) {
                     OutlinedTextField(
                         modifier = Modifier

@@ -3,8 +3,6 @@ package me.bmax.apatch.ui.screen.module
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -175,10 +173,7 @@ fun TopBar(
                                             .graphicsLayer { translationY = draggedDistance }
                                     } else {
                                         Modifier.animateItem(
-                                            placementSpec = spring(
-                                                dampingRatio = Spring.DampingRatioMediumBouncy,
-                                                stiffness = Spring.StiffnessMediumLow
-                                            )
+                                            placementSpec = MaterialTheme.motionScheme.defaultSpatialSpec()
                                         )
                                     }
                                 ),

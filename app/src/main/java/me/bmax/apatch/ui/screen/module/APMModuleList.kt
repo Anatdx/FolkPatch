@@ -273,8 +273,10 @@ fun ModuleList(
                     if (showMountWarning) {
                         AnimatedVisibility(
                             visible = true,
-                            enter = fadeIn() + expandVertically(),
-                            exit = fadeOut() + shrinkVertically()
+                            enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) +
+                                expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                            exit = fadeOut(MaterialTheme.motionScheme.fastEffectsSpec()) +
+                                shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec())
                         ) {
                             WarningCard(
                                 modifier = Modifier
@@ -378,8 +380,10 @@ fun ModuleList(
                     item {
                         AnimatedVisibility(
                             visible = true,
-                            enter = fadeIn() + expandVertically(),
-                            exit = fadeOut() + shrinkVertically()
+                            enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) +
+                                expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                            exit = fadeOut(MaterialTheme.motionScheme.fastEffectsSpec()) +
+                                shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec())
                         ) {
                             WarningCard(
                                 modifier = Modifier.padding(horizontal = 16.dp),

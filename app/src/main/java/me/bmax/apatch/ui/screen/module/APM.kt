@@ -9,7 +9,6 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -276,7 +275,7 @@ fun APModuleScreen(navigator: DestinationsNavigator) {
             val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
             val animatedOffset by animateDpAsState(
                 targetValue = if (isFloatingMode && bottomBarVisible && !isLandscape) (-88).dp else 0.dp,
-                animationSpec = tween(durationMillis = 300),
+                animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                 label = "fabOffset"
             )
 
@@ -294,7 +293,7 @@ fun APModuleScreen(navigator: DestinationsNavigator) {
                         ) {
                             Crossfade(
                                 targetState = fabExpanded,
-                                animationSpec = tween(durationMillis = 200),
+                                animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
                                 label = "fabIconCrossfade"
                             ) { isExpanded ->
                                 if (isExpanded) {

@@ -234,8 +234,10 @@ fun ModuleItemContent(
 
             AnimatedVisibility(
                 visible = !foldSystemModule || expanded,
-                enter = fadeIn() + expandVertically(),
-                exit = shrinkVertically() + fadeOut()
+                enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) +
+                    expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) +
+                    fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
             ) {
        
                 val buttons = mutableListOf<ModuleButtonConfig>()

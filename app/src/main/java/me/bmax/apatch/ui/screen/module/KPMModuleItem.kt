@@ -221,7 +221,7 @@ fun KPModuleItem(
 
     val clickModifier = Modifier
         .fillMaxWidth()
-        .animateContentSize()
+        .animateContentSize(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec())
         .folkPressScale(cardInteractionSource)
         .combinedClickable(
             interactionSource = cardInteractionSource,
@@ -372,8 +372,10 @@ fun KPModuleItem(
 
                 AnimatedVisibility(
                     visible = !foldSystemModule || expanded,
-                    enter = fadeIn() + expandVertically(),
-                    exit = shrinkVertically() + fadeOut()
+                    enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()) +
+                        expandVertically(MaterialTheme.motionScheme.defaultSpatialSpec()),
+                    exit = shrinkVertically(MaterialTheme.motionScheme.fastSpatialSpec()) +
+                        fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),

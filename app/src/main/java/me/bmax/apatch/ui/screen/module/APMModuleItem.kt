@@ -304,7 +304,7 @@ fun ModuleItem(
 
     val clickModifier = Modifier
         .fillMaxWidth()
-        .animateContentSize()
+        .animateContentSize(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec())
         .folkPressScale(cardInteractionSource)
         .combinedClickable(
             interactionSource = cardInteractionSource,

@@ -9,9 +9,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -293,7 +290,7 @@ fun KPModuleScreen(navigator: DestinationsNavigator) {
                         ) {
                             Crossfade(
                                 targetState = expanded,
-                                animationSpec = tween(durationMillis = 200),
+                                animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
                                 label = "fabIconCrossfade"
                             ) { isExpanded ->
                                 if (isExpanded) {
@@ -361,7 +358,7 @@ fun KPModuleScreen(navigator: DestinationsNavigator) {
             val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
             val animatedOffset by animateDpAsState(
                 targetValue = if (isFloatingMode && bottomBarVisible && !isLandscape) (-88).dp else 0.dp,
-                animationSpec = tween(durationMillis = 300),
+                animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                 label = "fabOffset"
             )
             if (isFloatingMode) {
@@ -418,10 +415,7 @@ fun KPModuleScreen(navigator: DestinationsNavigator) {
                                             .graphicsLayer { translationY = draggedDistance }
                                     } else {
                                         Modifier.animateItem(
-                                            placementSpec = spring(
-                                                dampingRatio = Spring.DampingRatioMediumBouncy,
-                                                stiffness = Spring.StiffnessMediumLow
-                                            )
+                                            placementSpec = MaterialTheme.motionScheme.defaultSpatialSpec()
                                         )
                                     }
                                 ),
