@@ -21,9 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -87,30 +85,27 @@ fun FunctionSettingsScreen(navigator: DestinationsNavigator, highlightKey: Strin
     val kPatchReady = state != APApplication.State.UNKNOWN_STATE
     val aPatchReady = (state == APApplication.State.ANDROIDPATCH_INSTALLING || state == APApplication.State.ANDROIDPATCH_INSTALLED || state == APApplication.State.ANDROIDPATCH_NEED_UPDATE)
 
-    var isHideServiceEnabled by rememberSaveable { mutableStateOf(false) }
-    var isKernelSpoofEnabled by rememberSaveable { mutableStateOf(false) }
-    var kernelSpoofVersion by rememberSaveable { mutableStateOf("") }
-    var kernelSpoofBuildTime by rememberSaveable { mutableStateOf("") }
-    var isUmountEnabled by rememberSaveable { mutableStateOf(false) }
-    var umountPaths by rememberSaveable { mutableStateOf("") }
-    var isNetIsolateEnabled by rememberSaveable { mutableStateOf(false) }
-    var niSelectedUids by rememberSaveable { mutableStateOf(emptySet<Int>()) }
-    var isPathHideEnabled by rememberSaveable { mutableStateOf(false) }
-    var pathHidePaths by rememberSaveable { mutableStateOf("") }
-    var isPathHideUidMode by rememberSaveable { mutableStateOf(false) }
-    var isPathHideFilterSystem by rememberSaveable { mutableStateOf(false) }
-    val showFilterSystemWarningDialog = rememberSaveable { mutableStateOf(false) }
-    var selectedUids by rememberSaveable { mutableStateOf(emptySet<Int>()) }
-    var jailbreakEnabled by rememberSaveable {
-        mutableStateOf(APApplication.sharedPreferences.getBoolean("jailbreak_enabled", false))
-    }
-    var showJailbreakSoftRebootDialog by rememberSaveable { mutableStateOf(false) }
+    val settings = rememberFunctionSettingsState()
+    var isHideServiceEnabled by settings.isHideServiceEnabled
+    var isKernelSpoofEnabled by settings.isKernelSpoofEnabled
+    var kernelSpoofVersion by settings.kernelSpoofVersion
+    var kernelSpoofBuildTime by settings.kernelSpoofBuildTime
+    var isUmountEnabled by settings.isUmountEnabled
+    var umountPaths by settings.umountPaths
+    var isNetIsolateEnabled by settings.isNetIsolateEnabled
+    var niSelectedUids by settings.niSelectedUids
+    var isPathHideEnabled by settings.isPathHideEnabled
+    var pathHidePaths by settings.pathHidePaths
+    var isPathHideUidMode by settings.isPathHideUidMode
+    var isPathHideFilterSystem by settings.isPathHideFilterSystem
+    val showFilterSystemWarningDialog = settings.showFilterSystemWarningDialog
+    var selectedUids by settings.selectedUids
+    var jailbreakEnabled by settings.jailbreakEnabled
+    var showJailbreakSoftRebootDialog by settings.showJailbreakSoftRebootDialog
 
     // Shizuku 服务开关状态
-    var isShizukuEnabled by rememberSaveable {
-        mutableStateOf(ShizukuServiceManager.isEnabled())
-    }
-    var isShizukuRunning by rememberSaveable { mutableStateOf(false) }
+    var isShizukuEnabled by settings.isShizukuEnabled
+    var isShizukuRunning by settings.isShizukuRunning
 
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
