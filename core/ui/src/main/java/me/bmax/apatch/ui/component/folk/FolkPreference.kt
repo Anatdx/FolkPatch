@@ -19,7 +19,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -175,16 +174,22 @@ fun FolkSwitchPreference(
     enabled: Boolean = true,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
     FolkPreferenceRow(
         title = title,
-        modifier = modifier.toggleable(
-            value = checked,
-            enabled = enabled,
-            role = Role.Switch,
-            interactionSource = interactionSource,
-            indication = ripple(),
-            onValueChange = onCheckedChange,
-        ),
+        modifier = modifier
+            .folkPressScale(interactionSource, enabled)
+            .toggleable(
+                value = checked,
+                enabled = enabled,
+                role = Role.Switch,
+                interactionSource = interactionSource,
+                indication = null,
+                onValueChange = {
+                    haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onCheckedChange(it)
+                },
+            ),
         icon = icon,
         iconTint = folkIconColor(enabled),
         summary = summary,
@@ -271,16 +276,22 @@ fun FolkCheckboxPreference(
     enabled: Boolean = true,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
     FolkPreferenceRow(
         title = title,
-        modifier = modifier.toggleable(
-            value = checked,
-            enabled = enabled,
-            role = Role.Checkbox,
-            interactionSource = interactionSource,
-            indication = ripple(),
-            onValueChange = onCheckedChange,
-        ),
+        modifier = modifier
+            .folkPressScale(interactionSource, enabled)
+            .toggleable(
+                value = checked,
+                enabled = enabled,
+                role = Role.Checkbox,
+                interactionSource = interactionSource,
+                indication = null,
+                onValueChange = {
+                    haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onCheckedChange(it)
+                },
+            ),
         icon = icon,
         iconTint = folkIconColor(enabled),
         summary = summary,

@@ -61,6 +61,10 @@ import me.bmax.apatch.ui.viewmodel.SuperUserViewModel
 import me.bmax.apatch.util.PkgConfig
 import me.bmax.apatch.util.SuAuditLog
 import me.bmax.apatch.util.ui.showToast
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import me.bmax.apatch.ui.component.folk.folkPressScale
 
 @Destination<RootGraph>
 @Composable
@@ -273,14 +277,22 @@ private fun AuthorizationOption(
         label = "authorizationOptionColor",
     )
 
+    val interactionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(containerColor)
+            .folkPressScale(interactionSource, true)
             .selectable(
                 selected = selected,
-                onClick = onClick,
+                onClick = {
+                    haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onClick()
+                },
                 role = Role.RadioButton,
+                interactionSource = interactionSource,
+                indication = null,
             )
             .padding(horizontal = 16.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically,

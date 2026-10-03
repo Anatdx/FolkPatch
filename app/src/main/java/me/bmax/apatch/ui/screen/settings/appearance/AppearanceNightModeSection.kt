@@ -30,6 +30,9 @@ import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.theme.ColorGenerationMode
 import me.bmax.apatch.ui.theme.ColorStandard
 import me.bmax.apatch.ui.theme.ColorStyle
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import me.bmax.apatch.ui.component.folk.folkPressScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,20 +117,24 @@ fun AppearanceNightModeSection(
         if (isDarkTheme) {
             item(key = "appearance_amoled_theme") {
                 val isWallpaperEnabled = BackgroundConfig.isCustomBackgroundEnabled
+                val amoledInteractionSource = remember { MutableInteractionSource() }
+                val amoledHaptics = LocalHapticFeedback.current
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .folkPressScale(amoledInteractionSource, !isWallpaperEnabled)
                         .toggleable(
                             value = amoledTheme,
                             onValueChange = {
                                 if (!isWallpaperEnabled) {
+                                    amoledHaptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                                     onAmoledChange(it)
                                 }
                             },
                             role = Role.Switch,
                             enabled = !isWallpaperEnabled,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = ripple(),
+                            interactionSource = amoledInteractionSource,
+                            indication = null,
                         )
                         .padding(horizontal = 16.dp, vertical = 12.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,

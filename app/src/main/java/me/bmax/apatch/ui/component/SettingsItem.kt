@@ -12,6 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.runtime.remember
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import me.bmax.apatch.ui.component.folk.folkPressScale
 
 @Composable
 fun CheckboxItem(
@@ -22,6 +27,8 @@ fun CheckboxItem(
     enabled: Boolean = true,
     onCheckedChange: (Boolean) -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
     ListItem(
         headlineContent = { Text(title) },
         supportingContent = if (summary != null) {
@@ -49,12 +56,19 @@ fun CheckboxItem(
             )
         },
         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        modifier = Modifier.toggleable(
-            value = checked,
-            onValueChange = onCheckedChange,
-            role = Role.Checkbox,
-            enabled = enabled
-        )
+        modifier = Modifier
+            .folkPressScale(interactionSource, enabled)
+            .toggleable(
+                value = checked,
+                onValueChange = {
+                    haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onCheckedChange(it)
+                },
+                role = Role.Checkbox,
+                enabled = enabled,
+                interactionSource = interactionSource,
+                indication = null,
+            )
     )
 }
 
@@ -67,6 +81,8 @@ fun SwitchItem(
     enabled: Boolean = true,
     onCheckedChange: (Boolean) -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
     ListItem(
         headlineContent = { Text(title) },
         supportingContent = if (summary != null) {
@@ -94,11 +110,18 @@ fun SwitchItem(
             )
         },
         colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        modifier = Modifier.toggleable(
-            value = checked,
-            onValueChange = onCheckedChange,
-            role = Role.Switch,
-            enabled = enabled
-        )
+        modifier = Modifier
+            .folkPressScale(interactionSource, enabled)
+            .toggleable(
+                value = checked,
+                onValueChange = {
+                    haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onCheckedChange(it)
+                },
+                role = Role.Switch,
+                enabled = enabled,
+                interactionSource = interactionSource,
+                indication = null,
+            )
     )
 }

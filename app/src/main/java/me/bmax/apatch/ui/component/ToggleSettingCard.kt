@@ -14,7 +14,6 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -22,6 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import me.bmax.apatch.ui.component.folk.folkPressScale
 
 @Composable
 fun ToggleSettingCard(
@@ -33,17 +35,25 @@ fun ToggleSettingCard(
     icon: ImageVector? = null,
     onCheckedChange: (Boolean) -> Unit,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
     ExpressiveCard(flat = flat) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .folkPressScale(interactionSource, enabled)
                 .toggleable(
                     value = checked,
-                    onValueChange = { if (enabled) onCheckedChange(it) },
+                    onValueChange = {
+                        if (enabled) {
+                            haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            onCheckedChange(it)
+                        }
+                    },
                     role = Role.Switch,
                     enabled = enabled,
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = ripple(),
+                    interactionSource = interactionSource,
+                    indication = null,
                 )
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,

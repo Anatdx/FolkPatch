@@ -11,7 +11,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -72,6 +71,9 @@ import me.bmax.apatch.util.getFileNameFromUri
 import me.bmax.apatch.util.isABDevice
 import me.bmax.apatch.util.isJailbreakPatchBlocked
 import me.bmax.apatch.util.rootAvailable
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import me.bmax.apatch.ui.component.folk.folkPressScale
 
 var selectedBootImage: Uri? = null
 var selectedKPImg: Uri? = null
@@ -514,6 +516,7 @@ fun InstallMethodOption(
     onClick: (InstallMethod) -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
     val isSelected = option.javaClass == selectedOption?.javaClass
     Surface(
         color = if (isSelected) MaterialTheme.colorScheme.secondaryContainer else Color.Transparent,
@@ -528,11 +531,15 @@ fun InstallMethodOption(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
+                .folkPressScale(interactionSource, true)
                 .selectable(
                     selected = isSelected,
-                    onClick = { onClick(option) },
+                    onClick = {
+                        haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        onClick(option)
+                    },
                     role = Role.RadioButton,
-                    indication = LocalIndication.current,
+                    indication = null,
                     interactionSource = interactionSource
                 )
                 .padding(vertical = 8.dp, horizontal = 12.dp)
