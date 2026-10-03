@@ -25,8 +25,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,7 +32,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -56,6 +53,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkScaffold
@@ -120,68 +118,59 @@ fun ApmBulkInstallScreen(navigator: DestinationsNavigator, initialUris: ArrayLis
 
     // First Use Dialog
     if (showFirstTimeDialog) {
-        BasicAlertDialog(
+        FolkAlertDialog(
             onDismissRequest = {
                 if (dontShowAgain) {
                     prefs.edit().putBoolean("apm_bulk_install_first_use_shown", true).apply()
                 }
                 showFirstTimeDialog = false
             },
-            properties = DialogProperties(
-                dismissOnClickOutside = false,
-                dismissOnBackPress = false
-            )
+            width = 350.dp,
+            shape = RoundedCornerShape(20.dp),
+            blurBehind = false,
+            dialogProperties = DialogProperties(dismissOnClickOutside = false, dismissOnBackPress = false),
         ) {
-            Surface(
-                modifier = Modifier
-                    .width(350.dp)
-                    .padding(16.dp),
-                shape = RoundedCornerShape(20.dp),
-                tonalElevation = AlertDialogDefaults.TonalElevation,
-                color = AlertDialogDefaults.containerColor,
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        text = stringResource(R.string.apm_bulk_install_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(bottom = 16.dp)
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = stringResource(R.string.apm_bulk_install_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+
+                Text(
+                    text = stringResource(R.string.apm_bulk_install_first_use_text),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = dontShowAgain,
+                        onCheckedChange = { dontShowAgain = it }
                     )
-                    
                     Text(
-                        text = stringResource(R.string.apm_bulk_install_first_use_text),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        text = stringResource(R.string.dont_show_again),
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(start = 8.dp)
                     )
-                    
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = dontShowAgain,
-                            onCheckedChange = { dontShowAgain = it }
-                        )
-                        Text(
-                            text = stringResource(R.string.dont_show_again),
-                            style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 8.dp)
-                        )
-                    }
-                    
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Button(onClick = {
-                            if (dontShowAgain) {
-                                prefs.edit().putBoolean("apm_bulk_install_first_use_shown", true).apply()
-                            }
-                            showFirstTimeDialog = false
-                        }) {
-                            Text(stringResource(R.string.got_it))
+                }
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(onClick = {
+                        if (dontShowAgain) {
+                            prefs.edit().putBoolean("apm_bulk_install_first_use_shown", true).apply()
                         }
+                        showFirstTimeDialog = false
+                    }) {
+                        Text(stringResource(R.string.got_it))
                     }
                 }
             }

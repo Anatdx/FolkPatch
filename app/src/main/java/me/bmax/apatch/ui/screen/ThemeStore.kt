@@ -8,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.window.DialogProperties
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,6 +23,7 @@ import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.MyThemesScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.launch
+import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.AppLoadingIndicator
@@ -328,34 +328,25 @@ fun ThemeStoreScreen(
 
     // 过滤器对话框
     if (showFilterSheet) {
-        BasicAlertDialog(
+        FolkAlertDialog(
             onDismissRequest = { showFilterSheet = false },
-            properties = DialogProperties(
-                usePlatformDefaultWidth = false
-            )
+            width = 320.dp,
+            shape = RoundedCornerShape(28.dp),
+            blurBehind = false,
         ) {
-            Surface(
-                modifier = Modifier
-                    .width(320.dp)
-                    .wrapContentHeight(),
-                shape = RoundedCornerShape(28.dp),
-                color = AlertDialogDefaults.containerColor,
-                tonalElevation = AlertDialogDefaults.TonalElevation
-            ) {
-                ThemeFilterSheetContent(
-                    currentAuthor = viewModel.filterAuthor,
-                    currentSource = viewModel.filterSource,
-                    currentTypePhone = viewModel.filterTypePhone,
-                    currentTypeTablet = viewModel.filterTypeTablet,
-                    onApply = { author, source, phone, tablet ->
-                        viewModel.updateFilters(author, source, phone, tablet)
-                        showFilterSheet = false
-                    },
-                    onReset = {
-                        viewModel.updateFilters("", "all", phone = true, tablet = true)
-                    }
-                )
-            }
+            ThemeFilterSheetContent(
+                currentAuthor = viewModel.filterAuthor,
+                currentSource = viewModel.filterSource,
+                currentTypePhone = viewModel.filterTypePhone,
+                currentTypeTablet = viewModel.filterTypeTablet,
+                onApply = { author, source, phone, tablet ->
+                    viewModel.updateFilters(author, source, phone, tablet)
+                    showFilterSheet = false
+                },
+                onReset = {
+                    viewModel.updateFilters("", "all", phone = true, tablet = true)
+                }
+            )
         }
     }
 

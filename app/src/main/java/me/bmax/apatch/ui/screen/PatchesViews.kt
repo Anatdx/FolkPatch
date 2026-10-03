@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,8 +29,6 @@ import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,7 +39,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -53,24 +49,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.window.DialogWindowProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.launch
+import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ExpressiveCard
 import me.bmax.apatch.ui.component.SwitchItem
 import me.bmax.apatch.ui.viewmodel.KPModel
 import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.Version
-import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 
 @Composable
 fun StartButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -93,64 +86,52 @@ fun ExtraConfigDialog(kpmInfo: KPModel.KPMInfo, onDismiss: () -> Unit) {
     var event by remember { mutableStateOf(kpmInfo.event) }
     var args by remember { mutableStateOf(kpmInfo.args) }
 
-    BasicAlertDialog(
+    FolkAlertDialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
+        blurBehind = false,
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
-                Text(
-                    text = stringResource(id = R.string.kpm_control_dialog_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+        Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
+            Text(
+                text = stringResource(id = R.string.kpm_control_dialog_title),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
-                OutlinedTextField(
-                    value = event,
-                    onValueChange = {
-                        event = it
-                        kpmInfo.event = it
-                    },
-                    label = { Text(stringResource(id = R.string.patch_item_extra_event)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
+            OutlinedTextField(
+                value = event,
+                onValueChange = {
+                    event = it
+                    kpmInfo.event = it
+                },
+                label = { Text(stringResource(id = R.string.patch_item_extra_event)) },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-                Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-                OutlinedTextField(
-                    value = args,
-                    onValueChange = {
-                        args = it
-                        kpmInfo.args = it
-                    },
-                    label = { Text(stringResource(id = R.string.patch_item_extra_args)) },
-                    modifier = Modifier.fillMaxWidth()
-                )
+            OutlinedTextField(
+                value = args,
+                onValueChange = {
+                    args = it
+                    kpmInfo.args = it
+                },
+                label = { Text(stringResource(id = R.string.patch_item_extra_args)) },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-                Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = onDismiss) {
-                        Text(stringResource(id = android.R.string.ok))
-                    }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(id = android.R.string.ok))
                 }
             }
         }
-        val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-        APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
     }
 }
 

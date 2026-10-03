@@ -20,12 +20,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.filled.DeleteOutline
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -48,7 +46,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.ramcosta.composedestinations.annotation.Destination
@@ -57,6 +54,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.component.folk.FolkLogEmptyState
@@ -351,40 +349,32 @@ private fun SuAuditClearDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
 ) {
-    BasicAlertDialog(
+    FolkAlertDialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        ),
+        width = 320.dp,
+        shape = RoundedCornerShape(20.dp),
+        blurBehind = false,
     ) {
-        Surface(
-            modifier = Modifier.width(320.dp),
-            shape = RoundedCornerShape(20.dp),
-            tonalElevation = androidx.compose.material3.AlertDialogDefaults.TonalElevation,
-            color = androidx.compose.material3.AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(
-                    text = stringResource(R.string.su_audit_log_clear),
-                    style = MaterialTheme.typography.headlineSmall,
-                )
-                Spacer(Modifier.height(16.dp))
-                Text(
-                    text = stringResource(R.string.su_audit_log_clear_confirm),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                Spacer(Modifier.height(24.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    TextButton(onClick = onDismiss) {
-                        Text(text = android.R.string.cancel.let { stringResource(it) })
-                    }
-                    TextButton(onClick = onConfirm) {
-                        Text(text = stringResource(R.string.su_audit_log_clear))
-                    }
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(
+                text = stringResource(R.string.su_audit_log_clear),
+                style = MaterialTheme.typography.headlineSmall,
+            )
+            Spacer(Modifier.height(16.dp))
+            Text(
+                text = stringResource(R.string.su_audit_log_clear_confirm),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+            Spacer(Modifier.height(24.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                TextButton(onClick = onDismiss) {
+                    Text(text = android.R.string.cancel.let { stringResource(it) })
+                }
+                TextButton(onClick = onConfirm) {
+                    Text(text = stringResource(R.string.su_audit_log_clear))
                 }
             }
         }

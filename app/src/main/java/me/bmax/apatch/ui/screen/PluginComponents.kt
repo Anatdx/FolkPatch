@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -23,8 +22,6 @@ import androidx.compose.material.icons.outlined.Warning
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -44,15 +41,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.window.DialogWindowProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ExpressiveSwitch
 import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenu
@@ -60,7 +55,6 @@ import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.viewmodel.PluginViewModel
 import me.bmax.apatch.util.pickLocalizedString
-import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 
 @Composable
 fun PluginCard(
@@ -351,126 +345,113 @@ fun PluginConfigDialog(
         mutableStateMapOf<String, String>().apply { putAll(initial) }
     }
 
-    BasicAlertDialog(
+    FolkAlertDialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(
-                    text = stringResource(R.string.plugin_config_title, plugin.name),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState()),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    plugin.config.forEach { field ->
-                        when (field.type) {
-                            "bool" -> {
-                                val stored = values[field.key]
-                                val checked = when {
-                                    stored != null -> stored == "true"
-                                    else -> field.default == "true"
-                                }
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Text(
-                                        text = configFieldLabel(field),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        modifier = Modifier.weight(1f),
-                                    )
-                                    ExpressiveSwitch(
-                                        checked = checked,
-                                        onCheckedChange = { values[field.key] = it.toString() },
-                                    )
-                                }
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(
+                text = stringResource(R.string.plugin_config_title, plugin.name),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                plugin.config.forEach { field ->
+                    when (field.type) {
+                        "bool" -> {
+                            val stored = values[field.key]
+                            val checked = when {
+                                stored != null -> stored == "true"
+                                else -> field.default == "true"
                             }
-                            "select" -> {
-                                var expanded by remember(field.key) { mutableStateOf(false) }
-                                val current = values[field.key] ?: field.default
-                                Text(text = configFieldLabel(field), style = MaterialTheme.typography.bodyLarge)
-                                Spacer(Modifier.height(4.dp))
-                                ExposedDropdownMenuBox(
-                                    expanded = expanded,
-                                    onExpandedChange = { expanded = it },
-                                ) {
-                                    androidx.compose.material3.OutlinedTextField(
-                                        value = current,
-                                        onValueChange = {},
-                                        readOnly = true,
-                                        modifier = Modifier.fillMaxWidth().menuAnchor(),
-                                        singleLine = true,
-                                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                                    )
-                                    androidx.compose.material3.DropdownMenu(
-                                        expanded = expanded,
-                                        onDismissRequest = { expanded = false },
-                                    ) {
-                                        field.options.forEach { option ->
-                                            androidx.compose.material3.DropdownMenuItem(
-                                                text = { Text(option) },
-                                                onClick = {
-                                                    values[field.key] = option
-                                                    expanded = false
-                                                },
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                            else -> {
-                                Text(text = configFieldLabel(field), style = MaterialTheme.typography.bodyLarge)
-                                Spacer(Modifier.height(4.dp))
-                                androidx.compose.material3.OutlinedTextField(
-                                    value = values[field.key] ?: field.default,
-                                    onValueChange = { values[field.key] = it },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    singleLine = true,
-                                    keyboardOptions = if (field.type == "number") {
-                                        androidx.compose.foundation.text.KeyboardOptions(
-                                            keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
-                                        )
-                                    } else {
-                                        androidx.compose.foundation.text.KeyboardOptions.Default
-                                    },
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(
+                                    text = configFieldLabel(field),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier.weight(1f),
+                                )
+                                ExpressiveSwitch(
+                                    checked = checked,
+                                    onCheckedChange = { values[field.key] = it.toString() },
                                 )
                             }
                         }
-                    }
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 24.dp),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    TextButton(onClick = onDismiss) {
-                        Text(stringResource(android.R.string.cancel))
-                    }
-                    Spacer(Modifier.width(8.dp))
-                    TextButton(onClick = { onConfirm(values.toMap()) }) {
-                        Text(stringResource(android.R.string.ok))
+                        "select" -> {
+                            var expanded by remember(field.key) { mutableStateOf(false) }
+                            val current = values[field.key] ?: field.default
+                            Text(text = configFieldLabel(field), style = MaterialTheme.typography.bodyLarge)
+                            Spacer(Modifier.height(4.dp))
+                            ExposedDropdownMenuBox(
+                                expanded = expanded,
+                                onExpandedChange = { expanded = it },
+                            ) {
+                                androidx.compose.material3.OutlinedTextField(
+                                    value = current,
+                                    onValueChange = {},
+                                    readOnly = true,
+                                    modifier = Modifier.fillMaxWidth().menuAnchor(),
+                                    singleLine = true,
+                                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                                )
+                                androidx.compose.material3.DropdownMenu(
+                                    expanded = expanded,
+                                    onDismissRequest = { expanded = false },
+                                ) {
+                                    field.options.forEach { option ->
+                                        androidx.compose.material3.DropdownMenuItem(
+                                            text = { Text(option) },
+                                            onClick = {
+                                                values[field.key] = option
+                                                expanded = false
+                                            },
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                        else -> {
+                            Text(text = configFieldLabel(field), style = MaterialTheme.typography.bodyLarge)
+                            Spacer(Modifier.height(4.dp))
+                            androidx.compose.material3.OutlinedTextField(
+                                value = values[field.key] ?: field.default,
+                                onValueChange = { values[field.key] = it },
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true,
+                                keyboardOptions = if (field.type == "number") {
+                                    androidx.compose.foundation.text.KeyboardOptions(
+                                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
+                                    )
+                                } else {
+                                    androidx.compose.foundation.text.KeyboardOptions.Default
+                                },
+                            )
+                        }
                     }
                 }
             }
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+                Spacer(Modifier.width(8.dp))
+                TextButton(onClick = { onConfirm(values.toMap()) }) {
+                    Text(stringResource(android.R.string.ok))
+                }
+            }
         }
     }
 }
@@ -482,52 +463,39 @@ fun PluginLogDialog(
     output: String,
     onDismiss: () -> Unit,
 ) {
-    BasicAlertDialog(
+    FolkAlertDialog(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(
+                text = stringResource(R.string.plugin_log_title),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+            ) {
                 Text(
-                    text = stringResource(R.string.plugin_log_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    text = output,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState()),
-                ) {
-                    Text(
-                        text = output,
-                        style = MaterialTheme.typography.bodySmall,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 24.dp),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    TextButton(onClick = onDismiss) {
-                        Text(stringResource(android.R.string.ok))
-                    }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                TextButton(onClick = onDismiss) {
+                    Text(stringResource(android.R.string.ok))
                 }
             }
-            val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-            APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
         }
     }
 }

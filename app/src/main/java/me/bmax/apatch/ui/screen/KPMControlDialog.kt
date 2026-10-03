@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -21,15 +20,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
-import androidx.compose.ui.window.DialogWindowProvider
+import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
-import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import androidx.compose.material3.*
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
@@ -42,84 +38,73 @@ fun KPMControlDialog(showDialog: MutableState<Boolean>, onConfirm: (String) -> U
     var controlParam by remember { mutableStateOf("") }
     var enable by remember { mutableStateOf(false) }
 
-    BasicAlertDialog(
-        onDismissRequest = { showDialog.value = false }, properties = DialogProperties(
-            decorFitsSystemWindows = true,
-            usePlatformDefaultWidth = false,
-        )
+    FolkAlertDialog(
+        onDismissRequest = { showDialog.value = false },
+        width = 310.dp,
+        shape = RoundedCornerShape(30.dp),
+        blurBehind = false,
     ) {
-        Surface(
-            modifier = Modifier
-                .width(310.dp)
-                .wrapContentHeight(),
-            shape = RoundedCornerShape(30.dp),
-            tonalElevation = AlertDialogDefaults.TonalElevation,
-            color = AlertDialogDefaults.containerColor,
-        ) {
-            Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
-                Box(
-                    Modifier
-                        .padding(PaddingValues(bottom = 16.dp))
-                        .align(Alignment.Start)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.kpm_control_dialog_title),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
+        Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
+            Box(
+                Modifier
+                    .padding(PaddingValues(bottom = 16.dp))
+                    .align(Alignment.Start)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.kpm_control_dialog_title),
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
+
+            Box(
+                Modifier
+                    .weight(weight = 1f, fill = false)
+                    .align(Alignment.Start)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.kpm_control_dialog_content),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            Box(
+                contentAlignment = Alignment.CenterEnd,
+            ) {
+                OutlinedTextField(
+                    value = controlParam,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 6.dp),
+                    onValueChange = {
+                        controlParam = it
+                        enable = controlParam.isNotBlank()
+                    },
+                    shape = RoundedCornerShape(50.0f),
+                    label = { Text(stringResource(id = R.string.kpm_control_paramters)) },
+                    visualTransformation = VisualTransformation.None,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text(stringResource(id = android.R.string.cancel))
                 }
 
-                Box(
-                    Modifier
-                        .weight(weight = 1f, fill = false)
-                        .align(Alignment.Start)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.kpm_control_dialog_content),
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
+                Button(onClick = {
+                    showDialog.value = false
 
-                Box(
-                    contentAlignment = Alignment.CenterEnd,
-                ) {
-                    OutlinedTextField(
-                        value = controlParam,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 6.dp),
-                        onValueChange = {
-                            controlParam = it
-                            enable = controlParam.isNotBlank()
-                        },
-                        shape = RoundedCornerShape(50.0f),
-                        label = { Text(stringResource(id = R.string.kpm_control_paramters)) },
-                        visualTransformation = VisualTransformation.None,
-                    )
-                }
+                    // Run the control on the caller's scope: this dialog
+                    // leaves composition here, cancelling any scope it owns.
+                    onConfirm(controlParam)
 
-                Spacer(modifier = Modifier.height(12.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
-                ) {
-                    TextButton(onClick = { showDialog.value = false }) {
-                        Text(stringResource(id = android.R.string.cancel))
-                    }
-
-                    Button(onClick = {
-                        showDialog.value = false
-
-                        // Run the control on the caller's scope: this dialog
-                        // leaves composition here, cancelling any scope it owns.
-                        onConfirm(controlParam)
-
-                    }, enabled = enable, colors = FolkButtonDefaults.filledColors()) {
-                        Text(stringResource(id = android.R.string.ok))
-                    }
+                }, enabled = enable, colors = FolkButtonDefaults.filledColors()) {
+                    Text(stringResource(id = android.R.string.ok))
                 }
             }
         }
-        val dialogWindowProvider = LocalView.current.parent as DialogWindowProvider
-        APDialogBlurBehindUtils.setupWindowBlurListener(dialogWindowProvider.window)
     }
 }
 
