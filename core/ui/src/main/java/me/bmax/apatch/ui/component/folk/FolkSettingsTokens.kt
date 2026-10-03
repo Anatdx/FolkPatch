@@ -58,12 +58,8 @@ object FolkSettingsDimens {
     /** Leading inset of a preference row. */
     val ItemHorizontalPadding = 16.dp
 
-    /**
-     * Trailing inset - wider than the leading one.
-     * Measured: the switch's right edge sits ~28dp from the panel edge,
-     * noticeably further in than the leading icon.
-     */
-    val ItemEndPadding = 28.dp
+    /** Trailing inset of a preference row. Matches the leading inset so the trailing control lines up with the row's edge. */
+    val ItemEndPadding = 16.dp
 
     /**
      * Vertical padding of a row.

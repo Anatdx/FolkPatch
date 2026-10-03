@@ -378,9 +378,9 @@ fun AppearanceSettingsContent(
                                     )
                                     .padding(vertical = 12.dp)
                             ) {
-                                RadioButton(selected = index == currentBadgeTextModeIndex, onClick = null)
+                                Text(text = mode, modifier = Modifier.weight(1f))
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = mode)
+                                RadioButton(selected = index == currentBadgeTextModeIndex, onClick = null)
                             }
                         }
                     }

@@ -133,8 +133,6 @@ fun AppearanceThemeSection(
                                     ),
                             ) {
                                 Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                                    RadioButton(selected = themeStoreMode == mode, onClick = null)
-                                    Spacer(Modifier.width(12.dp))
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(label, style = MaterialTheme.typography.titleMedium)
                                         Text(
@@ -144,6 +142,8 @@ fun AppearanceThemeSection(
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                     }
+                                    Spacer(Modifier.width(12.dp))
+                                    RadioButton(selected = themeStoreMode == mode, onClick = null)
                                 }
                             }
                             Spacer(Modifier.height(8.dp))
