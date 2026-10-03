@@ -53,6 +53,8 @@ import com.ramcosta.composedestinations.generated.destinations.APModuleScreenDes
 import me.bmax.apatch.ui.component.themeColorOptions
 import me.bmax.apatch.ui.theme.tokens.FolkShape
 import me.bmax.apatch.ui.theme.tokens.FolkThemeCatalog
+import androidx.compose.material3.MotionScheme
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 
 @Composable
 private fun SystemBarStyle(
@@ -106,7 +108,7 @@ private val DarkRippleAlpha = RippleAlpha(
     pressedAlpha = 0.24f,
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun APatchTheme(
     isSettingsScreen: Boolean = false,
@@ -115,6 +117,12 @@ fun APatchTheme(
 ) {
     val context = LocalContext.current
     val prefs = APApplication.sharedPreferences
+    // Pilot: A/B the M3 Expressive motion scheme at runtime without a rebuild.
+    val motionScheme = if (prefs.getBoolean("expressive_motion", false)) {
+        MotionScheme.expressive()
+    } else {
+        MotionScheme.standard()
+    }
 
     var darkThemeFollowSys by remember {
         mutableStateOf(
@@ -276,6 +284,7 @@ fun APatchTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
+        motionScheme = motionScheme,
         typography = typography,
         shapes = FolkShape.materialShapes,
         content = {
