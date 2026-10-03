@@ -1448,4 +1448,5 @@ KernelPatch 需要修补 boot 镜像才能工作喵。
     <string name="theme_store_subtitle">发现喵用社区主题喵</string>
     <string name="script_library_subtitle">运行管理本机脚本喵</string>
     <string name="plugin_subtitle">扩展喵的能力</string>
+    <string name="my_themes_subtitle">你收藏的主题喵</string>
 </resources>

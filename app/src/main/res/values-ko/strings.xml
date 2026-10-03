@@ -1422,4 +1422,5 @@ KernelPatch는 boot 이미지를 패치해야 합니다.
     <string name="theme_store_subtitle">커뮤니티 테마를 찾아 적용하세요</string>
     <string name="script_library_subtitle">로컬 스크립트 실행 및 관리</string>
     <string name="plugin_subtitle">FolkPatch의 기능을 확장</string>
+    <string name="my_themes_subtitle">저장한 테마</string>
 </resources>

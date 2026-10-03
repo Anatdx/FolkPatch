@@ -1391,4 +1391,5 @@ KernelPatch 附魔需要 boot 方块作为材料。
     <string name="theme_store_subtitle">探索各路秘宝，即刻装备</string>
     <string name="script_library_subtitle">運行與掌理本機卷軸</string>
     <string name="plugin_subtitle">擴 FolkPatch 之能</string>
+    <string name="my_themes_subtitle">你所藏之主題</string>
 </resources>

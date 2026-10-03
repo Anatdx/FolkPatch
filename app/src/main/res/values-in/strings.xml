@@ -1390,4 +1390,5 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="theme_store_subtitle">Temukan dan terapkan tema komunitas</string>
     <string name="script_library_subtitle">Jalankan dan kelola skrip lokal</string>
     <string name="plugin_subtitle">Perluas kemampuan FolkPatch</string>
+    <string name="my_themes_subtitle">Tema yang kamu simpan</string>
 </resources>

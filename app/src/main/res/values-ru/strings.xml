@@ -1408,4 +1408,5 @@ KernelPatch требует образ boot для патча.
     <string name="theme_store_subtitle">Открывайте и применяйте темы сообщества</string>
     <string name="script_library_subtitle">Запуск и управление локальными скриптами</string>
     <string name="plugin_subtitle">Расширьте возможности FolkPatch</string>
+    <string name="my_themes_subtitle">Сохранённые темы</string>
 </resources>

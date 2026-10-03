@@ -1392,4 +1392,5 @@ KernelPatch 这道菜需要用 boot 主料来烹饪。
     <string name="theme_store_subtitle">寻觅百家菜谱，随手下锅</string>
     <string name="script_library_subtitle">掌灶本機食譜</string>
     <string name="plugin_subtitle">添菜加料</string>
+    <string name="my_themes_subtitle">你存的菜谱</string>
 </resources>

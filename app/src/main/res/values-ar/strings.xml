@@ -1396,4 +1396,5 @@
     <string name="theme_store_subtitle">اكتشف سمات المجتمع وطبّقها</string>
     <string name="script_library_subtitle">تشغيل وإدارة النصوص البرمجية المحلية</string>
     <string name="plugin_subtitle">وسّع قدرات FolkPatch</string>
+    <string name="my_themes_subtitle">السمات التي حفظتها</string>
 </resources>

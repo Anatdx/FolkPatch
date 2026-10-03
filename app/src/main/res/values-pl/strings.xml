@@ -1332,4 +1332,5 @@ Kontynuować mimo to?</string>
     <string name="theme_store_subtitle">Odkrywaj i stosuj motywy społeczności</string>
     <string name="script_library_subtitle">Uruchamiaj i zarządzaj lokalnymi skryptami</string>
     <string name="plugin_subtitle">Rozszerz możliwości FolkPatch</string>
+    <string name="my_themes_subtitle">Zapisane motywy</string>
 </resources>

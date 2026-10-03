@@ -1407,4 +1407,5 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="theme_store_subtitle">Khám phá và áp dụng chủ đề cộng đồng</string>
     <string name="script_library_subtitle">Chạy và quản lý script cục bộ</string>
     <string name="plugin_subtitle">Mở rộng khả năng của FolkPatch</string>
+    <string name="my_themes_subtitle">Chủ đề bạn đã lưu</string>
 </resources>

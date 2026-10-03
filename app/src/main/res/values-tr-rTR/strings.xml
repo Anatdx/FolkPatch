@@ -1404,4 +1404,5 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="theme_store_subtitle">Topluluk temalarını keşfedin ve uygulayın</string>
     <string name="script_library_subtitle">Yerel betikleri çalıştırın ve yönetin</string>
     <string name="plugin_subtitle">FolkPatch yeteneklerini genişletin</string>
+    <string name="my_themes_subtitle">Kaydettiğiniz temalar</string>
 </resources>

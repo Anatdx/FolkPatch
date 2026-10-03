@@ -1331,4 +1331,5 @@ KernelPatch は boot イメージをパッチする必要があります。
     <string name="theme_store_subtitle">コミュニティテーマを探して適用</string>
     <string name="script_library_subtitle">ローカルスクリプトの実行と管理</string>
     <string name="plugin_subtitle">FolkPatch の機能を拡張</string>
+    <string name="my_themes_subtitle">保存したテーマ</string>
 </resources>

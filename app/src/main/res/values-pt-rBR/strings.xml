@@ -1409,4 +1409,5 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="theme_store_subtitle">Descubra e aplique temas da comunidade</string>
     <string name="script_library_subtitle">Execute e gerencie scripts locais</string>
     <string name="plugin_subtitle">Amplie o que o FolkPatch pode fazer</string>
+    <string name="my_themes_subtitle">Temas que você salvou</string>
 </resources>

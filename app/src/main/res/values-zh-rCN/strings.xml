@@ -1410,4 +1410,5 @@ KernelPatch 需要修补 boot 镜像。
     <string name="theme_store_subtitle">发现并应用社区主题</string>
     <string name="script_library_subtitle">运行与管理本机脚本</string>
     <string name="plugin_subtitle">扩展 FolkPatch 的能力</string>
+    <string name="my_themes_subtitle">你保存的主题</string>
 </resources>

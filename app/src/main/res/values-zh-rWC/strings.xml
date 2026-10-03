@@ -1391,4 +1391,5 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="theme_store_subtitle">寻觅诸天法门，即刻修持</string>
     <string name="script_library_subtitle">御行本機符籙</string>
     <string name="plugin_subtitle">廣 FolkPatch 之法</string>
+    <string name="my_themes_subtitle">汝所藏之仙題</string>
 </resources>
