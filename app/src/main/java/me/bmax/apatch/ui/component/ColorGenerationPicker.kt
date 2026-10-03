@@ -1,8 +1,6 @@
 package me.bmax.apatch.ui.component
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -175,10 +173,7 @@ private fun SegmentedItem(
 ) {
     val scale by animateFloatAsState(
         targetValue = if (isSelected) 1.03f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow,
-        ),
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
         label = "segItem",
     )
 
@@ -221,10 +216,7 @@ private fun StyleSegment(
 ) {
     val scale by animateFloatAsState(
         targetValue = if (isSelected) 1.05f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow,
-        ),
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
         label = "styleSeg",
     )
 

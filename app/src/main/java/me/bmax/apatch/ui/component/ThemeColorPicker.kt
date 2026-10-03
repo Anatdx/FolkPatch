@@ -1,8 +1,6 @@
 package me.bmax.apatch.ui.component
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -155,10 +153,7 @@ private fun ThemeColorCircle(
 ) {
     val scale by animateFloatAsState(
         targetValue = if (isSelected) 1.1f else 1f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow,
-        ),
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
         label = "colorScale",
     )
 
@@ -200,8 +195,8 @@ private fun ThemeColorCircle(
         ) {
             androidx.compose.animation.AnimatedVisibility(
                 visible = isSelected,
-                enter = scaleIn(spring(dampingRatio = Spring.DampingRatioMediumBouncy)) + fadeIn(),
-                exit = scaleOut() + fadeOut(),
+                enter = scaleIn(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec()) + fadeIn(animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec()),
+                exit = scaleOut(animationSpec = MaterialTheme.motionScheme.fastSpatialSpec()) + fadeOut(animationSpec = MaterialTheme.motionScheme.fastEffectsSpec()),
             ) {
                 Icon(
                     imageVector = Icons.Default.Done,
