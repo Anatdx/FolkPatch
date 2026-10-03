@@ -671,6 +671,11 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="shizuku_log_copied">Copied to clipboard</string>
     <string name="shizuku_log_source_server">Server log</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">Verbose</string>
+    <string name="shizuku_log_level_debug">Debug</string>
+    <string name="shizuku_log_level_info">Info</string>
+    <string name="shizuku_log_level_warn">Warn</string>
+    <string name="shizuku_log_level_error">Error</string>
     <string name="shizuku_log_search_hint">Search logs</string>
     <string name="shizuku_permission_title">Allow %1$s to use Shizuku?</string>
     <string name="shizuku_permission_message">The app will be able to call system APIs with root privileges through Shizuku.</string>

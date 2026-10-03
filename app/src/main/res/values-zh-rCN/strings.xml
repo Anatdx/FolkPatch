@@ -646,6 +646,11 @@ KernelPatch 需要修补 boot 镜像。
     <string name="shizuku_log_copied">已复制到剪贴板</string>
     <string name="shizuku_log_source_server">服务端日志</string>
     <string name="shizuku_log_source_logcat">Logcat</string>
+    <string name="shizuku_log_level_verbose">详细</string>
+    <string name="shizuku_log_level_debug">调试</string>
+    <string name="shizuku_log_level_info">信息</string>
+    <string name="shizuku_log_level_warn">警告</string>
+    <string name="shizuku_log_level_error">错误</string>
     <string name="shizuku_log_search_hint">搜索日志</string>
     <string name="shizuku_permission_title">允许 %1$s 使用 Shizuku 吗？</string>
     <string name="shizuku_permission_message">该应用将通过 Shizuku 以 root 权限调用系统 API</string>

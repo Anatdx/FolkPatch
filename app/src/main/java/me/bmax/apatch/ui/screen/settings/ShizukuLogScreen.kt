@@ -85,6 +85,17 @@ private val LEVELS = listOf(
     FolkLogLevel.Error,
 )
 
+/** Localised name of a level, so the filter chips read as words and not just letters. */
+@Composable
+private fun logLevelLabel(level: FolkLogLevel): String = when (level) {
+    FolkLogLevel.Verbose -> stringResource(R.string.shizuku_log_level_verbose)
+    FolkLogLevel.Debug -> stringResource(R.string.shizuku_log_level_debug)
+    FolkLogLevel.Info -> stringResource(R.string.shizuku_log_level_info)
+    FolkLogLevel.Warn -> stringResource(R.string.shizuku_log_level_warn)
+    FolkLogLevel.Error -> stringResource(R.string.shizuku_log_level_error)
+    FolkLogLevel.Unknown -> level.letter.toString()
+}
+
 private fun parseLines(raw: String): List<LogLine> {
     if (raw.isBlank()) return emptyList()
     return raw.split('\n')
@@ -304,7 +315,7 @@ fun ShizukuLogScreen(navigator: DestinationsNavigator) {
                                     activeLevels + level
                                 }
                             },
-                            label = { Text(level.letter.toString(), color = folkLogLevelColor(level)) },
+                            label = { Text("${level.letter} ${logLevelLabel(level)}", color = folkLogLevelColor(level)) },
                         )
                     }
                 }
