@@ -277,7 +277,6 @@ fun NavModeChooseDialog(
 ) {
     FolkAlertDialog(
         onDismissRequest = onDismiss,
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
@@ -320,7 +319,6 @@ fun StatsTopLayoutChooseDialog(
 ) {
     FolkAlertDialog(
         onDismissRequest = onDismiss,
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {

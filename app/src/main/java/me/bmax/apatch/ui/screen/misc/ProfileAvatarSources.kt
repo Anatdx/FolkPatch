@@ -85,7 +85,7 @@ internal fun AvatarIdDialog(
     onConfirm: (String) -> Unit,
 ) {
     var value by remember { mutableStateOf("") }
-    FolkAlertDialog(onDismissRequest = onDismiss, width = 310.dp) {
+    FolkAlertDialog(onDismissRequest = onDismiss) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(text = title, style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(16.dp))

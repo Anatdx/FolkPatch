@@ -36,7 +36,6 @@ fun KPMControlDialog(showDialog: MutableState<Boolean>, onConfirm: (String) -> U
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
         blurBehind = false,
     ) {

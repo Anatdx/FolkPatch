@@ -95,7 +95,6 @@ fun ExtraConfigDialog(kpmInfo: KPModel.KPMInfo, onDismiss: () -> Unit) {
 
     FolkAlertDialog(
         onDismissRequest = onDismiss,
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
         blurBehind = false,
     ) {

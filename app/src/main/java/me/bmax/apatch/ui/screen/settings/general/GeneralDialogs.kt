@@ -40,7 +40,6 @@ fun ResetSUPathDialog(showDialog: MutableState<Boolean>) {
     }
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
@@ -118,7 +117,6 @@ fun CleanStorageDialog(
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
@@ -171,7 +169,6 @@ fun FolkXAnimationSpeedDialog(showDialog: MutableState<Boolean>, onSpeedChanged:
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {

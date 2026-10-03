@@ -45,7 +45,6 @@ fun AppTitleChooseDialog(showDialog: MutableState<Boolean>, onTitleChanged: (Str
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         LazyColumn {
@@ -79,7 +78,6 @@ fun CustomAppTitleDialog(showDialog: MutableState<Boolean>, snackBarHost: Snackb
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         Column(
@@ -130,7 +128,6 @@ fun DesktopAppNameChooseDialog(showDialog: MutableState<Boolean>, onNameChanged:
     val currentName = remember { prefs.getString("desktop_app_name", "FolkPatch") }
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         LazyColumn {
@@ -181,7 +178,6 @@ fun FolkXAnimationTypeDialog(showDialog: MutableState<Boolean>, onTypeChanged: (
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
@@ -242,7 +238,6 @@ fun AppListLoadingSchemeDialog(showDialog: MutableState<Boolean>, onSchemeChange
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        width = 310.dp,
         shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
