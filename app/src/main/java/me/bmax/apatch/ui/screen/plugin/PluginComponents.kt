@@ -55,6 +55,7 @@ import me.bmax.apatch.ui.component.WallpaperAwareDropdownMenuItem
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.viewmodel.PluginViewModel
 import me.bmax.apatch.util.pickLocalizedString
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @Composable
 fun PluginCard(
@@ -348,7 +349,7 @@ fun PluginConfigDialog(
     FolkAlertDialog(
         onDismissRequest = onDismiss,
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(
@@ -466,7 +467,7 @@ fun PluginLogDialog(
     FolkAlertDialog(
         onDismissRequest = onDismiss,
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(

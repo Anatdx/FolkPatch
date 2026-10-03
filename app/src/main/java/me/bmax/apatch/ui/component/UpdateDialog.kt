@@ -1,7 +1,7 @@
 package me.bmax.apatch.ui.component
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,7 +20,7 @@ fun UpdateDialog(
     FolkAlertDialog(
         onDismissRequest = { /* Cannot dismiss by default means */ },
         width = 320.dp,
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         blurBehind = false,
         dialogProperties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
     ) {

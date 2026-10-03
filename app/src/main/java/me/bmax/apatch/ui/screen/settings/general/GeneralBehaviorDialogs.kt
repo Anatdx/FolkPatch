@@ -20,6 +20,7 @@ import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.util.*
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +46,7 @@ fun AppTitleChooseDialog(showDialog: MutableState<Boolean>, onTitleChanged: (Str
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         LazyColumn {
             items(titles.size, key = { it }) { index ->
@@ -79,7 +80,7 @@ fun CustomAppTitleDialog(showDialog: MutableState<Boolean>, snackBarHost: Snackb
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -130,7 +131,7 @@ fun DesktopAppNameChooseDialog(showDialog: MutableState<Boolean>, onNameChanged:
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         LazyColumn {
             item {
@@ -181,7 +182,7 @@ fun FolkXAnimationTypeDialog(showDialog: MutableState<Boolean>, onTypeChanged: (
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(
@@ -242,7 +243,7 @@ fun AppListLoadingSchemeDialog(showDialog: MutableState<Boolean>, onSchemeChange
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(

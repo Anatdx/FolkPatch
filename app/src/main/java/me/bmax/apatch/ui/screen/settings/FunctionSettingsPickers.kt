@@ -60,6 +60,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import me.bmax.apatch.R
 import androidx.compose.material.icons.outlined.*
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @Composable
 fun SelectedPathHideAppItem(
@@ -369,7 +370,7 @@ fun PathHideFilterSystemWarningDialog(
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
             Text(

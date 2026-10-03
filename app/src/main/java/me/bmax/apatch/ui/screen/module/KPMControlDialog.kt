@@ -26,11 +26,7 @@ import androidx.compose.ui.unit.dp
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
-import androidx.compose.material3.*
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +37,7 @@ fun KPMControlDialog(showDialog: MutableState<Boolean>, onConfirm: (String) -> U
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
         blurBehind = false,
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {

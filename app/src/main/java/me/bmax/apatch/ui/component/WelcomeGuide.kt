@@ -5,7 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
@@ -71,7 +71,7 @@ fun WelcomeGuideDialog(
     FolkAlertDialog(
         onDismissRequest = { /* intentionally no-op: use buttons to dismiss */ },
         width = 340.dp,
-        shape = RoundedCornerShape(24.dp),
+        shape = ContinuousCornerShape(24.dp),
         blurBehind = false,
         dialogProperties = DialogProperties(dismissOnClickOutside = false, dismissOnBackPress = false, usePlatformDefaultWidth = false),
     ) {

@@ -25,6 +25,7 @@ import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.util.*
 import me.bmax.apatch.util.ui.showToast
 import java.io.File
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +41,7 @@ fun ResetSUPathDialog(showDialog: MutableState<Boolean>) {
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
             Box(
@@ -118,7 +119,7 @@ fun CleanStorageDialog(
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
             Text(
@@ -171,7 +172,7 @@ fun FolkXAnimationSpeedDialog(showDialog: MutableState<Boolean>, onSpeedChanged:
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(

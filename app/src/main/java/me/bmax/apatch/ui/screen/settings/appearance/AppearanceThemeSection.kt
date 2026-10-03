@@ -38,6 +38,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import me.bmax.apatch.ui.component.folk.folkPressScale
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +84,7 @@ fun AppearanceThemeSection(
                 FolkAlertDialog(
                     onDismissRequest = { showModeSwitchDialog.value = false },
                     width = 320.dp,
-                    shape = RoundedCornerShape(30.dp),
+                    shape = ContinuousCornerShape(30.dp),
                     blurBehind = false,
                 ) {
                     Column(modifier = Modifier.padding(24.dp)) {

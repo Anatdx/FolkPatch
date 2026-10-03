@@ -27,6 +27,7 @@ import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.theme.ThemeManager
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils
 import me.bmax.apatch.util.ui.showToast
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -276,7 +277,7 @@ fun NavModeChooseDialog(
     FolkAlertDialog(
         onDismissRequest = onDismiss,
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(text = stringResource(R.string.settings_nav_scheme), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
@@ -319,7 +320,7 @@ fun StatsTopLayoutChooseDialog(
     FolkAlertDialog(
         onDismissRequest = onDismiss,
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(text = stringResource(R.string.settings_stats_top_layout), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
@@ -355,7 +356,7 @@ fun BannerApiConfigDialog(
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 340.dp,
-        shape = RoundedCornerShape(28.dp),
+        shape = ContinuousCornerShape(28.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp).verticalScroll(rememberScrollState())) {
             Text(text = stringResource(R.string.apm_banner_api_config_title), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))

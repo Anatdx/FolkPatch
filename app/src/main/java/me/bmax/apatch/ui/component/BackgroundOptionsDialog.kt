@@ -36,6 +36,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 /**
  * 模块信息数据类
@@ -99,7 +100,7 @@ fun BackgroundOptionsDialog(
             FolkAlertDialog(
                 onDismissRequest = onDismiss,
                 width = 320.dp,
-                shape = RoundedCornerShape(20.dp),
+                shape = ContinuousCornerShape(20.dp),
             ) {
                 Column(modifier = Modifier.padding(24.dp)) {
                     // 标题

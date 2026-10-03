@@ -16,7 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Article
 import androidx.compose.material.icons.filled.DeleteOutline
@@ -352,7 +352,7 @@ private fun SuAuditClearDialog(
     FolkAlertDialog(
         onDismissRequest = onDismiss,
         width = 320.dp,
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         blurBehind = false,
     ) {
         Column(modifier = Modifier.padding(24.dp)) {

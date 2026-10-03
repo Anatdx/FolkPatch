@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,7 +41,7 @@ fun BatchExcludeDialog(
     FolkAlertDialog(
         onDismissRequest = onDismiss,
         width = 320.dp,
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         dialogProperties = DialogProperties(decorFitsSystemWindows = true, usePlatformDefaultWidth = false, securePolicy = SecureFlagPolicy.SecureOff, dismissOnClickOutside = false),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
@@ -102,7 +102,7 @@ fun BatchActionConfirmDialog(
     FolkAlertDialog(
         onDismissRequest = onDismiss,
         width = 320.dp,
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         dialogProperties = DialogProperties(decorFitsSystemWindows = true, usePlatformDefaultWidth = false, securePolicy = SecureFlagPolicy.SecureOff, dismissOnClickOutside = false),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
@@ -153,7 +153,7 @@ fun AppActionDialog(
     FolkAlertDialog(
         onDismissRequest = onDismiss,
         width = 320.dp,
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         dialogProperties = DialogProperties(decorFitsSystemWindows = true, usePlatformDefaultWidth = false, securePolicy = SecureFlagPolicy.SecureOff, dismissOnClickOutside = true),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {

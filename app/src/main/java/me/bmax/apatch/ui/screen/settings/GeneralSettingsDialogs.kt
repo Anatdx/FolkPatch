@@ -1,7 +1,7 @@
 package me.bmax.apatch.ui.screen.settings
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,7 +25,7 @@ fun SelinuxHideWarningDialog(
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
         blurBehind = false,
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {

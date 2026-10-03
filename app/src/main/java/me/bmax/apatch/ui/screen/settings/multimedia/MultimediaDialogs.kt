@@ -15,6 +15,7 @@ import me.bmax.apatch.R
 import me.bmax.apatch.ui.theme.SoundEffectConfig
 import me.bmax.apatch.ui.theme.VibrationConfig
 import me.bmax.apatch.util.SoundEffectManager
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,7 +46,7 @@ fun MultimediaDialogs(
         FolkAlertDialog(
             onDismissRequest = { showSoundEffectSourceDialog.value = false },
             width = 310.dp,
-            shape = RoundedCornerShape(30.dp),
+            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -101,7 +102,7 @@ fun MultimediaDialogs(
         FolkAlertDialog(
             onDismissRequest = { showSoundEffectPresetDialog.value = false },
             width = 310.dp,
-            shape = RoundedCornerShape(30.dp),
+            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -151,7 +152,7 @@ fun MultimediaDialogs(
         FolkAlertDialog(
             onDismissRequest = { showSoundEffectScopeDialog.value = false },
             width = 310.dp,
-            shape = RoundedCornerShape(30.dp),
+            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -207,7 +208,7 @@ fun MultimediaDialogs(
         FolkAlertDialog(
             onDismissRequest = { showStartupSourceDialog.value = false },
             width = 310.dp,
-            shape = RoundedCornerShape(30.dp),
+            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -263,7 +264,7 @@ fun MultimediaDialogs(
         FolkAlertDialog(
             onDismissRequest = { showStartupPresetDialog.value = false },
             width = 310.dp,
-            shape = RoundedCornerShape(30.dp),
+            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -313,7 +314,7 @@ fun MultimediaDialogs(
         FolkAlertDialog(
             onDismissRequest = { showVibrationScopeDialog.value = false },
             width = 310.dp,
-            shape = RoundedCornerShape(30.dp),
+            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(

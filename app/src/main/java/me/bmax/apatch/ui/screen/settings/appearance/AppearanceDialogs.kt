@@ -12,6 +12,7 @@ import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @Composable
 fun homeLayoutStyleToString(style: String): Int {
@@ -33,7 +34,7 @@ fun HomeLayoutChooseDialog(showDialog: MutableState<Boolean>, onLayoutSelected: 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(

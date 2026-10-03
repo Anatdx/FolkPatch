@@ -62,6 +62,7 @@ import kotlinx.parcelize.Parcelize
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.util.ui.APDialogBlurBehindUtils.Companion.setupWindowBlurListener
 import kotlin.coroutines.resume
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 private const val TAG = "DialogComponent"
 
@@ -448,7 +449,7 @@ private fun ConfirmDialog(visuals: ConfirmDialogVisuals, confirm: () -> Unit, di
             dismiss()
         },
         width = 320.dp,
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         dialogProperties = DialogProperties(decorFitsSystemWindows = true, usePlatformDefaultWidth = false, securePolicy = SecureFlagPolicy.SecureOff),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {

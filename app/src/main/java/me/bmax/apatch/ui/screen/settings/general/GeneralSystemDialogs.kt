@@ -32,6 +32,7 @@ import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.util.*
 import me.bmax.apatch.util.ui.showToast
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 
 @Composable
@@ -51,7 +52,7 @@ fun NewAppProfileModeDialog(
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(
@@ -298,7 +299,7 @@ fun SELinuxModeDialog(
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
         width = 310.dp,
-        shape = RoundedCornerShape(30.dp),
+        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(
