@@ -65,6 +65,8 @@ import me.bmax.apatch.ui.component.SwitchItem
 import me.bmax.apatch.ui.viewmodel.KPModel
 import me.bmax.apatch.ui.viewmodel.PatchesViewModel
 import me.bmax.apatch.util.Version
+import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.foundation.layout.size
 
 @Composable
 fun StartButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
@@ -516,17 +518,27 @@ fun SelectFileButton(
 fun ErrorView(error: String) {
     if (error.isEmpty()) return
     ExpressiveCard(flat = true) {
-        Column(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 12.dp, top = 12.dp, end = 12.dp, bottom = 12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = stringResource(id = R.string.patch_item_error),
-                style = MaterialTheme.typography.bodyLarge
+            Icon(
+                imageVector = Icons.Outlined.Warning,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(20.dp),
             )
-            Text(text = error, style = MaterialTheme.typography.bodyMedium)
+            Spacer(Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(id = R.string.patch_item_error),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.error,
+                )
+                Text(text = error, style = MaterialTheme.typography.bodyMedium)
+            }
         }
     }
 }
