@@ -91,6 +91,7 @@ import me.bmax.apatch.util.getBugreportFile
 import me.bmax.apatch.util.ui.NavigationBarsSpacer
 import java.io.File
 import java.io.FileOutputStream
+import com.ramcosta.composedestinations.generated.destinations.PluginScreenDestination
 
 private const val FEEDBACK_URL = "https://github.com/LyraVoid/FolkPatch/issues/new/choose"
 
@@ -275,6 +276,9 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                 actions = {
                     IconButton(onClick = dropUnlessResumed { navigator.navigate(SettingsSearchScreenDestination) }) {
                         Icon(Icons.Outlined.Search, contentDescription = stringResource(R.string.settings_search_title))
+                    }
+                    IconButton(onClick = dropUnlessResumed { navigator.navigate(PluginScreenDestination) }) {
+                        Icon(Icons.Outlined.Extension, contentDescription = stringResource(R.string.plugin_title))
                     }
                     IconButton(onClick = { showDevDialog = true }) {
                         Icon(Icons.Outlined.Info, contentDescription = stringResource(R.string.about))
