@@ -55,6 +55,8 @@ import me.bmax.apatch.util.clearLegacyFolkBanner
 import me.bmax.apatch.util.CustomModuleInfo
 import me.bmax.apatch.util.apmCustomModuleInfoStorage
 import me.bmax.apatch.ui.theme.BackgroundConfig
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 
 @Composable
 fun ModuleItem(
@@ -297,10 +299,19 @@ fun ModuleItem(
         MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f)
     }
 
-    val cardShape = ContinuousCornerShape(20.dp)
-
     val cardInteractionSource = remember { MutableInteractionSource() }
     val haptics = LocalHapticFeedback.current
+    val cardPressed by cardInteractionSource.collectIsPressedAsState()
+    val cardCorner by animateDpAsState(
+        targetValue = when {
+            expanded -> 28.dp
+            cardPressed -> 24.dp
+            else -> 20.dp
+        },
+        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
+        label = "moduleCardCorner",
+    )
+    val cardShape = ContinuousCornerShape(cardCorner)
 
     val clickModifier = Modifier
         .fillMaxWidth()
