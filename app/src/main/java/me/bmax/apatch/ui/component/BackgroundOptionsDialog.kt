@@ -33,7 +33,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import me.bmax.apatch.ui.component.folk.FolkAlertDialog
 import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.ui.theme.tokens.FolkShape
@@ -129,7 +128,7 @@ fun BackgroundOptionsDialog(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(52.dp),
-                                    shape = RoundedCornerShape(14.dp),
+                                    shape = FolkShape.Corner16,
                                 ) {
                                     Icon(
                                         Icons.Default.Image,
@@ -151,7 +150,7 @@ fun BackgroundOptionsDialog(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .height(52.dp),
-                                        shape = RoundedCornerShape(14.dp),
+                                        shape = FolkShape.Corner16,
                                     ) {
                                         Icon(Icons.Default.Restore, contentDescription = null, modifier = Modifier.size(20.dp))
                                         Text(text = restoreLabel, modifier = Modifier.padding(start = 8.dp))
@@ -167,7 +166,7 @@ fun BackgroundOptionsDialog(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .height(52.dp),
-                                        shape = RoundedCornerShape(14.dp),
+                                        shape = FolkShape.Corner16,
                                     ) {
                                         Icon(
                                             Icons.Default.Delete,

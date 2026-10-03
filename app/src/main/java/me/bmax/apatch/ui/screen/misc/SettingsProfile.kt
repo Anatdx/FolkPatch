@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.outlined.AddPhotoAlternate
@@ -56,6 +55,7 @@ import me.bmax.apatch.ui.component.folk.folkGroupColor
 import kotlin.math.roundToInt
 import androidx.compose.ui.semantics.Role
 import me.bmax.apatch.ui.theme.tokens.FolkShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 /** Square size the avatar is decoded at, in pixels. */
 private const val PROFILE_AVATAR_PX = 256
@@ -96,7 +96,7 @@ fun ProfileEditSheet(
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp),
+        shape = ContinuousCornerShape(topStart = 28.dp, topEnd = 28.dp),
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
         dragHandle = { BottomSheetDefaults.DragHandle() },
     ) {
@@ -218,7 +218,7 @@ fun ProfileEditSheet(
                 Spacer(Modifier.width(8.dp))
                 Button(
                     onClick = { onSave(name.trim(), sign.trim()) },
-                    shape = RoundedCornerShape(14.dp),
+                    shape = FolkShape.Corner16,
                 ) {
                     Text(stringResource(R.string.save))
                 }
