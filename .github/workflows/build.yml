@@ -101,6 +101,9 @@ jobs:
 
       - run: ./gradlew assembleDebug --no-daemon
 
+      - name: Run unit tests
+        run: ./gradlew testDebugUnitTest --no-daemon
+
       - name: Rename APK
         run: |
           SHORT="${GITHUB_SHA::7}"
