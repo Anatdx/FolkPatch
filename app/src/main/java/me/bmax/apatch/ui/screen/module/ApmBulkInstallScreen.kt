@@ -8,7 +8,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -67,6 +66,8 @@ import me.bmax.apatch.util.reboot
 import me.bmax.apatch.util.BiometricUtils
 import me.bmax.apatch.util.BulkInstallManager
 import com.ramcosta.composedestinations.generated.destinations.InstallScreenDestination
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import androidx.compose.material.icons.outlined.Extension
 
 @Destination<RootGraph>
 @OptIn(ExperimentalMaterial3Api::class)
@@ -259,18 +260,10 @@ fun ApmBulkInstallScreen(navigator: DestinationsNavigator, initialUris: ArrayLis
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     if (moduleUris.isEmpty()) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = stringResource(R.string.apm_bulk_install_empty),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
+                        FolkStateView(
+                            title = stringResource(R.string.apm_bulk_install_empty),
+                            icon = Icons.Outlined.Extension,
+                        )
                     } else {
                         LazyColumn(
                             modifier = Modifier.weight(1f),
