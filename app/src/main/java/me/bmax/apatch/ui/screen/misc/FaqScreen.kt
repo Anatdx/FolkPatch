@@ -56,6 +56,7 @@ import android.content.Context
 import java.util.Locale
 import androidx.compose.animation.core.animateDpAsState
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 
 private const val FAQ_FALLBACK_ASSET = "faq/default.json"
 
@@ -111,9 +112,15 @@ private fun FaqCard(item: FaqItem, expanded: Boolean, onToggle: () -> Unit) {
         targetValue = if (expanded) 180f else 0f,
         label = "FaqChevronRotation",
     )
-    // Grow the corner while the answer is open so the card reads as lifted.
+    // Grow the corner while the answer is open so the card reads as lifted, and
+    // give a smaller lift while the row is held.
+    val pressed by interactionSource.collectIsPressedAsState()
     val corner by animateDpAsState(
-        targetValue = if (expanded) 28.dp else 20.dp,
+        targetValue = when {
+            expanded -> 28.dp
+            pressed -> 24.dp
+            else -> 20.dp
+        },
         animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
         label = "FaqCardCorner",
     )
