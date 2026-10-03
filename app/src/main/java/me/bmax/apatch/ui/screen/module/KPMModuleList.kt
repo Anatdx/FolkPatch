@@ -61,6 +61,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import me.bmax.apatch.ui.component.folk.FolkStateTone
+import androidx.compose.material.icons.outlined.Extension
+import androidx.compose.material.icons.outlined.Warning
 
 private lateinit var targetKPMToControl: KPModel.KPMInfo
 
@@ -195,32 +199,20 @@ fun KPModuleList(
                             contentAlignment = Alignment.Center
                         ) {
                             if (viewModel.errorMessage != null && !viewModel.isRefreshing) {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Outlined.ErrorOutline,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.error,
-                                        modifier = Modifier.size(48.dp)
-                                    )
-                                    Spacer(Modifier.height(12.dp))
-                                    Text(
-                                        text = viewModel.errorMessage ?: stringResource(R.string.kpm_load_failed),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.padding(horizontal = 16.dp)
-                                    )
-                                    Spacer(Modifier.height(12.dp))
-                                    Button(onClick = { viewModel.fetchModuleList() }) {
-                                        Text(stringResource(R.string.retry))
-                                    }
-                                }
+                                FolkStateView(
+                                    title = viewModel.errorMessage ?: stringResource(R.string.kpm_load_failed),
+                                    icon = Icons.Outlined.Warning,
+                                    tone = FolkStateTone.Critical,
+                                    action = {
+                                        Button(onClick = { viewModel.fetchModuleList() }) {
+                                            Text(stringResource(R.string.retry))
+                                        }
+                                    },
+                                )
                             } else {
-                                Text(
-                                    stringResource(R.string.kpm_apm_empty), textAlign = TextAlign.Center
+                                FolkStateView(
+                                    title = stringResource(R.string.kpm_apm_empty),
+                                    icon = Icons.Outlined.Extension,
                                 )
                             }
                         }
@@ -327,8 +319,9 @@ fun KPModuleList(
                                     .fillParentMaxHeight(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    stringResource(R.string.kpm_apm_empty), textAlign = TextAlign.Center
+                                FolkStateView(
+                                    title = stringResource(R.string.kpm_apm_empty),
+                                    icon = Icons.Outlined.Extension,
                                 )
                             }
                         }
