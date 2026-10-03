@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.R
+import androidx.compose.ui.semantics.Role
 
 enum class ThemeMode {
     LIGHT, DARK, SYSTEM
@@ -116,7 +117,7 @@ private fun ThemeModeOption(
             .scale(scale)
             .clip(RoundedCornerShape(24.dp))
             .background(bgColor)
-            .clickable(onClick = onClick)
+            .clickable(role = Role.RadioButton, onClick = onClick)
             .padding(vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -43,6 +43,7 @@ import me.bmax.apatch.R
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.remember
+import androidx.compose.ui.semantics.Role
 
 data class ThemeColorOption(
     val key: String,
@@ -168,7 +169,7 @@ private fun ThemeColorCircle(
                 .size(56.dp)
                 .scale(scale)
                 .clip(shape)
-                .clickable(
+                .clickable(role = Role.RadioButton, 
                     interactionSource = remember { MutableInteractionSource() },
                     indication = ripple(
                         bounded = true,

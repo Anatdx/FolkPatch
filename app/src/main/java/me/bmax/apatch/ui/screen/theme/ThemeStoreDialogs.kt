@@ -30,6 +30,7 @@ import me.bmax.apatch.ui.viewmodel.ThemeStoreViewModel
 import java.io.File
 import me.bmax.apatch.util.DownloadProgress
 import me.bmax.apatch.util.DownloadStatus
+import androidx.compose.ui.semantics.Role
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -345,7 +346,7 @@ fun ThemeGridItem(
         modifier = Modifier
             .fillMaxWidth()
             .folkPressScale(interactionSource)
-            .clickable(
+            .clickable(role = Role.Button, 
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = {

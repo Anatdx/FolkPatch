@@ -33,6 +33,7 @@ import me.bmax.apatch.R
 import me.bmax.apatch.ui.theme.ColorGenerationMode
 import me.bmax.apatch.ui.theme.ColorStandard
 import me.bmax.apatch.ui.theme.ColorStyle
+import androidx.compose.ui.semantics.Role
 
 // ─── Color Generation Mode (Classic / Custom) ────────────────────────────────
 
@@ -188,7 +189,7 @@ private fun SegmentedItem(
             .scale(scale)
             .clip(RoundedCornerShape(16.dp))
             .background(bgColor)
-            .clickable(onClick = onClick)
+            .clickable(role = Role.RadioButton, onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
@@ -231,7 +232,7 @@ private fun StyleSegment(
             .scale(scale)
             .clip(RoundedCornerShape(20.dp))
             .background(bgColor)
-            .clickable(onClick = onClick)
+            .clickable(role = Role.RadioButton, onClick = onClick)
             .padding(horizontal = 14.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center,
     ) {

@@ -26,6 +26,7 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.ui.component.folk.folkPressScale
+import androidx.compose.ui.semantics.Role
 
 /**
  * One of the two avatar choices. The selected tile is tinted and carries a
@@ -52,7 +53,7 @@ internal fun AvatarOptionTile(
                 else MaterialTheme.colorScheme.surfaceContainerHighest,
             )
             .folkPressScale(interactionSource, true)
-            .clickable(interactionSource = interactionSource, indication = null) {
+            .clickable(role = Role.RadioButton, interactionSource = interactionSource, indication = null) {
                 haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 onClick()
             }

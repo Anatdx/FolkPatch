@@ -57,6 +57,7 @@ import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.folkGroupColor
 import kotlin.math.roundToInt
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import androidx.compose.ui.semantics.Role
 
 /** Square size the avatar is decoded at, in pixels. */
 private const val PROFILE_AVATAR_PX = 256
@@ -308,7 +309,7 @@ fun ProfileHeader(
                     // Plain circle, no shadow and no coloured ring.
                     .clip(CircleShape)
                     .background(folkGroupColor().copy(alpha = 1f))
-                    .clickable(onClick = onAvatarClick),
+                    .clickable(role = Role.Button, onClick = onAvatarClick),
                 contentAlignment = Alignment.Center,
             ) {
                 if (avatarBitmap != null) {

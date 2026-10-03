@@ -57,6 +57,7 @@ import java.util.Locale
 import androidx.compose.animation.core.animateDpAsState
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.ui.semantics.Role
 
 private const val FAQ_FALLBACK_ASSET = "faq/default.json"
 
@@ -135,7 +136,7 @@ private fun FaqCard(item: FaqItem, expanded: Boolean, onToggle: () -> Unit) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .folkPressScale(interactionSource, true)
-                    .clickable(interactionSource = interactionSource, indication = null) {
+                    .clickable(role = Role.Button, interactionSource = interactionSource, indication = null) {
                         haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                         onToggle()
                     }

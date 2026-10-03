@@ -93,6 +93,7 @@ import java.io.File
 import java.io.FileOutputStream
 import com.ramcosta.composedestinations.generated.destinations.PluginScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.FaqScreenDestination
+import androidx.compose.ui.semantics.Role
 
 private const val FEEDBACK_URL = "https://github.com/LyraVoid/FolkPatch/issues/new/choose"
 
@@ -548,7 +549,7 @@ private fun GridEntry(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .folkPressScale(interactionSource)
-            .clickable(
+            .clickable(role = Role.Button, 
                 interactionSource = interactionSource,
                 indication = null,
                 onClick = {

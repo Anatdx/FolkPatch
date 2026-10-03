@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.ui.component.folk.LocalInsideFolkGroup
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import androidx.compose.ui.semantics.Role
 
 @Composable
 fun ExpressiveCard(
@@ -30,7 +31,7 @@ fun ExpressiveCard(
             Box(
                 modifier = modifier
                     .fillMaxWidth()
-                    .clickable(
+                    .clickable(role = Role.Button, 
                         interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(),
                         onClick = onClick,
