@@ -1403,4 +1403,5 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="settings_disclaimer_message">Cihazı root ettikten sonra sistem güncellemeleri, üçüncü taraf modüller veya diğer dış etkenler öngörülemeyen risk ve kayıplara yol açabilir; bunları kendiniz üstlenmeniz gerekir. Lütfen riskleri tam olarak anladıktan sonra devam edin.</string>
     <string name="theme_store_subtitle">Topluluk temalarını keşfedin ve uygulayın</string>
     <string name="script_library_subtitle">Yerel betikleri çalıştırın ve yönetin</string>
+    <string name="plugin_subtitle">FolkPatch yeteneklerini genişletin</string>
 </resources>

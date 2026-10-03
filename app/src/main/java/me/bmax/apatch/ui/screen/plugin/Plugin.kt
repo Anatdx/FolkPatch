@@ -103,7 +103,8 @@ fun PluginScreen(navigator: DestinationsNavigator) {
 
     FolkScaffold(
         title = stringResource(R.string.plugin_title),
-        titleStyle = FolkTitleStyle.Inline,
+        titleStyle = FolkTitleStyle.Flexible,
+        subtitle = stringResource(R.string.plugin_subtitle),
         onBack = { navigator.popBackStack() },
         actions = {
             IconButton(onClick = dropUnlessResumed { navigator.navigate(com.ramcosta.composedestinations.generated.destinations.OnlinePluginScreenDestination) }) {

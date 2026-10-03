@@ -1331,4 +1331,5 @@ Kontynuować mimo to?</string>
     <string name="settings_disclaimer_message">Po uzyskaniu uprawnień root aktualizacje systemu, moduły firm trzecich lub inne czynniki zewnętrzne mogą powodować nieprzewidziane ryzyko i straty, które ponosisz na własną odpowiedzialność. Kontynuuj dopiero po pełnym zrozumieniu ryzyka.</string>
     <string name="theme_store_subtitle">Odkrywaj i stosuj motywy społeczności</string>
     <string name="script_library_subtitle">Uruchamiaj i zarządzaj lokalnymi skryptami</string>
+    <string name="plugin_subtitle">Rozszerz możliwości FolkPatch</string>
 </resources>

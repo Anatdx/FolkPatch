@@ -1330,4 +1330,5 @@ KernelPatch は boot イメージをパッチする必要があります。
     <string name="settings_disclaimer_message">端末を Root 化すると、システム更新やサードパーティ製モジュールなど外部要因により予期しないリスクや損害が生じる可能性があります。それらはご自身の責任で負担していただく必要があります。十分に理解した上でご利用ください。</string>
     <string name="theme_store_subtitle">コミュニティテーマを探して適用</string>
     <string name="script_library_subtitle">ローカルスクリプトの実行と管理</string>
+    <string name="plugin_subtitle">FolkPatch の機能を拡張</string>
 </resources>

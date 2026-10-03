@@ -1391,4 +1391,5 @@ KernelPatch 这道菜需要用 boot 主料来烹饪。
     <string name="settings_disclaimer_message">给设备上 Root 之后，系统更新、第三方模块或别的外在因素都可能带来没准儿的风险和损失，得你自己承担。弄明白风险了再接着用。</string>
     <string name="theme_store_subtitle">寻觅百家菜谱，随手下锅</string>
     <string name="script_library_subtitle">掌灶本機食譜</string>
+    <string name="plugin_subtitle">添菜加料</string>
 </resources>

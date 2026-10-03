@@ -1390,4 +1390,5 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="settings_disclaimer_message">对法器 Root 之后，天机更新、外道模块或诸般外劫皆可能招致不测之祸与损，需由你自行承担。待你参悟风险，方可续行。</string>
     <string name="theme_store_subtitle">寻觅诸天法门，即刻修持</string>
     <string name="script_library_subtitle">御行本機符籙</string>
+    <string name="plugin_subtitle">廣 FolkPatch 之法</string>
 </resources>

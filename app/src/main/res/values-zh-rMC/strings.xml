@@ -1390,4 +1390,5 @@ KernelPatch 附魔需要 boot 方块作为材料。
     <string name="settings_disclaimer_message">将设备 Root 之后，系统更新、第三方模块或其它外界因素皆可能带来不可预知的危险与损失，须由你自行承担。待你明了风险，方可继续冒险。</string>
     <string name="theme_store_subtitle">探索各路秘宝，即刻装备</string>
     <string name="script_library_subtitle">運行與掌理本機卷軸</string>
+    <string name="plugin_subtitle">擴 FolkPatch 之能</string>
 </resources>
