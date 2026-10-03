@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
  * A row lists the light values then the dark ones, in [RoleOrder] order. The keys are what
  * preferences and exported themes store, so they must not change.
  */
-internal object FolkThemeCatalog {
+object FolkThemeCatalog {
 
     /** Used when a stored key is not in the table. */
     private const val FallbackKey = "blue"

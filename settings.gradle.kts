@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "APatch"
 include(":app")
+include(":core:designsystem")
