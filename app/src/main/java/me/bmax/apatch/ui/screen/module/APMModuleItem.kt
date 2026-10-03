@@ -1,5 +1,5 @@
 package me.bmax.apatch.ui.screen.module
-import me.bmax.apatch.ui.screen.BannerApiService
+import me.bmax.apatch.ui.screen.misc.BannerApiService
 
 import android.graphics.Bitmap
 import android.net.Uri

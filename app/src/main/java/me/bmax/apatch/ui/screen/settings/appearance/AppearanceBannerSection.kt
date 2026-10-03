@@ -106,7 +106,7 @@ fun AppearanceBannerSection(
                                     onClearCache = {
                                         scope.launch {
                                             loadingDialog.show()
-                                            me.bmax.apatch.ui.screen.BannerApiService.clearAllCache(context)
+                                            me.bmax.apatch.ui.screen.misc.BannerApiService.clearAllCache(context)
                                             loadingDialog.hide()
                                             showToast(context, context.getString(R.string.apm_banner_cache_cleared))
                                         }
