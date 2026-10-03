@@ -180,7 +180,11 @@ fun ThemeStoreScreen(
                 downloadProgress = null
             },
             onPause = {
-                // TODO: 实现暂停功能
+                if (downloadProgress?.status == DownloadStatus.PAUSED) {
+                    viewModel.startDownload(downloadingTheme!!)
+                } else {
+                    viewModel.pauseDownload(downloadingTheme!!.id)
+                }
             }
         )
     }

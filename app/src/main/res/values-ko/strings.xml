@@ -1424,4 +1424,5 @@ KernelPatch는 boot 이미지를 패치해야 합니다.
     <string name="plugin_subtitle">FolkPatch의 기능을 확장</string>
     <string name="my_themes_subtitle">저장한 테마</string>
     <string name="apm_api_marketplace_subtitle">커뮤니티 공유 API 둘러보기</string>
+    <string name="theme_download_paused">일시중지됨</string>
 </resources>

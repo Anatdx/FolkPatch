@@ -1398,4 +1398,5 @@
     <string name="plugin_subtitle">وسّع قدرات FolkPatch</string>
     <string name="my_themes_subtitle">السمات التي حفظتها</string>
     <string name="apm_api_marketplace_subtitle">تصفّح واجهات API التي يشاركها المجتمع</string>
+    <string name="theme_download_paused">متوقف مؤقتًا</string>
 </resources>

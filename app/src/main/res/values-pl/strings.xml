@@ -1334,4 +1334,5 @@ Kontynuować mimo to?</string>
     <string name="plugin_subtitle">Rozszerz możliwości FolkPatch</string>
     <string name="my_themes_subtitle">Zapisane motywy</string>
     <string name="apm_api_marketplace_subtitle">Przeglądaj API udostępniane przez społeczność</string>
+    <string name="theme_download_paused">Wstrzymano</string>
 </resources>

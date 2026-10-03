@@ -29,6 +29,7 @@ import me.bmax.apatch.ui.component.folk.folkPressScale
 import me.bmax.apatch.ui.viewmodel.ThemeStoreViewModel
 import java.io.File
 import me.bmax.apatch.util.DownloadProgress
+import me.bmax.apatch.util.DownloadStatus
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -112,6 +113,16 @@ fun ThemeDownloadDialog(
                     )
                 }
                 
+                // 暂停提示
+                if (progress.status == DownloadStatus.PAUSED) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(R.string.theme_download_paused),
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+
                 // 错误信息
                 if (progress.errorMessage != null) {
                     Spacer(modifier = Modifier.height(8.dp))
@@ -129,11 +140,16 @@ fun ThemeDownloadDialog(
             }
         },
         dismissButton = {
+            val paused = progress.status == DownloadStatus.PAUSED
             OutlinedButton(
                 onClick = onPause,
-                enabled = false // TODO: 实现暂停功能
+                enabled = paused || progress.status == DownloadStatus.DOWNLOADING
             ) {
-                Text(stringResource(R.string.theme_download_pause))
+                Text(
+                    stringResource(
+                        if (paused) R.string.theme_download_resume else R.string.theme_download_pause
+                    )
+                )
             }
         }
     )

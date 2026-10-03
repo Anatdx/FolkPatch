@@ -1393,4 +1393,5 @@ KernelPatch 附魔需要 boot 方块作为材料。
     <string name="plugin_subtitle">擴 FolkPatch 之能</string>
     <string name="my_themes_subtitle">你所藏之主題</string>
     <string name="apm_api_marketplace_subtitle">覽眾所授之 API</string>
+    <string name="theme_download_paused">暂停</string>
 </resources>

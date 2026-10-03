@@ -1410,4 +1410,5 @@ KernelPatch требует образ boot для патча.
     <string name="plugin_subtitle">Расширьте возможности FolkPatch</string>
     <string name="my_themes_subtitle">Сохранённые темы</string>
     <string name="apm_api_marketplace_subtitle">Просмотр API от сообщества</string>
+    <string name="theme_download_paused">Приостановлено</string>
 </resources>

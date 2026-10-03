@@ -1411,4 +1411,5 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="plugin_subtitle">Amplie o que o FolkPatch pode fazer</string>
     <string name="my_themes_subtitle">Temas que você salvou</string>
     <string name="apm_api_marketplace_subtitle">Navegue pelas APIs compartilhadas pela comunidade</string>
+    <string name="theme_download_paused">Pausado</string>
 </resources>

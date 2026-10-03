@@ -1468,4 +1468,5 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="plugin_subtitle">Extend what FolkPatch can do</string>
     <string name="my_themes_subtitle">Themes you have saved</string>
     <string name="apm_api_marketplace_subtitle">Browse community-shared APIs</string>
+    <string name="theme_download_paused">Paused</string>
 </resources>

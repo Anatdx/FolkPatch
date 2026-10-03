@@ -1409,4 +1409,5 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="plugin_subtitle">Mở rộng khả năng của FolkPatch</string>
     <string name="my_themes_subtitle">Chủ đề bạn đã lưu</string>
     <string name="apm_api_marketplace_subtitle">Duyệt API do cộng đồng chia sẻ</string>
+    <string name="theme_download_paused">Đã tạm dừng</string>
 </resources>

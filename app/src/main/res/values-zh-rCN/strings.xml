@@ -1412,4 +1412,5 @@ KernelPatch 需要修补 boot 镜像。
     <string name="plugin_subtitle">扩展 FolkPatch 的能力</string>
     <string name="my_themes_subtitle">你保存的主题</string>
     <string name="apm_api_marketplace_subtitle">浏览社区分享的 API</string>
+    <string name="theme_download_paused">已暂停</string>
 </resources>

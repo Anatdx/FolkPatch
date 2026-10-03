@@ -1397,4 +1397,5 @@
     <string name="plugin_subtitle">拓 FolkPatch 之能</string>
     <string name="my_themes_subtitle">汝所藏之神題</string>
     <string name="apm_api_marketplace_subtitle">覽眾所施之 API</string>
+    <string name="theme_download_paused">凝止</string>
 </resources>

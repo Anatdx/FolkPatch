@@ -1393,4 +1393,5 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="plugin_subtitle">廣 FolkPatch 之法</string>
     <string name="my_themes_subtitle">汝所藏之仙題</string>
     <string name="apm_api_marketplace_subtitle">覽眾所傳之 API</string>
+    <string name="theme_download_paused">止息</string>
 </resources>

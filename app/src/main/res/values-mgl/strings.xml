@@ -1396,4 +1396,5 @@ KernelPatch 魔法阵需要 boot 核心来施展。
     <string name="plugin_subtitle">萌法再擴</string>
     <string name="my_themes_subtitle">汝所藏之魔法題</string>
     <string name="apm_api_marketplace_subtitle">覽眾所施之 API</string>
+    <string name="theme_download_paused">魔力暫凝</string>
 </resources>
