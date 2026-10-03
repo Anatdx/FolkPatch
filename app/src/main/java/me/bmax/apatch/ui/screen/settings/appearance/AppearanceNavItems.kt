@@ -88,7 +88,7 @@ fun FolkSettingsGroupScope.appearanceNavItems(
                         Text(
                             text = stringResource(id = R.string.settings_nav_layout_summary),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.outline,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     Icon(
