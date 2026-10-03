@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
+import me.bmax.apatch.ui.component.folk.FolkSettingsDimens
 import me.bmax.apatch.ui.component.folk.FolkSliderPreference
 import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import me.bmax.apatch.ui.component.folk.FolkValuePreference
@@ -65,7 +66,14 @@ fun FolkSettingsGroupScope.appearanceNavItems(
             )
             ExpressiveCard(flat = flat, onClick = { expanded = !expanded }) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = FolkSettingsDimens.ItemHorizontalPadding,
+                            end = FolkSettingsDimens.ItemEndPadding,
+                            top = 16.dp,
+                            bottom = 16.dp,
+                        ),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -86,8 +94,10 @@ fun FolkSettingsGroupScope.appearanceNavItems(
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowDown,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.rotate(rotationState),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        modifier = Modifier
+                            .size(FolkSettingsDimens.ChevronSize)
+                            .rotate(rotationState),
                     )
                 }
             }

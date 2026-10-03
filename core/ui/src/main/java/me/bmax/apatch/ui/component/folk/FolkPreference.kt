@@ -296,7 +296,7 @@ fun FolkCheckboxPreference(
 }
 
 @Composable
-internal fun FolkChevron(enabled: Boolean = true) {
+fun FolkChevron(enabled: Boolean = true) {
     Icon(
         imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
         contentDescription = null,

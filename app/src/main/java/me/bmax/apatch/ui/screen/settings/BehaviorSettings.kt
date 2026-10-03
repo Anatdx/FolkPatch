@@ -24,10 +24,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkCheckboxPreference
+import me.bmax.apatch.ui.component.folk.FolkSettingsDimens
 import me.bmax.apatch.ui.component.folk.FolkPreference
 import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
 import me.bmax.apatch.ui.component.folk.FolkSettingsSection
@@ -162,9 +162,9 @@ fun BehaviorSettingsContent(
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowDown,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                             modifier = Modifier
-                                .size(20.dp)
+                                .size(FolkSettingsDimens.ChevronSize)
                                 .rotate(rotationState),
                         )
                     },
