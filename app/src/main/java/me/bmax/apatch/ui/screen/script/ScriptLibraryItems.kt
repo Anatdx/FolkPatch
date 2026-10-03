@@ -55,6 +55,9 @@ import me.bmax.apatch.util.scriptBannerStorage
 import me.bmax.apatch.util.ui.showToast
 import java.io.File
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.LocalIndication
 
 private val scriptBannerSemaphore = Semaphore(4)
 
@@ -196,8 +199,14 @@ fun ScriptItem(
         }
     }
 
+    val cardInteractionSource = remember { MutableInteractionSource() }
+    val pressed by cardInteractionSource.collectIsPressedAsState()
     val cardCorner by animateDpAsState(
-        targetValue = if (expanded && foldCard) 28.dp else 20.dp,
+        targetValue = when {
+            expanded && foldCard -> 28.dp
+            pressed -> 24.dp
+            else -> 20.dp
+        },
         animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
         label = "scriptCardCorner",
     )
@@ -206,6 +215,8 @@ fun ScriptItem(
         .fillMaxWidth()
         .animateContentSize(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec())
         .combinedClickable(
+            interactionSource = cardInteractionSource,
+            indication = LocalIndication.current,
             onClick = { if (foldCard) onExpandToggle() else onRun() },
             onLongClick = { showBannerDialog = true }
         )
