@@ -210,7 +210,7 @@ fun BottomBar(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = horizontalScreenPadding, vertical = 14.dp),
+                        .padding(horizontal = horizontalScreenPadding, vertical = 16.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     val isCustomBg = BackgroundConfig.isCustomBackgroundEnabled

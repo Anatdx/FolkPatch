@@ -94,7 +94,7 @@ fun KPMTopBar(
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 2.dp, bottom = 2.dp, end = 14.dp)
+                            .padding(top = 2.dp, bottom = 2.dp, end = 16.dp)
                             .focusRequester(focusRequester)
                             .onFocusChanged { focusState ->
                                 if (focusState.isFocused) onSearch = true

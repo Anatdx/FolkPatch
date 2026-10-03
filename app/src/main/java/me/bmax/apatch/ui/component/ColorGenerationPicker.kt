@@ -233,7 +233,7 @@ private fun StyleSegment(
             .clip(RoundedCornerShape(20.dp))
             .background(bgColor)
             .clickable(role = Role.RadioButton, onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(

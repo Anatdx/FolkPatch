@@ -117,7 +117,7 @@ fun SearchAppBar(
                             .padding(
                                 top = 2.dp,
                                 bottom = 2.dp,
-                                end = if (onBackClick != null) 0.dp else 14.dp
+                                end = if (onBackClick != null) 0.dp else 16.dp
                             )
                             .focusRequester(focusRequester)
                             .onFocusChanged { focusState ->

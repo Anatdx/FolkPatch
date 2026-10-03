@@ -100,7 +100,7 @@ fun LanguagePickerScreen(navigator: DestinationsNavigator) {
                                 )
                             }
                         }
-                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     if (index == 0) {
