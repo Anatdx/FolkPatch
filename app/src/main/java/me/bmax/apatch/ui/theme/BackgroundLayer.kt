@@ -50,7 +50,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import me.bmax.apatch.ui.screen.BottomBarDestination
+import me.bmax.apatch.ui.navigation.BottomBarDestination
 
 /**
  * Background Layer Component

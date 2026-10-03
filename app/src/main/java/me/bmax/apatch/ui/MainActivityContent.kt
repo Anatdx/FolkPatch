@@ -47,7 +47,7 @@ import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.BuildConfig
-import me.bmax.apatch.ui.screen.BottomBarDestination
+import me.bmax.apatch.ui.navigation.BottomBarDestination
 import me.bmax.apatch.ui.screen.MODULE_TYPE
 import me.bmax.apatch.ui.viewmodel.SuperUserViewModel
 import me.bmax.apatch.ui.theme.APatchThemeWithBackground

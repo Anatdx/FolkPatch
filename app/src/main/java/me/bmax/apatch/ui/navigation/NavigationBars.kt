@@ -50,7 +50,6 @@ import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import me.bmax.apatch.APApplication
-import me.bmax.apatch.ui.screen.BottomBarDestination
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.util.ui.FloatingBarConfig
 import me.bmax.apatch.util.ui.navBarGlassEffect

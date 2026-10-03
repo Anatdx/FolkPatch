@@ -19,7 +19,7 @@ import com.ramcosta.composedestinations.generated.NavGraphs
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.apApp
 import me.bmax.apatch.R
-import me.bmax.apatch.ui.screen.BottomBarDestination
+import me.bmax.apatch.ui.navigation.BottomBarDestination
 import me.bmax.apatch.util.AppData
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.util.ui.HomeBottomSpacer

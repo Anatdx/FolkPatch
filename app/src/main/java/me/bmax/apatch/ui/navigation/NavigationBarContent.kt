@@ -61,7 +61,6 @@ import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import me.bmax.apatch.APApplication
-import me.bmax.apatch.ui.screen.BottomBarDestination
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.util.BottomBarIconConfig
 import me.bmax.apatch.util.ui.FloatingBarConfig
