@@ -1,4 +1,4 @@
-package me.bmax.apatch.ui.screen
+package me.bmax.apatch.ui.screen.script
 
 import android.os.Environment
 import androidx.compose.foundation.layout.Column

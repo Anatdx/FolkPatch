@@ -1,4 +1,6 @@
-package me.bmax.apatch.ui.screen
+package me.bmax.apatch.ui.screen.script
+
+import me.bmax.apatch.ui.screen.BannerApiService
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
