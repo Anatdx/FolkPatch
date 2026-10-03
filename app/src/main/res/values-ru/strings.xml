@@ -299,7 +299,7 @@
     <string name="hide_apatch_manager_failure">Не удалось скрыть. Пожалуйста, сообщите об ошибке!</string>
 
     <string name="setting_reset_su_path">Сбросить путь su</string>
-    <string name="setting_reset_su_new_path">Новый полный путь</string>\
+    <string name="setting_reset_su_new_path">Новый полный путь</string>
 
     <string name="settings_folkx_engine_title">Движок анимации FolkX</string>
     <string name="settings_folkx_engine_summary">Использовать плавные физические пружинные анимации при переключении страниц верхнего уровня</string>
