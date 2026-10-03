@@ -63,6 +63,8 @@ import me.bmax.apatch.util.ShizukuServiceManager
 import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
 import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import androidx.compose.material.icons.outlined.*
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import androidx.compose.material.icons.outlined.Apps
 
 private data class ShizukuApp(
     val packageInfo: PackageInfo,
@@ -196,20 +198,16 @@ fun ShizukuManagementScreen(navigator: DestinationsNavigator) {
                     Text(stringResource(R.string.retry))
                 }
             }
-            apps.isEmpty() -> Column(
-                modifier = Modifier.fillMaxSize().padding(padding).padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    text = stringResource(R.string.shizuku_management_empty),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(Modifier.height(16.dp))
-                Button(onClick = { scope.launch { loadApps() } }) {
-                    Text(stringResource(R.string.retry))
-                }
-            }
+            apps.isEmpty() -> FolkStateView(
+                title = stringResource(R.string.shizuku_management_empty),
+                modifier = Modifier.padding(padding),
+                icon = Icons.Outlined.Apps,
+                action = {
+                    Button(onClick = { scope.launch { loadApps() } }) {
+                        Text(stringResource(R.string.retry))
+                    }
+                },
+            )
             else -> LazyColumn(
                 modifier = Modifier.fillMaxSize().padding(padding),
                 contentPadding = PaddingValues(top = 8.dp, bottom = 24.dp),
