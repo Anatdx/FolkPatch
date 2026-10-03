@@ -152,7 +152,7 @@ fun HeroStatusCard(
             isUpdate -> MaterialTheme.colorScheme.secondary
             else -> MaterialTheme.colorScheme.errorContainer
         },
-        animationSpec = tween(500),
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
         label = "containerColor"
     )
 
@@ -164,7 +164,7 @@ fun HeroStatusCard(
             isUpdate -> MaterialTheme.colorScheme.onSecondary
             else -> MaterialTheme.colorScheme.onErrorContainer
         },
-        animationSpec = tween(500),
+        animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
         label = "contentColor"
     )
 

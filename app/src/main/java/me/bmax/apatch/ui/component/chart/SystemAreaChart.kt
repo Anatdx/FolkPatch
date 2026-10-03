@@ -1,8 +1,6 @@
 package me.bmax.apatch.ui.component.chart
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -45,6 +43,8 @@ fun SystemAreaChart(
     var prevPoints by remember { mutableStateOf<List<ChartPoint>>(emptyList()) }
     var currentPoints by remember { mutableStateOf<List<ChartPoint>>(emptyList()) }
 
+    val progressSpec = MaterialTheme.motionScheme.defaultSpatialSpec<Float>()
+
     LaunchedEffect(dataPoints) {
         val newPoints = normalizePoints(dataPoints)
         prevPoints = currentPoints
@@ -52,7 +52,7 @@ fun SystemAreaChart(
         animatable.snapTo(0f)
         animatable.animateTo(
             1f,
-            animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+            animationSpec = progressSpec
         )
     }
 

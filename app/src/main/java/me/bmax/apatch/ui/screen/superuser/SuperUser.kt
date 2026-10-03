@@ -5,7 +5,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -282,7 +281,7 @@ private fun SuperUserScreenModern(navigator: DestinationsNavigator, useLegacySuP
                             ) {
                                 Crossfade(
                                     targetState = fabExpanded,
-                                    animationSpec = tween(durationMillis = 200),
+                                    animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec(),
                                     label = "fabIconCrossfade"
                                 ) { isExpanded ->
                                     if (isExpanded) {
@@ -330,7 +329,7 @@ private fun SuperUserScreenModern(navigator: DestinationsNavigator, useLegacySuP
                 val isLandscape = configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
                 val animatedOffset by animateDpAsState(
                     targetValue = if (isFloatingMode && bottomBarVisible && !isLandscape) (-88).dp else 0.dp,
-                    animationSpec = tween(durationMillis = 300),
+                    animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                     label = "fabOffset"
                 )
                 if (isFloatingMode) {
