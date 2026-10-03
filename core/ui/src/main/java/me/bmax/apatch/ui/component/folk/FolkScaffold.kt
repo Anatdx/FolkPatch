@@ -1,10 +1,13 @@
 package me.bmax.apatch.ui.component.folk
 
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -154,14 +157,23 @@ fun FolkScaffold(
     ) { inner ->
         val layoutDirection = LocalLayoutDirection.current
         val clearance = if (addBottomClearance) folkBottomClearance() else 0.dp
-        content(
-            PaddingValues(
-                start = inner.calculateStartPadding(layoutDirection),
-                end = inner.calculateEndPadding(layoutDirection),
-                top = inner.calculateTopPadding(),
-                bottom = inner.calculateBottomPadding() + clearance,
+        // Keep the content viewport below the bar instead of only offsetting the
+        // first item. With a translucent bar in wallpaper mode, content that
+        // scrolls underneath would otherwise show through the title.
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = inner.calculateTopPadding()),
+        ) {
+            content(
+                PaddingValues(
+                    start = inner.calculateStartPadding(layoutDirection),
+                    end = inner.calculateEndPadding(layoutDirection),
+                    top = 0.dp,
+                    bottom = inner.calculateBottomPadding() + clearance,
+                )
             )
-        )
+        }
     }
 }
 
