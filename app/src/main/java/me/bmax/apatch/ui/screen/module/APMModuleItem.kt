@@ -10,7 +10,7 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.ui.draw.clip
 import com.topjohnwu.superuser.io.SuFile
 import androidx.compose.material3.MaterialTheme
@@ -297,7 +297,7 @@ fun ModuleItem(
         MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f)
     }
 
-    val cardShape = RoundedCornerShape(20.dp)
+    val cardShape = ContinuousCornerShape(20.dp)
 
     val cardInteractionSource = remember { MutableInteractionSource() }
     val haptics = LocalHapticFeedback.current

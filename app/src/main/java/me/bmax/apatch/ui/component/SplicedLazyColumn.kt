@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -62,7 +62,7 @@ fun <T> LazyListScope.splicedLazyColumnGroup(
             targetBottomRadius
         }
 
-        val shape = RoundedCornerShape(
+        val shape = ContinuousCornerShape(
             topStart = currentTopRadius,
             topEnd = currentTopRadius,
             bottomStart = currentBottomRadius,

@@ -14,7 +14,7 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.Surface
@@ -131,7 +131,7 @@ fun SplicedColumnGroup(
                                 targetBottomRadius
                             }
 
-                            val shape = RoundedCornerShape(
+                            val shape = ContinuousCornerShape(
                                 topStart = currentTopRadius,
                                 topEnd = currentTopRadius,
                                 bottomStart = currentBottomRadius,
