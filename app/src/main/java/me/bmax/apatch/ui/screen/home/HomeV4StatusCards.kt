@@ -24,6 +24,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.CircularWavyProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -108,6 +110,7 @@ fun HomeV4DeviceStatusCard(isWallpaperMode: Boolean, modifier: Modifier = Modifi
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HomeV4StatusCircle(
     value: String,
@@ -123,17 +126,13 @@ fun HomeV4StatusCircle(
             contentAlignment = Alignment.Center,
             modifier = Modifier.size(80.dp)
         ) {
-            CircularProgressIndicator(
-                progress = { 1f },
-                modifier = Modifier.fillMaxSize(),
-                color = color.copy(alpha = 0.2f),
-                strokeWidth = 8.dp,
-            )
-            CircularProgressIndicator(
+            CircularWavyProgressIndicator(
                 progress = { progress },
                 modifier = Modifier.fillMaxSize(),
                 color = color,
-                strokeWidth = 8.dp,
+                trackColor = color.copy(alpha = 0.2f),
+                // Default amplitude peaks at 1f; halve it for a calmer ring.
+                amplitude = { fraction -> if (fraction > 0.1f && fraction < 0.95f) 0.5f else 0f },
             )
             Text(
                 text = value,

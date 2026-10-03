@@ -316,6 +316,7 @@ fun StorageRow(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun StatusCircle(
     value: String,
@@ -336,17 +337,13 @@ fun StatusCircle(
             contentAlignment = Alignment.Center,
             modifier = Modifier.size(80.dp)
         ) {
-            CircularProgressIndicator(
-                progress = { 1f },
-                modifier = Modifier.fillMaxSize(),
-                color = effectiveColor.copy(alpha = 0.2f),
-                strokeWidth = 8.dp,
-            )
-            CircularProgressIndicator(
+            CircularWavyProgressIndicator(
                 progress = { progress },
                 modifier = Modifier.fillMaxSize(),
                 color = effectiveColor,
-                strokeWidth = 8.dp,
+                trackColor = effectiveColor.copy(alpha = 0.2f),
+                // Default amplitude peaks at 1f; halve it for a calmer ring.
+                amplitude = { fraction -> if (fraction > 0.1f && fraction < 0.95f) 0.5f else 0f },
             )
             Text(
                 text = value,
