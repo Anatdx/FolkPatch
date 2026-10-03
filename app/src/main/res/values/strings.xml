@@ -1040,6 +1040,8 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="profile_nickname_label">Nickname</string>
     <string name="profile_signature_label">Signature</string>
     <string name="profile_choose_avatar">Choose avatar</string>
+    <string name="profile_avatar_default">Default avatar</string>
+    <string name="profile_avatar_custom">Custom avatar</string>
     <string name="profile_crop_avatar">Crop avatar</string>
     <string name="profile_restore_default">Restore defaults</string>
     <string name="settings_section_general_interface">Interface &amp; Motion</string>

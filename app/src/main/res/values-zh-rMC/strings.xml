@@ -946,6 +946,8 @@ KernelPatch 附魔需要 boot 方块作为材料。
     <string name="profile_nickname_label">玩家名</string>
     <string name="profile_signature_label">个性签名</string>
     <string name="profile_choose_avatar">更换头像</string>
+    <string name="profile_avatar_default">默认头像</string>
+    <string name="profile_avatar_custom">自定义头像</string>
     <string name="profile_crop_avatar">裁剪头像</string>
     <string name="profile_restore_default">恢复默认</string>
     <string name="settings_section_general_basics">语言与更新</string>

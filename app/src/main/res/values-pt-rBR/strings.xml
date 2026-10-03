@@ -955,6 +955,8 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="profile_nickname_label">Apelido</string>
     <string name="profile_signature_label">Assinatura</string>
     <string name="profile_choose_avatar">Escolher avatar</string>
+    <string name="profile_avatar_default">Avatar padrão</string>
+    <string name="profile_avatar_custom">Avatar personalizado</string>
     <string name="profile_crop_avatar">Recortar avatar</string>
     <string name="profile_restore_default">Restaurar padrão</string>
     <string name="settings_section_general_basics">Idioma e atualizações</string>

@@ -3,6 +3,8 @@ package me.bmax.apatch.ui.screen.misc
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,11 +19,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.Button
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -41,8 +45,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,13 +57,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.folkGroupColor
+import me.bmax.apatch.ui.component.folk.folkPressScale
 
 /** Square size the avatar is decoded at, in pixels. */
 private const val PROFILE_AVATAR_PX = 256
 
 /**
- * Local profile editor: pick an avatar, set a nickname and a short signature,
- * or fall back to the defaults. No account, no network.
+ * Local profile editor: choose between the default avatar and a custom image,
+ * and set a nickname and a short signature. "Restore defaults" resets only the
+ * text, so the avatar can be restored on its own. No account, no network.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,12 +74,13 @@ fun ProfileEditSheet(
     signature: String,
     avatarUri: String,
     onPickAvatar: () -> Unit,
+    onUseDefaultAvatar: () -> Unit,
     onRestoreDefault: () -> Unit,
     onDismiss: () -> Unit,
     onSave: (String, String) -> Unit,
 ) {
-    var name by remember { mutableStateOf(nickname) }
-    var sign by remember { mutableStateOf(signature) }
+    var name by remember(nickname) { mutableStateOf(nickname) }
+    var sign by remember(signature) { mutableStateOf(signature) }
     val context = LocalContext.current
     val avatarBitmap = remember(avatarUri) {
         if (avatarUri.isBlank()) {
@@ -107,13 +116,28 @@ fun ProfileEditSheet(
 
             Spacer(Modifier.height(18.dp))
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Box(
-                    modifier = Modifier
-                        .size(64.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surfaceContainerHighest),
-                    contentAlignment = Alignment.Center,
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                AvatarOptionTile(
+                    label = stringResource(R.string.profile_avatar_default),
+                    selected = avatarUri.isBlank(),
+                    onClick = onUseDefaultAvatar,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(58.dp),
+                    )
+                }
+                AvatarOptionTile(
+                    label = stringResource(R.string.profile_avatar_custom),
+                    selected = avatarUri.isNotBlank(),
+                    onClick = onPickAvatar,
+                    modifier = Modifier.weight(1f),
                 ) {
                     if (avatarBitmap != null) {
                         Image(
@@ -124,19 +148,12 @@ fun ProfileEditSheet(
                         )
                     } else {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                            imageVector = Icons.Outlined.AddPhotoAlternate,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(82.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(28.dp),
                         )
                     }
-                }
-                Spacer(Modifier.width(14.dp))
-                FilledTonalButton(
-                    onClick = onPickAvatar,
-                    shape = RoundedCornerShape(14.dp),
-                ) {
-                    Text(stringResource(R.string.profile_choose_avatar))
                 }
             }
 
@@ -181,6 +198,75 @@ fun ProfileEditSheet(
                 }
             }
         }
+    }
+}
+
+/**
+ * One of the two avatar choices. The selected tile is tinted and carries a
+ * check badge, so the current mode is obvious at a glance.
+ */
+@Composable
+private fun AvatarOptionTile(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    preview: @Composable () -> Unit,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
+    val shape = RoundedCornerShape(24.dp)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .clip(shape)
+            .background(
+                if (selected) MaterialTheme.colorScheme.secondaryContainer
+                else MaterialTheme.colorScheme.surfaceContainerHighest,
+            )
+            .folkPressScale(interactionSource, true)
+            .clickable(interactionSource = interactionSource, indication = null) {
+                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                onClick()
+            }
+            .padding(vertical = 16.dp),
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.surfaceContainerHighest),
+                contentAlignment = Alignment.Center,
+            ) {
+                preview()
+            }
+            if (selected) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .size(22.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(14.dp),
+                    )
+                }
+            }
+        }
+        Spacer(Modifier.height(10.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelLarge,
+            color = if (selected) MaterialTheme.colorScheme.onSecondaryContainer
+            else MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+        )
     }
 }
 

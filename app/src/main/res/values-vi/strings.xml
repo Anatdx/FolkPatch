@@ -959,6 +959,8 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="profile_nickname_label">Biệt danh</string>
     <string name="profile_signature_label">Chữ ký</string>
     <string name="profile_choose_avatar">Chọn ảnh đại diện</string>
+    <string name="profile_avatar_default">Ảnh đại diện mặc định</string>
+    <string name="profile_avatar_custom">Ảnh đại diện tùy chỉnh</string>
     <string name="profile_crop_avatar">Cắt ảnh đại diện</string>
     <string name="profile_restore_default">Khôi phục mặc định</string>
     <string name="settings_section_general_basics">Ngôn ngữ &amp; Cập nhật</string>

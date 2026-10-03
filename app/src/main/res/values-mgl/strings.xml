@@ -963,6 +963,8 @@ KernelPatch 魔法阵需要 boot 核心来施展。
     <string name="profile_nickname_label">魔法名</string>
     <string name="profile_signature_label">咒语箴言</string>
     <string name="profile_choose_avatar">更换魔法头像</string>
+    <string name="profile_avatar_default">默认魔像</string>
+    <string name="profile_avatar_custom">自定义魔像</string>
     <string name="profile_crop_avatar">裁切魔法头像</string>
     <string name="profile_restore_default">回归初始</string>
     <string name="settings_section_general_basics">魔法升级</string>

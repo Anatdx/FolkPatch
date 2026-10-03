@@ -404,15 +404,17 @@ fun SettingScreen(navigator: DestinationsNavigator) {
             signature = profileSignature,
             avatarUri = profileAvatar,
             onPickAvatar = { pickAvatarLauncher.launch("image/*") },
+            onUseDefaultAvatar = {
+                profileAvatar = ""
+                runCatching { File(context.filesDir, PROFILE_AVATAR_FILE).delete() }
+                prefs.edit { remove("profile_avatar") }
+            },
             onRestoreDefault = {
                 profileNickname = ""
                 profileSignature = ""
-                profileAvatar = ""
-                runCatching { File(context.filesDir, PROFILE_AVATAR_FILE).delete() }
                 prefs.edit {
                     remove("profile_nickname")
                     remove("profile_signature")
-                    remove("profile_avatar")
                 }
             },
             onDismiss = { showProfileEditor = false },

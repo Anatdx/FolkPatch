@@ -957,6 +957,8 @@
     <string name="profile_nickname_label">الاسم المستعار</string>
     <string name="profile_signature_label">التوقيع</string>
     <string name="profile_choose_avatar">اختيار صورة</string>
+    <string name="profile_avatar_default">صورة افتراضية</string>
+    <string name="profile_avatar_custom">صورة مخصصة</string>
     <string name="profile_crop_avatar">قص الصورة</string>
     <string name="profile_restore_default">استعادة الافتراضي</string>
     <string name="settings_section_general_basics">اللغة والتحديثات</string>

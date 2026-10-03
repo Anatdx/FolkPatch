@@ -908,6 +908,8 @@ KernelPatch は boot イメージをパッチする必要があります。
     <string name="profile_nickname_label">ニックネーム</string>
     <string name="profile_signature_label">署名</string>
     <string name="profile_choose_avatar">アイコンを選択</string>
+    <string name="profile_avatar_default">デフォルトのアバター</string>
+    <string name="profile_avatar_custom">カスタムアバター</string>
     <string name="profile_crop_avatar">アイコンを切り抜き</string>
     <string name="profile_restore_default">初期設定に戻す</string>
     <string name="settings_section_general_basics">言語とアップデート</string>

@@ -946,6 +946,8 @@ KernelPatch 这道菜需要用 boot 主料来烹饪。
     <string name="profile_nickname_label">店名</string>
     <string name="profile_signature_label">招牌标语</string>
     <string name="profile_choose_avatar">更换招牌头像</string>
+    <string name="profile_avatar_default">默认招牌</string>
+    <string name="profile_avatar_custom">自定招牌</string>
     <string name="profile_crop_avatar">裁剪招牌头像</string>
     <string name="profile_restore_default">恢复原味</string>
     <string name="settings_section_general_basics">方言与菜谱</string>

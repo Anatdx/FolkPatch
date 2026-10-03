@@ -988,6 +988,8 @@ KernelPatch 需要修补 boot 镜像才能工作喵。
     <string name="profile_nickname_label">昵称喵</string>
     <string name="profile_signature_label">签名喵</string>
     <string name="profile_choose_avatar">换头像喵</string>
+    <string name="profile_avatar_default">默认喵像</string>
+    <string name="profile_avatar_custom">自定义喵像</string>
     <string name="profile_crop_avatar">裁剪头像喵</string>
     <string name="profile_restore_default">恢复默认喵</string>
     <string name="settings_section_general_basics">语言与更新喵</string>
