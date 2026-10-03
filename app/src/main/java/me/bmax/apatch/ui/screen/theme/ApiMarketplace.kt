@@ -32,6 +32,10 @@ import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.model.ApiMarketplaceItem
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.viewmodel.ApiMarketplaceViewModel
+import me.bmax.apatch.ui.component.folk.FolkStateView
+import me.bmax.apatch.ui.component.folk.FolkStateTone
+import androidx.compose.material.icons.outlined.Api
+import androidx.compose.material.icons.outlined.Warning
 
 @Destination<RootGraph>
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,36 +111,24 @@ fun ApiMarketplaceScreen(
                 }
             }
             viewModel.errorMessage != null -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = viewModel.errorMessage ?: "Unknown error",
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Button(onClick = { viewModel.retry() }) {
-                        Text(stringResource(R.string.retry))
-                    }
-                }
+                FolkStateView(
+                    title = viewModel.errorMessage ?: "Unknown error",
+                    modifier = Modifier.padding(paddingValues),
+                    icon = Icons.Outlined.Warning,
+                    tone = FolkStateTone.Critical,
+                    action = {
+                        Button(onClick = { viewModel.retry() }) {
+                            Text(stringResource(R.string.retry))
+                        }
+                    },
+                )
             }
             viewModel.items.isEmpty() -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(R.string.apm_api_empty),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                FolkStateView(
+                    title = stringResource(R.string.apm_api_empty),
+                    modifier = Modifier.padding(paddingValues),
+                    icon = Icons.Outlined.Api,
+                )
             }
             else -> {
                 LazyColumn(
