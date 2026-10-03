@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fingerprint
 import androidx.compose.material.icons.outlined.Android
@@ -77,7 +77,7 @@ fun InfoCard(kpState: APApplication.State, apState: APApplication.State) {
     }
     
     Card(
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
             MaterialTheme.colorScheme.surface
         } else {
@@ -182,7 +182,7 @@ fun ListInfoCard(kpState: APApplication.State, apState: APApplication.State, sho
     }
 
     Card(
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
             MaterialTheme.colorScheme.surface
         } else {

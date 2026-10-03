@@ -21,7 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.foundation.layout.offset
@@ -411,7 +411,7 @@ fun APModuleScreen(navigator: DestinationsNavigator) {
                 showFirstTimeDialog = false
             },
             width = 350.dp,
-            shape = RoundedCornerShape(20.dp),
+            shape = ContinuousCornerShape(20.dp),
             blurBehind = false,
             dialogProperties = DialogProperties(dismissOnClickOutside = false, dismissOnBackPress = false),
         ) {

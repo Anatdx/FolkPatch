@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
@@ -152,7 +153,7 @@ fun KStatusCard(
                 navigator.navigate(InstallModeSelectScreenDestination)
             }
         },
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = cardBackgroundColor,
             contentColor = cardContentColor

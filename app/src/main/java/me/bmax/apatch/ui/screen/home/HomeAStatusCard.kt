@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.CheckCircle
@@ -34,7 +34,7 @@ import me.bmax.apatch.R
 @Composable
 fun AStatusCard(apState: APApplication.State) {
     Card(
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = run {
             if (BackgroundConfig.isCustomBackgroundEnabled) {
                 MaterialTheme.colorScheme.secondaryContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)

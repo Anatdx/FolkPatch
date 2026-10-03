@@ -16,7 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -125,7 +125,7 @@ fun MagiskStyleCard(
                     Modifier
                 }
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (hasCardWallpaper) Color.Transparent
                 else MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp),

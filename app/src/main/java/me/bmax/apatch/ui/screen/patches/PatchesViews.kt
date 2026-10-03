@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -312,7 +313,7 @@ fun SetSuperKeyView(viewModel: PatchesViewModel) {
             label = { Text(stringResource(R.string.patch_set_superkey)) },
             singleLine = true,
             isError = invalid,
-            shape = RoundedCornerShape(16.dp),
+            shape = ContinuousCornerShape(16.dp),
             visualTransformation = if (keyVisible) {
                 VisualTransformation.None
             } else {
@@ -350,7 +351,7 @@ fun SetSuperKeyView(viewModel: PatchesViewModel) {
             supportingText = if (mismatch) {
                 { Text(stringResource(R.string.patch_skey_mismatch)) }
             } else null,
-            shape = RoundedCornerShape(16.dp),
+            shape = ContinuousCornerShape(16.dp),
             visualTransformation = if (confirmVisible) {
                 VisualTransformation.None
             } else {

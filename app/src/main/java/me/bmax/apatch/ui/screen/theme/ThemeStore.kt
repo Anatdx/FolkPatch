@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.Color
@@ -331,7 +331,7 @@ fun ThemeStoreScreen(
         FolkAlertDialog(
             onDismissRequest = { showFilterSheet = false },
             width = 320.dp,
-            shape = RoundedCornerShape(28.dp),
+            shape = ContinuousCornerShape(28.dp),
             blurBehind = false,
         ) {
             ThemeFilterSheetContent(

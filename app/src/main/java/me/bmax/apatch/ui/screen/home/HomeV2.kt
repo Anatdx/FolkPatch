@@ -14,7 +14,7 @@ import androidx.compose.material.icons.outlined.Android
 import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material3.*
 import androidx.compose.material3.surfaceColorAtElevation
-import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -304,7 +304,7 @@ fun StatusCardBig(
                     }
                 }
             ),
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -463,7 +463,7 @@ fun SmallInfoCard(
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = ContinuousCornerShape(20.dp),
         colors = CardDefaults.cardColors(containerColor = containerColor)
     ) {
         Column(

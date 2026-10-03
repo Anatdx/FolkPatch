@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
+import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.automirrored.outlined.Help
@@ -511,7 +512,7 @@ fun AStatusCardCircle(apState: APApplication.State) {
 fun TonalCard(
     modifier: Modifier = Modifier,
     containerColor: Color? = null,
-    shape: Shape = RoundedCornerShape(20.dp),
+    shape: Shape = ContinuousCornerShape(20.dp),
     content: @Composable () -> Unit
 ) {
     val finalContainerColor = containerColor ?: if (BackgroundConfig.isCustomBackgroundEnabled) {
