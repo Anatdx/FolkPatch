@@ -63,6 +63,7 @@
     <string name="reboot_fastbootd">FastbootD Moduna Yeniden Başlat</string>
     <string name="about">Hakkında</string>
     <string name="developer_and_maintainer">Geliştirici | Bakımcı</string>
+    <string name="developer_profile_picture">Geliştirici profil resmi</string>
     <string name="settings_app_language">Dil</string>
     <string name="system_default">Sistem varsayılanı</string>
     <string name="settings_global_namespace_mode">Global ad alanı modu</string>

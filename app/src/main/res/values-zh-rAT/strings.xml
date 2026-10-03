@@ -65,6 +65,7 @@
     <string name="reboot_fastbootd">前往天使神殿</string>
     <string name="about">创世之纪</string>
     <string name="developer_and_maintainer">圣光使者 | 圣域守护者</string>
+    <string name="developer_profile_picture">开发者圣像</string>
     <string name="settings_app_language">圣域语言</string>
     <string name="system_default">天意默认</string>
     <string name="settings_global_namespace_mode">全域圣境领域</string>

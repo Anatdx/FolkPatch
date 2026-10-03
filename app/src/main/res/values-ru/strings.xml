@@ -68,6 +68,7 @@
     <string name="reboot_fastbootd">Перезагрузить в FastbootD</string>
     <string name="about">О приложении</string>
     <string name="developer_and_maintainer">Разработчик | Сопровождающий</string>
+    <string name="developer_profile_picture">Фото профиля разработчика</string>
     <string name="settings_app_language">Язык</string>
     <string name="system_default">По умолчанию системы</string>
     <string name="settings_global_namespace_mode">Глобальный режим пространства имён</string>

@@ -65,6 +65,7 @@
     <string name="reboot_fastbootd">Reiniciar en FastbootD</string>
     <string name="about">Acerca de</string>
     <string name="developer_and_maintainer">Desarrollador | Mantenedor</string>
+    <string name="developer_profile_picture">Foto de perfil del desarrollador</string>
     <string name="settings_app_language">Idioma</string>
     <string name="system_default">Predeterminado del sistema</string>
     <string name="settings_global_namespace_mode">Modo de espacio de nombres global</string>

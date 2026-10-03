@@ -75,6 +75,7 @@
     <string name="reboot_fastbootd">重启到FastbootD模式哒喵！</string>
     <string name="about">关于人家哒</string>
     <string name="developer_and_maintainer">开发者喵 | 维护者喵</string>
+    <string name="developer_profile_picture">开发者喵像</string>
     <string name="settings_app_language">语言设置喵</string>
     <string name="system_default">系统默认哒</string>
     <string name="settings_global_namespace_mode">全局命名空间模式喵</string>

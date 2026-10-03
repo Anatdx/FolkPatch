@@ -68,6 +68,7 @@
     <string name="reboot_fastbootd">Mulai Ulang ke FastbootD</string>
     <string name="about">Tentang Aplikasi</string>
     <string name="developer_and_maintainer">Pengembang | Pemelihara</string>
+    <string name="developer_profile_picture">Foto profil pengembang</string>
     <string name="settings_app_language">Bahasa</string>
     <string name="system_default">Bawaan Sistem</string>
     <string name="settings_global_namespace_mode">Mode Ruang Nama Global</string>

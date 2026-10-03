@@ -55,6 +55,7 @@
     <string name="reboot_fastbootd">FastbootD で再起動</string>
     <string name="about">アプリについて</string>
     <string name="developer_and_maintainer">開発者 | メンテナ</string>
+    <string name="developer_profile_picture">開発者のプロフィール画像</string>
     <string name="settings_app_language">言語</string>
     <string name="system_default">システムのデフォルト</string>
     <string name="settings_global_namespace_mode">グローバル名前空間モード</string>

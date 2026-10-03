@@ -65,6 +65,7 @@
     <string name="reboot_edl_confirm">重啟入 EDL（Emergency Download）之式乎？屏將常黑，惟深刷之器可救。</string>
     <string name="about">關於</string>
     <string name="developer_and_maintainer">開發者 | 修葺者</string>
+    <string name="developer_profile_picture">开发者素像</string>
     <string name="settings_app_language">語言</string>
     <string name="system_default">循統系</string>
     <string name="settings_global_namespace_mode">全局命名域之式</string>

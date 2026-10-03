@@ -63,6 +63,7 @@
     <string name="reboot_fastbootd">FastbootD로 다시 시작</string>
     <string name="about">정보</string>
     <string name="developer_and_maintainer">개발자 | 유지보수자</string>
+    <string name="developer_profile_picture">개발자 프로필 사진</string>
     <string name="settings_app_language">언어</string>
     <string name="system_default">시스템 기본값</string>
     <string name="settings_global_namespace_mode">전역 네임스페이스 모드</string>

@@ -80,7 +80,7 @@ fun DeveloperInfo(
                             .memoryCachePolicy(CachePolicy.DISABLED)
                             .diskCachePolicy(CachePolicy.DISABLED)
                             .build(),
-                        contentDescription = "Developer Profile Picture",
+                        contentDescription = stringResource(R.string.developer_profile_picture),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxSize()

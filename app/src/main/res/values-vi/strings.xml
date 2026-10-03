@@ -65,6 +65,7 @@
     <string name="reboot_fastbootd">Khởi động lại vào FastbootD</string>
     <string name="about">Về</string>
     <string name="developer_and_maintainer">Nhà phát triển | Người bảo trì</string>
+    <string name="developer_profile_picture">Ảnh đại diện của nhà phát triển</string>
     <string name="settings_app_language">Ngôn ngữ</string>
     <string name="system_default">Mặc định hệ thống</string>
     <string name="settings_global_namespace_mode">Chế độ không gian tên toàn cục</string>

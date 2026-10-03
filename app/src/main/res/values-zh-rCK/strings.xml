@@ -63,6 +63,7 @@
     <string name="reboot_fastbootd">换换地儿</string>
     <string name="about">咱家底</string>
     <string name="developer_and_maintainer">掌勺大厨 | 传人</string>
+    <string name="developer_profile_picture">开发者招牌</string>
     <string name="settings_app_language">方言</string>
     <string name="system_default">照旧</string>
     <string name="settings_global_namespace_mode">共用备料区</string>

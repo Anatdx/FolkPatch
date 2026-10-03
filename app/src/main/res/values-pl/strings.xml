@@ -59,6 +59,7 @@
     <string name="reboot_fastbootd">Uruchom ponownie w trybie FastbootD</string>
     <string name="about">O aplikacji</string>
     <string name="developer_and_maintainer">Deweloper | Opiekun</string>
+    <string name="developer_profile_picture">Zdjęcie profilowe dewelopera</string>
     <string name="settings_app_language">Język</string>
     <string name="system_default">Domyślne ustawienie systemowe</string>
     <string name="settings_global_namespace_mode">Tryb globalnej przestrzeni nazw</string>

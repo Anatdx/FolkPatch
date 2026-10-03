@@ -63,6 +63,7 @@
     <string name="reboot_fastbootd">重启到 FastbootD</string>
     <string name="about">关于</string>
     <string name="developer_and_maintainer">开发者 | 维护者</string>
+    <string name="developer_profile_picture">开发者头像</string>
     <string name="settings_app_language">语言</string>
     <string name="system_default">系统默认</string>
     <string name="settings_global_namespace_mode">全局命名空间模式</string>
