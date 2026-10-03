@@ -126,14 +126,28 @@ fun HomeV4StatusCircle(
             contentAlignment = Alignment.Center,
             modifier = Modifier.size(80.dp)
         ) {
-            CircularWavyProgressIndicator(
-                progress = { progress },
-                modifier = Modifier.fillMaxSize(),
-                color = color,
-                trackColor = color.copy(alpha = 0.2f),
-                // Default amplitude peaks at 1f; halve it for a calmer ring.
-                amplitude = { fraction -> if (fraction > 0.1f && fraction < 0.95f) 0.5f else 0f },
-            )
+            if (progress > 0f) {
+                CircularWavyProgressIndicator(
+                    progress = { progress },
+                    modifier = Modifier.fillMaxSize(),
+                    color = color,
+                    trackColor = color.copy(alpha = 0.2f),
+                    // Keep the standard wave height; a longer wavelength gives
+                    // fewer, broader ripples, which reads calmer.
+                    amplitude = { 1f },
+                    wavelength = 24.dp,
+                )
+            } else {
+                // An empty gauge still shows a muted wavy ring, so a 0% value
+                // does not collapse to a plain circle next to the others.
+                CircularWavyProgressIndicator(
+                    progress = { 1f },
+                    modifier = Modifier.fillMaxSize(),
+                    color = color.copy(alpha = 0.2f),
+                    amplitude = { 1f },
+                    wavelength = 24.dp,
+                )
+            }
             Text(
                 text = value,
                 style = MaterialTheme.typography.titleMedium,
