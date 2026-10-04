@@ -261,7 +261,7 @@ fun BottomBarContent(
                                 destination = destination,
                                 isSelected = isSelected,
                                 tint = if (isSelected) {
-                                    MaterialTheme.colorScheme.primary
+                                    MaterialTheme.colorScheme.onSecondaryContainer
                                 } else {
                                     MaterialTheme.colorScheme.onSurfaceVariant
                                 }
@@ -424,7 +424,7 @@ fun NavigationRailBar(navController: NavHostController) {
 fun NavBarIcon(
     destination: BottomBarDestination,
     isSelected: Boolean,
-    tint: Color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+    tint: Color = if (isSelected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
     modifier: Modifier = Modifier,
 ) {
     val destinationName = destination.name
