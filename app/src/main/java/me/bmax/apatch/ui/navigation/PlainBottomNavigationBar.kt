@@ -3,12 +3,6 @@ package me.bmax.apatch.ui.navigation
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AdminPanelSettings
-import androidx.compose.material.icons.rounded.Archive
-import androidx.compose.material.icons.rounded.Extension
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.MaterialTheme
@@ -26,7 +20,6 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,19 +29,6 @@ import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import me.bmax.apatch.ui.theme.BackgroundConfig
-
-/**
- * Softer rounded selected icons for the plain (always-bottom) navigation bar.
- * Kept local so the shared [BottomBarDestination] icon set used by the
- * floating bar and the side rail stays untouched.
- */
-private fun BottomBarDestination.plainBarSelectedIcon(): ImageVector = when (this) {
-    BottomBarDestination.Home -> Icons.Rounded.Home
-    BottomBarDestination.KModule -> Icons.Rounded.Archive
-    BottomBarDestination.SuperUser -> Icons.Rounded.AdminPanelSettings
-    BottomBarDestination.AModule -> Icons.Rounded.Extension
-    BottomBarDestination.Settings -> Icons.Rounded.Settings
-}
 
 /**
  * The plain docked bottom bar (nav_mode = "bottom"). It uses a Material3
@@ -158,7 +138,6 @@ internal fun PlainBottomNavigationBar(
                                 NavBarIcon(
                                     destination,
                                     isSelected = true,
-                                    selectedIcon = destination.plainBarSelectedIcon(),
                                     modifier = Modifier.scale(iconScale)
                                 )
                             } else {
