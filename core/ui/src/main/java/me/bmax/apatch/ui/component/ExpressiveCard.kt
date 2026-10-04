@@ -8,11 +8,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import me.bmax.apatch.ui.component.folk.LocalInsideFolkGroup
+import me.bmax.apatch.ui.component.folk.folkPressScale
 import me.bmax.apatch.ui.theme.tokens.FolkShape
 import androidx.compose.ui.semantics.Role
 
@@ -27,13 +29,19 @@ fun ExpressiveCard(
         // Inside a settings group (SplicedColumnGroup or FolkSettingsGroup): skip
         // the card wrapper, the parent already provides the container surface.
         if (onClick != null) {
+            val interactionSource = remember { MutableInteractionSource() }
+            val haptics = LocalHapticFeedback.current
             Box(
                 modifier = modifier
                     .fillMaxWidth()
-                    .clickable(role = Role.Button, 
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = ripple(),
-                        onClick = onClick,
+                    .folkPressScale(interactionSource)
+                    .clickable(role = Role.Button,
+                        interactionSource = interactionSource,
+                        indication = null,
+                        onClick = {
+                            haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            onClick()
+                        },
                     ),
             ) {
                 content()
