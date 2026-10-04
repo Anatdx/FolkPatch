@@ -38,13 +38,16 @@ import me.bmax.apatch.ui.theme.tokens.FolkShape
 fun AStatusCard(apState: APApplication.State) {
     Card(
         shape = FolkShape.Corner20,
-        colors = CardDefaults.cardColors(containerColor = run {
-            if (BackgroundConfig.isCustomBackgroundEnabled) {
-                MaterialTheme.colorScheme.secondaryContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)
+        colors = CardDefaults.cardColors(
+            // 壁纸模式下用中性 surface/onSurface，避免把强调容器降 alpha 后
+            // onSecondaryContainer 文字直接压在壁纸上而失去对比度。
+            containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
+                MaterialTheme.colorScheme.surface
             } else {
                 MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-            }
-        })
+            },
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        )
     ) {
         Column(
             modifier = Modifier

@@ -80,7 +80,10 @@ internal fun generateColorScheme(
  * content colors) or the AMOLED override on top of [baseColorScheme].
  *
  * 在自定义壁纸模式下，中性色/容器色会跟随壁纸的有效明暗（亮底→深字，暗底→浅字），
- * 以保证半透明容器与其上文字的对比度；强调色仍沿用 [baseColorScheme]。
+ * 以保证半透明容器与其上文字的对比度；强调色及其不透明容器仍沿用 [baseColorScheme]。
+ *
+ * 返回 [WallpaperThemeResult]：适配后的方案，以及为保证文字对比度而可能需要提高的
+ * 壁纸遮罩 dim（仅在选用浅色文字时需要）。
  */
 internal fun adaptColorScheme(
     context: Context,
@@ -95,22 +98,24 @@ internal fun adaptColorScheme(
     colorStandard: String?,
     colorStyle: String?,
     contrastLevel: Double,
-): ColorScheme {
+): WallpaperThemeResult {
     if (!useCustomBackground) {
-        return if (darkTheme && amoledTheme) baseColorScheme.toAmoled() else baseColorScheme
+        val scheme = if (darkTheme && amoledTheme) baseColorScheme.toAmoled() else baseColorScheme
+        return WallpaperThemeResult(scheme, null)
     }
 
     val wallpaperDim = BackgroundConfig.getEffectiveBackgroundDim(darkTheme)
     val effectiveLuminance = BackgroundConfig.wallpaperLuminanceFor(activeBackgroundUri)
         ?.let { it * (1f - wallpaperDim) }
-    val contentIsDark = effectiveLuminance?.let { it < WALLPAPER_DARK_THRESHOLD } ?: darkTheme
+    // 浅色文字（深色中性方案）：壁纸偏暗时需要。用色时不再受 contentIsDark 命名误导。
+    val useLightContent = effectiveLuminance?.let { it < WALLPAPER_DARK_THRESHOLD } ?: darkTheme
 
-    val neutralScheme = if (contentIsDark == darkTheme) {
+    val neutralScheme = if (useLightContent == darkTheme) {
         baseColorScheme
     } else {
         generateColorScheme(
             context = context,
-            darkTheme = contentIsDark,
+            darkTheme = useLightContent,
             colorGenerationMode = colorGenerationMode,
             dynamicColor = dynamicColor,
             customColorScheme = customColorScheme,
@@ -121,7 +126,7 @@ internal fun adaptColorScheme(
     }
 
     val opacity = BackgroundConfig.customBackgroundOpacity
-    return baseColorScheme.copy(
+    val adapted = baseColorScheme.copy(
         background = Color.Transparent,
         surface = neutralScheme.surface.copy(alpha = opacity),
         surfaceDim = neutralScheme.surfaceDim,
@@ -139,6 +144,16 @@ internal fun adaptColorScheme(
         outlineVariant = neutralScheme.outlineVariant,
         inverseSurface = neutralScheme.inverseSurface,
         inverseOnSurface = neutralScheme.inverseOnSurface,
-        secondaryContainer = baseColorScheme.secondaryContainer.copy(alpha = opacity),
+        // secondaryContainer 保持 base（不透明）：它由 onSecondaryContainer 配对使用，
+        // 一旦降 alpha 就会让选中态文字直接压在壁纸上而失去对比度。
     )
+
+    // 仅当采用浅色中性内容时，才需要保证遮罩足够暗；否则保持用户请求的 dim。
+    val renderDim = if (useLightContent) {
+        guardedDim(wallpaperDim, adapted) ?: wallpaperDim
+    } else {
+        wallpaperDim
+    }
+
+    return WallpaperThemeResult(adapted, renderDim)
 }

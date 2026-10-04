@@ -107,9 +107,14 @@ fun AppearanceThemeSection(
                             Surface(
                                 shape = FolkShape.Corner12,
                                 color = if (themeStoreMode == mode) {
-                                    MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)
+                                    MaterialTheme.colorScheme.secondaryContainer
                                 } else {
                                     Color.Transparent
+                                },
+                                contentColor = if (themeStoreMode == mode) {
+                                    MaterialTheme.colorScheme.onSecondaryContainer
+                                } else {
+                                    MaterialTheme.colorScheme.onSurface
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -134,12 +139,24 @@ fun AppearanceThemeSection(
                             ) {
                                 Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                                     Column(modifier = Modifier.weight(1f)) {
-                                        Text(label, style = MaterialTheme.typography.titleMedium)
+                                        Text(
+                                            label,
+                                            style = MaterialTheme.typography.titleMedium,
+                                            color = if (themeStoreMode == mode) {
+                                                MaterialTheme.colorScheme.onSecondaryContainer
+                                            } else {
+                                                MaterialTheme.colorScheme.onSurface
+                                            }
+                                        )
                                         Text(
                                             if (mode == "compat") stringResource(R.string.theme_mode_compat_desc)
                                             else stringResource(R.string.theme_mode_builtin_desc),
                                             style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            color = if (themeStoreMode == mode) {
+                                                MaterialTheme.colorScheme.onSecondaryContainer
+                                            } else {
+                                                MaterialTheme.colorScheme.onSurfaceVariant
+                                            }
                                         )
                                     }
                                     Spacer(Modifier.width(12.dp))

@@ -290,19 +290,17 @@ fun KPModuleItem(
                                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                                 modifier = Modifier.padding(bottom = 8.dp)
                             ) {
-                                 val labelOpacity = (opacity + 0.1f).coerceAtMost(1f)
-
                                  if (showMoreModuleInfo) {
                                      ModuleLabel(
                                         text = "KPM",
-                                        containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = labelOpacity),
+                                        containerColor = MaterialTheme.colorScheme.primaryContainer,
                                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                                      )
 
                                      if (module.args.isNotBlank()) {
                                          ModuleLabel(
                                             text = "Args",
-                                            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = labelOpacity),
+                                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                             contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                                          )
                                      }
@@ -312,9 +310,9 @@ fun KPModuleItem(
                                      ModuleLabel(
                                         text = stringResource(if (embedded) R.string.kpm_embedded else R.string.kpm_loaded),
                                         containerColor = if (embedded) {
-                                            MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = labelOpacity)
+                                            MaterialTheme.colorScheme.tertiaryContainer
                                         } else {
-                                            MaterialTheme.colorScheme.secondaryContainer.copy(alpha = labelOpacity)
+                                            MaterialTheme.colorScheme.secondaryContainer
                                         },
                                         contentColor = if (embedded) {
                                             MaterialTheme.colorScheme.onTertiaryContainer
@@ -387,7 +385,7 @@ fun KPModuleItem(
                             contentPadding = if (simpleListBottomBar) PaddingValues(12.dp) else PaddingValues(horizontal = 12.dp),
                             modifier = if (simpleListBottomBar) Modifier else Modifier.height(36.dp),
                             colors = ButtonDefaults.filledTonalButtonColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f))
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer
                             )
                         ) {
                             Icon(
@@ -414,9 +412,9 @@ fun KPModuleItem(
                             contentPadding = if (simpleListBottomBar) PaddingValues(12.dp) else PaddingValues(horizontal = 12.dp),
                             modifier = if (simpleListBottomBar) Modifier else Modifier.height(36.dp),
                             colors = if (simpleListBottomBar) ButtonDefaults.filledTonalButtonColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f))
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer
                             ) else ButtonDefaults.filledTonalButtonColors(
-                                containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f)),
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
                                 contentColor = MaterialTheme.colorScheme.onErrorContainer
                             )
                         ) {

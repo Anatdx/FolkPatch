@@ -55,27 +55,23 @@ fun StatusCardCircle(
     val isJailbreak = jailbreakState.isActive
     val isPermissive = jailbreakState.isPermissive
 
-    val finalContainerColor = if (isJailbreak) {
-        if (BackgroundConfig.isCustomBackgroundEnabled) {
-            MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)
-        } else {
-            MaterialTheme.colorScheme.tertiaryContainer
-        }
+    val isWallpaperMode = BackgroundConfig.isCustomBackgroundEnabled
+    // 壁纸模式下状态卡统一用中性 surface/onSurface；强调容器降 alpha 后其 on 色
+    // 会失去配对的对比度，不再在壁纸上使用。
+    val finalContainerColor = if (isWallpaperMode) {
+        MaterialTheme.colorScheme.surface
+    } else if (isJailbreak) {
+        MaterialTheme.colorScheme.tertiaryContainer
     } else if (isWorking) {
-        if (BackgroundConfig.isCustomBackgroundEnabled) {
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)
-        } else {
-            MaterialTheme.colorScheme.secondaryContainer
-        }
+        MaterialTheme.colorScheme.secondaryContainer
     } else {
-        if (BackgroundConfig.isCustomBackgroundEnabled) {
-            MaterialTheme.colorScheme.errorContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)
-        } else {
-            MaterialTheme.colorScheme.errorContainer
-        }
+        MaterialTheme.colorScheme.errorContainer
     }
 
-    TonalCard(containerColor = finalContainerColor) {
+    TonalCard(
+        containerColor = finalContainerColor,
+        contentColor = if (isWallpaperMode) MaterialTheme.colorScheme.onSurface else null,
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -510,6 +506,7 @@ fun AStatusCardCircle(apState: APApplication.State) {
 fun TonalCard(
     modifier: Modifier = Modifier,
     containerColor: Color? = null,
+    contentColor: Color? = null,
     shape: Shape = FolkShape.Corner20,
     content: @Composable () -> Unit
 ) {
@@ -518,10 +515,14 @@ fun TonalCard(
     } else {
         MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
     }
-    
+
     Card(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = finalContainerColor),
+        colors = if (contentColor != null) {
+            CardDefaults.cardColors(containerColor = finalContainerColor, contentColor = contentColor)
+        } else {
+            CardDefaults.cardColors(containerColor = finalContainerColor)
+        },
         shape = shape
     ) {
         content()

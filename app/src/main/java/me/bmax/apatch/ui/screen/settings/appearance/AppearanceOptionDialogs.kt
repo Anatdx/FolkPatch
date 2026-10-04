@@ -220,7 +220,8 @@ fun ThemeImportDialog(
                 )
                 Surface(
                     shape = FolkShape.Corner16,
-                    color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f),
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {

@@ -33,6 +33,7 @@ import android.widget.FrameLayout
 import android.widget.VideoView
 import androidx.compose.ui.viewinterop.AndroidView
 import com.ramcosta.composedestinations.generated.destinations.APModuleScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.AppProfileScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.KPModuleScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SettingScreenDestination
@@ -61,6 +62,7 @@ fun resolveBackgroundUriForRoute(route: String?): String? {
             HomeScreenDestination.route -> BackgroundConfig.homeBackgroundUri
             KPModuleScreenDestination.route -> BackgroundConfig.kernelBackgroundUri
             SuperUserScreenDestination.route -> BackgroundConfig.superuserBackgroundUri
+            AppProfileScreenDestination.route -> BackgroundConfig.superuserBackgroundUri
             APModuleScreenDestination.route -> BackgroundConfig.systemModuleBackgroundUri
             SettingScreenDestination.route -> BackgroundConfig.settingsBackgroundUri
             else -> BackgroundConfig.homeBackgroundUri
@@ -180,7 +182,12 @@ fun BackgroundLayer(
             modifier = Modifier
                 .fillMaxSize()
                 .zIndex(-1f)
-                .background(Color.Black.copy(alpha = BackgroundConfig.getEffectiveBackgroundDim(isDarkTheme)))
+                .background(
+                    Color.Black.copy(
+                        alpha = LocalWallpaperDim.current
+                            ?: BackgroundConfig.getEffectiveBackgroundDim(isDarkTheme)
+                    )
+                )
         )
         return
     }
@@ -277,7 +284,12 @@ private fun RenderBackgroundImage(rawTargetUri: String?, isDarkTheme: Boolean) {
             modifier = Modifier
                 .fillMaxSize()
                 .zIndex(-1f)
-                .background(Color.Black.copy(alpha = BackgroundConfig.getEffectiveBackgroundDim(isDarkTheme)))
+                .background(
+                    Color.Black.copy(
+                        alpha = LocalWallpaperDim.current
+                            ?: BackgroundConfig.getEffectiveBackgroundDim(isDarkTheme)
+                    )
+                )
         )
     }
 }

@@ -69,24 +69,9 @@ fun PluginCard(
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
-    val isWallpaperMode = BackgroundConfig.isCustomBackgroundEnabled
-    val opacity = if (isWallpaperMode) {
-        BackgroundConfig.customBackgroundOpacity.coerceAtLeast(0.35f)
-    } else {
-        1f
-    }
-    val iconContainerColor = MaterialTheme.colorScheme.secondaryContainer.copy(
-        alpha = if (isWallpaperMode) (opacity + 0.1f).coerceAtMost(1f) else 1f
-    )
-    val buttonColors = if (isWallpaperMode) {
-        ButtonDefaults.filledTonalButtonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(
-                alpha = (opacity + 0.3f).coerceAtMost(1f)
-            )
-        )
-    } else {
-        ButtonDefaults.filledTonalButtonColors()
-    }
+    // secondaryContainer 必须与其 on 色配对，这里保持不透明。
+    val iconContainerColor = MaterialTheme.colorScheme.secondaryContainer
+    val buttonColors = ButtonDefaults.filledTonalButtonColors()
 
     Column(
         modifier = Modifier

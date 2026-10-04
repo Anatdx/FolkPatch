@@ -256,7 +256,7 @@ fun HeroStatusCard(
                                     Text(
                                         text = stringResource(R.string.settings_jailbreak_mode_summary),
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = contentColor.copy(alpha = 0.85f)
+                                        color = contentColor
                                     )
                                 } else if (!classicEmojiEnabled) {
                                     Spacer(Modifier.height(4.dp))

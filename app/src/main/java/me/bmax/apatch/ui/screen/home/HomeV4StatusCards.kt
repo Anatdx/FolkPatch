@@ -259,7 +259,7 @@ fun VersionInfoColumn(
         Text(
             text = label,
             style = MaterialTheme.typography.labelMedium,
-            color = LocalContentColor.current.copy(alpha = 0.7f),
+            color = LocalContentColor.current,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -283,19 +283,20 @@ fun AndroidPatchCard(
     showInstallDialog: MutableState<Boolean>,
     isWallpaperMode: Boolean
 ) {
-    val containerColor = when {
-        BackgroundConfig.isCustomBackgroundEnabled -> {
-            MaterialTheme.colorScheme.surface.copy(alpha = BackgroundConfig.customBackgroundOpacity)
-        }
-        else -> {
-            MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
-        }
+    val containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
+        // 中性 surface，避免强调容器降 alpha 后 on*Container 角色错配。
+        MaterialTheme.colorScheme.surface
+    } else {
+        MaterialTheme.colorScheme.surfaceColorAtElevation(1.dp)
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = FolkShape.Corner16,
-        colors = CardDefaults.cardColors(containerColor = containerColor)
+        colors = CardDefaults.cardColors(
+            containerColor = containerColor,
+            contentColor = if (isWallpaperMode) MaterialTheme.colorScheme.onSurface else LocalContentColor.current,
+        )
     ) {
         Row(
             modifier = Modifier
@@ -310,14 +311,22 @@ fun AndroidPatchCard(
                         imageVector = Icons.Outlined.CheckCircle,
                         contentDescription = null,
                         modifier = Modifier.size(28.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = if (isWallpaperMode) {
+                            MaterialTheme.colorScheme.onSurface
+                        } else {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        }
                     )
                 }
                 APApplication.State.ANDROIDPATCH_INSTALLING -> {
                     CircularProgressIndicator(
                         modifier = Modifier.size(28.dp),
                         strokeWidth = 3.dp,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = if (isWallpaperMode) {
+                            MaterialTheme.colorScheme.onSurface
+                        } else {
+                            MaterialTheme.colorScheme.onSecondaryContainer
+                        }
                     )
                 }
                 APApplication.State.ANDROIDPATCH_NEED_UPDATE -> {

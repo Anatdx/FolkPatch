@@ -134,35 +134,34 @@ fun ModuleItemContent(
                             horizontalArrangement = Arrangement.spacedBy(6.dp),
                             modifier = Modifier.padding(bottom = 8.dp)
                         ) {
-                            val labelOpacity = (opacity + 0.1f).coerceAtMost(1f)
                             if (showMoreModuleInfo) {
                                 ModuleLabel(
                                     text = sizeStr,
-                                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = labelOpacity),
+                                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
                                 ModuleLabel(
                                     text = module.id,
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = labelOpacity),
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
                             }
                             if (module.remove) {
                                 ModuleLabel(
                                     text = stringResource(R.string.apm_remove),
-                                    containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = labelOpacity),
+                                    containerColor = MaterialTheme.colorScheme.errorContainer,
                                     contentColor = MaterialTheme.colorScheme.onErrorContainer
                                 )
                             } else if (updateUrl.isNotEmpty() && !module.update) {
                                 ModuleLabel(
                                     text = stringResource(R.string.apm_update),
-                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = labelOpacity),
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                                 )
                             } else if (module.update) {
                                 ModuleLabel(
                                     text = "Updated",
-                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = labelOpacity),
+                                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                                 )
                             }
@@ -170,14 +169,14 @@ fun ModuleItemContent(
                             if (showMoreModuleInfo && module.hasWebUi && module.enabled && !module.remove) {
                                 ModuleLabel(
                                     text = "WebUI",
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = labelOpacity),
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
                             }
                             if (showMoreModuleInfo && module.hasActionScript && module.enabled && !module.remove) {
                                 ModuleLabel(
                                     text = "Action",
-                                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = labelOpacity),
+                                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
                                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                                 )
                             }
@@ -185,7 +184,7 @@ fun ModuleItemContent(
                             if (module.isMetamodule && !module.remove) {
                                 ModuleLabel(
                                     text = "META",
-                                    containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = labelOpacity),
+                                    containerColor = MaterialTheme.colorScheme.errorContainer,
                                     contentColor = MaterialTheme.colorScheme.onErrorContainer
                                 )
                             }
@@ -293,12 +292,12 @@ fun ModuleItemContent(
                         }
                     },
                     colors = if (simpleListBottomBar) ButtonDefaults.filledTonalButtonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f))
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer
                     ) else if (module.remove) ButtonDefaults.filledTonalButtonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f)),
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                         contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                     ) else ButtonDefaults.filledTonalButtonColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f)),
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
                         contentColor = MaterialTheme.colorScheme.onErrorContainer
                     )
                 )

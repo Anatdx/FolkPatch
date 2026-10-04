@@ -131,8 +131,6 @@ fun ScriptItem(
         MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f)
     }
 
-    val labelOpacity = (opacity + 0.1f).coerceAtMost(1f)
-
     val bannerImageAlpha = if (BackgroundConfig.isBannerCustomOpacityEnabled) {
         BackgroundConfig.bannerCustomOpacity
     } else if (isWallpaperMode) {
@@ -256,7 +254,7 @@ fun ScriptItem(
                         ) {
                             ScriptLabel(
                                 text = "Shell",
-                                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = labelOpacity),
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
@@ -298,7 +296,7 @@ fun ScriptItem(
                         contentPadding = if (simpleListBottomBar) PaddingValues(12.dp) else ButtonDefaults.TextButtonContentPadding,
                         modifier = if (simpleListBottomBar) Modifier else Modifier.height(36.dp),
                         colors = ButtonDefaults.filledTonalButtonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f))
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
                         )
                     ) {
                         Icon(Icons.Outlined.PlayArrow, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -318,7 +316,7 @@ fun ScriptItem(
                             contentPadding = if (simpleListBottomBar) PaddingValues(12.dp) else ButtonDefaults.TextButtonContentPadding,
                             modifier = if (simpleListBottomBar) Modifier else Modifier.height(36.dp),
                             colors = ButtonDefaults.filledTonalButtonColors(
-                                containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f)),
+                                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                                 contentColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         ) {
@@ -337,9 +335,9 @@ fun ScriptItem(
                         contentPadding = if (simpleListBottomBar) PaddingValues(12.dp) else ButtonDefaults.TextButtonContentPadding,
                         modifier = if (simpleListBottomBar) Modifier else Modifier.height(36.dp),
                         colors = if (simpleListBottomBar) ButtonDefaults.filledTonalButtonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f))
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
                         ) else ButtonDefaults.filledTonalButtonColors(
-                            containerColor = MaterialTheme.colorScheme.errorContainer.copy(alpha = (opacity + 0.3f).coerceAtMost(1f)),
+                            containerColor = MaterialTheme.colorScheme.errorContainer,
                             contentColor = MaterialTheme.colorScheme.onErrorContainer
                         )
                     ) {

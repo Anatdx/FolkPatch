@@ -200,11 +200,9 @@ fun BottomBarContent(
                             .padding(horizontal = indicatorHorizontalPadding)
                             .width(itemSize + with(density) { stretchPx.toDp() })
                             .background(
-                                color = if (isGlassEnabled) {
-                                    MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f)
-                                } else {
-                                    MaterialTheme.colorScheme.secondaryContainer
-                                },
+                                // secondaryContainer 与 onSecondaryContainer 必须配对；
+                                // 降 alpha 会让选中指示器失去对比度。
+                                color = MaterialTheme.colorScheme.secondaryContainer,
                                 shape = itemShape
                             )
                             .then(

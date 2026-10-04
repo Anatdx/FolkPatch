@@ -29,7 +29,6 @@ import me.bmax.apatch.ui.component.folk.FolkLoadingIndicator
 import me.bmax.apatch.ui.component.folk.FolkScaffold
 import me.bmax.apatch.ui.component.folk.FolkTitleStyle
 import me.bmax.apatch.ui.model.ApiMarketplaceItem
-import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.viewmodel.ApiMarketplaceViewModel
 import me.bmax.apatch.ui.component.folk.FolkStateView
 import me.bmax.apatch.ui.component.folk.FolkStateTone
@@ -163,13 +162,6 @@ private fun ApiMarketplaceItemCard(
     onPreview: () -> Unit
 ) {
     // Same styling as ScriptLibrary
-    val isWallpaperMode = BackgroundConfig.isCustomBackgroundEnabled
-    val opacity = if (isWallpaperMode) {
-        BackgroundConfig.customBackgroundOpacity.coerceAtLeast(0.2f)
-    } else {
-        1f
-    }
-
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = FolkShape.Corner20,
@@ -203,14 +195,12 @@ private fun ApiMarketplaceItemCard(
             }
             Spacer(modifier = Modifier.width(12.dp))
 
-            val buttonOpacity = (opacity + 0.3f).coerceAtMost(1f)
-
             FilledTonalButton(
                 onClick = onPreview,
                 contentPadding = ButtonDefaults.TextButtonContentPadding,
                 modifier = Modifier.height(36.dp),
                 colors = ButtonDefaults.filledTonalButtonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = buttonOpacity)
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
                 )
             ) {
                 Icon(
@@ -242,13 +232,6 @@ private fun ApiPreviewDialog(
     }
 
     // Same styling as ScriptLibrary
-    val isWallpaperMode = BackgroundConfig.isCustomBackgroundEnabled
-    val opacity = if (isWallpaperMode) {
-        BackgroundConfig.customBackgroundOpacity.coerceAtLeast(0.2f)
-    } else {
-        1f
-    }
-
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(item.name) },
@@ -340,15 +323,13 @@ private fun ApiPreviewDialog(
             }
         },
         confirmButton = {
-            val buttonOpacity = (opacity + 0.3f).coerceAtMost(1f)
-
             when (verificationState) {
                 is ApiMarketplaceViewModel.VerificationState.Loading -> {
                     FilledTonalButton(
                         onClick = {},
                         enabled = false,
                         colors = ButtonDefaults.filledTonalButtonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = buttonOpacity)
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
                         )
                     ) {
                         CircularProgressIndicator(
@@ -363,7 +344,7 @@ private fun ApiPreviewDialog(
                     FilledTonalButton(
                         onClick = { onApply(item.url) },
                         colors = ButtonDefaults.filledTonalButtonColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = buttonOpacity)
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
                         )
                     ) {
                         Text(stringResource(R.string.apm_api_retry))
@@ -373,7 +354,7 @@ private fun ApiPreviewDialog(
                     FilledTonalButton(
                         onClick = onDismiss,
                         colors = ButtonDefaults.filledTonalButtonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = buttonOpacity)
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
                         )
                     ) {
                         Icon(Icons.Default.Check, contentDescription = null)
@@ -385,7 +366,7 @@ private fun ApiPreviewDialog(
                     FilledTonalButton(
                         onClick = { onApply(item.url) },
                         colors = ButtonDefaults.filledTonalButtonColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = buttonOpacity)
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
                         )
                     ) {
                         Text(stringResource(R.string.apm_api_apply))

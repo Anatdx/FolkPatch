@@ -221,7 +221,7 @@ fun APatchTheme(
     )
 
     val useCustomBackground = allowCustomBackground && BackgroundConfig.isCustomBackgroundEnabled
-    val colorScheme = adaptColorScheme(
+    val wallpaperTheme = adaptColorScheme(
         context = context,
         baseColorScheme = baseColorScheme,
         darkTheme = darkTheme,
@@ -235,6 +235,7 @@ fun APatchTheme(
         colorStyle = colorStyle,
         contrastLevel = contrastLevel,
     )
+    val colorScheme = wallpaperTheme.colorScheme
 
     SystemBarStyle(
         darkMode = darkTheme
@@ -282,6 +283,8 @@ fun APatchTheme(
                 // 中性色，而不是容器语义色（onPrimary 等）；非壁纸模式提供 null 以回退。
                 LocalWallpaperContentColor provides if (useCustomBackground) colorScheme.onSurface else null,
                 LocalWallpaperContentVariant provides if (useCustomBackground) colorScheme.onSurfaceVariant else null,
+                // 对比度保护后的实际绘制 dim（仅壁纸模式非空）；BackgroundLayer 以它遮罩壁纸。
+                LocalWallpaperDim provides wallpaperTheme.renderDim,
             ) {
                 MonetColorsProvider.UpdateCss()
                 Box(modifier = Modifier.fillMaxSize()) {
