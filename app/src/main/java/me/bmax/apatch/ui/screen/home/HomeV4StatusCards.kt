@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +20,7 @@ import androidx.compose.material.icons.outlined.Cached
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SystemUpdate
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -163,6 +163,7 @@ fun HomeV4StatusCircle(
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun HomeV4MagiskStyleCard(
     title: String,
@@ -200,7 +201,7 @@ fun HomeV4MagiskStyleCard(
                     Button(
                         onClick = onActionClick,
                         enabled = actionEnabled,
-                        contentPadding = PaddingValues(horizontal = 24.dp)
+                        contentPadding = ButtonDefaults.MediumContentPadding
                     ) {
                         Text(text = actionText)
                     }
@@ -273,6 +274,7 @@ fun VersionInfoColumn(
 /**
  * Android补丁状态卡片
  */
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AndroidPatchCard(
     apState: APApplication.State,
@@ -363,7 +365,8 @@ fun AndroidPatchCard(
                 },
                 enabled = apState != APApplication.State.ANDROIDPATCH_INSTALLING &&
                     apState != APApplication.State.ANDROIDPATCH_UNINSTALLING &&
-                    apState != APApplication.State.UNKNOWN_STATE
+                    apState != APApplication.State.UNKNOWN_STATE,
+                contentPadding = ButtonDefaults.MediumContentPadding
             ) {
                 when (apState) {
                     APApplication.State.ANDROIDPATCH_NOT_INSTALLED -> 

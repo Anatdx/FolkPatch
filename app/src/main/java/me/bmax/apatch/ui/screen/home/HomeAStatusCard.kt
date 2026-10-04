@@ -1,3 +1,4 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3ExpressiveApi::class)
 package me.bmax.apatch.ui.screen.home
 
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.InstallMobile
 import androidx.compose.material.icons.outlined.SystemUpdate
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import androidx.compose.material3.Card
@@ -151,7 +153,9 @@ fun AStatusCard(apState: APApplication.State) {
                                     APApplication.uninstallApatch()
                                 }
                             }
-                        }, content = {
+                        },
+                        contentPadding = ButtonDefaults.MediumContentPadding,
+                        content = {
                             when (apState) {
                                 APApplication.State.ANDROIDPATCH_NOT_INSTALLED -> {
                                     Text(text = stringResource(id = R.string.home_ap_cando_install))
