@@ -99,6 +99,7 @@ SuperKey は通常の Root セッションより強い権限を持ちます。�
 - [APatch](https://github.com/bmax121/APatch)：上流プロジェクト
 - [MMRL](https://github.com/MMRLApp/MMRL)：モジュールリポジトリ形式の参考
 - [Shizuku](https://github.com/RikkaApps/Shizuku)：内蔵 Shizuku サービス
+- [LoliAPI](https://www.loliapi.com/docs/acg/)：壁紙図鑑のオンライン壁紙ソース
 
 ## ライセンス
 
