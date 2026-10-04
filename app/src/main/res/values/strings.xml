@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">Floating Bottom Bar Style</string>
+    <string name="settings_bottom_bar_standard">Standard Bottom Bar</string>
+    <string name="settings_bottom_bar_drawer">Drawer Bottom Bar</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="debug_build_banner" translatable="false">DEBUG</string>
     <string name="app_name_fpatch">FPatch</string>

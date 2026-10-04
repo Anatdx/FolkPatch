@@ -59,6 +59,11 @@ fun BottomBar(
     val navigator = navController.rememberDestinationsNavigator()
 
     val prefs = APApplication.sharedPreferences
+    var isDrawer by remember {
+        mutableStateOf(
+            prefs.getString("floating_bar_style", FloatingBarConfig.DEFAULT_STYLE) == FloatingBarConfig.STYLE_DRAWER
+        )
+    }
     var showNavApm by remember { mutableStateOf(prefs.getBoolean("show_nav_apm", true)) }
     var showNavKpm by remember { mutableStateOf(prefs.getBoolean("show_nav_kpm", true)) }
     var showNavSuperUser by remember { mutableStateOf(prefs.getBoolean("show_nav_superuser", true)) }
@@ -76,6 +81,7 @@ fun BottomBar(
     DisposableEffect(Unit) {
         val listener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPrefs, key ->
             when (key) {
+                "floating_bar_style" -> isDrawer = sharedPrefs.getString(key, FloatingBarConfig.DEFAULT_STYLE) == FloatingBarConfig.STYLE_DRAWER
                 "show_nav_apm" -> showNavApm = sharedPrefs.getBoolean(key, true)
                 "show_nav_kpm" -> showNavKpm = sharedPrefs.getBoolean(key, true)
                 "show_nav_superuser" -> showNavSuperUser = sharedPrefs.getBoolean(key, true)
@@ -206,7 +212,9 @@ fun BottomBar(
                 ) {
                     val isCustomBg = BackgroundConfig.isCustomBackgroundEnabled
                     if (isGlassEnabled) {
-                        val barShape = if (FloatingBarConfig.isCompactRoundedStyle) {
+                        val barShape = if (isDrawer) {
+                            CircleShape
+                        } else if (FloatingBarConfig.isCompactRoundedStyle) {
                             FloatingBarConfig.getCompactRoundedShape()
                         } else {
                             CircleShape
@@ -225,6 +233,7 @@ fun BottomBar(
                             shadowElevation = 0.dp
                         ) {
                             BottomBarContent(
+                                isDrawer = isDrawer,
                                 visibleDestinations = visibleDestinations,
                                 effectiveSelectedIndex = effectiveSelectedIndex,
                                 animatedSelectedIndex = animatedSelectedIndex.value,
@@ -245,7 +254,9 @@ fun BottomBar(
                     } else {
                         Surface(
                             modifier = Modifier.wrapContentWidth(),
-                            shape = if (FloatingBarConfig.isCompactRoundedStyle) {
+                            shape = if (isDrawer) {
+                                CircleShape
+                            } else if (FloatingBarConfig.isCompactRoundedStyle) {
                                 FloatingBarConfig.getCompactRoundedShape()
                             } else {
                                 MaterialTheme.shapes.large
@@ -255,6 +266,7 @@ fun BottomBar(
                             shadowElevation = if (isCustomBg) 0.dp else 8.dp
                         ) {
                             BottomBarContent(
+                                isDrawer = isDrawer,
                                 visibleDestinations = visibleDestinations,
                                 effectiveSelectedIndex = effectiveSelectedIndex,
                                 animatedSelectedIndex = animatedSelectedIndex.value,
@@ -293,4 +305,3 @@ fun BottomBar(
         }
     }
 }
-

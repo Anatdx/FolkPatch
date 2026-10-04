@@ -81,9 +81,41 @@ fun BottomBarContent(
     currentRoute: String?,
     navController: NavHostController,
     context: android.content.Context,
-    onUserInteraction: (() -> Unit)? = null
+    onUserInteraction: (() -> Unit)? = null,
+    isDrawer: Boolean = false,
 ) {
     val navigator = navController.rememberDestinationsNavigator()
+    if (isDrawer) {
+        DrawerBottomBarContent(
+            destinations = visibleDestinations,
+            selectedIndex = effectiveSelectedIndex.coerceIn(0, (visibleDestinations.size - 1).coerceAtLeast(0)),
+            badgeCount = { destination ->
+                when {
+                    destination == BottomBarDestination.SuperUser && enableSuperUserBadge -> superuserCount
+                    destination == BottomBarDestination.AModule && enableApmBadge -> apmModuleCount
+                    destination == BottomBarDestination.KModule && enableKernelBadge -> kernelModuleCount
+                    else -> 0
+                }
+            },
+            onSelect = { destination ->
+                onUserInteraction?.invoke()
+                if (destination.direction.route != currentRoute) {
+                    if (me.bmax.apatch.ui.theme.SoundEffectConfig.scope == me.bmax.apatch.ui.theme.SoundEffectConfig.SCOPE_BOTTOM_BAR) {
+                        me.bmax.apatch.util.SoundEffectManager.play(context)
+                    }
+                    if (me.bmax.apatch.ui.theme.VibrationConfig.scope == me.bmax.apatch.ui.theme.VibrationConfig.SCOPE_BOTTOM_BAR) {
+                        me.bmax.apatch.util.VibrationManager.vibrate(context)
+                    }
+                    navigator.navigate(destination.direction) {
+                        popUpTo(NavGraphs.root) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            },
+        )
+        return
+    }
     val isCompactRounded = FloatingBarConfig.isCompactRoundedStyle
     val itemSize = if (isCompactRounded) 52.dp else 56.dp
     val itemSpacing = if (isCompactRounded) 6.dp else 4.dp

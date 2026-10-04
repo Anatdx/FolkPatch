@@ -41,6 +41,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import kotlinx.coroutines.CoroutineScope
 import me.bmax.apatch.ui.component.folk.FolkSettingsGroupScope
+import me.bmax.apatch.ui.component.folk.FolkAlertDialog
+import me.bmax.apatch.ui.component.folk.FolkSelectableRow
 
 fun FolkSettingsGroupScope.appearanceNavItems(
     kPatchReady: Boolean,
@@ -156,6 +158,44 @@ fun FolkSettingsGroupScope.appearanceNavItems(
     }
 
     if (isFloatingNav) {
+        item(key = "appearance_floating_bar_style") {
+            var style by remember { mutableStateOf(prefs.getString("floating_bar_style", FloatingBarConfig.DEFAULT_STYLE)) }
+            var showStyleDialog by remember { mutableStateOf(false) }
+            DisposableEffect(prefs) {
+                val listener = SharedPreferences.OnSharedPreferenceChangeListener { preferences, key ->
+                    if (key == "floating_bar_style") style = preferences.getString(key, FloatingBarConfig.DEFAULT_STYLE)
+                }
+                prefs.registerOnSharedPreferenceChangeListener(listener)
+                onDispose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
+            }
+            FolkValuePreference(
+                icon = Icons.Outlined.ViewStream,
+                title = stringResource(R.string.settings_floating_bar_style),
+                summary = stringResource(if (style == FloatingBarConfig.STYLE_DRAWER) R.string.settings_bottom_bar_drawer
+                    else R.string.settings_bottom_bar_standard),
+                onClick = { showStyleDialog = true },
+            )
+            if (showStyleDialog) {
+                FolkAlertDialog(onDismissRequest = { showStyleDialog = false }) {
+                    Column(Modifier.padding(24.dp)) {
+                        Text(stringResource(R.string.settings_floating_bar_style),
+                            style = MaterialTheme.typography.headlineSmall,
+                            modifier = Modifier.padding(bottom = 16.dp))
+                        listOf(FloatingBarConfig.STYLE_STANDARD to R.string.settings_bottom_bar_standard,
+                            FloatingBarConfig.STYLE_DRAWER to R.string.settings_bottom_bar_drawer).forEach { (value, title) ->
+                            FolkSelectableRow(
+                                title = stringResource(title),
+                                selected = style == value,
+                                onClick = {
+                                    prefs.edit { putString("floating_bar_style", value) }
+                                    showStyleDialog = false
+                                },
+                            )
+                        }
+                    }
+                }
+            }
+        }
         item(key = "appearance_navbar_glass") {
             FolkSwitchPreference(
                 icon = Icons.Outlined.AutoAwesome,

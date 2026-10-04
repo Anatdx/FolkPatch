@@ -68,6 +68,7 @@ object SettingsRegistry {
             add(SettingEntry("appearance_stats_top_layout", R.string.settings_stats_top_layout, category = SettingCategory.APPEARANCE))
             add(SettingEntry("appearance_nav_layout", R.string.settings_nav_layout_title, R.string.settings_nav_layout_summary, SettingCategory.APPEARANCE))
             add(SettingEntry("appearance_nav_scheme", R.string.settings_nav_scheme, category = SettingCategory.APPEARANCE))
+            add(SettingEntry("appearance_floating_bar_style", R.string.settings_floating_bar_style, category = SettingCategory.APPEARANCE))
             add(SettingEntry("appearance_navbar_glass", R.string.settings_navbar_glass_effect, R.string.settings_navbar_glass_effect_summary, SettingCategory.APPEARANCE))
             add(SettingEntry("appearance_navbar_glass_blur", R.string.settings_navbar_glass_blur_strength, category = SettingCategory.APPEARANCE))
             add(SettingEntry("appearance_navbar_glass_transparency", R.string.settings_navbar_glass_transparency, category = SettingCategory.APPEARANCE))
