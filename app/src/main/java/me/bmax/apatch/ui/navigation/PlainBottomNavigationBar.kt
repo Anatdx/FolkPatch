@@ -160,7 +160,11 @@ internal fun PlainBottomNavigationBar(
                         BasicText(
                             text = stringResource(destination.label),
                             modifier = Modifier.fillMaxWidth(),
-                            style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center),
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                textAlign = TextAlign.Center,
+                                color = if (isSelected) MaterialTheme.colorScheme.onSurface
+                                else MaterialTheme.colorScheme.onSurfaceVariant,
+                            ),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             autoSize = TextAutoSize.StepBased(
