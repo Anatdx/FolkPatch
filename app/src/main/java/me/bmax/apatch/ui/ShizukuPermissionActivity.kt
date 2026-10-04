@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Block
 import androidx.compose.material.icons.filled.Check
@@ -251,7 +250,7 @@ private fun PermissionOption(
 ) {
     Surface(
         onClick = onClick,
-        shape = ContinuousCornerShape(18.dp),
+        shape = FolkShape.Corner16,
         color = container,
         contentColor = content,
         modifier = Modifier.fillMaxWidth(),

@@ -219,7 +219,7 @@ fun ThemeImportDialog(
                     modifier = Modifier.padding(top = 8.dp, bottom = 20.dp)
                 )
                 Surface(
-                    shape = ContinuousCornerShape(18.dp),
+                    shape = FolkShape.Corner16,
                     color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.35f),
                     modifier = Modifier.fillMaxWidth()
                 ) {

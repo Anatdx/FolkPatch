@@ -58,8 +58,8 @@ import android.content.pm.PackageInfo
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 import androidx.compose.material.icons.outlined.*
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 
 @Composable
 fun SelectedPathHideAppItem(
@@ -74,7 +74,7 @@ fun SelectedPathHideAppItem(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = ContinuousCornerShape(18.dp),
+        shape = FolkShape.Corner16,
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.45f),
         tonalElevation = 0.dp,
         onClick = onRemove,
