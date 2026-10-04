@@ -47,6 +47,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -419,6 +420,9 @@ fun NavigationRailBar(navController: NavHostController) {
 
 /**
  * Renders a nav bar icon — uses custom image when set, otherwise falls back to the default Material icon.
+ *
+ * [selectedIcon] overrides the selected-state vector; callers can pass a softer (e.g. Rounded)
+ * variant without touching the shared [BottomBarDestination] icon set.
  */
 @Composable
 fun NavBarIcon(
@@ -426,6 +430,7 @@ fun NavBarIcon(
     isSelected: Boolean,
     tint: Color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
     modifier: Modifier = Modifier,
+    selectedIcon: ImageVector = destination.iconSelected,
 ) {
     val destinationName = destination.name
     // Observe config revision so the icon recomposes immediately when the user
@@ -440,7 +445,7 @@ fun NavBarIcon(
         var loadFailed by remember(customUri) { mutableStateOf(false) }
         if (loadFailed) {
             Icon(
-                imageVector = if (isSelected) destination.iconSelected else destination.iconNotSelected,
+                imageVector = if (isSelected) selectedIcon else destination.iconNotSelected,
                 contentDescription = stringResource(destination.label),
                 tint = tint,
                 modifier = modifier,
@@ -456,7 +461,7 @@ fun NavBarIcon(
         }
     } else {
         Icon(
-            imageVector = if (isSelected) destination.iconSelected else destination.iconNotSelected,
+            imageVector = if (isSelected) selectedIcon else destination.iconNotSelected,
             contentDescription = stringResource(destination.label),
             tint = tint,
             modifier = modifier,

@@ -15,20 +15,14 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,13 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
 import com.ramcosta.composedestinations.utils.rememberDestinationsNavigator
 import kotlinx.coroutines.coroutineScope
@@ -285,74 +276,20 @@ fun BottomBar(
                 }
             }
         } else {
-            // Non-floating mode: use standard NavigationBar.
-            NavigationBar(
-                tonalElevation = if (BackgroundConfig.isCustomBackgroundEnabled) 0.dp else 8.dp,
-                containerColor = containerColor
-            ) {
-                visibleDestinations.forEachIndexed { index, destination ->
-                    key(destination) {
-                        val isCurrentDestOnBackStack by navController.isRouteOnBackStackAsState(destination.direction)
-                        val isSelected = index == effectiveSelectedIndex
-
-                        NavigationBarItem(
-                            selected = isSelected,
-                            onClick = {
-                                onUserInteraction?.invoke()
-                                if (me.bmax.apatch.ui.theme.SoundEffectConfig.scope == me.bmax.apatch.ui.theme.SoundEffectConfig.SCOPE_BOTTOM_BAR) {
-                                    me.bmax.apatch.util.SoundEffectManager.play(context)
-                                }
-                                if (me.bmax.apatch.ui.theme.VibrationConfig.scope == me.bmax.apatch.ui.theme.VibrationConfig.SCOPE_BOTTOM_BAR) {
-                                    me.bmax.apatch.util.VibrationManager.vibrate(context)
-                                }
-                                if (isCurrentDestOnBackStack) {
-                                    navigator.popBackStack(destination.direction, false)
-                                }
-                                navigator.navigate(destination.direction) {
-                                    popUpTo(NavGraphs.root) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = {
-                                val badgeContent = when {
-                                    destination == BottomBarDestination.SuperUser && enableSuperUserBadge -> superuserCount
-                                    destination == BottomBarDestination.AModule && enableApmBadge -> apmModuleCount
-                                    destination == BottomBarDestination.KModule && enableKernelBadge -> kernelModuleCount
-                                    else -> 0
-                                }
-
-                                BadgedBox(
-                                    badge = {
-                                        if (badgeContent > 0) {
-                                            Badge(containerColor = MaterialTheme.colorScheme.secondary) {
-                                                Text(text = badgeContent.toString())
-                                            }
-                                        }
-                                    }
-                                ) {
-                                    if (isSelected) {
-                                        NavBarIcon(destination, isSelected = true)
-                                    } else {
-                                        NavBarIcon(destination, isSelected = false)
-                                    }
-                                }
-                            },
-                            label = {
-                                Text(
-                                    text = stringResource(destination.label),
-                                    overflow = TextOverflow.Visible,
-                                    maxLines = 1,
-                                    softWrap = false
-                                )
-                            },
-                            alwaysShowLabel = false
-                        )
-                    }
-                }
-            }
+            // Non-floating mode: plain docked bar.
+            PlainBottomNavigationBar(
+                visibleDestinations = visibleDestinations,
+                effectiveSelectedIndex = effectiveSelectedIndex,
+                containerColor = containerColor,
+                superuserCount = superuserCount,
+                apmModuleCount = apmModuleCount,
+                kernelModuleCount = kernelModuleCount,
+                enableSuperUserBadge = enableSuperUserBadge,
+                enableApmBadge = enableApmBadge,
+                enableKernelBadge = enableKernelBadge,
+                navController = navController,
+                onUserInteraction = onUserInteraction
+            )
         }
     }
 }
