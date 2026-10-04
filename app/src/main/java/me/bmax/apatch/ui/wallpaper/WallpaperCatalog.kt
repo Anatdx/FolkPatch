@@ -8,6 +8,7 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.apApp
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
 import java.net.URLEncoder
@@ -20,7 +21,7 @@ import kotlin.random.Random
  * from a random id (zero API calls, immune to rate limiting). Otherwise the
  * provider's dynamic endpoint is queried in parallel (the fallback path).
  */
-class WallpaperCatalog {
+class WallpaperCatalog(private val client: OkHttpClient = apApp.okhttpClient) {
 
     suspend fun load(
         provider: WallpaperProvider,
@@ -49,35 +50,44 @@ class WallpaperCatalog {
     }
 
     /**
-     * Redirect path: build cache-busted endpoint URLs locally; the client follows
-     * the 302 to a fresh random image (one request per image, always valid).
+     * Resolve each random endpoint once, before exposing an item. Reusing the
+     * endpoint itself would select a new image for previews and downloads.
      */
-    private fun loadRedirect(
+    private suspend fun loadRedirect(
         provider: WallpaperProvider,
         device: WallpaperDevice,
         count: Int,
         exclude: Set<String>
-    ): List<WallpaperItem> {
-        val path = provider.devicePaths[device.key] ?: return emptyList()
-        if (count <= 0) return emptyList()
-        val base = provider.baseUrl + path
-        val seen = HashSet<String>()
-        val items = ArrayList<WallpaperItem>(count)
-        var attempts = 0
-        val maxAttempts = count * 4 + 8
-        while (items.size < count && attempts < maxAttempts) {
-            attempts++
-            val nonce = System.nanoTime().toString(36) + Random.nextInt(0x1000000).toString(36)
-            val url = "$base?_=$nonce"
-            if (!seen.add(url) || url in exclude) continue
-            items += WallpaperItem(
-                id = nonce,
-                url = url,
-                providerId = provider.id,
-                deviceKey = device.key
-            )
-        }
-        return items
+    ): List<WallpaperItem> = coroutineScope {
+        val path = provider.devicePaths[device.key] ?: return@coroutineScope emptyList()
+        if (count <= 0) return@coroutineScope emptyList()
+        val semaphore = Semaphore(MAX_CONCURRENCY)
+        val items = (0 until count).map {
+            async {
+                semaphore.withPermit {
+                    runCatching {
+                        val nonce = System.nanoTime().toString(36) + Random.nextInt(0x1000000).toString(36)
+                        val endpoint = Request.Builder().url(provider.baseUrl + path).build().url
+                            .newBuilder()
+                            .apply { provider.query.forEach { (key, value) -> addQueryParameter(key, value) } }
+                            .addQueryParameter("_", nonce)
+                            .build()
+                        client.newCall(Request.Builder().url(endpoint).build()).execute().use { response ->
+                            // A non-redirecting random endpoint has no stable image identity.
+                            if (!response.isSuccessful || response.request.url == endpoint) return@use null
+                            WallpaperItem(
+                                id = nonce,
+                                url = response.request.url.toString(),
+                                providerId = provider.id,
+                                deviceKey = device.key
+                            )
+                        }
+                    }.getOrNull()
+                }
+            }
+        }.awaitAll()
+        val seen = HashSet(exclude)
+        items.filterNotNull().filter { seen.add(it.url) }
     }
 
     /** API-free path: pick random ids and build direct image URLs. */
@@ -156,7 +166,7 @@ class WallpaperCatalog {
             .url(builder.toString())
             .header("Accept", "text/plain,*/*")
             .build()
-        return apApp.okhttpClient.newCall(request).execute().use { response ->
+        return client.newCall(request).execute().use { response ->
             if (!response.isSuccessful) return null
             val body = response.body.string().trim()
             if (body.isEmpty()) return null
