@@ -110,8 +110,8 @@ fun StatusCardCircle(
                  Icon(Icons.Outlined.CheckCircle, stringResource(R.string.home_working))
                  Column(Modifier.padding(start = 20.dp).weight(1f)) {
                      val isFull = apState == APApplication.State.ANDROIDPATCH_INSTALLED
-                    val modeTextTitle = if (isFull) "Full" else "Half"
-                    val modeTextCaps = if (isFull) "FULL" else "HALF"
+                    val modeTextTitle = if (isFull) "Kpm" else "Half"
+                    val modeTextCaps = if (isFull) "KPM" else "HALF"
                     val modeText = BackgroundConfig.getCustomBadgeText() ?: modeTextCaps
 
                      Row(verticalAlignment = Alignment.CenterVertically) {

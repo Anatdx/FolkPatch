@@ -183,7 +183,7 @@ fun HeroStatusCard(
 
     val classicEmojiEnabled = BackgroundConfig.isListWorkingCardModeHidden
     val isFull = apState == APApplication.State.ANDROIDPATCH_INSTALLED
-    val modeText = BackgroundConfig.getCustomBadgeText() ?: if (isFull) "Full" else "Half"
+    val modeText = BackgroundConfig.getCustomBadgeText() ?: if (isFull) "Kpm" else "Half"
 
     if (isWorking || isJailbreak) {
         Card(
