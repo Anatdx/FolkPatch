@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.ExpressiveCard
+import me.bmax.apatch.ui.navigation.BottomBarDestination
 import me.bmax.apatch.util.BottomBarIconConfig
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -77,11 +78,11 @@ fun FolkSettingsGroupScope.appearanceNavCustomIconsItem(
         if (customNavIconsEnabled.value) {
             Spacer(Modifier.height(8.dp))
             val navDestinations = listOf(
-                Triple("Home", R.string.nav_icon_home, Icons.Filled.Home),
-                Triple("KModule", R.string.nav_icon_kpm, Icons.Filled.Archive),
-                Triple("SuperUser", R.string.nav_icon_superuser, Icons.Filled.AdminPanelSettings),
-                Triple("AModule", R.string.nav_icon_apm, Icons.Filled.Extension),
-                Triple("Settings", R.string.nav_icon_settings, Icons.Filled.Settings),
+                Triple("Home", R.string.nav_icon_home, BottomBarDestination.Home.iconSelected),
+                Triple("KModule", R.string.nav_icon_kpm, BottomBarDestination.KModule.iconSelected),
+                Triple("SuperUser", R.string.nav_icon_superuser, BottomBarDestination.SuperUser.iconSelected),
+                Triple("AModule", R.string.nav_icon_apm, BottomBarDestination.AModule.iconSelected),
+                Triple("Settings", R.string.nav_icon_settings, BottomBarDestination.Settings.iconSelected),
             )
 
             Column {
