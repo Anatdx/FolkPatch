@@ -12,9 +12,8 @@ import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import me.bmax.apatch.ui.component.folk.LocalInsideFolkGroup
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 import androidx.compose.ui.semantics.Role
 
 @Composable
@@ -49,7 +48,7 @@ fun ExpressiveCard(
 
     // Standalone: an ElevatedCard whose corners ease out of the edges instead of
     // meeting them in a circular arc.
-    val shape = ContinuousCornerShape(32.dp)
+    val shape = FolkShape.Corner28
     val colors = if (flat) {
         CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     } else {
