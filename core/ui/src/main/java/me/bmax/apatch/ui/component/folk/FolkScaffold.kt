@@ -227,10 +227,11 @@ private fun FolkBackButton(onBack: (() -> Unit)?) {
  * Clearance under the last item so it can be scrolled above the floating bottom
  * bar.
  *
- * The overlay only exists on main-tab routes in floating mode; on a detail page
- * the app already hides the bar, and in bottom/rail mode the shell pads the nav
- * host itself. In those cases a small gap under the content is all that is
- * needed, and adding the floating height there would just be dead scroll space.
+ * The overlay only exists on main-tab routes; on a detail page the app hides
+ * the bar in both floating and docked mode, and the docked shell pads the nav
+ * host only on its main-tab routes. In those cases a small gap under the
+ * content is all that is needed, and adding the floating height there would
+ * just be dead scroll space.
  */
 @Composable
 private fun folkBottomClearance(): Dp {
