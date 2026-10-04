@@ -1436,4 +1436,22 @@ KernelPatch는 boot 이미지를 패치해야 합니다.
     <string name="my_themes_subtitle">저장한 테마</string>
     <string name="apm_api_marketplace_subtitle">커뮤니티 공유 API 둘러보기</string>
     <string name="theme_download_paused">일시중지됨</string>
+    <string name="settings_wallpaper_gallery">배경화면 갤러리</string>
+    <string name="wallpaper_device_phone">휴대폰</string>
+    <string name="wallpaper_device_tablet">태블릿</string>
+    <string name="wallpaper_layout_waterfall">폭포수</string>
+    <string name="wallpaper_layout_stack">스택</string>
+    <string name="wallpaper_device_mixed">혼합</string>
+    <string name="wallpaper_display_options">표시 옵션</string>
+    <string name="wallpaper_display_layout">레이아웃</string>
+    <string name="wallpaper_download">다운로드</string>
+    <string name="wallpaper_cancel">취소</string>
+    <string name="wallpaper_saved">저장됨</string>
+    <string name="wallpaper_download_failed">다운로드 실패</string>
+    <string name="wallpaper_loading">배경화면 불러오는 중</string>
+    <string name="wallpaper_empty">배경화면 없음</string>
+    <string name="wallpaper_retry">다시 시도</string>
+    <string name="wallpaper_preview">미리보기</string>
+    <string name="wallpaper_set_background">배경으로 설정</string>
+    <string name="wallpaper_background_set">배경 업데이트됨</string>
 </resources>

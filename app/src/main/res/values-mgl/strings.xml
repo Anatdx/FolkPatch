@@ -1407,4 +1407,22 @@ KernelPatch 魔法阵需要 boot 核心来施展。
     <string name="my_themes_subtitle">汝所藏之魔法題</string>
     <string name="apm_api_marketplace_subtitle">覽眾所施之 API</string>
     <string name="theme_download_paused">魔力暫凝</string>
+    <string name="settings_wallpaper_gallery">魔法圖鑑</string>
+    <string name="wallpaper_device_phone">魔法手機</string>
+    <string name="wallpaper_device_tablet">魔法平板</string>
+    <string name="wallpaper_layout_waterfall">魔法瀑布</string>
+    <string name="wallpaper_layout_stack">疊層魔法</string>
+    <string name="wallpaper_device_mixed">混合魔力</string>
+    <string name="wallpaper_display_options">陳列魔法</string>
+    <string name="wallpaper_display_layout">魔法陣式</string>
+    <string name="wallpaper_download">詠唱下載</string>
+    <string name="wallpaper_cancel">取消</string>
+    <string name="wallpaper_saved">詠唱成功</string>
+    <string name="wallpaper_download_failed">詠唱失敗</string>
+    <string name="wallpaper_loading">詠唱魔法圖中</string>
+    <string name="wallpaper_empty">無魔法圖</string>
+    <string name="wallpaper_retry">再詠唱</string>
+    <string name="wallpaper_preview">魔法預覽</string>
+    <string name="wallpaper_set_background">化為魔法背景</string>
+    <string name="wallpaper_background_set">魔法背景已更替</string>
 </resources>

@@ -1421,4 +1421,22 @@ KernelPatch требует образ boot для патча.
     <string name="my_themes_subtitle">Сохранённые темы</string>
     <string name="apm_api_marketplace_subtitle">Просмотр API от сообщества</string>
     <string name="theme_download_paused">Приостановлено</string>
+    <string name="settings_wallpaper_gallery">Галерея обоев</string>
+    <string name="wallpaper_device_phone">Телефон</string>
+    <string name="wallpaper_device_tablet">Планшет</string>
+    <string name="wallpaper_layout_waterfall">Водопад</string>
+    <string name="wallpaper_layout_stack">Стопка</string>
+    <string name="wallpaper_device_mixed">Смешанный</string>
+    <string name="wallpaper_display_options">Параметры отображения</string>
+    <string name="wallpaper_display_layout">Макет</string>
+    <string name="wallpaper_download">Скачать</string>
+    <string name="wallpaper_cancel">Отмена</string>
+    <string name="wallpaper_saved">Сохранено</string>
+    <string name="wallpaper_download_failed">Ошибка загрузки</string>
+    <string name="wallpaper_loading">Загрузка обоев</string>
+    <string name="wallpaper_empty">Нет обоев</string>
+    <string name="wallpaper_retry">Повторить</string>
+    <string name="wallpaper_preview">Предпросмотр</string>
+    <string name="wallpaper_set_background">Сделать фоном</string>
+    <string name="wallpaper_background_set">Фон обновлён</string>
 </resources>

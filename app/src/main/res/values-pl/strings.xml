@@ -1346,4 +1346,22 @@ Kontynuować mimo to?</string>
     <string name="my_themes_subtitle">Zapisane motywy</string>
     <string name="apm_api_marketplace_subtitle">Przeglądaj API udostępniane przez społeczność</string>
     <string name="theme_download_paused">Wstrzymano</string>
+    <string name="settings_wallpaper_gallery">Galeria tapet</string>
+    <string name="wallpaper_device_phone">Telefon</string>
+    <string name="wallpaper_device_tablet">Tablet</string>
+    <string name="wallpaper_layout_waterfall">Kaskada</string>
+    <string name="wallpaper_layout_stack">Stos</string>
+    <string name="wallpaper_device_mixed">Mieszany</string>
+    <string name="wallpaper_display_options">Opcje wyświetlania</string>
+    <string name="wallpaper_display_layout">Układ</string>
+    <string name="wallpaper_download">Pobierz</string>
+    <string name="wallpaper_cancel">Anuluj</string>
+    <string name="wallpaper_saved">Zapisano</string>
+    <string name="wallpaper_download_failed">Pobieranie nie powiodło się</string>
+    <string name="wallpaper_loading">Wczytywanie tapet</string>
+    <string name="wallpaper_empty">Brak tapet</string>
+    <string name="wallpaper_retry">Ponów</string>
+    <string name="wallpaper_preview">Podgląd</string>
+    <string name="wallpaper_set_background">Ustaw jako tło</string>
+    <string name="wallpaper_background_set">Tło zaktualizowane</string>
 </resources>

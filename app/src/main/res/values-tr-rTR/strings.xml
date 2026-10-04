@@ -1418,4 +1418,22 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="my_themes_subtitle">Kaydettiğiniz temalar</string>
     <string name="apm_api_marketplace_subtitle">Topluluk API\'lerine göz atın</string>
     <string name="theme_download_paused">Duraklatıldı</string>
+    <string name="settings_wallpaper_gallery">Duvar kağıdı galerisi</string>
+    <string name="wallpaper_device_phone">Telefon</string>
+    <string name="wallpaper_device_tablet">Tablet</string>
+    <string name="wallpaper_layout_waterfall">Şelale</string>
+    <string name="wallpaper_layout_stack">Yığın</string>
+    <string name="wallpaper_device_mixed">Karışık</string>
+    <string name="wallpaper_display_options">Görünüm seçenekleri</string>
+    <string name="wallpaper_display_layout">Düzen</string>
+    <string name="wallpaper_download">İndir</string>
+    <string name="wallpaper_cancel">İptal</string>
+    <string name="wallpaper_saved">Kaydedildi</string>
+    <string name="wallpaper_download_failed">İndirme başarısız</string>
+    <string name="wallpaper_loading">Duvar kağıtları yükleniyor</string>
+    <string name="wallpaper_empty">Duvar kağıdı yok</string>
+    <string name="wallpaper_retry">Yeniden dene</string>
+    <string name="wallpaper_preview">Önizleme</string>
+    <string name="wallpaper_set_background">Arka plan olarak ayarla</string>
+    <string name="wallpaper_background_set">Arka plan güncellendi</string>
 </resources>

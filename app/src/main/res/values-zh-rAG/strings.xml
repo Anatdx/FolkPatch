@@ -1461,4 +1461,22 @@ KernelPatch 需要修补 boot 镜像才能工作喵。
     <string name="my_themes_subtitle">你收藏的主题喵</string>
     <string name="apm_api_marketplace_subtitle">浏览社区分享的 API 喵</string>
     <string name="theme_download_paused">暂停喵</string>
+    <string name="settings_wallpaper_gallery">喵圖鑑</string>
+    <string name="wallpaper_device_phone">喵手機</string>
+    <string name="wallpaper_device_tablet">喵平板</string>
+    <string name="wallpaper_layout_waterfall">喵瀑布</string>
+    <string name="wallpaper_layout_stack">喵堆疊</string>
+    <string name="wallpaper_device_mixed">喵混搭</string>
+    <string name="wallpaper_display_options">喵展示</string>
+    <string name="wallpaper_display_layout">喵排版</string>
+    <string name="wallpaper_download">喵下載</string>
+    <string name="wallpaper_cancel">喵取消</string>
+    <string name="wallpaper_saved">喵存好了</string>
+    <string name="wallpaper_download_failed">喵下載失敗</string>
+    <string name="wallpaper_loading">喵正在載圖</string>
+    <string name="wallpaper_empty">喵沒有圖</string>
+    <string name="wallpaper_retry">喵再試</string>
+    <string name="wallpaper_preview">喵預覽</string>
+    <string name="wallpaper_set_background">喵設為背景</string>
+    <string name="wallpaper_background_set">喵背景換好了</string>
 </resources>

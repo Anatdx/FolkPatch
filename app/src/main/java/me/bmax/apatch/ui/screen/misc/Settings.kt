@@ -91,6 +91,7 @@ import java.io.File
 import java.io.FileOutputStream
 import com.ramcosta.composedestinations.generated.destinations.PluginScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.FaqScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.WallpaperGalleryScreenDestination
 import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.widthIn
@@ -316,6 +317,13 @@ fun SettingScreen(navigator: DestinationsNavigator) {
                 item(key = "utility_rows") {
                     Spacer(Modifier.height(16.dp))
                     FolkSettingsGroup(shape = FolkShape.Corner12) {
+                        item(key = "utility_wallpaper") {
+                            FolkNavigationPreference(
+                                icon = Icons.Outlined.Wallpaper,
+                                title = stringResource(R.string.settings_wallpaper_gallery),
+                                onClick = { navigator.navigate(WallpaperGalleryScreenDestination) },
+                            )
+                        }
                         item(key = "utility_faq") {
                             FolkNavigationPreference(
                                 icon = Icons.Outlined.Quiz,

@@ -1345,4 +1345,22 @@ KernelPatch は boot イメージをパッチする必要があります。
     <string name="my_themes_subtitle">保存したテーマ</string>
     <string name="apm_api_marketplace_subtitle">コミュニティ共有の API を閲覧</string>
     <string name="theme_download_paused">一時停止中</string>
+    <string name="settings_wallpaper_gallery">壁紙ギャラリー</string>
+    <string name="wallpaper_device_phone">スマートフォン</string>
+    <string name="wallpaper_device_tablet">タブレット</string>
+    <string name="wallpaper_layout_waterfall">ウォーターフォール</string>
+    <string name="wallpaper_layout_stack">スタック</string>
+    <string name="wallpaper_device_mixed">ミックス</string>
+    <string name="wallpaper_display_options">表示オプション</string>
+    <string name="wallpaper_display_layout">レイアウト</string>
+    <string name="wallpaper_download">ダウンロード</string>
+    <string name="wallpaper_cancel">キャンセル</string>
+    <string name="wallpaper_saved">保存しました</string>
+    <string name="wallpaper_download_failed">ダウンロードに失敗しました</string>
+    <string name="wallpaper_loading">壁紙を読み込み中</string>
+    <string name="wallpaper_empty">壁紙がありません</string>
+    <string name="wallpaper_retry">再試行</string>
+    <string name="wallpaper_preview">プレビュー</string>
+    <string name="wallpaper_set_background">背景に設定</string>
+    <string name="wallpaper_background_set">背景を更新しました</string>
 </resources>

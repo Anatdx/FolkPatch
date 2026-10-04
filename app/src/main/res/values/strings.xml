@@ -1480,4 +1480,22 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="my_themes_subtitle">Themes you have saved</string>
     <string name="apm_api_marketplace_subtitle">Browse community-shared APIs</string>
     <string name="theme_download_paused">Paused</string>
+    <string name="settings_wallpaper_gallery">Wallpaper Gallery</string>
+    <string name="wallpaper_device_phone">Phone</string>
+    <string name="wallpaper_device_tablet">Tablet</string>
+    <string name="wallpaper_layout_waterfall">Waterfall</string>
+    <string name="wallpaper_layout_stack">Stack</string>
+    <string name="wallpaper_device_mixed">Mixed</string>
+    <string name="wallpaper_display_options">Display options</string>
+    <string name="wallpaper_display_layout">Layout</string>
+    <string name="wallpaper_download">Download</string>
+    <string name="wallpaper_cancel">Cancel</string>
+    <string name="wallpaper_saved">Saved</string>
+    <string name="wallpaper_download_failed">Download failed</string>
+    <string name="wallpaper_loading">Loading wallpapers</string>
+    <string name="wallpaper_empty">No wallpapers</string>
+    <string name="wallpaper_retry">Retry</string>
+    <string name="wallpaper_preview">Preview</string>
+    <string name="wallpaper_set_background">Set as background</string>
+    <string name="wallpaper_background_set">Background updated</string>
 </resources>

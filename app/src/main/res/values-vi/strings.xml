@@ -1420,4 +1420,22 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="my_themes_subtitle">Chủ đề bạn đã lưu</string>
     <string name="apm_api_marketplace_subtitle">Duyệt API do cộng đồng chia sẻ</string>
     <string name="theme_download_paused">Đã tạm dừng</string>
+    <string name="settings_wallpaper_gallery">Thư viện hình nền</string>
+    <string name="wallpaper_device_phone">Điện thoại</string>
+    <string name="wallpaper_device_tablet">Máy tính bảng</string>
+    <string name="wallpaper_layout_waterfall">Thác nước</string>
+    <string name="wallpaper_layout_stack">Xếp chồng</string>
+    <string name="wallpaper_device_mixed">Hỗn hợp</string>
+    <string name="wallpaper_display_options">Tùy chọn hiển thị</string>
+    <string name="wallpaper_display_layout">Bố cục</string>
+    <string name="wallpaper_download">Tải xuống</string>
+    <string name="wallpaper_cancel">Hủy</string>
+    <string name="wallpaper_saved">Đã lưu</string>
+    <string name="wallpaper_download_failed">Tải xuống thất bại</string>
+    <string name="wallpaper_loading">Đang tải hình nền</string>
+    <string name="wallpaper_empty">Không có hình nền</string>
+    <string name="wallpaper_retry">Thử lại</string>
+    <string name="wallpaper_preview">Xem trước</string>
+    <string name="wallpaper_set_background">Đặt làm hình nền</string>
+    <string name="wallpaper_background_set">Đã cập nhật hình nền</string>
 </resources>

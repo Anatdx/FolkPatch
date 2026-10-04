@@ -1409,4 +1409,22 @@
     <string name="my_themes_subtitle">السمات التي حفظتها</string>
     <string name="apm_api_marketplace_subtitle">تصفّح واجهات API التي يشاركها المجتمع</string>
     <string name="theme_download_paused">متوقف مؤقتًا</string>
+    <string name="settings_wallpaper_gallery">معرض الخلفيات</string>
+    <string name="wallpaper_device_phone">هاتف</string>
+    <string name="wallpaper_device_tablet">جهاز لوحي</string>
+    <string name="wallpaper_layout_waterfall">شلال</string>
+    <string name="wallpaper_layout_stack">مكدّس</string>
+    <string name="wallpaper_device_mixed">مختلط</string>
+    <string name="wallpaper_display_options">خيارات العرض</string>
+    <string name="wallpaper_display_layout">التخطيط</string>
+    <string name="wallpaper_download">تنزيل</string>
+    <string name="wallpaper_cancel">إلغاء</string>
+    <string name="wallpaper_saved">تم الحفظ</string>
+    <string name="wallpaper_download_failed">فشل التنزيل</string>
+    <string name="wallpaper_loading">جارٍ تحميل الخلفيات</string>
+    <string name="wallpaper_empty">لا توجد خلفيات</string>
+    <string name="wallpaper_retry">إعادة المحاولة</string>
+    <string name="wallpaper_preview">معاينة</string>
+    <string name="wallpaper_set_background">تعيين كخلفية</string>
+    <string name="wallpaper_background_set">تم تحديث الخلفية</string>
 </resources>

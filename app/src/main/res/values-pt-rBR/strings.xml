@@ -1422,4 +1422,22 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="my_themes_subtitle">Temas que você salvou</string>
     <string name="apm_api_marketplace_subtitle">Navegue pelas APIs compartilhadas pela comunidade</string>
     <string name="theme_download_paused">Pausado</string>
+    <string name="settings_wallpaper_gallery">Galeria de papéis de parede</string>
+    <string name="wallpaper_device_phone">Celular</string>
+    <string name="wallpaper_device_tablet">Tablet</string>
+    <string name="wallpaper_layout_waterfall">Cascata</string>
+    <string name="wallpaper_layout_stack">Empilhado</string>
+    <string name="wallpaper_device_mixed">Misto</string>
+    <string name="wallpaper_display_options">Opções de exibição</string>
+    <string name="wallpaper_display_layout">Layout</string>
+    <string name="wallpaper_download">Baixar</string>
+    <string name="wallpaper_cancel">Cancelar</string>
+    <string name="wallpaper_saved">Salvo</string>
+    <string name="wallpaper_download_failed">Falha no download</string>
+    <string name="wallpaper_loading">Carregando papéis de parede</string>
+    <string name="wallpaper_empty">Nenhum papel de parede</string>
+    <string name="wallpaper_retry">Tentar novamente</string>
+    <string name="wallpaper_preview">Prévia</string>
+    <string name="wallpaper_set_background">Definir como plano de fundo</string>
+    <string name="wallpaper_background_set">Plano de fundo atualizado</string>
 </resources>

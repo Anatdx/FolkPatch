@@ -1424,4 +1424,22 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="my_themes_subtitle">Temas que has guardado</string>
     <string name="apm_api_marketplace_subtitle">Explora las API compartidas por la comunidad</string>
     <string name="theme_download_paused">En pausa</string>
+    <string name="settings_wallpaper_gallery">Galería de fondos</string>
+    <string name="wallpaper_device_phone">Teléfono</string>
+    <string name="wallpaper_device_tablet">Tableta</string>
+    <string name="wallpaper_layout_waterfall">Cascada</string>
+    <string name="wallpaper_layout_stack">Apilado</string>
+    <string name="wallpaper_device_mixed">Mixto</string>
+    <string name="wallpaper_display_options">Opciones de visualización</string>
+    <string name="wallpaper_display_layout">Diseño</string>
+    <string name="wallpaper_download">Descargar</string>
+    <string name="wallpaper_cancel">Cancelar</string>
+    <string name="wallpaper_saved">Guardado</string>
+    <string name="wallpaper_download_failed">Error al descargar</string>
+    <string name="wallpaper_loading">Cargando fondos</string>
+    <string name="wallpaper_empty">No hay fondos</string>
+    <string name="wallpaper_retry">Reintentar</string>
+    <string name="wallpaper_preview">Vista previa</string>
+    <string name="wallpaper_set_background">Establecer como fondo</string>
+    <string name="wallpaper_background_set">Fondo actualizado</string>
 </resources>

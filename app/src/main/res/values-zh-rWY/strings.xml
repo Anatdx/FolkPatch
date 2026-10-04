@@ -1477,4 +1477,22 @@ KernelPatch 須用 boot 之像以補。
     <string name="my_themes_subtitle">汝所藏之題</string>
     <string name="apm_api_marketplace_subtitle">覽眾所施之 API</string>
     <string name="theme_download_paused">暫止</string>
+    <string name="settings_wallpaper_gallery">壁紙圖鑑</string>
+    <string name="wallpaper_device_phone">手機</string>
+    <string name="wallpaper_device_tablet">平板</string>
+    <string name="wallpaper_layout_waterfall">懸瀑</string>
+    <string name="wallpaper_layout_stack">疊積</string>
+    <string name="wallpaper_device_mixed">兼陳</string>
+    <string name="wallpaper_display_options">陳列之式</string>
+    <string name="wallpaper_display_layout">陳式</string>
+    <string name="wallpaper_download">取</string>
+    <string name="wallpaper_cancel">罷</string>
+    <string name="wallpaper_saved">取訖</string>
+    <string name="wallpaper_download_failed">取之不獲</string>
+    <string name="wallpaper_loading">方取圖</string>
+    <string name="wallpaper_empty">無圖可陳</string>
+    <string name="wallpaper_retry">再取</string>
+    <string name="wallpaper_preview">覽圖</string>
+    <string name="wallpaper_set_background">設為背景</string>
+    <string name="wallpaper_background_set">背景已易</string>
 </resources>

@@ -1406,4 +1406,22 @@ KernelPatch 这道菜需要用 boot 主料来烹饪。
     <string name="my_themes_subtitle">你存的菜谱</string>
     <string name="apm_api_marketplace_subtitle">瞧瞧街坊的方子 API</string>
     <string name="theme_download_paused">停火</string>
+    <string name="settings_wallpaper_gallery">壁紙菜譜</string>
+    <string name="wallpaper_device_phone">手機</string>
+    <string name="wallpaper_device_tablet">大盤平板</string>
+    <string name="wallpaper_layout_waterfall">瀑布流</string>
+    <string name="wallpaper_layout_stack">千層堆疊</string>
+    <string name="wallpaper_device_mixed">拼盤</string>
+    <string name="wallpaper_display_options">擺盤方案</string>
+    <string name="wallpaper_display_layout">擺盤</string>
+    <string name="wallpaper_download">出鍋下載</string>
+    <string name="wallpaper_cancel">取消</string>
+    <string name="wallpaper_saved">上菜</string>
+    <string name="wallpaper_download_failed">烹調失敗</string>
+    <string name="wallpaper_loading">備料中</string>
+    <string name="wallpaper_empty">空盤</string>
+    <string name="wallpaper_retry">回鍋</string>
+    <string name="wallpaper_preview">試味</string>
+    <string name="wallpaper_set_background">擺上背景</string>
+    <string name="wallpaper_background_set">背景已換盤</string>
 </resources>

@@ -1403,4 +1403,22 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="my_themes_subtitle">Tema yang kamu simpan</string>
     <string name="apm_api_marketplace_subtitle">Jelajahi API yang dibagikan komunitas</string>
     <string name="theme_download_paused">Dijeda</string>
+    <string name="settings_wallpaper_gallery">Galeri Wallpaper</string>
+    <string name="wallpaper_device_phone">Ponsel</string>
+    <string name="wallpaper_device_tablet">Tablet</string>
+    <string name="wallpaper_layout_waterfall">Air Terjun</string>
+    <string name="wallpaper_layout_stack">Bertumpuk</string>
+    <string name="wallpaper_device_mixed">Campuran</string>
+    <string name="wallpaper_display_options">Opsi tampilan</string>
+    <string name="wallpaper_display_layout">Tata letak</string>
+    <string name="wallpaper_download">Unduh</string>
+    <string name="wallpaper_cancel">Batal</string>
+    <string name="wallpaper_saved">Tersimpan</string>
+    <string name="wallpaper_download_failed">Unduhan gagal</string>
+    <string name="wallpaper_loading">Memuat wallpaper</string>
+    <string name="wallpaper_empty">Tidak ada wallpaper</string>
+    <string name="wallpaper_retry">Coba lagi</string>
+    <string name="wallpaper_preview">Pratinjau</string>
+    <string name="wallpaper_set_background">Jadikan latar belakang</string>
+    <string name="wallpaper_background_set">Latar belakang diperbarui</string>
 </resources>

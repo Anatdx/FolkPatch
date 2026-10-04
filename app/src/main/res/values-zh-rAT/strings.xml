@@ -1408,4 +1408,22 @@
     <string name="my_themes_subtitle">汝所藏之神題</string>
     <string name="apm_api_marketplace_subtitle">覽眾所施之 API</string>
     <string name="theme_download_paused">凝止</string>
+    <string name="settings_wallpaper_gallery">聖光圖鑑</string>
+    <string name="wallpaper_device_phone">聖光手機</string>
+    <string name="wallpaper_device_tablet">聖光石板</string>
+    <string name="wallpaper_layout_waterfall">聖光瀑布</string>
+    <string name="wallpaper_layout_stack">聖光疊壤</string>
+    <string name="wallpaper_device_mixed">聖光交融</string>
+    <string name="wallpaper_display_options">聖像陳列</string>
+    <string name="wallpaper_display_layout">聖圖陣式</string>
+    <string name="wallpaper_download">降臨下載</string>
+    <string name="wallpaper_cancel">取消</string>
+    <string name="wallpaper_saved">降臨成功</string>
+    <string name="wallpaper_download_failed">降臨失敗</string>
+    <string name="wallpaper_loading">聖光降臨中</string>
+    <string name="wallpaper_empty">無聖光圖</string>
+    <string name="wallpaper_retry">再祈</string>
+    <string name="wallpaper_preview">聖光顯現</string>
+    <string name="wallpaper_set_background">設為聖光背景</string>
+    <string name="wallpaper_background_set">聖光背景已更</string>
 </resources>
