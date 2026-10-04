@@ -104,15 +104,15 @@ fun SearchAppBar(
                 AnimatedVisibility(
                     modifier = Modifier.align(Alignment.CenterStart),
                     visible = !onSearch,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
+                    enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
+                    exit = fadeOut(MaterialTheme.motionScheme.fastEffectsSpec()),
                     content = { title() }
                 )
 
                 AnimatedVisibility(
                     visible = onSearch,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+                    enter = fadeIn(MaterialTheme.motionScheme.defaultEffectsSpec()),
+                    exit = fadeOut(MaterialTheme.motionScheme.fastEffectsSpec())
                 ) {
                     val searchFieldColors = TextFieldDefaults.colors(
                         focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
