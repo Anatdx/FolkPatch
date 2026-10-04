@@ -15,7 +15,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,6 +34,7 @@ import me.bmax.apatch.R
 import me.bmax.apatch.ui.theme.ColorGenerationMode
 import me.bmax.apatch.ui.theme.ColorStandard
 import me.bmax.apatch.ui.theme.ColorStyle
+import me.bmax.apatch.ui.theme.ColorContrast
 import androidx.compose.ui.semantics.Role
 import me.bmax.apatch.ui.theme.tokens.FolkShape
 
@@ -128,6 +131,39 @@ fun ColorStylePicker(
                     onClick = { onStyleSelected(style) },
                 )
             }
+        }
+    }
+
+    if (bare) content() else ExpressiveCard(modifier = modifier, flat = flat) { content() }
+}
+
+// ─── Color Contrast (Standard / Medium / High) ───────────────────────────────
+
+@Composable
+fun ColorContrastSelector(
+    selectedContrast: ColorContrast,
+    onContrastSelected: (ColorContrast) -> Unit,
+    modifier: Modifier = Modifier,
+    flat: Boolean = false,
+    bare: Boolean = false,
+) {
+    val content: @Composable () -> Unit = {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+            SegmentedToggleRow(
+                options = ColorContrast.entries.map { contrast ->
+                    SegmentedOption(
+                        label = stringResource(contrast.labelRes),
+                        icon = when (contrast) {
+                            ColorContrast.STANDARD -> Icons.Default.Contrast
+                            ColorContrast.MEDIUM -> Icons.Default.Tune
+                            ColorContrast.HIGH -> Icons.Default.AutoAwesome
+                        },
+                        key = contrast.name,
+                    )
+                },
+                selectedIndex = ColorContrast.entries.indexOf(selectedContrast),
+                onOptionSelected = { index -> onContrastSelected(ColorContrast.entries[index]) },
+            )
         }
     }
 
