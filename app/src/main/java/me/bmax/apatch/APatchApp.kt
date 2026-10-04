@@ -161,7 +161,7 @@ class APApplication : Application(), Thread.UncaughtExceptionHandler, ImageLoade
         const val PREF_UTS_SPOOF_ENABLED = "uts_spoof_enabled"
         const val PREF_UTS_SPOOF_RELEASE = "uts_spoof_release"
         const val PREF_UTS_SPOOF_VERSION = "uts_spoof_version"
-        const val HOME_LAYOUT_STYLE_DEFAULT = "focus"
+        const val HOME_LAYOUT_STYLE_DEFAULT = "circle"
         private const val SHOW_BACKUP_WARN = "show_backup_warning"
         private const val CRASH_COUNT_KEY = "fp_crash_count"
         private const val CRASH_TIMESTAMP_KEY = "fp_crash_timestamp"
