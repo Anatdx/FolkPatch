@@ -18,15 +18,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import me.bmax.apatch.R
 import androidx.compose.ui.semantics.Role
+import me.bmax.apatch.ui.theme.LocalThemeRevealState
 import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 enum class ThemeMode {
@@ -98,6 +107,10 @@ private fun ThemeModeOption(
         label = "themeModeScale",
     )
 
+    val revealState = LocalThemeRevealState.current
+    val scope = rememberCoroutineScope()
+    var centerInRoot by remember { mutableStateOf(Offset.Zero) }
+
     val bgColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer
     else MaterialTheme.colorScheme.surfaceContainerLow
 
@@ -106,10 +119,23 @@ private fun ThemeModeOption(
 
     Column(
         modifier = modifier
+            .onGloballyPositioned { centerInRoot = it.boundsInRoot().center }
             .scale(scale)
             .clip(FolkShape.Corner24)
             .background(bgColor)
-            .clickable(role = Role.RadioButton, onClick = onClick)
+            .clickable(role = Role.RadioButton, onClick = {
+                // Snapshot the current frame first so the ripple overlay can peel
+                // the previous theme away from this control's centre; only then
+                // apply the change (which triggers recomposition with the new theme).
+                if (revealState != null) {
+                    scope.launch {
+                        revealState.capture(centerInRoot)
+                        onClick()
+                    }
+                } else {
+                    onClick()
+                }
+            })
             .padding(vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,

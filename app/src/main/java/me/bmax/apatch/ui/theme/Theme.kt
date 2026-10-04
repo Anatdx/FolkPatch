@@ -34,6 +34,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.MutableLiveData
 import coil.compose.rememberAsyncImagePainter
@@ -288,6 +292,22 @@ fun APatchTheme(
     }
     val typography = remember(fontFamily) { getTypography(fontFamily) }
 
+    val graphicsLayer = rememberGraphicsLayer()
+    val themeRevealState = remember {
+        ThemeRevealState().apply {
+            captureFn = { at: Offset ->
+                runCatching { graphicsLayer.toImageBitmap() }
+                    .getOrNull()
+                    ?.let { snapshot ->
+                        if (snapshot.isUsable()) {
+                            bitmap = snapshot
+                            origin = at
+                        }
+                    }
+            }
+        }
+    }
+
     MaterialTheme(
         colorScheme = colorScheme,
         motionScheme = motionScheme,
@@ -299,9 +319,26 @@ fun APatchTheme(
             } else {
                 LocalRippleConfiguration.current
             }
-            CompositionLocalProvider(LocalRippleConfiguration provides rippleConfiguration) {
+            CompositionLocalProvider(
+                LocalRippleConfiguration provides rippleConfiguration,
+                LocalThemeRevealState provides themeRevealState,
+            ) {
                 MonetColorsProvider.UpdateCss()
-                content()
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .drawWithContent {
+                                graphicsLayer.record {
+                                    this@drawWithContent.drawContent()
+                                }
+                                drawLayer(graphicsLayer)
+                            }
+                    ) {
+                        content()
+                    }
+                    ThemeRevealOverlay(themeRevealState)
+                }
             }
         }
     )
