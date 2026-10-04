@@ -99,6 +99,7 @@ English and Chinese are the reference languages. Translation corrections should 
 - [APatch](https://github.com/bmax121/APatch) - upstream project
 - [MMRL](https://github.com/MMRLApp/MMRL) - module repository format reference
 - [Shizuku](https://github.com/RikkaApps/Shizuku) - built-in Shizuku service
+- [LoliAPI](https://www.loliapi.com/docs/acg/) - online wallpaper source for the wallpaper gallery
 
 ## License
 

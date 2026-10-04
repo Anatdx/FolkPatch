@@ -99,6 +99,7 @@ SuperKey 的权限高于普通 Root 会话。弱密钥或已泄露的密钥可�
 - [APatch](https://github.com/bmax121/APatch)：上游项目
 - [MMRL](https://github.com/MMRLApp/MMRL)：模块仓库格式参考
 - [Shizuku](https://github.com/RikkaApps/Shizuku)：内置 Shizuku 服务
+- [LoliAPI](https://www.loliapi.com/docs/acg/)：壁纸图鉴的在线壁纸来源
 
 ## 许可证
 
