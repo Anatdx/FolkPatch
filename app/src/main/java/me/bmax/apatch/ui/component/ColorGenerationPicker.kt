@@ -29,6 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.theme.ColorGenerationMode
@@ -147,8 +149,13 @@ fun ColorContrastSelector(
     flat: Boolean = false,
     bare: Boolean = false,
 ) {
+    val contrastLabel = stringResource(R.string.color_contrast_label)
     val content: @Composable () -> Unit = {
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .semantics { contentDescription = contrastLabel },
+        ) {
             SegmentedToggleRow(
                 options = ColorContrast.entries.map { contrast ->
                     SegmentedOption(
