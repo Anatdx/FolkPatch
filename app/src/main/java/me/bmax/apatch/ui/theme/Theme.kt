@@ -155,6 +155,7 @@ fun APatchTheme(
     var colorGenerationMode by remember { mutableStateOf(prefs.getString("color_generation_mode", "classic")) }
     var colorStandard by remember { mutableStateOf(prefs.getString("color_standard", "MD3_2021")) }
     var colorStyle by remember { mutableStateOf(prefs.getString("color_style", "TONAL_SPOT")) }
+    var colorContrast by remember { mutableStateOf(prefs.getString("color_contrast", "STANDARD")) }
 
     DisposableEffect(prefs) {
         val listener = android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
@@ -167,6 +168,7 @@ fun APatchTheme(
                 "color_generation_mode" -> colorGenerationMode = prefs.getString(key, "classic")
                 "color_standard" -> colorStandard = prefs.getString(key, "MD3_2021")
                 "color_style" -> colorStyle = prefs.getString(key, "TONAL_SPOT")
+                "color_contrast" -> colorContrast = prefs.getString(key, "STANDARD")
             }
         }
         prefs.registerOnSharedPreferenceChangeListener(listener)
@@ -189,6 +191,7 @@ fun APatchTheme(
             colorGenerationMode = prefs.getString("color_generation_mode", "classic")
             colorStandard = prefs.getString("color_standard", "MD3_2021")
             colorStyle = prefs.getString("color_style", "TONAL_SPOT")
+            colorContrast = prefs.getString("color_contrast", "STANDARD")
             BackgroundManager.loadCustomBackground(context)
             FontConfig.load(context)
             me.bmax.apatch.util.ui.FloatingBarConfig.load(context)
@@ -202,13 +205,15 @@ fun APatchTheme(
         nightModeEnabled
     }
 
+    val contrastLevel = ColorContrast.fromName(colorContrast).level
+
     val baseColorScheme = when {
         // Custom dynamic generation (MaterialKolor) with system wallpaper seed
         colorGenerationMode == "custom" && dynamicColor -> {
             val standard = ColorStandard.fromName(colorStandard)
             val style = ColorStyle.fromName(colorStyle)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ColorSchemeGenerator.generateFromContext(context, darkTheme, style.paletteStyle, standard.specVersion)
+                ColorSchemeGenerator.generateFromContext(context, darkTheme, style.paletteStyle, standard.specVersion, contrastLevel)
             } else {
                 // Fallback: system dynamic color not available, use selected color as seed
                 val seedOption = themeColorOptions.find { it.key == (customColorScheme ?: "indigo") }
@@ -217,7 +222,7 @@ fun APatchTheme(
                 } else {
                     seedOption?.lightPrimary ?: Color(0xFF4355B9)
                 }
-                ColorSchemeGenerator.generate(seedColor, darkTheme, style.paletteStyle, standard.specVersion)
+                ColorSchemeGenerator.generate(seedColor, darkTheme, style.paletteStyle, standard.specVersion, contrastLevel)
             }
         }
         // Custom dynamic generation (MaterialKolor) with selected color seed
@@ -230,7 +235,7 @@ fun APatchTheme(
             }
             val standard = ColorStandard.fromName(colorStandard)
             val style = ColorStyle.fromName(colorStyle)
-            ColorSchemeGenerator.generate(seedColor, darkTheme, style.paletteStyle, standard.specVersion)
+            ColorSchemeGenerator.generate(seedColor, darkTheme, style.paletteStyle, standard.specVersion, contrastLevel)
         }
         // System dynamic color (standard Material3 wallpaper extraction)
         dynamicColor -> {

@@ -26,14 +26,16 @@ object ColorSchemeGenerator {
         isDark: Boolean,
         style: PaletteStyle,
         specVersion: ColorSpec.SpecVersion,
+        contrastLevel: Double = 0.0,
     ): ColorScheme {
-        val key = "${seedColor.value}_${style.name}_${specVersion.name}_$isDark"
+        val key = "${seedColor.value}_${style.name}_${specVersion.name}_${contrastLevel}_$isDark"
         return cache.get(key) ?: run {
             val scheme = dynamicColorScheme(
                 seedColor = seedColor,
                 isDark = isDark,
                 style = style,
                 specVersion = specVersion,
+                contrastLevel = contrastLevel,
             )
             cache.put(key, scheme)
             scheme
@@ -49,9 +51,10 @@ object ColorSchemeGenerator {
         isDark: Boolean,
         style: PaletteStyle,
         specVersion: ColorSpec.SpecVersion,
+        contrastLevel: Double = 0.0,
     ): ColorScheme {
         val seedColor = extractSystemSeedColor(context)
-        return generate(seedColor, isDark, style, specVersion)
+        return generate(seedColor, isDark, style, specVersion, contrastLevel)
     }
 
     /**
