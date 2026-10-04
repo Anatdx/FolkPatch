@@ -45,7 +45,6 @@ fun MultimediaDialogs(
     if (showSoundEffectSourceDialog.value) {
         FolkAlertDialog(
             onDismissRequest = { showSoundEffectSourceDialog.value = false },
-            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -100,7 +99,6 @@ fun MultimediaDialogs(
     if (showSoundEffectPresetDialog.value) {
         FolkAlertDialog(
             onDismissRequest = { showSoundEffectPresetDialog.value = false },
-            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -149,7 +147,6 @@ fun MultimediaDialogs(
     if (showSoundEffectScopeDialog.value) {
         FolkAlertDialog(
             onDismissRequest = { showSoundEffectScopeDialog.value = false },
-            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -204,7 +201,6 @@ fun MultimediaDialogs(
     if (showStartupSourceDialog.value) {
         FolkAlertDialog(
             onDismissRequest = { showStartupSourceDialog.value = false },
-            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -259,7 +255,6 @@ fun MultimediaDialogs(
     if (showStartupPresetDialog.value) {
         FolkAlertDialog(
             onDismissRequest = { showStartupPresetDialog.value = false },
-            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(
@@ -308,7 +303,6 @@ fun MultimediaDialogs(
     if (showVibrationScopeDialog.value) {
         FolkAlertDialog(
             onDismissRequest = { showVibrationScopeDialog.value = false },
-            shape = ContinuousCornerShape(30.dp),
         ) {
             Column(modifier = Modifier.padding(24.dp)) {
                 Text(

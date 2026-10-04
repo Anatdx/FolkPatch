@@ -84,7 +84,6 @@ fun AppearanceThemeSection(
                 FolkAlertDialog(
                     onDismissRequest = { showModeSwitchDialog.value = false },
                     width = 320.dp,
-                    shape = ContinuousCornerShape(30.dp),
                     blurBehind = false,
                 ) {
                     Column(modifier = Modifier.padding(24.dp)) {

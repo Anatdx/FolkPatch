@@ -51,7 +51,6 @@ fun NewAppProfileModeDialog(
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(
@@ -297,7 +296,6 @@ fun SELinuxModeDialog(
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(

@@ -368,7 +368,6 @@ fun PathHideFilterSystemWarningDialog(
 ) {
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
             Text(

@@ -304,7 +304,6 @@ fun PluginConfigDialog(
 
     FolkAlertDialog(
         onDismissRequest = onDismiss,
-        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(
@@ -421,7 +420,6 @@ fun PluginLogDialog(
 ) {
     FolkAlertDialog(
         onDismissRequest = onDismiss,
-        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(

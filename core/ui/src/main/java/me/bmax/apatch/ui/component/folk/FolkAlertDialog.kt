@@ -2,7 +2,7 @@ package me.bmax.apatch.ui.component.folk
 
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 import androidx.compose.material3.AlertDialogDefaults
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,7 +28,7 @@ fun FolkAlertDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     width: Dp = 310.dp,
-    shape: Shape = ContinuousCornerShape(30.dp),
+    shape: Shape = FolkShape.Dialog,
     blurBehind: Boolean = true,
     dialogProperties: DialogProperties = DialogProperties(
         decorFitsSystemWindows = true,

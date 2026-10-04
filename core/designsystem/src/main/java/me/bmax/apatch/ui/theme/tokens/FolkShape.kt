@@ -26,6 +26,12 @@ object FolkShape {
     /** Sheets and the outer corner of a grouped list. */
     val Corner28: CornerBasedShape = ContinuousCornerShape(28.dp)
 
+    /**
+     * The frame every alert dialog shares. A little softer than [Corner28] so a dialog, which is
+     * small on screen, still reads clearly as a floating panel rather than a page.
+     */
+    val Dialog: CornerBasedShape = ContinuousCornerShape(30.dp)
+
     /** Capsule. */
     val CornerFull: RoundedCornerShape = RoundedCornerShape(50)
 

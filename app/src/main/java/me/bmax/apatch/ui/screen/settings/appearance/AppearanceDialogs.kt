@@ -33,7 +33,6 @@ fun HomeLayoutChooseDialog(showDialog: MutableState<Boolean>, onLayoutSelected: 
 
     FolkAlertDialog(
         onDismissRequest = { showDialog.value = false },
-        shape = ContinuousCornerShape(30.dp),
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(

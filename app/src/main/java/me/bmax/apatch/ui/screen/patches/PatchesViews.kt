@@ -96,7 +96,6 @@ fun ExtraConfigDialog(kpmInfo: KPModel.KPMInfo, onDismiss: () -> Unit) {
 
     FolkAlertDialog(
         onDismissRequest = onDismiss,
-        shape = ContinuousCornerShape(30.dp),
         blurBehind = false,
     ) {
         Column(modifier = Modifier.padding(PaddingValues(all = 24.dp))) {
