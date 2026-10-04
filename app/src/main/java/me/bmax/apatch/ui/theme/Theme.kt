@@ -11,8 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RippleConfiguration
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -54,7 +52,6 @@ import com.ramcosta.composedestinations.generated.destinations.HomeScreenDestina
 import com.ramcosta.composedestinations.generated.destinations.KPModuleScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SuperUserScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.APModuleScreenDestination
-import me.bmax.apatch.ui.component.themeColorOptions
 import me.bmax.apatch.ui.theme.tokens.FolkShape
 import me.bmax.apatch.ui.theme.tokens.FolkThemeCatalog
 import androidx.compose.material3.MotionScheme
@@ -118,6 +115,7 @@ private val DarkRippleAlpha = RippleAlpha(
 fun APatchTheme(
     isSettingsScreen: Boolean = false,
     allowCustomBackground: Boolean = true,
+    activeBackgroundUri: String? = null,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
@@ -211,74 +209,32 @@ fun APatchTheme(
 
     val contrastLevel = ColorContrast.fromName(colorContrast).level
 
-    val baseColorScheme = when {
-        // Custom dynamic generation (MaterialKolor) with system wallpaper seed
-        colorGenerationMode == "custom" && dynamicColor -> {
-            val standard = ColorStandard.fromName(colorStandard)
-            val style = ColorStyle.fromName(colorStyle)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                ColorSchemeGenerator.generateFromContext(context, darkTheme, style.paletteStyle, standard.specVersion, contrastLevel)
-            } else {
-                // Fallback: system dynamic color not available, use selected color as seed
-                val seedOption = themeColorOptions.find { it.key == (customColorScheme ?: "indigo") }
-                val seedColor = if (darkTheme) {
-                    seedOption?.darkPrimary ?: Color(0xFFBAC3FF)
-                } else {
-                    seedOption?.lightPrimary ?: Color(0xFF4355B9)
-                }
-                ColorSchemeGenerator.generate(seedColor, darkTheme, style.paletteStyle, standard.specVersion, contrastLevel)
-            }
-        }
-        // Custom dynamic generation (MaterialKolor) with selected color seed
-        colorGenerationMode == "custom" -> {
-            val seedOption = themeColorOptions.find { it.key == (customColorScheme ?: "indigo") }
-            val seedColor = if (darkTheme) {
-                seedOption?.darkPrimary ?: Color(0xFFBAC3FF)
-            } else {
-                seedOption?.lightPrimary ?: Color(0xFF4355B9)
-            }
-            val standard = ColorStandard.fromName(colorStandard)
-            val style = ColorStyle.fromName(colorStyle)
-            ColorSchemeGenerator.generate(seedColor, darkTheme, style.paletteStyle, standard.specVersion, contrastLevel)
-        }
-        // System dynamic color (standard Material3 wallpaper extraction)
-        dynamicColor -> {
-            when {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-                    if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-                }
-                else -> FolkThemeCatalog.scheme("blue", darkTheme)
-            }
-        }
-        // Classic themes, from the catalog.
-        else -> FolkThemeCatalog.scheme(customColorScheme, darkTheme)
-    }
-    
+    val baseColorScheme = generateColorScheme(
+        context = context,
+        darkTheme = darkTheme,
+        colorGenerationMode = colorGenerationMode,
+        dynamicColor = dynamicColor,
+        customColorScheme = customColorScheme,
+        colorStandard = colorStandard,
+        colorStyle = colorStyle,
+        contrastLevel = contrastLevel,
+    )
+
     val useCustomBackground = allowCustomBackground && BackgroundConfig.isCustomBackgroundEnabled
-    val colorScheme = if (darkTheme && amoledTheme && !useCustomBackground) {
-        baseColorScheme.toAmoled()
-    } else {
-        baseColorScheme.copy(
-            background = if (useCustomBackground) Color.Transparent else baseColorScheme.background,
-            surface = if (useCustomBackground) {
-                baseColorScheme.surface.copy(alpha = BackgroundConfig.customBackgroundOpacity)
-            } else {
-                baseColorScheme.surface
-            },
-            primary = baseColorScheme.primary,
-            secondary = baseColorScheme.secondary,
-            secondaryContainer = if (useCustomBackground) {
-                baseColorScheme.secondaryContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)
-            } else {
-                baseColorScheme.secondaryContainer
-            },
-            surfaceContainer = if (useCustomBackground) {
-                baseColorScheme.surfaceContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)
-            } else {
-                baseColorScheme.surfaceContainer
-            }
-        )
-    }
+    val colorScheme = adaptColorScheme(
+        context = context,
+        baseColorScheme = baseColorScheme,
+        darkTheme = darkTheme,
+        amoledTheme = amoledTheme,
+        useCustomBackground = useCustomBackground,
+        activeBackgroundUri = activeBackgroundUri,
+        colorGenerationMode = colorGenerationMode,
+        dynamicColor = dynamicColor,
+        customColorScheme = customColorScheme,
+        colorStandard = colorStandard,
+        colorStyle = colorStyle,
+        contrastLevel = contrastLevel,
+    )
 
     SystemBarStyle(
         darkMode = darkTheme
@@ -322,6 +278,10 @@ fun APatchTheme(
             CompositionLocalProvider(
                 LocalRippleConfiguration provides rippleConfiguration,
                 LocalThemeRevealState provides themeRevealState,
+                // 壁纸模式下半透明容器让壁纸透出，卡片文字需要用随壁纸明暗取反的
+                // 中性色，而不是容器语义色（onPrimary 等）；非壁纸模式提供 null 以回退。
+                LocalWallpaperContentColor provides if (useCustomBackground) colorScheme.onSurface else null,
+                LocalWallpaperContentVariant provides if (useCustomBackground) colorScheme.onSurfaceVariant else null,
             ) {
                 MonetColorsProvider.UpdateCss()
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -367,7 +327,28 @@ fun APatchThemeWithBackground(
         isConfigLoaded = true
     }
 
-    APatchTheme(isSettingsScreen = isSettingsScreen) {
+    // 壁纸模式下按当前路由解析实际展示的壁纸，供主题适配内容配色
+    val activeBackgroundUri = activeBackgroundUriForRoute(currentRoute)
+
+    // 为旧配置/主题导入等缺少亮度记录的壁纸补算亮度
+    LaunchedEffect(
+        BackgroundConfig.isCustomBackgroundEnabled,
+        BackgroundConfig.isMultiBackgroundEnabled,
+        BackgroundConfig.customBackgroundUri,
+        BackgroundConfig.videoBackgroundUri,
+        BackgroundConfig.homeBackgroundUri,
+        BackgroundConfig.kernelBackgroundUri,
+        BackgroundConfig.superuserBackgroundUri,
+        BackgroundConfig.systemModuleBackgroundUri,
+        BackgroundConfig.settingsBackgroundUri,
+    ) {
+        BackgroundManager.refreshMissingWallpaperLuminances(context)
+    }
+
+    APatchTheme(
+        isSettingsScreen = isSettingsScreen,
+        activeBackgroundUri = activeBackgroundUri,
+    ) {
         Box(modifier = Modifier.fillMaxSize()) {
             // Always show background layer if enabled
             BackgroundLayer(

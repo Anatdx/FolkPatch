@@ -29,8 +29,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.theme.BackgroundConfig
+import me.bmax.apatch.ui.theme.LocalWallpaperContentColor
 import me.bmax.apatch.util.Version
-import androidx.compose.foundation.isSystemInDarkTheme
 
 import androidx.compose.ui.draw.alpha
 import coil.ImageLoader
@@ -205,33 +205,24 @@ fun StatusCardBig(
     val isJailbreak = jailbreakState.isActive
     val isPermissive = jailbreakState.isPermissive
     
-    val prefs = APApplication.sharedPreferences
-    val darkThemeFollowSys = prefs.getBoolean("night_mode_follow_sys", false)
-    val nightModeEnabled = prefs.getBoolean("night_mode_enabled", true)
-    val isDark = if (darkThemeFollowSys) {
-        isSystemInDarkTheme()
-    } else {
-        nightModeEnabled
-    }
-    
     // Colors
     val useCustomGridBg = BackgroundConfig.isGridWorkingCardBackgroundEnabled && !BackgroundConfig.gridWorkingCardBackgroundUri.isNullOrEmpty()
-    
+
+    // 壁纸模式下半透明容器让壁纸透出，语义色（onPrimary 等）不再匹配实际背景，
+    // 改用随壁纸明暗取反的中性色；非壁纸模式为 null，回退到语义色。
+    val wallpaperContentColor = LocalWallpaperContentColor.current
+
     val (baseContainerColor, baseContentColor) = if (isJailbreak) {
          val containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
              MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = BackgroundConfig.customBackgroundOpacity)
          } else {
              MaterialTheme.colorScheme.tertiaryContainer
          }
-         containerColor to MaterialTheme.colorScheme.onTertiaryContainer
+         containerColor to (wallpaperContentColor ?: MaterialTheme.colorScheme.onTertiaryContainer)
     } else if (BackgroundConfig.isCustomBackgroundEnabled) {
          val opacity = BackgroundConfig.customBackgroundOpacity
          val container = MaterialTheme.colorScheme.primary.copy(alpha = opacity)
-         val content = if (opacity <= 0.1f) {
-             if (isDark) Color.White else Color.Black
-         } else {
-             MaterialTheme.colorScheme.onPrimary
-         }
+         val content = wallpaperContentColor ?: MaterialTheme.colorScheme.onPrimary
          container to content
     } else {
         if (isWorking) {

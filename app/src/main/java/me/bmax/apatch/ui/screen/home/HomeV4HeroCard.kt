@@ -73,6 +73,7 @@ import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.theme.BackgroundConfig
 import me.bmax.apatch.ui.theme.BackgroundManager
+import me.bmax.apatch.ui.theme.LocalWallpaperContentColor
 import me.bmax.apatch.ui.component.BackgroundOptionsDialog
 import me.bmax.apatch.ui.component.rememberConfirmDialog
 import me.bmax.apatch.util.PermissionUtils
@@ -155,9 +156,13 @@ fun HeroStatusCard(
         label = "containerColor"
     )
 
+    // 壁纸模式下卡片容器被 customBackgroundOpacity 压到近乎透明，壁纸直接透出，
+    // 此时 onPrimary/onTertiaryContainer 不再匹配实际背景，改用随壁纸明暗取反的中性色。
+    val wallpaperContentColor = LocalWallpaperContentColor.current
     val contentColor by animateColorAsState(
         targetValue = when {
-            hasWallpaper && (isWorking || isJailbreak) -> Color.White
+            hasWallpaper -> Color.White
+            wallpaperContentColor != null -> wallpaperContentColor
             isJailbreak -> MaterialTheme.colorScheme.onTertiaryContainer
             isWorking -> MaterialTheme.colorScheme.onPrimary
             isUpdate -> MaterialTheme.colorScheme.onSecondary
@@ -351,7 +356,7 @@ fun HeroStatusCard(
             shape = FolkShape.Corner20,
             colors = CardDefaults.cardColors(
                 containerColor = finalContainerColor,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer
+                contentColor = wallpaperContentColor ?: MaterialTheme.colorScheme.onErrorContainer
             )
         ) {
             Row(

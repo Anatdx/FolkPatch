@@ -19,11 +19,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import me.bmax.apatch.ui.theme.BackgroundConfig
+import me.bmax.apatch.ui.theme.LocalWallpaperContentColor
 import androidx.compose.material3.Card
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -83,8 +83,6 @@ fun KStatusCard(
         UninstallDialog(showDialog = showUninstallDialog, navigator)
     }
 
-    val prefs = APApplication.sharedPreferences
-
     // Check if update notification is blocked
     val kpState = if (kpState == APApplication.State.KERNELPATCH_NEED_UPDATE && apApp.isKernelPatchUpdateBlocked()) {
         APApplication.State.KERNELPATCH_INSTALLED
@@ -98,18 +96,14 @@ fun KStatusCard(
         apState
     }
 
-    val darkThemeFollowSys = prefs.getBoolean("night_mode_follow_sys", false)
-    val nightModeEnabled = prefs.getBoolean("night_mode_enabled", true)
-    val isDarkTheme = if (darkThemeFollowSys) {
-        isSystemInDarkTheme()
-    } else {
-        nightModeEnabled
-    }
-
     // Jailbreak button appears when the kernel is not installed and SELinux is permissive.
     val jailbreakState = LocalHomeJailbreakState.current
     val isPermissive = jailbreakState.isPermissive
     val isJailbreak = jailbreakState.isActive
+
+    // 壁纸模式下半透明容器让壁纸透出，语义色（onPrimary 等）不再匹配实际背景，
+    // 改用随壁纸明暗取反的中性色；非壁纸模式为 null，回退到语义色。
+    val wallpaperContentColor = LocalWallpaperContentColor.current
 
     val (cardBackgroundColor, cardContentColor) = when {
         isJailbreak -> {
@@ -118,17 +112,13 @@ fun KStatusCard(
             } else {
                 MaterialTheme.colorScheme.tertiaryContainer
             }
-            containerColor to MaterialTheme.colorScheme.onTertiaryContainer
+            containerColor to (wallpaperContentColor ?: MaterialTheme.colorScheme.onTertiaryContainer)
         }
 
         kpState == APApplication.State.KERNELPATCH_INSTALLED -> {
             if (BackgroundConfig.isCustomBackgroundEnabled) {
                 val opacity = BackgroundConfig.customBackgroundOpacity
-                val contentColor = if (opacity <= 0.1f) {
-                    if (isDarkTheme) Color.White else Color.Black
-                } else {
-                    MaterialTheme.colorScheme.onPrimary
-                }
+                val contentColor = wallpaperContentColor ?: MaterialTheme.colorScheme.onPrimary
                 MaterialTheme.colorScheme.primary.copy(alpha = opacity) to contentColor
             } else {
                 MaterialTheme.colorScheme.primary to MaterialTheme.colorScheme.onPrimary
@@ -137,7 +127,8 @@ fun KStatusCard(
 
         kpState == APApplication.State.KERNELPATCH_NEED_UPDATE || kpState == APApplication.State.KERNELPATCH_NEED_REBOOT -> {
             if (BackgroundConfig.isCustomBackgroundEnabled) {
-                MaterialTheme.colorScheme.secondary.copy(alpha = BackgroundConfig.customBackgroundOpacity) to MaterialTheme.colorScheme.onSecondary
+                MaterialTheme.colorScheme.secondary.copy(alpha = BackgroundConfig.customBackgroundOpacity) to
+                    (wallpaperContentColor ?: MaterialTheme.colorScheme.onSecondary)
             } else {
                 MaterialTheme.colorScheme.secondary to MaterialTheme.colorScheme.onSecondary
             }
@@ -318,11 +309,7 @@ fun KStatusCard(
                         enabled = !jailbreakState.isTriggering,
                         colors = if (BackgroundConfig.isCustomBackgroundEnabled && kpState == APApplication.State.KERNELPATCH_INSTALLED) {
                             val opacity = BackgroundConfig.customBackgroundOpacity
-                            val contentColor = if (opacity <= 0.1f) {
-                                if (isDarkTheme) Color.White else Color.Black
-                            } else {
-                                MaterialTheme.colorScheme.onPrimary
-                            }
+                            val contentColor = wallpaperContentColor ?: MaterialTheme.colorScheme.onPrimary
                             ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary.copy(alpha = opacity),
                                 contentColor = contentColor
