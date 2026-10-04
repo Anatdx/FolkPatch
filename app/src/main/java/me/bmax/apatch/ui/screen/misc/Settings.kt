@@ -212,14 +212,14 @@ fun SettingScreen(navigator: DestinationsNavigator) {
         )
         add(
             SecondaryEntry(
-                icon = Icons.Outlined.Visibility,
+                icon = Icons.Outlined.TouchApp,
                 label = stringResource(R.string.settings_category_behavior),
                 onClick = { navigator.navigate(BehaviorSettingsScreenDestination(null)) },
             )
         )
         add(
             SecondaryEntry(
-                icon = Icons.Outlined.Tune,
+                icon = Icons.Outlined.Handyman,
                 label = stringResource(R.string.settings_category_function),
                 onClick = { navigator.navigate(FunctionSettingsScreenDestination(null)) },
             )
