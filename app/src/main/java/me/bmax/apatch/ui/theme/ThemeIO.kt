@@ -88,6 +88,7 @@ internal object ThemeIO {
                     colorGenerationMode = prefs.getString("color_generation_mode", "classic") ?: "classic",
                     colorStandard = prefs.getString("color_standard", "MD3_2021") ?: "MD3_2021",
                     colorStyle = prefs.getString("color_style", "TONAL_SPOT") ?: "TONAL_SPOT",
+                    colorContrast = prefs.getString("color_contrast", "STANDARD") ?: "STANDARD",
                     appLanguage = AppCompatDelegate.getApplicationLocales().toLanguageTags(),
                     isGridWorkingCardBackgroundEnabled = BackgroundConfig.isGridWorkingCardBackgroundEnabled,
                     gridWorkingCardBackgroundOpacity = BackgroundConfig.gridWorkingCardBackgroundOpacity,
@@ -161,6 +162,7 @@ internal object ThemeIO {
                     put("colorGenerationMode", config.colorGenerationMode)
                     put("colorStandard", config.colorStandard)
                     put("colorStyle", config.colorStyle)
+                    put("colorContrast", config.colorContrast)
                     put("appLanguage", config.appLanguage)
                     
                     // Grid Working Card Background
@@ -569,6 +571,7 @@ internal object ThemeIO {
                 val colorGenerationMode = json.optString("colorGenerationMode", "classic")
                 val colorStandard = json.optString("colorStandard", "MD3_2021")
                 val colorStyle = json.optString("colorStyle", "TONAL_SPOT")
+                val colorContrast = json.optString("colorContrast", "STANDARD")
                 val appLanguage = json.optString("appLanguage", "")
                 
                 // Grid Working Card Background
@@ -1025,6 +1028,7 @@ internal object ThemeIO {
                     .putString("color_generation_mode", colorGenerationMode)
                     .putString("color_standard", colorStandard)
                     .putString("color_style", colorStyle)
+                    .putString("color_contrast", colorContrast)
                     .apply()
                 
                 // 6. Refresh Theme
@@ -1070,6 +1074,7 @@ internal object ThemeIO {
                     .putString("color_generation_mode", "classic")
                     .putString("color_standard", "MD3_2021")
                     .putString("color_style", "TONAL_SPOT")
+                    .putString("color_contrast", "STANDARD")
                     .remove("appLanguage")
                     .apply()
 
