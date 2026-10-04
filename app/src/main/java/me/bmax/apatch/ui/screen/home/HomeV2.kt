@@ -365,8 +365,7 @@ fun StatusCardBig(
                                 kpState == APApplication.State.UNKNOWN_STATE -> stringResource(R.string.home_install_unknown)
                                 else -> stringResource(R.string.home_not_installed)
                             },
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleLargeEmphasized,
                             color = contentColor
                         )
                     }

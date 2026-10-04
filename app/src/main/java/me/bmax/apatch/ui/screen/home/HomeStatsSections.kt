@@ -251,8 +251,7 @@ fun SystemMonitoringSection(
                             append("  ${systemMonitor.batteryTemp.toInt()}°C")
                         }
                     },
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMediumEmphasized,
                     color = colors.onSurface
                 )
                 LinearProgressIndicator(
@@ -293,8 +292,7 @@ fun SystemMonitoringSection(
                         }
                         Text(
                             text = formatBytes(systemMonitor.networkRxBytes),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleMediumEmphasized,
                             color = colors.onSurface
                         )
                     }
@@ -315,8 +313,7 @@ fun SystemMonitoringSection(
                         }
                         Text(
                             text = formatBytes(systemMonitor.networkTxBytes),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.titleMediumEmphasized,
                             color = colors.onSurface
                         )
                     }

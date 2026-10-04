@@ -192,8 +192,7 @@ fun HomeV4MagiskStyleCard(
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLargeEmphasized,
                     modifier = Modifier.weight(1f)
                 )
                 
