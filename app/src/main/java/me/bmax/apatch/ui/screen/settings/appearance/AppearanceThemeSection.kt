@@ -1,7 +1,6 @@
 package me.bmax.apatch.ui.screen.settings.appearance
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -39,6 +38,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import me.bmax.apatch.ui.component.folk.folkPressScale
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,7 +105,7 @@ fun AppearanceThemeSection(
                             val modeInteractionSource = remember { MutableInteractionSource() }
                             val modeHaptics = LocalHapticFeedback.current
                             Surface(
-                                shape = RoundedCornerShape(12.dp),
+                                shape = FolkShape.Corner12,
                                 color = if (themeStoreMode == mode) {
                                     MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)
                                 } else {

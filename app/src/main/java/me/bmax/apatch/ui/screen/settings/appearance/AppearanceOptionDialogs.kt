@@ -3,7 +3,6 @@ package me.bmax.apatch.ui.screen.settings.appearance
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -281,7 +280,7 @@ fun NavModeChooseDialog(
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(text = stringResource(R.string.settings_nav_scheme), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
-            Surface(shape = RoundedCornerShape(12.dp), color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
+            Surface(shape = FolkShape.Corner12, color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
                 Column {
                     FolkSelectableRow(
                         title = stringResource(R.string.settings_nav_mode_floating),
@@ -322,7 +321,7 @@ fun StatsTopLayoutChooseDialog(
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(text = stringResource(R.string.settings_stats_top_layout), style = MaterialTheme.typography.headlineSmall, modifier = Modifier.padding(bottom = 16.dp))
-            Surface(shape = RoundedCornerShape(12.dp), color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
+            Surface(shape = FolkShape.Corner12, color = AlertDialogDefaults.containerColor, tonalElevation = 2.dp) {
                 Column {
                     FolkSelectableRow(
                         title = stringResource(R.string.settings_stats_top_layout_list),
@@ -371,7 +370,7 @@ fun BannerApiConfigDialog(
                 }
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Surface(shape = RoundedCornerShape(12.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)) {
+            Surface(shape = FolkShape.Corner12, color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(text = stringResource(R.string.apm_banner_api_examples_title), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.height(8.dp))

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Article
@@ -56,6 +55,7 @@ import me.bmax.apatch.util.pickLocalizedString
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
 import me.bmax.apatch.ui.component.folk.FolkStateView
 import me.bmax.apatch.ui.component.folk.FolkStateTone
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @Composable
 fun PluginCard(
@@ -95,7 +95,7 @@ fun PluginCard(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(
-                shape = RoundedCornerShape(12.dp),
+                shape = FolkShape.Corner12,
                 color = iconContainerColor
             ) {
                 Icon(

@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -96,6 +95,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.widthIn
 import me.bmax.apatch.ui.component.folk.FolkSettingsDimens
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 private const val FEEDBACK_URL = "https://github.com/LyraVoid/FolkPatch/issues/new/choose"
 
@@ -318,7 +318,7 @@ fun SettingScreen(navigator: DestinationsNavigator) {
 
                 item(key = "utility_rows") {
                     Spacer(Modifier.height(16.dp))
-                    FolkSettingsGroup(shape = RoundedCornerShape(12.dp)) {
+                    FolkSettingsGroup(shape = FolkShape.Corner12) {
                         item(key = "utility_faq") {
                             FolkNavigationPreference(
                                 icon = Icons.Outlined.HelpOutline,
@@ -521,7 +521,7 @@ private fun SettingsIconGrid(entries: List<SecondaryEntry>) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = FolkShape.Corner12,
         color = folkGroupColor(),
         tonalElevation = 0.dp,
     ) {
@@ -552,7 +552,7 @@ private fun GridEntry(
     val haptics = LocalHapticFeedback.current
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
+            .clip(FolkShape.Corner12)
             .folkPressScale(interactionSource)
             .clickable(role = Role.Button, 
                 interactionSource = interactionSource,

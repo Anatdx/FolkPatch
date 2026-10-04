@@ -2,7 +2,6 @@ package me.bmax.apatch.ui.screen.settings.multimedia
 
 import android.content.Context
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,6 +15,7 @@ import me.bmax.apatch.ui.theme.SoundEffectConfig
 import me.bmax.apatch.ui.theme.VibrationConfig
 import me.bmax.apatch.util.SoundEffectManager
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +54,7 @@ fun MultimediaDialogs(
                 )
 
                 Surface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = FolkShape.Corner12,
                     color = AlertDialogDefaults.containerColor,
                     tonalElevation = 2.dp
                 ) {
@@ -108,7 +108,7 @@ fun MultimediaDialogs(
                 )
 
                 Surface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = FolkShape.Corner12,
                     color = AlertDialogDefaults.containerColor,
                     tonalElevation = 2.dp,
                     modifier = Modifier.heightIn(max = 400.dp)
@@ -156,7 +156,7 @@ fun MultimediaDialogs(
                 )
 
                 Surface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = FolkShape.Corner12,
                     color = AlertDialogDefaults.containerColor,
                     tonalElevation = 2.dp
                 ) {
@@ -210,7 +210,7 @@ fun MultimediaDialogs(
                 )
 
                 Surface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = FolkShape.Corner12,
                     color = AlertDialogDefaults.containerColor,
                     tonalElevation = 2.dp
                 ) {
@@ -264,7 +264,7 @@ fun MultimediaDialogs(
                 )
 
                 Surface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = FolkShape.Corner12,
                     color = AlertDialogDefaults.containerColor,
                     tonalElevation = 2.dp,
                     modifier = Modifier.heightIn(max = 400.dp)
@@ -312,7 +312,7 @@ fun MultimediaDialogs(
                 )
 
                 Surface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = FolkShape.Corner12,
                     color = AlertDialogDefaults.containerColor,
                     tonalElevation = 2.dp
                 ) {

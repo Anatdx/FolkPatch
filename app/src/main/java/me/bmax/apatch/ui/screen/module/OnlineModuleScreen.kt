@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material3.AlertDialog
@@ -65,6 +64,7 @@ import me.bmax.apatch.util.download
 import me.bmax.apatch.util.ui.showToast
 import me.bmax.apatch.ui.component.folk.FolkStateView
 import me.bmax.apatch.ui.component.folk.FolkStateTone
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 import androidx.compose.material.icons.outlined.Warning
 
 @Destination<RootGraph>
@@ -336,7 +336,7 @@ private fun RepoSelectDialog(
                                 modifier = Modifier.fillMaxWidth().clickable {
                                     onRepoSelected(repo.url)
                                 },
-                                shape = RoundedCornerShape(12.dp),
+                                shape = FolkShape.Corner12,
                                 color = MaterialTheme.colorScheme.surfaceContainer
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {

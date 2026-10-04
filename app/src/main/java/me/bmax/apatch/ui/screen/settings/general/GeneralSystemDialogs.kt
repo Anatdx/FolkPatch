@@ -33,6 +33,7 @@ import me.bmax.apatch.ui.component.folk.FolkButtonDefaults
 import me.bmax.apatch.util.*
 import me.bmax.apatch.util.ui.showToast
 import me.bmax.apatch.ui.theme.tokens.ContinuousCornerShape
+import me.bmax.apatch.ui.theme.tokens.FolkShape
 
 
 @Composable
@@ -60,7 +61,7 @@ fun NewAppProfileModeDialog(
             )
 
             Surface(
-                shape = RoundedCornerShape(12.dp),
+                shape = FolkShape.Corner12,
                 color = AlertDialogDefaults.containerColor,
                 tonalElevation = 2.dp
             ) {
@@ -150,7 +151,7 @@ fun DpiChooseDialog(showDialog: MutableState<Boolean>) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(FolkShape.Corner12)
                     .background(
                         if (isSystemDefault) MaterialTheme.colorScheme.primaryContainer
                         else MaterialTheme.colorScheme.surfaceVariant
@@ -305,7 +306,7 @@ fun SELinuxModeDialog(
             )
 
             Surface(
-                shape = RoundedCornerShape(12.dp),
+                shape = FolkShape.Corner12,
                 color = AlertDialogDefaults.containerColor,
                 tonalElevation = 2.dp
             ) {
