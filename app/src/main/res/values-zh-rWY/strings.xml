@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">漫符</string>
+    <string name="launcher_icon_style_geometry">幾何之符</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">浮欄之式</string>
     <string name="settings_bottom_bar_standard">常式下欄</string>
     <string name="settings_bottom_bar_drawer">屜式下欄</string>
@@ -813,8 +816,6 @@ KernelPatch 須用 boot 之像以補。
     <string name="settings_clear_background">清底圖</string>
     <string name="settings_clear_background_confirm">果欲清其底圖乎？</string>
 
-    <string name="settings_alt_icon">別符</string>
-    <string name="alt_icon_summary">用別樣之桌面符</string>
 
     <!-- Video Background Settings -->
     <string name="settings_video_background">影戲之底</string>

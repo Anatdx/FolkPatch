@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">魔法少女</string>
+    <string name="launcher_icon_style_geometry">几何魔法阵</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">星图浮栏样式</string>
     <string name="settings_bottom_bar_standard">标准星栏</string>
     <string name="settings_bottom_bar_drawer">抽屉星栏</string>
@@ -687,8 +690,6 @@ KernelPatch 魔法阵需要 boot 核心来施展。
     <string name="settings_custom_background">自定义魔法背景</string>
     <string name="settings_custom_background_enabled">已启用自定义魔法背景</string>
     <string name="settings_custom_background_opacity">魔法阵透明度</string>
-    <string name="settings_alt_icon">备用魔法图标</string>
-    <string name="alt_icon_summary">使用备选魔法启动器图标</string>
     <string name="settings_custom_background_blur">魔法背景模糊</string>
     <string name="settings_custom_background_dim">背景暗度</string>
     <string name="settings_select_background_image">选择魔法背景图片</string>

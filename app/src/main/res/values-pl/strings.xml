@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_launcher_icon">Ikona launchera</string>
+    <string name="launcher_icon_style_anime">Anime</string>
+    <string name="launcher_icon_style_geometry">Geometryczny</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">Styl pływającego dolnego paska</string>
     <string name="settings_bottom_bar_standard">Standardowy dolny pasek</string>
     <string name="settings_bottom_bar_drawer">Dolny pasek szufladowy</string>
@@ -555,8 +559,6 @@ Kontynuować mimo to?</string>
     <string name="dpi_apply_settings">Zastosuj</string>
     <string name="dpi_confirm_title">Potwierdź zmianę DPI</string>
     <string name="dpi_confirm_message">Zmienić DPI aplikacji z %1$s na %2$s?</string>
-    <string name="settings_alt_icon">Alternatywna ikona</string>
-    <string name="alt_icon_summary">Użyj alternatywnej ikony programu uruchamiającego</string>
     <string name="settings_magic_mount">API montowania Folk</string>
     <string name="settings_magic_mount_summary">Włącz wbudowany system montowania modułów</string>
     <string name="settings_new_app_profile_enabled">Automatyczna autoryzacja nowych aplikacji</string>

@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_launcher_icon">런처 아이콘</string>
+    <string name="launcher_icon_style_anime">애니메</string>
+    <string name="launcher_icon_style_geometry">지오메트리</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">플로팅 하단 바 스타일</string>
     <string name="settings_bottom_bar_standard">표준 하단 바</string>
     <string name="settings_bottom_bar_drawer">서랍형 하단 바</string>
@@ -755,8 +759,6 @@ KernelPatch는 boot 이미지를 패치해야 합니다.
     <string name="settings_clear_background">배경 지우기</string>
     <string name="settings_clear_background_confirm">배경 이미지를 지울까요?</string>
 
-    <string name="settings_alt_icon">대체 아이콘</string>
-    <string name="alt_icon_summary">대체 런처 아이콘을 사용합니다.</string>
 
     <!-- Video Background Settings -->
     <string name="settings_video_background">비디오 배경</string>

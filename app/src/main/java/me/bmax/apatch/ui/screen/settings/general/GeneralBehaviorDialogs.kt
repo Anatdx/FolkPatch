@@ -170,6 +170,68 @@ fun DesktopAppNameChooseDialog(showDialog: MutableState<Boolean>, onNameChanged:
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun LauncherIconStyleDialog(showDialog: MutableState<Boolean>, onStyleChanged: (String) -> Unit = {}) {
+    val prefs = APApplication.sharedPreferences
+    val context = LocalContext.current
+
+    FolkAlertDialog(
+        onDismissRequest = { showDialog.value = false },
+    ) {
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(
+                text = stringResource(R.string.settings_launcher_icon),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            val currentStyle = remember {
+                prefs.getString(LauncherIconUtils.PREF_ICON_STYLE, null)
+                    ?: if (prefs.getBoolean("use_alt_icon", false))
+                        LauncherIconUtils.ICON_STYLE_APATCH
+                    else
+                        LauncherIconUtils.ICON_STYLE_ANIME
+            }
+
+            Surface(
+                shape = FolkShape.Corner12,
+                color = AlertDialogDefaults.containerColor,
+                tonalElevation = 2.dp
+            ) {
+                Column {
+                    listOf(
+                        LauncherIconUtils.ICON_STYLE_ANIME to R.string.launcher_icon_style_anime,
+                        LauncherIconUtils.ICON_STYLE_GEOMETRY to R.string.launcher_icon_style_geometry,
+                        LauncherIconUtils.ICON_STYLE_APATCH to R.string.launcher_icon_style_apatch
+                    ).forEach { (style, labelId) ->
+                        FolkSelectableRow(
+                            title = stringResource(labelId),
+                            selected = currentStyle == style,
+                            onClick = {
+                                LauncherIconUtils.setStyle(context, style)
+                                onStyleChanged(style)
+                                showDialog.value = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(onClick = { showDialog.value = false }) {
+                    Text(stringResource(id = android.R.string.cancel))
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun FolkXAnimationTypeDialog(showDialog: MutableState<Boolean>, onTypeChanged: (String) -> Unit = {}) {
     val prefs = APApplication.sharedPreferences
 

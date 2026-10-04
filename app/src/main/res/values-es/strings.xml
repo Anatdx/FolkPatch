@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">Anime</string>
+    <string name="launcher_icon_style_geometry">Geométrico</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">Estilo de la barra inferior flotante</string>
     <string name="settings_bottom_bar_standard">Barra inferior estándar</string>
     <string name="settings_bottom_bar_drawer">Barra inferior de cajón</string>
@@ -610,8 +613,6 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="dpi_apply_settings">Aplicar</string>
     <string name="dpi_confirm_title">Confirmar cambio de DPI</string>
     <string name="dpi_confirm_message">¿Cambiar DPI de la app de %1$s a %2$s?</string>
-    <string name="settings_alt_icon">Icono alternativo</string>
-    <string name="alt_icon_summary">Usar icono de lanzador alternativo</string>
     <string name="settings_magic_mount">Folk Mount API</string>
     <string name="settings_magic_mount_summary">Activar el sistema de montaje de módulos integrado</string>
     <string name="settings_new_app_profile_enabled">Autorización automática de apps nuevas</string>

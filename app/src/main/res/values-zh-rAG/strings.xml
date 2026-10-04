@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">动漫喵</string>
+    <string name="launcher_icon_style_geometry">几何喵</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">悬浮底栏样式喵</string>
     <string name="settings_bottom_bar_standard">标准底栏喵</string>
     <string name="settings_bottom_bar_drawer">抽屉底栏喵</string>
@@ -638,8 +641,6 @@ KernelPatch 需要修补 boot 镜像才能工作喵。
     <string name="dpi_apply_settings">确定喵</string>
     <string name="dpi_confirm_title">确认改应用DPI喵</string>
     <string name="dpi_confirm_message">要把应用DPI从%1$s改成%2$s吗喵？</string>
-    <string name="settings_alt_icon">备用图标喵</string>
-    <string name="alt_icon_summary">用备选启动器图标喵</string>
     <string name="settings_magic_mount">我要挂载喵</string>
     <string name="settings_magic_mount_summary">开内置的模块挂载系统哒喵！</string>
     <string name="settings_new_app_profile_enabled">新装应用自动授权喵</string>

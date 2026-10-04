@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_launcher_icon">Launcher Simgesi</string>
+    <string name="launcher_icon_style_anime">Anime</string>
+    <string name="launcher_icon_style_geometry">Geometrik</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">Kayan alt çubuk stili</string>
     <string name="settings_bottom_bar_standard">Standart alt çubuk</string>
     <string name="settings_bottom_bar_drawer">Çekmece alt çubuk</string>
@@ -735,8 +739,6 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="settings_clear_background">Arka Planı Temizle</string>
     <string name="settings_clear_background_confirm">Arka plan görselini temizlemek istediğinize emin misiniz?</string>
 
-    <string name="settings_alt_icon">Alternatif Simge</string>
-    <string name="alt_icon_summary">Alternatif launcher simgesini kullan</string>
 
     <!-- Video Background Settings -->
     <string name="settings_video_background">Video Arka Plan</string>

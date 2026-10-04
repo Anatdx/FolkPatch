@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">Аниме</string>
+    <string name="launcher_icon_style_geometry">Геометрия</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">Стиль плавающей нижней панели</string>
     <string name="settings_bottom_bar_standard">Стандартная нижняя панель</string>
     <string name="settings_bottom_bar_drawer">Выдвижная нижняя панель</string>
@@ -617,8 +620,6 @@ KernelPatch требует образ boot для патча.
     <string name="dpi_apply_settings">Применить</string>
     <string name="dpi_confirm_title">Подтверждение изменения DPI</string>
     <string name="dpi_confirm_message">Изменить DPI приложения с %1$s на %2$s?</string>
-    <string name="settings_alt_icon">Альтернативная иконка</string>
-    <string name="alt_icon_summary">Использовать альтернативный значок запуска</string>
     <string name="settings_magic_mount">Folk Mount API</string>
     <string name="settings_magic_mount_summary">Включить встроенную систему монтирования модулей</string>
     <string name="settings_new_app_profile_enabled">Автоматическое разрешение для новых приложений</string>

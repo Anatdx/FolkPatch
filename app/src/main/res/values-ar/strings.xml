@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">أنيمي</string>
+    <string name="launcher_icon_style_geometry">هندسي</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">نمط الشريط السفلي العائم</string>
     <string name="settings_bottom_bar_standard">الشريط السفلي القياسي</string>
     <string name="settings_bottom_bar_drawer">الشريط السفلي الدرجي</string>
@@ -611,8 +614,6 @@
     <string name="dpi_apply_settings">تطبيق</string>
     <string name="dpi_confirm_title">تأكيد تغيير DPI</string>
     <string name="dpi_confirm_message">تغيير DPI التطبيق من %1$s إلى %2$s؟</string>
-    <string name="settings_alt_icon">أيقونة بديلة</string>
-    <string name="alt_icon_summary">استخدم أيقونة المشغل البديلة</string>
     <string name="settings_magic_mount">Folk Mount API</string>
     <string name="settings_magic_mount_summary">تفعيل نظام تركيب الوحدات المدمج</string>
     <string name="settings_new_app_profile_enabled">الترخيص التلقائي للتطبيقات الجديدة</string>

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">Anime</string>
+    <string name="launcher_icon_style_geometry">Geometry</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">Floating Bottom Bar Style</string>
     <string name="settings_bottom_bar_standard">Standard Bottom Bar</string>
     <string name="settings_bottom_bar_drawer">Drawer Bottom Bar</string>
@@ -814,8 +817,6 @@ Here are some possible reasons for authentication failure—please check which o
     <string name="settings_clear_background">Clear Background</string>
     <string name="settings_clear_background_confirm">Are you sure you want to clear the background image?</string>
 
-    <string name="settings_alt_icon">Alternate Icon</string>
-    <string name="alt_icon_summary">Use alternate launcher icon</string>
 
     <!-- Video Background Settings -->
     <string name="settings_video_background">Video Background</string>

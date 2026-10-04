@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_launcher_icon">桌面图标</string>
+    <string name="launcher_icon_style_anime">动漫</string>
+    <string name="launcher_icon_style_geometry">几何</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">悬浮快捷栏样式</string>
     <string name="settings_bottom_bar_standard">标准快捷栏</string>
     <string name="settings_bottom_bar_drawer">潜影盒快捷栏</string>
@@ -723,8 +727,6 @@ KernelPatch 附魔需要 boot 方块作为材料。
     <string name="settings_clear_background">清除背景</string>
     <string name="settings_clear_background_confirm">确定要清除背景图片吗？</string>
 
-    <string name="settings_alt_icon">备用图标</string>
-    <string name="alt_icon_summary">使用备选启动器图标</string>
 
     <!-- 视频背景 -->
     <string name="settings_video_background">视频背景</string>

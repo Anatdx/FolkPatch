@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">動漫</string>
+    <string name="launcher_icon_style_geometry">聖光幾何</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">悬浮圣光底栏样式</string>
     <string name="settings_bottom_bar_standard">圣光标准底栏</string>
     <string name="settings_bottom_bar_drawer">圣匣底栏</string>
@@ -690,8 +693,6 @@
     <string name="settings_crop_dialog_message">是否裁剪图片？</string>
     <string name="settings_crop_dialog_crop">是</string>
     <string name="settings_crop_dialog_direct">否</string>
-    <string name="settings_alt_icon">備用圖標</string>
-    <string name="alt_icon_summary">使用備選啟動器圖標</string>
     <string name="settings_background_selected">已选择天使背景</string>
     <string name="settings_background_image_cleared">天使背景已清除</string>
     <string name="settings_clear_background">清除天使背景</string>

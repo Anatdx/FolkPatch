@@ -51,7 +51,7 @@ object SettingsRegistry {
             add(SettingEntry("general_selinux_mode", R.string.settings_selinux_mode, R.string.settings_selinux_mode_summary, SettingCategory.GENERAL))
             add(SettingEntry("general_global_namespace", R.string.settings_global_namespace_mode, R.string.settings_global_namespace_mode_summary, SettingCategory.GENERAL))
             add(SettingEntry("general_magic_mount", R.string.settings_magic_mount, R.string.settings_magic_mount_summary, SettingCategory.GENERAL))
-            add(SettingEntry("general_alt_icon", R.string.settings_alt_icon, R.string.alt_icon_summary, SettingCategory.GENERAL))
+            add(SettingEntry("general_alt_icon", R.string.settings_launcher_icon, category = SettingCategory.GENERAL))
             add(SettingEntry("general_reset_su_path", R.string.setting_reset_su_path, category = SettingCategory.GENERAL))
             add(SettingEntry("general_app_title", R.string.settings_app_title, category = SettingCategory.GENERAL))
             add(SettingEntry("general_custom_app_title", R.string.settings_custom_app_title, category = SettingCategory.GENERAL))

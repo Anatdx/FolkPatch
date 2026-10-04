@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">動漫</string>
+    <string name="launcher_icon_style_geometry">幾何</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">浮動底欄樣式</string>
     <string name="settings_bottom_bar_standard">標準底欄</string>
     <string name="settings_bottom_bar_drawer">抽屜底欄</string>
@@ -683,8 +686,6 @@ KernelPatch 需要修補 boot 映像檔。
     <string name="settings_custom_background_opacity">卡片透明度</string>
     <string name="settings_custom_background_blur">背景模糊效果</string>
     <string name="settings_custom_background_dim">背景暗度</string>
-    <string name="settings_alt_icon">備用圖標</string>
-    <string name="alt_icon_summary">使用備選啟動器圖標</string>
     <string name="settings_select_background_image">選擇背景圖片</string>
     <string name="settings_custom_background_summary">設定自訂背景圖片</string>
     <string name="settings_custom_background_saved">背景儲存成功</string>

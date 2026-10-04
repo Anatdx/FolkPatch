@@ -5,16 +5,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.core.content.edit
-import me.bmax.apatch.APApplication
 import me.bmax.apatch.R
 import me.bmax.apatch.ui.component.folk.FolkSettingsGroup
 import me.bmax.apatch.ui.component.folk.FolkSettingsSection
-import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import me.bmax.apatch.ui.component.folk.FolkValuePreference
-import me.bmax.apatch.util.LauncherIconUtils
 
 @Composable
 fun GeneralIdentitySection(
@@ -22,7 +17,7 @@ fun GeneralIdentitySection(
     highlightKey: String?,
     launcherIconTitle: String,
     launcherIconSummary: String,
-    useAltIcon: MutableState<Boolean>,
+    showLauncherIconDialog: MutableState<Boolean>,
     appTitleTitle: String,
     appTitleLabel: String,
     currentAppTitle: String,
@@ -37,23 +32,15 @@ fun GeneralIdentitySection(
     dpiValue: String,
     showDpiDialog: MutableState<Boolean>,
 ) {
-    val context = LocalContext.current
-    val prefs = APApplication.sharedPreferences
-
     FolkSettingsSection(title = stringResource(R.string.settings_section_general_identity)) {
      FolkSettingsGroup(flat = flat, highlightKey = highlightKey) {
 
         item(key = "general_alt_icon") {
-            FolkSwitchPreference(
+            FolkValuePreference(
                 icon = Icons.Outlined.Android,
                 title = launcherIconTitle,
                 summary = launcherIconSummary,
-                checked = useAltIcon.value,
-                onCheckedChange = {
-                    prefs.edit { putBoolean("use_alt_icon", it) }
-                    LauncherIconUtils.updateLauncherState(context)
-                    useAltIcon.value = it
-                },
+                onClick = { showLauncherIconDialog.value = true },
             )
         }
 

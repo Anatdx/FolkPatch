@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">Anime</string>
+    <string name="launcher_icon_style_geometry">Geometri</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">Gaya Bilah Bawah Mengambang</string>
     <string name="settings_bottom_bar_standard">Bilah Bawah Standar</string>
     <string name="settings_bottom_bar_drawer">Bilah Bawah Laci</string>
@@ -692,8 +695,6 @@ Berikut adalah beberapa kemungkinan penyebab kegagalan autentikasi—silakan cek
     <string name="settings_crop_dialog_message">Potong gambar?</string>
     <string name="settings_crop_dialog_crop">Ya</string>
     <string name="settings_crop_dialog_direct">Tidak</string>
-    <string name="settings_alt_icon">Ikon Alternatif</string>
-    <string name="alt_icon_summary">Gunakan ikon peluncur alternatif</string>
     <string name="settings_background_selected">Latar belakang dipilih</string>
     <string name="settings_background_image_cleared">Gambar latar belakang dihapus</string>
     <string name="settings_clear_background">Hapus latar belakang</string>

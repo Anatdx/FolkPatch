@@ -25,6 +25,7 @@ import me.bmax.apatch.ui.component.folk.FolkSwitchPreference
 import me.bmax.apatch.ui.component.folk.FolkValuePreference
 import me.bmax.apatch.util.*
 import me.bmax.apatch.ui.screen.settings.general.*
+import me.bmax.apatch.util.LauncherIconUtils
 import androidx.compose.material.icons.outlined.*
 
 @Composable
@@ -89,8 +90,19 @@ fun GeneralSettingsContent(
 
     val resetSuPathTitle = stringResource(id = R.string.setting_reset_su_path)
 
-    val launcherIconTitle = stringResource(id = R.string.settings_alt_icon)
-    val launcherIconSummary = stringResource(id = R.string.alt_icon_summary)
+    val launcherIconTitle = stringResource(id = R.string.settings_launcher_icon)
+    var launcherIconStyle by remember {
+        mutableStateOf(
+            prefs.getString(LauncherIconUtils.PREF_ICON_STYLE, null)
+                ?: if (prefs.getBoolean("use_alt_icon", false)) LauncherIconUtils.ICON_STYLE_APATCH
+                else LauncherIconUtils.ICON_STYLE_ANIME
+        )
+    }
+    val launcherIconSummary = when (launcherIconStyle) {
+        LauncherIconUtils.ICON_STYLE_GEOMETRY -> stringResource(R.string.launcher_icon_style_geometry)
+        LauncherIconUtils.ICON_STYLE_APATCH -> stringResource(R.string.launcher_icon_style_apatch)
+        else -> stringResource(R.string.launcher_icon_style_anime)
+    }
 
     val appTitleTitle = stringResource(id = R.string.settings_app_title)
     var currentAppTitle by remember { mutableStateOf(prefs.getString("app_title", "folkpatch") ?: "folkpatch") }
@@ -155,7 +167,7 @@ fun GeneralSettingsContent(
     val showNewAppProfileModeDialog = remember { mutableStateOf(false) }
     val showSELinuxModeDialog = remember { mutableStateOf(false) }
 
-    val useAltIcon = remember { mutableStateOf(prefs.getBoolean("use_alt_icon", false)) }
+    val showLauncherIconDialog = remember { mutableStateOf(false) }
     var autoUpdateCheck by remember { mutableStateOf(prefs.getBoolean("auto_update_check", true)) }
     var blockUpdateChecked by remember { mutableStateOf(prefs.getBoolean(APApplication.PREF_BLOCK_KERNELPATCH_UPDATE, false)) }
     var blockApUpdateChecked by remember { mutableStateOf(prefs.getBoolean(APApplication.PREF_BLOCK_ANDROIDPATCH_UPDATE, false)) }
@@ -371,7 +383,7 @@ fun GeneralSettingsContent(
         highlightKey = highlightKey,
         launcherIconTitle = launcherIconTitle,
         launcherIconSummary = launcherIconSummary,
-        useAltIcon = useAltIcon,
+        showLauncherIconDialog = showLauncherIconDialog,
         appTitleTitle = appTitleTitle,
         appTitleLabel = appTitleLabel,
         currentAppTitle = currentAppTitle,
@@ -431,6 +443,12 @@ fun GeneralSettingsContent(
     if (showCustomAppTitleDialog.value) {
         CustomAppTitleDialog(showCustomAppTitleDialog, snackBarHost) { newTitle ->
             currentCustomAppTitle = newTitle
+        }
+    }
+
+    if (showLauncherIconDialog.value) {
+        LauncherIconStyleDialog(showLauncherIconDialog) { newStyle ->
+            launcherIconStyle = newStyle
         }
     }
 

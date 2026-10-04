@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="launcher_icon_style_anime">仙漫畫卷</string>
+    <string name="launcher_icon_style_geometry">幾何仙陣</string>
+    <string name="launcher_icon_style_apatch">APatch</string>
     <string name="settings_floating_bar_style">悬浮仙法导航栏样式</string>
     <string name="settings_bottom_bar_standard">仙法标准导航栏</string>
     <string name="settings_bottom_bar_drawer">乾坤袋导航栏</string>
@@ -686,8 +689,6 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="settings_select_background_image">择仙府背景图</string>
     <string name="settings_custom_background_summary">设自定仙府背景图</string>
     <string name="settings_custom_background_saved">仙府背景已存</string>
-    <string name="settings_alt_icon">備用圖標</string>
-    <string name="alt_icon_summary">用備選啟動器圖標</string>
     <string name="settings_custom_background_error">存仙府背景败陨</string>
     <string name="settings_crop_not_supported">此器不允裁炼，原图已存</string>
     <string name="settings_crop_dialog_title">裁炼仙府景图</string>
