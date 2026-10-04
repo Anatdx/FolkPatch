@@ -10,8 +10,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -67,6 +69,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.isActive
 import me.bmax.apatch.util.UpdateChecker
+import me.bmax.apatch.ui.component.DebugBuildRibbon
 import me.bmax.apatch.ui.component.UpdateDialog
 import me.bmax.apatch.ui.theme.ThemeManager
 import me.bmax.apatch.ui.component.rememberConfirmDialog
@@ -575,6 +578,15 @@ APatchThemeWithBackground(
                         lastValidSelection = lastValidNavbarSelection
                     )
                 }
+            }
+
+            if (BuildConfig.DEBUG) {
+                DebugBuildRibbon(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .statusBarsPadding()
+                        .offset(x = 30.dp, y = -22.dp)
+                )
             }
         }
     }
