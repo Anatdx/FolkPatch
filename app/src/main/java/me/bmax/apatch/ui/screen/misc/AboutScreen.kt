@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -65,12 +64,10 @@ fun AboutScreen(navigator: DestinationsNavigator) {
                 painter = painterResource(id = R.drawable.about_icon_anime),
                 contentDescription = stringResource(R.string.app_name),
                 contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .size(100.dp)
-                    .scale(1.7f)
+                modifier = Modifier.size(78.dp)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(14.dp))
 
             Text(
                 text = stringResource(id = R.string.app_name),
