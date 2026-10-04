@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">플로팅 하단 바 스타일</string>
+    <string name="settings_bottom_bar_standard">표준 하단 바</string>
+    <string name="settings_bottom_bar_drawer">서랍형 하단 바</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="app_name_fpatch">FPatch</string>
 

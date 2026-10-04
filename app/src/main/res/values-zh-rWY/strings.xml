@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">浮欄之式</string>
+    <string name="settings_bottom_bar_standard">常式下欄</string>
+    <string name="settings_bottom_bar_drawer">屜式下欄</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="app_name_fpatch">FPatch</string>
 

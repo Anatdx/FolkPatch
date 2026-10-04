@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">Kayan alt çubuk stili</string>
+    <string name="settings_bottom_bar_standard">Standart alt çubuk</string>
+    <string name="settings_bottom_bar_drawer">Çekmece alt çubuk</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="app_name_fpatch">FPatch</string>
 

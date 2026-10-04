@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">星图浮栏样式</string>
+    <string name="settings_bottom_bar_standard">标准星栏</string>
+    <string name="settings_bottom_bar_drawer">抽屉星栏</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="app_name_fpatch">FPatch</string>
 

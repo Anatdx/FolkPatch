@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">悬浮仙法导航栏样式</string>
+    <string name="settings_bottom_bar_standard">仙法标准导航栏</string>
+    <string name="settings_bottom_bar_drawer">乾坤袋导航栏</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="app_name_fpatch">FPatch</string>
 

@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">Kiểu thanh dưới nổi</string>
+    <string name="settings_bottom_bar_standard">Thanh dưới tiêu chuẩn</string>
+    <string name="settings_bottom_bar_drawer">Thanh dưới dạng ngăn kéo</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="app_name_fpatch">FPatch</string>
 

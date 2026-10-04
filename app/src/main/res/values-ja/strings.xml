@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">フローティングボトムバーのスタイル</string>
+    <string name="settings_bottom_bar_standard">標準ボトムバー</string>
+    <string name="settings_bottom_bar_drawer">ドロワーボトムバー</string>
     <string name="app_name_fpatch">FPatch</string>
     <string name="desktop_app_name">デスクトップのアプリ名</string>
     <string name="home">ホーム</string>

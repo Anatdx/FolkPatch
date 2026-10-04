@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">Styl pływającego dolnego paska</string>
+    <string name="settings_bottom_bar_standard">Standardowy dolny pasek</string>
+    <string name="settings_bottom_bar_drawer">Dolny pasek szufladowy</string>
     <string name="app_name_fpatch">FPatch</string>
     <string name="desktop_app_name">Nazwa aplikacji desktopowej</string>
     <string name="home">Pulpit</string>

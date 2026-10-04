@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">悬浮底栏样式喵</string>
+    <string name="settings_bottom_bar_standard">标准底栏喵</string>
+    <string name="settings_bottom_bar_drawer">抽屉底栏喵</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="app_name_fpatch">FPatch</string>
     <string name="app_title_apatch">APatch</string>

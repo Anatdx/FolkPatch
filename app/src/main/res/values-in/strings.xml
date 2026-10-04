@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">Gaya Bilah Bawah Mengambang</string>
+    <string name="settings_bottom_bar_standard">Bilah Bawah Standar</string>
+    <string name="settings_bottom_bar_drawer">Bilah Bawah Laci</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="app_name_fpatch">FPatch</string>
 

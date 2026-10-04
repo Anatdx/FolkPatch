@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="settings_floating_bar_style">Estilo da barra inferior flutuante</string>
+    <string name="settings_bottom_bar_standard">Barra inferior padrão</string>
+    <string name="settings_bottom_bar_drawer">Barra inferior de gaveta</string>
     <string name="app_name" translatable="false">FolkPatch</string>
     <string name="app_name_fpatch">FPatch</string>
 
