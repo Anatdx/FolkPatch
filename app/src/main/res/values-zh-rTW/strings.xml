@@ -789,6 +789,9 @@ KernelPatch 需要修補 boot 映像檔。
     <string name="apm_copy_list_success">模組列表已複製</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">應用程式預設</string>
+    <string name="settings_font_mode_system">系統預設</string>
+    <string name="settings_font_mode_custom">自訂</string>
     <string name="settings_custom_font">自訂字體</string>
     <string name="settings_select_font_file">選擇字體檔案</string>
     <string name="settings_custom_font_enabled">已啟用自訂字體</string>

@@ -714,6 +714,9 @@ Bol şans! Ayrıca, aşağıdaki belge butonuna tıklamak kesinlikle doğru!</st
     <string name="settings_title_image_offset_x">Yatay Konum</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">Uygulama varsayılanı</string>
+    <string name="settings_font_mode_system">Sistem varsayılanı</string>
+    <string name="settings_font_mode_custom">Özel</string>
     <string name="settings_custom_font">Özel Yazı Tipi</string>
     <string name="settings_select_font_file">Yazı Tipi Dosyası Seç</string>
     <string name="settings_custom_font_enabled">Özel Yazı Tipi Etkin</string>

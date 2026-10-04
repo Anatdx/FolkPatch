@@ -679,6 +679,9 @@ KernelPatch は boot イメージをパッチする必要があります。
     <string name="settings_title_image_dim">背景を暗くする</string>
     <string name="settings_title_image_offset_x">水平の位置</string>
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">アプリのデフォルト</string>
+    <string name="settings_font_mode_system">システムのデフォルト</string>
+    <string name="settings_font_mode_custom">カスタム</string>
     <string name="settings_custom_font">カスタムフォント</string>
     <string name="settings_select_font_file">フォントファイルを選択</string>
     <string name="settings_custom_font_enabled">カスタムフォントが有効化されています</string>

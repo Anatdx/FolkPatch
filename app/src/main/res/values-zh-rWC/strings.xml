@@ -801,6 +801,9 @@ KernelPatch 大法需要以 boot 灵胎为引。
     <string name="apm_copy_list_success">名录已拓印</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">仙府默认</string>
+    <string name="settings_font_mode_system">天道默认</string>
+    <string name="settings_font_mode_custom">自定</string>
     <string name="settings_custom_font">仙府字体</string>
     <string name="settings_select_font_file">择仙府字体</string>
     <string name="settings_custom_font_enabled">已启仙府字体</string>

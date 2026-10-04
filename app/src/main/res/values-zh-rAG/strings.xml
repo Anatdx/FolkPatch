@@ -741,6 +741,9 @@ KernelPatch 需要修补 boot 镜像才能工作喵。
     <string name="settings_title_image_offset_x">水平位置喵</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">软件默认喵</string>
+    <string name="settings_font_mode_system">系统默认喵</string>
+    <string name="settings_font_mode_custom">自定义喵</string>
     <string name="settings_custom_font">自定义字体喵</string>
     <string name="settings_select_font_file">选字体文件喵！</string>
     <string name="settings_custom_font_enabled">自定义字体开了喵！</string>

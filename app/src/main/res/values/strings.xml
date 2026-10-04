@@ -792,6 +792,9 @@ Here are some possible reasons for authentication failure—please check which o
 
     
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">App default</string>
+    <string name="settings_font_mode_system">System default</string>
+    <string name="settings_font_mode_custom">Custom</string>
     <string name="settings_custom_font">Custom Font</string>
     <string name="settings_select_font_file">Select Font File</string>
     <string name="settings_custom_font_enabled">Custom Font Enabled</string>

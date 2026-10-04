@@ -714,6 +714,9 @@
 
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">الافتراضي للتطبيق</string>
+    <string name="settings_font_mode_system">الافتراضي للنظام</string>
+    <string name="settings_font_mode_custom">مخصص</string>
     <string name="settings_custom_font">خط مخصص</string>
     <string name="settings_select_font_file">تحديد ملف الخط</string>
     <string name="settings_custom_font_enabled">تمكين الخط المخصص</string>

@@ -791,6 +791,9 @@ KernelPatch 須用 boot 之像以補。
 
     
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">應用素定</string>
+    <string name="settings_font_mode_system">系統素定</string>
+    <string name="settings_font_mode_custom">自定</string>
     <string name="settings_custom_font">自定書體</string>
     <string name="settings_select_font_file">擇書體之卷</string>
     <string name="settings_custom_font_enabled">自定書體已開</string>

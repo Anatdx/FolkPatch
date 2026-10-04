@@ -689,6 +689,9 @@ Dưới đây là một số nguyên nhân có thể gây ra thất bại xác t
     <string name="settings_custom_background_dim">Mức tối của nền</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">Mặc định của ứng dụng</string>
+    <string name="settings_font_mode_system">Mặc định của hệ thống</string>
+    <string name="settings_font_mode_custom">Tùy chỉnh</string>
     <string name="settings_custom_font">Font chữ tùy chỉnh</string>
     <string name="settings_select_font_file">Chọn tệp font chữ</string>
     <string name="settings_custom_font_enabled">Đã bật font chữ tùy chỉnh</string>

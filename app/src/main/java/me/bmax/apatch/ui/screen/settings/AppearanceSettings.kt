@@ -119,7 +119,7 @@ fun AppearanceSettingsContent(
     var nightModeEnabled by remember { mutableStateOf(prefs.getBoolean("night_mode_enabled", true)) }
     val isDynamicColorSupport = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     var useSystemDynamicColor by remember { mutableStateOf(prefs.getBoolean("use_system_color_theme", false)) }
-    var customFontEnabled by remember { mutableStateOf(FontConfig.isCustomFontEnabled) }
+    var selectedFontMode by remember { mutableStateOf(FontConfig.fontMode) }
 
     val refreshThemeObserver by refreshTheme.observeAsState(false)
 
@@ -136,7 +136,7 @@ fun AppearanceSettingsContent(
         nightModeFollowSys = prefs.getBoolean("night_mode_follow_sys", false)
         nightModeEnabled = prefs.getBoolean("night_mode_enabled", true)
         useSystemDynamicColor = prefs.getBoolean("use_system_color_theme", true)
-        customFontEnabled = FontConfig.isCustomFontEnabled
+        selectedFontMode = FontConfig.fontMode
         customColorScheme = prefs.getString("custom_color", "indigo")
         amoledTheme = prefs.getBoolean("amoled_theme", false)
         colorGenerationMode = ColorGenerationMode.fromKey(prefs.getString("color_generation_mode", "classic"))
@@ -413,8 +413,12 @@ fun AppearanceSettingsContent(
         AppearanceFontSection(
             flat = flat,
             highlightKey = highlightKey,
-            customFontEnabled = customFontEnabled,
-            onCustomFontEnabledChange = { customFontEnabled = it },
+            fontMode = selectedFontMode,
+            onFontModeChange = { mode ->
+                selectedFontMode = mode
+                FontConfig.setFontMode(context, mode)
+                refreshTheme.value = true
+            },
             pickFontLauncher = pickFontLauncher,
             snackBarHost = snackBarHost,
         )

@@ -735,6 +735,9 @@ Kontynuować mimo to?</string>
     <string name="apm_copy_list_title">Kopiuj listę</string>
     <string name="apm_copy_list_success">Lista modułów skopiowana</string>
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">Domyślna aplikacji</string>
+    <string name="settings_font_mode_system">Domyślna systemu</string>
+    <string name="settings_font_mode_custom">Niestandardowa</string>
     <string name="settings_custom_font">Niestandardowa czcionka</string>
     <string name="settings_select_font_file">Wybierz plik czcionki</string>
     <string name="settings_custom_font_enabled">Włączono niestandardową czcionkę</string>

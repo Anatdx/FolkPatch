@@ -702,6 +702,9 @@ KernelPatch 附魔需要 boot 方块作为材料。
     <string name="settings_title_image_offset_x">水平位置</string>
 
     <!-- 字体设置 -->
+    <string name="settings_font_mode_app">应用默认</string>
+    <string name="settings_font_mode_system">系统默认</string>
+    <string name="settings_font_mode_custom">自定义</string>
     <string name="settings_custom_font">自定义字体</string>
     <string name="settings_select_font_file">选择字体文件</string>
     <string name="settings_custom_font_enabled">已启用自定义字体</string>

@@ -806,6 +806,9 @@ KernelPatch 魔法阵需要 boot 核心来施展。
     <string name="apm_copy_list_success">名录已抄录完毕</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">魔法书默认</string>
+    <string name="settings_font_mode_system">星界默认</string>
+    <string name="settings_font_mode_custom">自定义魔法</string>
     <string name="settings_custom_font">魔法少女变身</string>
     <string name="settings_select_font_file">选择星尘卷轴(TTF)</string>
     <string name="settings_custom_font_enabled">已使用星尘卷轴</string>

@@ -804,6 +804,9 @@ KernelPatch требует образ boot для патча.
     <string name="apm_copy_list_success">Список модулей скопирован</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">По умолчанию в приложении</string>
+    <string name="settings_font_mode_system">По умолчанию в системе</string>
+    <string name="settings_font_mode_custom">Пользовательский</string>
     <string name="settings_custom_font">Пользовательский шрифт</string>
     <string name="settings_select_font_file">Выбрать файл шрифта</string>
     <string name="settings_custom_font_enabled">Пользовательский шрифт включен</string>

@@ -798,6 +798,9 @@
     <string name="apm_copy_list_success">名录已抄录完毕</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">圣域默认</string>
+    <string name="settings_font_mode_system">天意默认</string>
+    <string name="settings_font_mode_custom">自定义</string>
     <string name="settings_custom_font">天使变身</string>
     <string name="settings_select_font_file">选择星尘卷轴(TTF)</string>
     <string name="settings_custom_font_enabled">已使用星尘卷轴</string>

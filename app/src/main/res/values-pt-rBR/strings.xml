@@ -719,6 +719,9 @@ Aqui estão algumas possíveis razões para a falha de autenticação—verifiqu
     <string name="settings_title_image_offset_x">Posição Horizontal</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">Padrão do app</string>
+    <string name="settings_font_mode_system">Padrão do sistema</string>
+    <string name="settings_font_mode_custom">Personalizada</string>
     <string name="settings_custom_font">Fonte Personalizada</string>
     <string name="settings_select_font_file">Selecionar Arquivo de Fonte</string>
     <string name="settings_custom_font_enabled">Fonte Personalizada Ativa</string>

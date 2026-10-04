@@ -242,6 +242,7 @@ fun APatchTheme(
     )
 
     val fontFamily = remember(
+        FontConfig.fontMode,
         FontConfig.isCustomFontEnabled,
         FontConfig.customFontFilename
     ) {

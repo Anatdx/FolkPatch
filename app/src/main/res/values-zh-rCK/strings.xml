@@ -703,6 +703,9 @@ KernelPatch 这道菜需要用 boot 主料来烹饪。
     <string name="settings_title_image_offset_x">水平位置</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">本店默认</string>
+    <string name="settings_font_mode_system">系统默认</string>
+    <string name="settings_font_mode_custom">自定</string>
     <string name="settings_custom_font">自定字体</string>
     <string name="settings_select_font_file">挑字体文件</string>
     <string name="settings_custom_font_enabled">已开自定字体</string>

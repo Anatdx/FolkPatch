@@ -712,6 +712,9 @@ Aquí hay algunas posibles razones para el fallo de autenticación—por favor v
     <string name="settings_title_image_offset_x">Posición Horizontal</string>
 
     <!-- Font Settings -->
+    <string name="settings_font_mode_app">Predeterminada de la aplicación</string>
+    <string name="settings_font_mode_system">Predeterminada del sistema</string>
+    <string name="settings_font_mode_custom">Personalizada</string>
     <string name="settings_custom_font">Fuente Personalizada</string>
     <string name="settings_select_font_file">Seleccionar archivo de fuente</string>
     <string name="settings_custom_font_enabled">Fuente Personalizada Habilitada</string>
