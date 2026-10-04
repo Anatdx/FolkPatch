@@ -36,6 +36,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import me.bmax.apatch.ui.theme.BackgroundConfig
 
 /** A floating capsule whose selected destination opens to reveal its label. */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -77,9 +78,23 @@ fun DrawerBottomBarContent(
                     )
                     // surfaceBright sits one step lighter than the bar's own
                     // surfaceContainer in both light and dark, so the open pill
-                    // reads as a soft lift instead of a heavy block.
+                    // reads as a soft lift instead of a heavy block. When a
+                    // custom wallpaper is on, the pill follows the card
+                    // transparency but always stays one step above the
+                    // capsule, so the hierarchy survives even at full
+                    // transparency.
+                    val selectedPillColor = MaterialTheme.colorScheme.surfaceBright.let { pill ->
+                        if (BackgroundConfig.isCustomBackgroundEnabled) {
+                            pill.copy(
+                                alpha = (BackgroundConfig.customBackgroundOpacity + 0.35f)
+                                    .coerceIn(0.45f, 1f)
+                            )
+                        } else {
+                            pill
+                        }
+                    }
                     val background by animateColorAsState(
-                        targetValue = if (selected) MaterialTheme.colorScheme.surfaceBright
+                        targetValue = if (selected) selectedPillColor
                             else Color.Transparent,
                         animationSpec = effectsSpec,
                         label = "drawerSelection",

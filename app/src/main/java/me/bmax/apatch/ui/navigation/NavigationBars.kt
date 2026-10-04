@@ -182,7 +182,11 @@ fun BottomBar(
         }
 
         val containerColor = if (BackgroundConfig.isCustomBackgroundEnabled) {
-            MaterialTheme.colorScheme.surface.copy(alpha = BackgroundConfig.customBackgroundOpacity)
+            // Keep a faint floor so the capsule still reads when the custom
+            // background is pulled all the way to fully transparent.
+            MaterialTheme.colorScheme.surface.copy(
+                alpha = 0.10f + 0.85f * BackgroundConfig.customBackgroundOpacity
+            )
         } else {
             NavigationBarDefaults.containerColor
         }
