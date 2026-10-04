@@ -43,8 +43,11 @@ data class WallpaperItem(
     val providerId: String,
     val deviceKey: String,
     val width: Int? = null,
-    val height: Int? = null
+    val height: Int? = null,
+    val localUri: String? = null
 ) {
+    val imageUri: String get() = localUri ?: url
+
     val aspectRatio: Float
         get() = if (width != null && height != null && width > 0 && height > 0) {
             width.toFloat() / height.toFloat()

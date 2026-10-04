@@ -27,9 +27,15 @@ object WallpaperDownloader {
     suspend fun download(context: Context, url: String, fileName: String): Result =
         withContext(Dispatchers.IO) {
             val bytes = runCatching {
-                apApp.okhttpClient.newCall(Request.Builder().url(url).build()).execute().use { response ->
-                    if (!response.isSuccessful) error("HTTP ${response.code}")
-                    response.body.bytes()
+                val source = Uri.parse(url)
+                if (source.scheme == "file" || source.scheme == "content") {
+                    context.contentResolver.openInputStream(source)?.use { it.readBytes() }
+                        ?: error("cannot open cached image")
+                } else {
+                    apApp.okhttpClient.newCall(Request.Builder().url(url).build()).execute().use { response ->
+                        if (!response.isSuccessful) error("HTTP ${response.code}")
+                        response.body.bytes()
+                    }
                 }
             }.getOrElse { return@withContext Result.Failure(it.message ?: "download failed") }
 

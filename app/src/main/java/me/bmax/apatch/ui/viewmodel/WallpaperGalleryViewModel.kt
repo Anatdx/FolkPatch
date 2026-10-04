@@ -5,6 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +32,9 @@ data class WallpaperUiState(
 class WallpaperGalleryViewModel(private val app: Application) : AndroidViewModel(app) {
 
     private val catalog = WallpaperCatalog()
-    private val seen = HashSet<String>()
+    private var loadJob: Job? = null
+    private var moreJob: Job? = null
+    private var generation = 0
 
     private val _state = MutableStateFlow(WallpaperUiState())
     val state: StateFlow<WallpaperUiState> = _state.asStateFlow()
@@ -38,7 +42,7 @@ class WallpaperGalleryViewModel(private val app: Application) : AndroidViewModel
     init {
         val providers = runCatching { WallpaperProviderRegistry.load(app) }.getOrDefault(emptyList())
         _state.update { it.copy(providers = providers, selectedProviderId = providers.firstOrNull()?.id) }
-        refresh()
+        loadGallery(clearCache = false)
     }
 
     private fun currentProvider(): WallpaperProvider? {
@@ -50,7 +54,7 @@ class WallpaperGalleryViewModel(private val app: Application) : AndroidViewModel
     fun selectDevice(device: WallpaperDevice) {
         if (_state.value.device == device) return
         _state.update { it.copy(device = device) }
-        refresh()
+        loadGallery(clearCache = false)
     }
 
     /** Retain measured proportions across scrolling, layout changes and activity rotation. */
@@ -66,27 +70,38 @@ class WallpaperGalleryViewModel(private val app: Application) : AndroidViewModel
         }
     }
 
-    fun refresh() {
+    fun refresh() = loadGallery(clearCache = true)
+
+    fun retry() = loadGallery(clearCache = false)
+
+    private fun loadGallery(clearCache: Boolean) {
         val provider = currentProvider() ?: return
         val device = _state.value.device
-        val hasItems = _state.value.items.isNotEmpty()
-        seen.clear()
+        val refreshing = clearCache && _state.value.items.isNotEmpty()
+        val requestGeneration = ++generation
+        loadJob?.cancel()
+        moreJob?.cancel()
         _state.update {
             it.copy(
-                loading = !hasItems,
-                refreshing = hasItems,
+                loading = !refreshing,
+                refreshing = refreshing,
                 loadingMore = false,
                 error = null,
-                items = if (hasItems) it.items else emptyList(),
+                items = emptyList(),
             )
         }
-        viewModelScope.launch {
-            runCatching { catalog.load(provider, device, PAGE_SIZE, seen) }
+        loadJob = viewModelScope.launch {
+            runCatching {
+                if (clearCache) catalog.clearCache()
+                catalog.load(provider, device, PAGE_SIZE, emptySet())
+            }
                 .onSuccess { list ->
-                    list.forEach { seen.add(it.url) }
+                    if (requestGeneration != generation) return@onSuccess
                     _state.update { it.copy(loading = false, refreshing = false, items = list) }
                 }
                 .onFailure { throwable ->
+                    if (throwable is CancellationException) throw throwable
+                    if (requestGeneration != generation) return@onFailure
                     _state.update {
                         it.copy(loading = false, refreshing = false, error = throwable.message ?: "failed")
                     }
@@ -96,17 +111,21 @@ class WallpaperGalleryViewModel(private val app: Application) : AndroidViewModel
 
     fun loadMore() {
         val state = _state.value
-        if (state.loading || state.loadingMore) return
+        if (state.loading || state.refreshing || state.loadingMore) return
         val provider = currentProvider() ?: return
         val device = state.device
+        val requestGeneration = generation
+        val seen = state.items.mapTo(HashSet()) { it.url }
         _state.update { it.copy(loadingMore = true) }
-        viewModelScope.launch {
+        moreJob = viewModelScope.launch {
             runCatching { catalog.load(provider, device, PAGE_SIZE, seen) }
                 .onSuccess { list ->
-                    list.forEach { seen.add(it.url) }
+                    if (requestGeneration != generation) return@onSuccess
                     _state.update { it.copy(loadingMore = false, items = it.items + list) }
                 }
-                .onFailure {
+                .onFailure { throwable ->
+                    if (throwable is CancellationException) throw throwable
+                    if (requestGeneration != generation) return@onFailure
                     _state.update { it.copy(loadingMore = false) }
                 }
         }

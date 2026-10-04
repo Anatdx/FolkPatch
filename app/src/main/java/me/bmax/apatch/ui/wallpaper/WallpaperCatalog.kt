@@ -1,9 +1,12 @@
 package me.bmax.apatch.ui.wallpaper
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.withContext
@@ -11,6 +14,7 @@ import me.bmax.apatch.apApp
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
+import java.io.File
 import java.net.URLEncoder
 import kotlin.random.Random
 
@@ -21,7 +25,12 @@ import kotlin.random.Random
  * from a random id (zero API calls, immune to rate limiting). Otherwise the
  * provider's dynamic endpoint is queried in parallel (the fallback path).
  */
-class WallpaperCatalog(private val client: OkHttpClient = apApp.okhttpClient) {
+class WallpaperCatalog(
+    private val client: OkHttpClient = apApp.okhttpClient,
+    private val cache: WallpaperGalleryCache = WallpaperGalleryCache(File(apApp.filesDir, "wallpaper-gallery")),
+) {
+
+    suspend fun clearCache() = withContext(Dispatchers.IO) { cache.withLock { cache.clear() } }
 
     suspend fun load(
         provider: WallpaperProvider,
@@ -29,24 +38,66 @@ class WallpaperCatalog(private val client: OkHttpClient = apApp.okhttpClient) {
         count: Int,
         exclude: Set<String>
     ): List<WallpaperItem> = withContext(Dispatchers.IO) {
+        cache.withLock { loadLocked(provider, device, count, exclude) }
+    }
+
+    private suspend fun loadLocked(
+        provider: WallpaperProvider,
+        device: WallpaperDevice,
+        count: Int,
+        exclude: Set<String>
+    ): List<WallpaperItem> {
+        if (count <= 0) return emptyList()
         if (device == WallpaperDevice.MIXED) {
             val phoneCount = count / 2
-            val phoneItems = load(provider, WallpaperDevice.PHONE, phoneCount, exclude)
-            val tabletItems = load(
+            val phoneItems = loadLocked(provider, WallpaperDevice.PHONE, phoneCount, exclude)
+            val tabletItems = loadLocked(
                 provider,
                 WallpaperDevice.TABLET,
                 count - phoneCount,
                 exclude + phoneItems.map { it.url }
             )
-            return@withContext phoneItems + tabletItems
+            return phoneItems + tabletItems
         }
-        if (provider.responseType.equals("redirect", ignoreCase = true)) {
-            return@withContext loadRedirect(provider, device, count, exclude)
+        val saved = cache.read(provider.id, device.key)
+        val available = saved.filter { it.url !in exclude }.take(count)
+        if (available.isNotEmpty()) return available
+        val seen = exclude + saved.map { it.url }
+        val items = when {
+            provider.responseType.equals("redirect", ignoreCase = true) ->
+                loadRedirect(provider, device, count, seen)
+            provider.directFor(device.key) != null ->
+                storeImages(loadDirect(provider.directFor(device.key)!!, provider, device, count, seen))
+            else -> storeImages(loadRemote(provider, device, count, seen))
         }
-        provider.directFor(device.key)?.let {
-            return@withContext loadDirect(it, provider, device, count, exclude)
-        }
-        loadRemote(provider, device, count, exclude)
+        currentCoroutineContext().ensureActive()
+        if (items.isNotEmpty()) cache.append(provider.id, device.key, items)
+        return items
+    }
+
+    private suspend fun storeImages(items: List<WallpaperItem>): List<WallpaperItem> = coroutineScope {
+        val semaphore = Semaphore(MAX_CONCURRENCY)
+        items.map { item ->
+            async {
+                semaphore.withPermit {
+                    attempt {
+                        client.newCall(Request.Builder().url(item.url).build()).execute().use { response ->
+                            currentCoroutineContext().ensureActive()
+                            check(response.isSuccessful) { "HTTP ${response.code}" }
+                            cache.storeImage(item, response.body.byteStream())
+                        }
+                    }
+                }
+            }
+        }.awaitAll().filterNotNull()
+    }
+
+    private suspend fun <T> attempt(block: suspend () -> T): T? = try {
+        block()
+    } catch (cancelled: CancellationException) {
+        throw cancelled
+    } catch (_: Exception) {
+        null
     }
 
     /**
@@ -65,7 +116,7 @@ class WallpaperCatalog(private val client: OkHttpClient = apApp.okhttpClient) {
         val items = (0 until count).map {
             async {
                 semaphore.withPermit {
-                    runCatching {
+                    attempt {
                         val nonce = System.nanoTime().toString(36) + Random.nextInt(0x1000000).toString(36)
                         val endpoint = Request.Builder().url(provider.baseUrl + path).build().url
                             .newBuilder()
@@ -73,16 +124,18 @@ class WallpaperCatalog(private val client: OkHttpClient = apApp.okhttpClient) {
                             .addQueryParameter("_", nonce)
                             .build()
                         client.newCall(Request.Builder().url(endpoint).build()).execute().use { response ->
+                            currentCoroutineContext().ensureActive()
                             // A non-redirecting random endpoint has no stable image identity.
                             if (!response.isSuccessful || response.request.url == endpoint) return@use null
-                            WallpaperItem(
+                            val item = WallpaperItem(
                                 id = nonce,
                                 url = response.request.url.toString(),
                                 providerId = provider.id,
                                 deviceKey = device.key
                             )
+                            if (item.url in exclude) null else cache.storeImage(item, response.body.byteStream())
                         }
-                    }.getOrNull()
+                    }
                 }
             }
         }.awaitAll()
@@ -108,8 +161,8 @@ class WallpaperCatalog(private val client: OkHttpClient = apApp.okhttpClient) {
             attempts++
             val idNum = Random.nextInt(source.minId, source.maxId + 1)
             val id = "img$idNum"
-            if (!seen.add(id)) continue
             val url = source.imagePattern.replace("{id}", idNum.toString())
+            if (!seen.add(url)) continue
             items += WallpaperItem(
                 id = id,
                 url = url,
@@ -131,7 +184,7 @@ class WallpaperCatalog(private val client: OkHttpClient = apApp.okhttpClient) {
         val urls = (0 until count).map {
             async {
                 semaphore.withPermit {
-                    runCatching { fetchUrl(provider, device) }.getOrNull()
+                    attempt { fetchUrl(provider, device) }
                 }
             }
         }.awaitAll()

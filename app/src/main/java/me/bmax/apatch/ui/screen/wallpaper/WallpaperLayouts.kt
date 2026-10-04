@@ -196,9 +196,9 @@ fun WallpaperCard(
     val context = LocalContext.current
     val interactionSource = remember(item.url) { MutableInteractionSource() }
     val haptics = LocalHapticFeedback.current
-    val request = remember(context, item.url) {
+    val request = remember(context, item.imageUri) {
         ImageRequest.Builder(context)
-            .data(item.url)
+            .data(item.imageUri)
             .scale(Scale.FIT)
             .crossfade(true)
             .diskCachePolicy(CachePolicy.ENABLED)

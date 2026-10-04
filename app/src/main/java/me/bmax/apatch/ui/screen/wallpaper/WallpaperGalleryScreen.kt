@@ -111,11 +111,11 @@ fun WallpaperGalleryScreen(navigator: DestinationsNavigator) {
             Spacer(Modifier.height(FolkSettingsDimens.SectionTitleSpacing))
             PullToRefreshBox(
                 isRefreshing = state.refreshing,
-                onRefresh = viewModel::refresh,
+                onRefresh = { preview = null; viewModel.refresh() },
                 modifier = Modifier.fillMaxWidth().weight(1f),
             ) {
                 when {
-                    state.loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    state.loading || state.refreshing -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         FolkLoadingIndicator(text = stringResource(R.string.wallpaper_loading))
                     }
 
@@ -123,7 +123,7 @@ fun WallpaperGalleryScreen(navigator: DestinationsNavigator) {
                         FolkStateView(
                             title = state.error ?: stringResource(R.string.wallpaper_empty),
                             action = {
-                                Button(onClick = { viewModel.refresh() }) {
+                                Button(onClick = { viewModel.retry() }) {
                                     Text(stringResource(R.string.wallpaper_retry))
                                 }
                             },
@@ -155,7 +155,7 @@ fun WallpaperGalleryScreen(navigator: DestinationsNavigator) {
             onDismiss = { preview = null },
             onDownload = {
                 scope.launch {
-                    when (val result = WallpaperDownloader.download(context, item.url, item.fileName)) {
+                    when (val result = WallpaperDownloader.download(context, item.imageUri, item.fileName)) {
                         is WallpaperDownloader.Result.Success ->
                             snackbarHostState.showSnackbar(savedMessage)
                         is WallpaperDownloader.Result.Failure ->
@@ -182,7 +182,7 @@ private fun WallpaperPreviewDialog(
         ) {
             Column {
                 AsyncImage(
-                    model = item.url,
+                    model = item.imageUri,
                     contentDescription = null,
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
