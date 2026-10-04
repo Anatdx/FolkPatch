@@ -3,6 +3,9 @@ package me.bmax.apatch.ui.navigation
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.MaterialTheme
@@ -22,8 +25,10 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.utils.isRouteOnBackStackAsState
@@ -150,11 +155,19 @@ internal fun PlainBottomNavigationBar(
                         }
                     },
                     label = {
-                        Text(
+                        // Long locales (e.g. Russian) can overflow their slot; shrink
+                        // the label to fit before falling back to an ellipsis.
+                        BasicText(
                             text = stringResource(destination.label),
-                            overflow = TextOverflow.Visible,
+                            modifier = Modifier.fillMaxWidth(),
+                            style = MaterialTheme.typography.labelMedium.copy(textAlign = TextAlign.Center),
                             maxLines = 1,
-                            softWrap = false
+                            overflow = TextOverflow.Ellipsis,
+                            autoSize = TextAutoSize.StepBased(
+                                minFontSize = 8.sp,
+                                maxFontSize = 12.sp,
+                                stepSize = 0.5.sp
+                            )
                         )
                     },
                     alwaysShowLabel = true
