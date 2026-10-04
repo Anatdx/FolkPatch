@@ -21,6 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -174,7 +175,11 @@ private fun WallpaperPreviewDialog(
 ) {
     val imageMaxHeight = LocalConfiguration.current.screenHeightDp.dp * 0.65f
     Dialog(onDismissRequest = onDismiss) {
-        Surface(shape = FolkShape.Dialog, tonalElevation = 6.dp) {
+        Surface(
+            shape = FolkShape.Dialog,
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            tonalElevation = 6.dp,
+        ) {
             Column {
                 AsyncImage(
                     model = item.url,
