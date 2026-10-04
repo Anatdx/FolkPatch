@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.window.OnBackInvokedDispatcher
+import androidx.annotation.RequiresApi
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -20,10 +22,16 @@ import me.bmax.apatch.BuildConfig
 import me.bmax.apatch.util.PermissionRequestHandler
 import me.bmax.apatch.util.PermissionUtils
 import me.bmax.apatch.R
+import me.bmax.apatch.ui.navigation.CommitOnlyBackDispatcher
+import me.bmax.apatch.ui.navigation.installNonPredictiveBackFallback
 
 import android.provider.OpenableColumns
 
 class MainActivity : AppCompatActivity() {
+    private var commitOnlyBackDispatcher: CommitOnlyBackDispatcher? = null
+    private val predictiveBackEnabled by lazy {
+        APApplication.sharedPreferences.getBoolean("predictive_back_enabled", true)
+    }
     private var isLoading = true
     internal var installUri: Uri? = null
     internal var installUris: ArrayList<Uri>? = null
@@ -85,6 +93,17 @@ class MainActivity : AppCompatActivity() {
         super.attachBaseContext(me.bmax.apatch.util.DPIUtils.updateContext(newBase))
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    override fun getOnBackInvokedDispatcher(): OnBackInvokedDispatcher {
+        val dispatcher = super.getOnBackInvokedDispatcher()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE || predictiveBackEnabled) {
+            return dispatcher
+        }
+        return commitOnlyBackDispatcher ?: CommitOnlyBackDispatcher(dispatcher).also {
+            commitOnlyBackDispatcher = it
+        }
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
@@ -130,20 +149,11 @@ class MainActivity : AppCompatActivity() {
             window.isNavigationBarContrastEnforced = false
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
-            && !APApplication.sharedPreferences.getBoolean("predictive_back_enabled", true)
-        ) {
-            try {
-                window.javaClass
-                    .getMethod("setEnableOnBackInvokedCallback", Boolean::class.javaPrimitiveType)
-                    .invoke(window, false)
-                android.util.Log.d("MainActivity", "Predictive back disabled via reflection")
-            } catch (e: Exception) {
-                android.util.Log.e("MainActivity", "Failed to disable predictive back via reflection", e)
-            }
-        }
-
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && !predictiveBackEnabled) {
+            // Register before the UI so page, search and selection callbacks retain priority.
+            installNonPredictiveBackFallback()
+        }
         updatePendingActionFromIntent(intent)
         
         installUri = if (intent.action == Intent.ACTION_SEND) {
