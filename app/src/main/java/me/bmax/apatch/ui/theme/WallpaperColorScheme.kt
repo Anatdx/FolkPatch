@@ -107,8 +107,13 @@ internal fun adaptColorScheme(
     val wallpaperDim = BackgroundConfig.getEffectiveBackgroundDim(darkTheme)
     val effectiveLuminance = BackgroundConfig.wallpaperLuminanceFor(activeBackgroundUri)
         ?.let { it * (1f - wallpaperDim) }
-    // 浅色文字（深色中性方案）：壁纸偏暗时需要。用色时不再受 contentIsDark 命名误导。
-    val useLightContent = effectiveLuminance?.let { it < WALLPAPER_DARK_THRESHOLD } ?: darkTheme
+    // 夜间模式始终保持深色中性方案：不因壁纸偏亮而把整套 UI 翻成浅色（避免「发白」），
+    // 可读性交给下面的对比度保护抬高遮罩。浅色模式仍按壁纸明暗决定，以照顾暗壁纸。
+    val useLightContent = if (darkTheme) {
+        true
+    } else {
+        effectiveLuminance?.let { it < WALLPAPER_DARK_THRESHOLD } ?: false
+    }
 
     val neutralScheme = if (useLightContent == darkTheme) {
         baseColorScheme
@@ -148,8 +153,9 @@ internal fun adaptColorScheme(
         // 一旦降 alpha 就会让选中态文字直接压在壁纸上而失去对比度。
     )
 
-    // 仅当采用浅色中性内容时，才需要保证遮罩足够暗；否则保持用户请求的 dim。
-    val renderDim = if (useLightContent) {
+    // 浅色模式：浅色中性内容压在暗壁纸上时，用对比度保护兜底（通常已是暗壁纸，基本不改动）。
+    // 夜间模式：UI 已固定为深色，遮罩完全交给用户的夜间暗度滑块，不做自动加深。
+    val renderDim = if (useLightContent && !darkTheme) {
         guardedDim(wallpaperDim, adapted) ?: wallpaperDim
     } else {
         wallpaperDim
